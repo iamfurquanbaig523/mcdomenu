@@ -1,0 +1,1344 @@
+:root {
+  --mc-red: #c8102e;
+  --mc-red-dark: #a50d24;
+  --mc-red-light: #f5e6e9;
+  --mc-yellow: #ffc72c;
+  --mc-yellow-dark: #e6b000;
+  --mc-yellow-light: #fff9e6;
+  --mc-white: #ffffff;
+  --mc-off-white: #f8f8f6;
+  --mc-grey-100: #f2f2f0;
+  --mc-grey-200: #e8e8e4;
+  --mc-grey-300: #d0d0cc;
+  --mc-grey-500: #888884;
+  --mc-grey-700: #444440;
+  --mc-black: #1a1a18;
+  --mc-radius-sm: 8px;
+  --mc-radius-md: 12px;
+  --mc-radius-lg: 20px;
+  --mc-radius-xl: 32px;
+  --mc-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --mc-shadow-md: 0 4px 20px rgba(0, 0, 0, 0.09);
+  --mc-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.12);
+  --mc-shadow-red: 0 8px 30px rgba(200, 16, 46, 0.25);
+  --mc-transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --mc-max-width: 1200px;
+}
+
+body.mcprices-theme-active {
+  font-family: "DM Sans", system-ui, sans-serif;
+  color: var(--mc-black);
+}
+
+body.mcprices-theme-active h1,
+body.mcprices-theme-active h2,
+body.mcprices-theme-active h3,
+body.mcprices-theme-active h4,
+body.mcprices-theme-active h5,
+body.mcprices-theme-active h6,
+body.mcprices-theme-active .widget-title,
+body.mcprices-theme-active .site-title,
+body.mcprices-theme-active .header-navigation a,
+body.mcprices-theme-active .header-button {
+  font-family: "Poppins", system-ui, sans-serif;
+}
+
+body.mcprices-theme-active.home .entry-hero,
+body.mcprices-theme-active.home .page-header,
+body.mcprices-theme-active.home .entry-header {
+  display: none;
+}
+
+body.mcprices-theme-active.home .content-container.site-container,
+body.mcprices-theme-active.home .content-wrap,
+body.mcprices-theme-active.home .single-entry,
+body.mcprices-theme-active.home .entry-content-wrap {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  border: 0;
+}
+
+body.mcprices-theme-active #masthead {
+  z-index: 999;
+}
+
+body.mcprices-theme-active #masthead .site-top-header-wrap .site-header-row-container-inner {
+  min-height: 40px;
+  background: linear-gradient(90deg, var(--mc-red) 0%, var(--mc-red-dark) 100%);
+  border: 0;
+}
+
+body.mcprices-theme-active #masthead .site-top-header-wrap .site-container {
+  max-width: 100%;
+  width: 100%;
+  padding-inline: 18px;
+}
+
+body.mcprices-theme-active #masthead .site-top-header-wrap .site-header-row {
+  min-height: 40px;
+}
+
+body.mcprices-theme-active #masthead .site-top-header-wrap .header-html,
+body.mcprices-theme-active #masthead .site-top-header-wrap .mobile-html {
+  width: 100%;
+  text-align: center;
+}
+
+body.mcprices-theme-active #masthead .site-top-header-wrap .header-html-inner,
+body.mcprices-theme-active #masthead .site-top-header-wrap .mobile-html-inner {
+  width: 100%;
+}
+
+body.mcprices-theme-active #masthead .site-top-header-wrap p,
+body.mcprices-theme-active #masthead .site-top-header-wrap a {
+  margin: 0;
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--mc-white);
+}
+
+body.mcprices-theme-active #masthead .site-top-header-wrap a {
+  color: var(--mc-yellow);
+  text-decoration: underline;
+}
+
+body.mcprices-theme-active #masthead .site-main-header-wrap .site-header-row-container-inner {
+  min-height: 72px;
+  transition: background 0.3s ease, box-shadow 0.3s ease, backdrop-filter 0.3s ease;
+}
+
+body.mcprices-theme-active.transparent-header #masthead .site-main-header-wrap .site-header-row-container-inner {
+  background: transparent;
+  box-shadow: none;
+}
+
+body.mcprices-theme-active #masthead .kadence-sticky-header.item-is-fixed.item-is-stuck > .site-header-row-container-inner {
+  background: rgba(255, 255, 255, 0.97);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+}
+
+body.mcprices-theme-active #masthead .site-branding .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+body.mcprices-theme-active #masthead .site-branding .brand:not(.has-logo-image)::before {
+  content: "M";
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: var(--mc-yellow);
+  color: var(--mc-red);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  box-shadow: 0 4px 12px rgba(255, 199, 44, 0.4);
+}
+
+body.mcprices-theme-active #masthead .site-branding .site-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+body.mcprices-theme-active #masthead .site-branding .site-description {
+  margin: 0;
+  font-size: 11px;
+  color: var(--mc-grey-500);
+}
+
+body.mcprices-theme-active.transparent-header #masthead .site-main-header-wrap:not(.item-is-fixed) .site-title,
+body.mcprices-theme-active.transparent-header #masthead .site-main-header-wrap:not(.item-is-fixed) .site-description,
+body.mcprices-theme-active.transparent-header #masthead .site-main-header-wrap:not(.item-is-fixed) .header-navigation a {
+  color: var(--mc-white);
+}
+
+body.mcprices-theme-active #masthead .header-navigation .header-menu-container > ul > li > a {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: var(--mc-transition);
+}
+
+body.mcprices-theme-active #masthead .header-navigation .header-menu-container > ul > li > a:hover,
+body.mcprices-theme-active #masthead .header-navigation .header-menu-container > ul > li.current-menu-item > a,
+body.mcprices-theme-active #masthead .header-navigation .header-menu-container > ul > li.current_page_item > a {
+  color: var(--mc-red);
+  background: rgba(200, 16, 46, 0.08);
+}
+
+body.mcprices-theme-active #masthead .header-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: var(--mc-shadow-red);
+  transition: var(--mc-transition);
+}
+
+body.mcprices-theme-active #masthead .header-button:hover {
+  transform: translateY(-1px);
+}
+
+body.mcprices-theme-active #masthead .menu-toggle-open {
+  border-radius: 10px;
+}
+
+body.mcprices-theme-active .popup-drawer .drawer-inner {
+  background: var(--mc-black);
+}
+
+body.mcprices-theme-active .popup-drawer .drawer-content,
+body.mcprices-theme-active .popup-drawer .drawer-header,
+body.mcprices-theme-active .popup-drawer .header-navigation a,
+body.mcprices-theme-active .popup-drawer .mobile-html {
+  color: var(--mc-white);
+}
+
+body.mcprices-theme-active .mcprices-footer-disclaimer {
+  background: var(--mc-yellow-light);
+  border-top: 3px solid var(--mc-yellow);
+  padding: 16px 24px;
+}
+
+body.mcprices-theme-active .mcprices-footer-disclaimer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+body.mcprices-theme-active .mcprices-footer-disclaimer p {
+  margin: 0;
+  color: var(--mc-grey-700);
+  font-size: 13px;
+}
+
+body.mcprices-theme-active #colophon {
+  background: var(--mc-black);
+}
+
+body.mcprices-theme-active #colophon .site-footer-wrap {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+body.mcprices-theme-active #colophon .site-middle-footer-wrap .site-footer-row-container-inner {
+  padding-top: 64px;
+  padding-bottom: 40px;
+}
+
+body.mcprices-theme-active #colophon .site-bottom-footer-wrap .site-footer-row-container-inner {
+  padding-top: 24px;
+  padding-bottom: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+body.mcprices-theme-active #colophon .site-middle-footer-wrap .site-footer-row,
+body.mcprices-theme-active #colophon .site-bottom-footer-wrap .site-footer-row {
+  gap: 32px;
+}
+
+body.mcprices-theme-active #colophon .widget-title {
+  margin-bottom: 16px;
+  color: var(--mc-white);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+body.mcprices-theme-active #colophon .widget,
+body.mcprices-theme-active #colophon .footer-html,
+body.mcprices-theme-active #colophon .footer-navigation {
+  font-size: 14px;
+}
+
+body.mcprices-theme-active #colophon a {
+  color: rgba(255, 255, 255, 0.45);
+  transition: var(--mc-transition);
+}
+
+body.mcprices-theme-active #colophon a:hover {
+  color: var(--mc-yellow);
+}
+
+body.mcprices-theme-active #colophon .footer-html p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+body.mcprices-theme-active #colophon .footer-menu-container ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+body.mcprices-theme-active #colophon .footer-brand .logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  text-decoration: none;
+}
+
+body.mcprices-theme-active #colophon .footer-brand .logo-icon {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: var(--mc-yellow);
+  color: var(--mc-red);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  box-shadow: 0 4px 12px rgba(255, 199, 44, 0.35);
+}
+
+body.mcprices-theme-active #colophon .footer-brand .logo-text {
+  color: var(--mc-white);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+body.mcprices-theme-active #colophon .footer-brand .logo-text span {
+  display: block;
+  margin-top: 4px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+body.mcprices-theme-active #colophon .footer-brand p {
+  max-width: 260px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+body.mcprices-theme-active #colophon .footer-col-title {
+  margin-bottom: 16px;
+  color: var(--mc-white);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+body.mcprices-theme-active #colophon .footer-links {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+body.mcprices-theme-active #colophon .footer-links li {
+  margin-bottom: 10px;
+}
+
+body.mcprices-theme-active #colophon .footer-links a {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+body.mcprices-theme-active #colophon .site-bottom-footer-wrap .site-footer-row {
+  align-items: center;
+  justify-content: space-between;
+}
+
+body.mcprices-theme-active #colophon .site-bottom-footer-wrap .footer-html {
+  margin-right: auto;
+}
+
+body.mcprices-theme-active #colophon .site-bottom-footer-wrap .footer-navigation {
+  margin-left: auto;
+}
+
+body.mcprices-theme-active #colophon .site-bottom-footer-wrap .footer-menu-container ul {
+  gap: 20px;
+}
+
+body.mcprices-theme-active #colophon .site-bottom-footer-wrap .footer-menu-container a {
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 13px;
+}
+
+body.mcprices-theme-active #kt-scroll-up,
+body.mcprices-theme-active #kt-scroll-up-reader {
+  border-radius: 12px !important;
+  color: var(--mc-white) !important;
+  background: var(--mc-red) !important;
+  border-color: var(--mc-red) !important;
+  box-shadow: var(--mc-shadow-red) !important;
+}
+
+body.mcprices-theme-active #kt-scroll-up:hover,
+body.mcprices-theme-active #kt-scroll-up-reader:hover {
+  background: var(--mc-red-dark) !important;
+  border-color: var(--mc-red-dark) !important;
+}
+
+.mcprices-page {
+  font-family: "DM Sans", system-ui, sans-serif;
+  color: var(--mc-black);
+  background: var(--mc-white);
+}
+
+.mcprices-page * {
+  box-sizing: border-box;
+}
+
+.mcprices-page .container {
+  max-width: var(--mc-max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.mcprices-page .section-header {
+  text-align: center;
+  margin-bottom: 52px;
+}
+
+.mcprices-page .section-header-left {
+  text-align: left;
+}
+
+.mcprices-page .section-header-left .section-sub {
+  margin-inline: 0;
+}
+
+.mcprices-page .section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--mc-red-light);
+  color: var(--mc-red);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.mcprices-page .section-label-dark {
+  background: rgba(255, 199, 44, 0.15);
+  color: var(--mc-yellow);
+}
+
+.mcprices-page .section-title {
+  margin: 0 0 12px;
+  color: var(--mc-black);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.mcprices-page .section-title-light {
+  color: var(--mc-white);
+}
+
+.mcprices-page .section-sub {
+  max-width: 520px;
+  margin: 0 auto;
+  color: var(--mc-grey-500);
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.mcprices-page .section-sub-light {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.mcprices-page .badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.mcprices-page .badge-red { background: var(--mc-red); color: var(--mc-white); }
+.mcprices-page .badge-yellow { background: var(--mc-yellow); color: var(--mc-black); }
+.mcprices-page .badge-green { background: #00a651; color: var(--mc-white); }
+
+.mcprices-page .hero {
+  min-height: 100vh;
+  padding-top: 72px;
+  background: linear-gradient(160deg, #1a0508 0%, #2d0812 40%, #1a0508 100%);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.mcprices-page .hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 60% at 70% 50%, rgba(200, 16, 46, 0.25) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 20% 80%, rgba(255, 199, 44, 0.12) 0%, transparent 60%);
+}
+
+.mcprices-page .hero-pattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.04;
+  background-image: repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 50%);
+  background-size: 20px 20px;
+}
+
+.mcprices-page .hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: var(--mc-max-width);
+  margin: 0 auto;
+  padding: 80px 24px;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 60px;
+  align-items: center;
+}
+
+.mcprices-page .hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 199, 44, 0.3);
+  background: rgba(255, 199, 44, 0.15);
+  color: var(--mc-yellow);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.mcprices-page .hero-title {
+  margin: 0 0 20px;
+  color: var(--mc-white);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: clamp(36px, 5.5vw, 68px);
+  font-weight: 900;
+  line-height: 1.05;
+}
+
+.mcprices-page .hero-title .highlight {
+  color: var(--mc-yellow);
+}
+
+.mcprices-page .hero-sub {
+  max-width: 500px;
+  margin: 0 0 36px;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.mcprices-page .hero-search {
+  display: flex;
+  overflow: hidden;
+  margin-bottom: 32px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  background: var(--mc-white);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+}
+
+.mcprices-page .hero-search-icon {
+  display: flex;
+  align-items: center;
+  padding: 0 18px;
+  color: var(--mc-grey-500);
+  font-size: 20px;
+}
+
+.mcprices-page .hero-search input {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  padding: 18px 0;
+  background: transparent;
+  color: var(--mc-black);
+  font-size: 16px;
+}
+
+.mcprices-page .hero-search button {
+  border: 0;
+  cursor: pointer;
+  padding: 0 28px;
+  background: var(--mc-red);
+  color: var(--mc-white);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.mcprices-page .hero-btns,
+.mcprices-page .card-footer {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.mcprices-page .btn-primary,
+.mcprices-page .btn-outline,
+.mcprices-page .btn-card,
+.mcprices-page .menu-tab {
+  text-decoration: none;
+}
+
+.mcprices-page .btn-primary,
+.mcprices-page .btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 15px 28px;
+  border-radius: 12px;
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  transition: var(--mc-transition);
+}
+
+.mcprices-page .btn-primary {
+  background: var(--mc-yellow);
+  color: var(--mc-black);
+  box-shadow: 0 6px 20px rgba(255, 199, 44, 0.35);
+}
+
+.mcprices-page .btn-primary:hover {
+  transform: translateY(-2px);
+  background: var(--mc-yellow-dark);
+}
+
+.mcprices-page .btn-outline {
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  color: var(--mc-white);
+}
+
+.mcprices-page .btn-outline:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.mcprices-page .hero-stats {
+  display: flex;
+  gap: 24px;
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mcprices-page .stat-item { text-align: center; }
+.mcprices-page .stat-num {
+  color: var(--mc-yellow);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.mcprices-page .stat-label {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mcprices-page .hero-card-main {
+  padding: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.07);
+  backdrop-filter: blur(20px);
+}
+
+.mcprices-page .hero-card-title {
+  margin-bottom: 18px;
+  color: var(--mc-yellow);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.mcprices-page .hero-badge-float {
+  position: absolute;
+  top: -16px;
+  right: -16px;
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: var(--mc-yellow);
+  color: var(--mc-black);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.3;
+  text-align: center;
+  transform: rotate(6deg);
+  box-shadow: 0 8px 24px rgba(255, 199, 44, 0.4);
+}
+
+.mcprices-page .hero-badge-float span {
+  display: block;
+  font-size: 20px;
+}
+
+.mcprices-page .featured-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 10px;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.mcprices-page .featured-item:last-child { margin-bottom: 0; }
+.mcprices-page .item-emoji { width: 50px; font-size: 32px; text-align: center; }
+.mcprices-page .item-info { flex: 1; }
+.mcprices-page .item-name {
+  color: var(--mc-white);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.mcprices-page .item-cal { color: rgba(255, 255, 255, 0.45); font-size: 12px; }
+.mcprices-page .item-price {
+  color: var(--mc-yellow);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.mcprices-page .ad-banner {
+  max-width: 728px;
+  margin: 32px auto;
+  padding: 20px;
+  border: 2px dashed var(--mc-grey-200);
+  border-radius: 12px;
+  background: var(--mc-grey-100);
+  color: var(--mc-grey-500);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+.mcprices-page .ad-banner-label {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--mc-grey-300);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.mcprices-page .breadcrumbs {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--mc-grey-200);
+  background: var(--mc-grey-100);
+}
+
+.mcprices-page .breadcrumb-inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--mc-grey-500);
+  font-size: 13px;
+}
+
+.mcprices-page .breadcrumb-inner a { color: inherit; }
+.mcprices-page .breadcrumb-current { color: var(--mc-grey-700); font-weight: 500; }
+
+.mcprices-page .categories,
+.mcprices-page .full-menu,
+.mcprices-page .seo-content,
+.mcprices-page .internal-links { padding: 80px 0; background: var(--mc-white); }
+
+.mcprices-page .featured,
+.mcprices-page .faq-section { padding: 80px 0; background: var(--mc-off-white); }
+
+.mcprices-page .cat-grid,
+.mcprices-page .links-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.mcprices-page .cat-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.mcprices-page .links-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+.mcprices-page .cat-card,
+.mcprices-page .link-card,
+.mcprices-page .faq-item {
+  transition: var(--mc-transition);
+}
+
+.mcprices-page .cat-card {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  padding: 28px 20px;
+  border: 2px solid var(--mc-grey-200);
+  border-radius: var(--mc-radius-lg);
+  background: var(--mc-white);
+  color: inherit;
+  text-align: center;
+}
+
+.mcprices-page .cat-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--mc-red);
+  box-shadow: var(--mc-shadow-lg);
+}
+
+.mcprices-page .cat-emoji { display: block; margin-bottom: 12px; font-size: 42px; }
+.mcprices-page .cat-name {
+  margin-bottom: 4px;
+  color: var(--mc-black);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.mcprices-page .cat-count { color: var(--mc-grey-500); font-size: 13px; }
+.mcprices-page .cat-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin-top: 12px;
+  border-radius: 50%;
+  background: var(--mc-grey-100);
+  font-size: 14px;
+}
+
+.mcprices-page .featured-grid,
+.mcprices-page .deals-grid,
+.mcprices-page .faq-grid {
+  display: grid;
+  gap: 24px;
+}
+
+.mcprices-page .featured-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.mcprices-page .deals-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.mcprices-page .faq-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 48px; gap: 16px; }
+
+.mcprices-page .menu-card,
+.mcprices-page .sidebar-widget {
+  border: 1px solid var(--mc-grey-200);
+  border-radius: var(--mc-radius-lg);
+  background: var(--mc-white);
+}
+
+.mcprices-page .menu-card {
+  overflow: hidden;
+  box-shadow: var(--mc-shadow-sm);
+}
+
+.mcprices-page .menu-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--mc-shadow-lg);
+}
+
+.mcprices-page .card-img {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 180px;
+  background: var(--mc-grey-100);
+  font-size: 72px;
+}
+
+.mcprices-page .card-img-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(255, 199, 44, 0.12) 0%, transparent 70%);
+}
+
+.mcprices-page .card-popular {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  background: var(--mc-red);
+  color: var(--mc-white);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.mcprices-page .card-body { padding: 20px; }
+.mcprices-page .card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.mcprices-page .card-name {
+  color: var(--mc-black);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.mcprices-page .card-price {
+  color: var(--mc-red);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.mcprices-page .card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.mcprices-page .card-cal { color: var(--mc-grey-500); font-size: 13px; }
+
+.mcprices-page .card-footer { padding: 0 20px 20px; }
+
+.mcprices-page .btn-card {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 8px;
+  background: var(--mc-red-light);
+  color: var(--mc-red);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.mcprices-page .btn-card:hover { background: var(--mc-red); color: var(--mc-white); }
+
+.mcprices-page .menu-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 36px;
+  padding-bottom: 24px;
+  border-bottom: 2px solid var(--mc-grey-200);
+}
+
+.mcprices-page .menu-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border: 2px solid var(--mc-grey-200);
+  border-radius: 10px;
+  background: var(--mc-white);
+  color: var(--mc-grey-700);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.mcprices-page .menu-tab:hover,
+.mcprices-page .menu-tab.active {
+  border-color: var(--mc-red);
+  background: var(--mc-red);
+  color: var(--mc-white);
+}
+
+.mcprices-page .menu-section { margin-bottom: 52px; }
+.mcprices-page .menu-section-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--mc-grey-100);
+}
+
+.mcprices-page .menu-section-title {
+  color: var(--mc-black);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.mcprices-page .menu-section-count {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--mc-grey-100);
+  color: var(--mc-grey-500);
+  font-size: 13px;
+}
+
+.mcprices-page .menu-table-wrap { overflow-x: auto; }
+
+.mcprices-page .menu-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+}
+
+.mcprices-page .menu-table th {
+  padding: 12px 16px;
+  background: var(--mc-grey-100);
+  color: var(--mc-grey-500);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.mcprices-page .menu-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--mc-grey-100);
+  vertical-align: middle;
+}
+
+.mcprices-page .td-name {
+  color: var(--mc-black);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.mcprices-page .td-desc { margin-top: 2px; color: var(--mc-grey-500); font-size: 13px; }
+.mcprices-page .td-price {
+  color: var(--mc-red);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.mcprices-page .td-cal .low { color: #00a651; font-weight: 600; }
+.mcprices-page .td-cal .high { color: var(--mc-red); font-weight: 600; }
+
+.mcprices-page .deals {
+  position: relative;
+  overflow: hidden;
+  padding: 80px 0;
+  background: var(--mc-black);
+}
+
+.mcprices-page .deals::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 50% 70% at 80% 50%, rgba(200, 16, 46, 0.2) 0%, transparent 60%);
+}
+
+.mcprices-page .deals .container { position: relative; z-index: 1; }
+
+.mcprices-page .deal-card {
+  position: relative;
+  overflow: hidden;
+  padding: 28px;
+  border-radius: var(--mc-radius-lg);
+  transition: var(--mc-transition);
+}
+
+.mcprices-page .deal-card:hover { transform: translateY(-4px); }
+.mcprices-page .deal-red { background: var(--mc-red); color: var(--mc-white); }
+.mcprices-page .deal-yellow { background: var(--mc-yellow); color: var(--mc-black); }
+.mcprices-page .deal-dark { background: rgba(255, 255, 255, 0.07); color: var(--mc-white); border: 1px solid rgba(255, 255, 255, 0.12); }
+
+.mcprices-page .deal-badge-top {
+  display: inline-block;
+  margin-bottom: 16px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mcprices-page .deal-red .deal-badge-top { background: rgba(255, 255, 255, 0.2); }
+.mcprices-page .deal-yellow .deal-badge-top { background: rgba(0, 0, 0, 0.08); }
+.mcprices-page .deal-dark .deal-badge-top { background: rgba(255, 199, 44, 0.2); color: var(--mc-yellow); }
+
+.mcprices-page .deal-title {
+  margin-bottom: 8px;
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.mcprices-page .deal-sub { margin-bottom: 20px; font-size: 14px; opacity: 0.75; }
+.mcprices-page .deal-price {
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 36px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.mcprices-page .deal-price span { font-size: 14px; font-weight: 400; opacity: 0.6; }
+.mcprices-page .deal-emoji { position: absolute; right: 20px; bottom: 20px; font-size: 60px; opacity: 0.2; }
+
+.mcprices-page .seo-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 60px;
+}
+
+.mcprices-page .seo-main h2,
+.mcprices-page .seo-main h3 {
+  margin-top: 28px;
+  margin-bottom: 12px;
+  color: var(--mc-black);
+  font-family: "Poppins", system-ui, sans-serif;
+}
+
+.mcprices-page .seo-main h2:first-child { margin-top: 0; }
+.mcprices-page .seo-main h2 { font-size: 28px; font-weight: 800; }
+.mcprices-page .seo-main h3 { font-size: 20px; font-weight: 700; }
+.mcprices-page .seo-main p {
+  margin: 0 0 16px;
+  color: var(--mc-grey-700);
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.mcprices-page .seo-main a {
+  color: var(--mc-red);
+  border-bottom: 1px solid rgba(200, 16, 46, 0.3);
+}
+
+.mcprices-page .sidebar-widget { padding: 24px; border-radius: var(--mc-radius-md); margin-bottom: 24px; background: var(--mc-off-white); }
+.mcprices-page .sidebar-widget-title {
+  margin-bottom: 16px;
+  color: var(--mc-black);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mcprices-page .sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--mc-grey-200);
+  color: var(--mc-grey-700);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.mcprices-page .sidebar-link:last-child { border-bottom: 0; }
+.mcprices-page .sidebar-link:hover { color: var(--mc-red); }
+.mcprices-page .ad-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 250px;
+  border: 2px dashed var(--mc-grey-300);
+  border-radius: 12px;
+  background: var(--mc-grey-100);
+  color: var(--mc-grey-500);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.mcprices-page .faq-item {
+  border: 1px solid var(--mc-grey-200);
+  border-radius: var(--mc-radius-md);
+  background: var(--mc-white);
+  overflow: hidden;
+}
+
+.mcprices-page .faq-item[open] { border-color: var(--mc-red); box-shadow: var(--mc-shadow-sm); }
+.mcprices-page .faq-item summary::-webkit-details-marker { display: none; }
+
+.mcprices-page .faq-q {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 24px;
+  cursor: pointer;
+  list-style: none;
+  color: var(--mc-black);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.mcprices-page .faq-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--mc-grey-100);
+  font-size: 16px;
+  transition: var(--mc-transition);
+}
+
+.mcprices-page .faq-item[open] .faq-icon {
+  background: var(--mc-red);
+  color: var(--mc-white);
+  transform: rotate(45deg);
+}
+
+.mcprices-page .faq-a {
+  padding: 0 24px 20px;
+  color: var(--mc-grey-700);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.mcprices-page .link-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  border: 2px solid var(--mc-grey-200);
+  border-radius: var(--mc-radius-md);
+  color: inherit;
+}
+
+.mcprices-page .link-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--mc-red);
+  box-shadow: var(--mc-shadow-md);
+}
+
+.mcprices-page .link-card-emoji { font-size: 24px; }
+.mcprices-page .link-card-title {
+  color: var(--mc-black);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.mcprices-page .link-card-text { color: var(--mc-grey-500); font-size: 12px; line-height: 1.5; }
+.mcprices-page .link-card-arrow { margin-top: auto; color: var(--mc-red); font-size: 18px; }
+
+@keyframes mcprices-fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.mcprices-page .animate-fadeup {
+  animation: mcprices-fade-up 0.6s ease both;
+}
+
+.mcprices-page .delay-2 { animation-delay: 0.2s; }
+
+@media (max-width: 1024px) {
+  .mcprices-page .hero-content,
+  .mcprices-page .seo-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .mcprices-page .hero-right,
+  .mcprices-page .seo-sidebar {
+    display: none;
+  }
+
+  .mcprices-page .featured-grid,
+  .mcprices-page .deals-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mcprices-page .links-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 782px) {
+  body.mcprices-theme-active.admin-bar #masthead .site-top-header-wrap .header-html-inner,
+  body.mcprices-theme-active.admin-bar #masthead .site-top-header-wrap .mobile-html-inner {
+    padding-top: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .mcprices-page .hero-title { font-size: 36px; }
+  .mcprices-page .hero-stats { flex-wrap: wrap; gap: 16px; }
+  .mcprices-page .cat-grid,
+  .mcprices-page .faq-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mcprices-page .featured-grid,
+  .mcprices-page .deals-grid,
+  .mcprices-page .links-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mcprices-page .menu-tab {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+
+  body.mcprices-theme-active #colophon .site-middle-footer-wrap .site-footer-row,
+  body.mcprices-theme-active #colophon .site-bottom-footer-wrap .site-footer-row,
+  body.mcprices-theme-active #colophon .footer-menu-container ul {
+    gap: 18px;
+  }
+
+  body.mcprices-theme-active #colophon .site-bottom-footer-wrap .site-footer-row {
+    align-items: flex-start;
+  }
+
+  body.mcprices-theme-active #colophon .site-bottom-footer-wrap .footer-navigation {
+    margin-left: 0;
+  }
+}

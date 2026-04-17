@@ -1,0 +1,610 @@
+[Wed Apr 15 21:44:22 2026] PHP 8.3.30 Development Server (http://127.0.0.1:8101) started
+[Wed Apr 15 21:44:41 2026] 127.0.0.1:54254 Accepted
+[Wed Apr 15 21:44:43 2026] 127.0.0.1:54254 [200]: GET /?v=202604152132
+[Wed Apr 15 21:44:43 2026] 127.0.0.1:54254 Closing
+[Wed Apr 15 21:44:43 2026] 127.0.0.1:54499 Accepted
+[Wed Apr 15 21:44:43 2026] 127.0.0.1:62688 Accepted
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:54499 [200]: GET /?v=202604152132
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:54499 Closing
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:62688 Closed without sending a request; it was probably just an unused speculative preconnection
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:62688 Closing
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:65390 Accepted
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:65390 [200]: GET /wp-content/themes/kadence/assets/css/global.min.css?ver=1.4.5
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:65390 Closing
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:50365 Accepted
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:60044 Accepted
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:50036 Accepted
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:51132 Accepted
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:50365 [200]: GET /wp-content/themes/kadence/assets/css/header.min.css?ver=1.4.5
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:60044 [200]: GET /wp-content/themes/kadence/assets/css/content.min.css?ver=1.4.5
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:50036 [200]: GET /wp-content/themes/kadence/assets/css/footer.min.css?ver=1.4.5
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:51132 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-integrated.css?ver=1.4.5
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:50365 Closing
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:60044 Closing
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:50036 Closing
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:51132 Closing
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:65163 Accepted
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:61544 Accepted
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:65163 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-enhanced-layer.css?ver=1.4.5
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:65163 Closing
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:61544 [200]: GET /wp-content/themes/kadence/assets/js/mcprices-integrated.js?ver=1.4.5
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:61544 Closing
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:55639 Accepted
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:55639 [200]: GET /wp-content/themes/kadence/assets/js/navigation.min.js?ver=1.4.5
+[Wed Apr 15 21:44:44 2026] 127.0.0.1:55639 Closing
+[Wed Apr 15 21:44:46 2026] 127.0.0.1:64195 Accepted
+[Wed Apr 15 21:44:46 2026] 127.0.0.1:64195 [404]: GET /favicon.ico - No such file or directory
+[Wed Apr 15 21:44:46 2026] 127.0.0.1:64195 Closing
+[Wed Apr 15 21:44:46 2026] 127.0.0.1:52024 Accepted
+[Wed Apr 15 21:44:46 2026] 127.0.0.1:52024 [200]: GET /wp-includes/js/wp-emoji-release.min.js?ver=6.9.4
+[Wed Apr 15 21:44:46 2026] 127.0.0.1:52024 Closing
+[Wed Apr 15 21:45:38 2026] 127.0.0.1:65042 Accepted
+[Wed Apr 15 21:45:38 2026] 127.0.0.1:59269 Accepted
+[Wed Apr 15 21:45:41 2026] 127.0.0.1:65042 [200]: GET /?v=202604152145
+[Wed Apr 15 21:45:42 2026] 127.0.0.1:65042 Closing
+[Wed Apr 15 21:45:42 2026] 127.0.0.1:57505 Accepted
+[Wed Apr 15 21:45:42 2026] 127.0.0.1:59269 Closed without sending a request; it was probably just an unused speculative preconnection
+[Wed Apr 15 21:45:42 2026] 127.0.0.1:59269 Closing
+[Wed Apr 15 21:45:42 2026] 127.0.0.1:52031 Accepted
+[Wed Apr 15 21:45:45 2026] 127.0.0.1:57505 [200]: GET /?v=202604152145
+[Wed Apr 15 21:45:45 2026] 127.0.0.1:57505 Closing
+[Wed Apr 15 21:45:45 2026] 127.0.0.1:56144 Accepted
+[Wed Apr 15 21:45:45 2026] 127.0.0.1:52031 Closed without sending a request; it was probably just an unused speculative preconnection
+[Wed Apr 15 21:45:45 2026] 127.0.0.1:52031 Closing
+[Wed Apr 15 21:45:45 2026] 127.0.0.1:61119 Accepted
+[Wed Apr 15 21:45:49 2026] 127.0.0.1:56144 [200]: GET /?v=202604152145
+[Wed Apr 15 21:45:49 2026] 127.0.0.1:56144 Closing
+[Wed Apr 15 21:45:49 2026] 127.0.0.1:61543 Accepted
+[Wed Apr 15 21:45:49 2026] 127.0.0.1:61119 Closed without sending a request; it was probably just an unused speculative preconnection
+[Wed Apr 15 21:45:49 2026] 127.0.0.1:61119 Closing
+[Wed Apr 15 21:45:49 2026] 127.0.0.1:55971 Accepted
+[Wed Apr 15 21:45:49 2026] 127.0.0.1:61543 [200]: GET /wp-content/themes/kadence/assets/css/global.min.css?ver=1.4.5
+[Wed Apr 15 21:45:49 2026] 127.0.0.1:61200 Accepted
+[Wed Apr 15 21:45:49 2026] 127.0.0.1:55971 [200]: GET /wp-content/themes/kadence/assets/css/header.min.css?ver=1.4.5
+[Wed Apr 15 21:45:49 2026] 127.0.0.1:54707 Accepted
+[Wed Apr 15 21:45:49 2026] 127.0.0.1:61200 [200]: GET /wp-content/themes/kadence/assets/css/content.min.css?ver=1.4.5
+[Wed Apr 15 21:45:49 2026] 127.0.0.1:49551 Accepted
+[Wed Apr 15 21:45:49 2026] 127.0.0.1:54707 [200]: GET /wp-content/themes/kadence/assets/css/footer.min.css?ver=1.4.5
+[Wed Apr 15 21:45:49 2026] 127.0.0.1:61543 Closing
+[Wed Apr 15 21:45:49 2026] 127.0.0.1:62222 Accepted
+[Wed Apr 15 21:45:49 2026] 127.0.0.1:49551 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-integrated.css?ver=1.4.5
+[Wed Apr 15 21:45:49 2026] 127.0.0.1:55971 Closing
+[Wed Apr 15 21:45:49 2026] 127.0.0.1:58893 Accepted
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:62222 [200]: POST /wp-cron.php?doing_wp_cron=1776285941.4486370086669921875000
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:62222 Closing
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:61200 Closing
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:54233 Accepted
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:58893 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-enhanced-layer.css?ver=1.4.5
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:54707 Closing
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:55152 Accepted
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:54233 [200]: GET /wp-content/themes/kadence/assets/css/global.min.css?ver=1.4.5
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:49551 Closing
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:55846 Accepted
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:55152 [200]: GET /wp-content/themes/kadence/assets/css/header.min.css?ver=1.4.5
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:57159 Accepted
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:55846 [200]: GET /wp-content/themes/kadence/assets/css/content.min.css?ver=1.4.5
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:58893 Closing
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:57064 Accepted
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:57159 [200]: GET /wp-content/themes/kadence/assets/css/footer.min.css?ver=1.4.5
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:54233 Closing
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:49680 Accepted
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:57064 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-integrated.css?ver=1.4.5
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:55152 Closing
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:60386 Accepted
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:49680 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-enhanced-layer.css?ver=1.4.5
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:55846 Closing
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:50751 Accepted
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:60386 [200]: GET /wp-content/themes/kadence/assets/js/mcprices-integrated.js?ver=1.4.5
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:57159 Closing
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:62990 Accepted
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:50751 [200]: GET /wp-content/themes/kadence/assets/js/navigation.min.js?ver=1.4.5
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:57064 Closing
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:63142 Accepted
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:62990 [200]: GET /wp-content/themes/kadence/assets/css/global.min.css?ver=1.4.5
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:49680 Closing
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:58317 Accepted
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:63142 [200]: GET /wp-content/themes/kadence/assets/css/header.min.css?ver=1.4.5
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:60386 Closing
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:62699 Accepted
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:58317 [200]: GET /wp-content/themes/kadence/assets/css/content.min.css?ver=1.4.5
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:50751 Closing
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:54762 Accepted
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:62699 [200]: GET /wp-content/themes/kadence/assets/css/footer.min.css?ver=1.4.5
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:62990 Closing
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:54322 Accepted
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:54762 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-integrated.css?ver=1.4.5
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:63142 Closing
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:50459 Accepted
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:54322 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-enhanced-layer.css?ver=1.4.5
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:58317 Closing
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:60944 Accepted
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:50459 [200]: POST /wp-cron.php
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:50459 Closing
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:62699 Closing
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:60826 Accepted
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:60944 Invalid request (Unsupported SSL request)
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:60944 Closing
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:54762 Closing
+[Wed Apr 15 21:46:56 2026] 127.0.0.1:56776 Accepted
+[Wed Apr 15 21:47:15 2026] 127.0.0.1:60826 [200]: GET /?v=202604152150
+[Wed Apr 15 21:47:15 2026] 127.0.0.1:60826 Closing
+[Wed Apr 15 21:47:15 2026] 127.0.0.1:54322 Closing
+[Wed Apr 15 21:47:15 2026] 127.0.0.1:63009 Accepted
+[Wed Apr 15 21:47:15 2026] 127.0.0.1:56776 Closed without sending a request; it was probably just an unused speculative preconnection
+[Wed Apr 15 21:47:15 2026] 127.0.0.1:56776 Closing
+[Wed Apr 15 21:47:15 2026] 127.0.0.1:65442 Accepted
+[Wed Apr 15 21:47:28 2026] 127.0.0.1:63009 [200]: GET /?v=202604152150
+[Wed Apr 15 21:47:28 2026] 127.0.0.1:63009 Closing
+[Wed Apr 15 21:47:28 2026] 127.0.0.1:65492 Accepted
+[Wed Apr 15 21:47:28 2026] 127.0.0.1:57050 Accepted
+[Wed Apr 15 21:47:28 2026] 127.0.0.1:65492 Closed without sending a request; it was probably just an unused speculative preconnection
+[Wed Apr 15 21:47:28 2026] 127.0.0.1:65492 Closing
+[Wed Apr 15 21:47:28 2026] 127.0.0.1:58842 Accepted
+[Wed Apr 15 21:47:32 2026] 127.0.0.1:57050 [200]: GET /?v=202604152150
+[Wed Apr 15 21:47:32 2026] 127.0.0.1:57050 Closing
+[Wed Apr 15 21:47:32 2026] 127.0.0.1:49335 Accepted
+[Wed Apr 15 21:47:32 2026] 127.0.0.1:65442 [200]: GET /wp-content/themes/kadence/assets/css/global.min.css?ver=1.4.5
+[Wed Apr 15 21:47:32 2026] 127.0.0.1:58842 Invalid request (Unsupported SSL request)
+[Wed Apr 15 21:47:32 2026] 127.0.0.1:58842 Closing
+[Wed Apr 15 21:47:32 2026] 127.0.0.1:57569 Accepted
+[Wed Apr 15 21:47:32 2026] 127.0.0.1:49335 Invalid request (Unsupported SSL request)
+[Wed Apr 15 21:47:32 2026] 127.0.0.1:49335 Closing
+[Wed Apr 15 21:47:32 2026] 127.0.0.1:51776 Accepted
+[Wed Apr 15 21:47:32 2026] 127.0.0.1:57569 Invalid request (Unsupported SSL request)
+[Wed Apr 15 21:47:32 2026] 127.0.0.1:57569 Closing
+[Wed Apr 15 21:47:32 2026] 127.0.0.1:61916 Accepted
+[Wed Apr 15 21:47:35 2026] 127.0.0.1:51776 [200]: GET /
+[Wed Apr 15 21:47:35 2026] 127.0.0.1:51776 Closing
+[Wed Apr 15 21:47:35 2026] 127.0.0.1:65442 Closing
+[Wed Apr 15 21:47:35 2026] 127.0.0.1:49613 Accepted
+[Wed Apr 15 21:47:35 2026] 127.0.0.1:61916 [200]: GET /wp-content/themes/kadence/assets/js/mcprices-integrated.js?ver=1.4.5
+[Wed Apr 15 21:47:35 2026] 127.0.0.1:55328 Accepted
+[Wed Apr 15 21:47:35 2026] 127.0.0.1:49613 [200]: GET /wp-content/themes/kadence/assets/js/navigation.min.js?ver=1.4.5
+[Wed Apr 15 21:47:35 2026] 127.0.0.1:52933 Accepted
+[Wed Apr 15 21:47:35 2026] 127.0.0.1:55328 [200]: GET /wp-content/themes/kadence/assets/js/mcprices-integrated.js?ver=1.4.5
+[Wed Apr 15 21:47:35 2026] 127.0.0.1:52403 Accepted
+[Wed Apr 15 21:47:35 2026] 127.0.0.1:52933 [200]: GET /wp-content/themes/kadence/assets/js/navigation.min.js?ver=1.4.5
+[Wed Apr 15 21:47:35 2026] 127.0.0.1:61916 Closing
+[Wed Apr 15 21:47:35 2026] 127.0.0.1:53605 Accepted
+[Wed Apr 15 21:47:35 2026] 127.0.0.1:52403 [200]: GET /wp-includes/js/wp-emoji-release.min.js?ver=6.9.4
+[Wed Apr 15 21:47:35 2026] 127.0.0.1:49613 Closing
+[Wed Apr 15 21:47:35 2026] 127.0.0.1:52279 Accepted
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:53605 [200]: GET /wp-content/themes/kadence/assets/css/global.min.css?ver=1.4.5
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:55328 Closing
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:64727 Accepted
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:52279 [200]: GET /wp-content/themes/kadence/assets/css/header.min.css?ver=1.4.5
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:52933 Closing
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:56649 Accepted
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:64727 [200]: GET /wp-content/themes/kadence/assets/css/content.min.css?ver=1.4.5
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:52403 Closing
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:55066 Accepted
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:56649 [200]: GET /wp-content/themes/kadence/assets/css/footer.min.css?ver=1.4.5
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:53605 Closing
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:61295 Accepted
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:55066 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-integrated.css?ver=1.4.5
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:52279 Closing
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:61951 Accepted
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:61295 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-enhanced-layer.css?ver=1.4.5
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:64727 Closing
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:59027 Accepted
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:61951 [200]: GET /wp-content/themes/kadence/assets/css/header.min.css?ver=1.4.5
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:56649 Closing
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:53127 Accepted
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:59027 [200]: GET /wp-content/themes/kadence/assets/css/content.min.css?ver=1.4.5
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:55066 Closing
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:53651 Accepted
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:53127 [200]: GET /wp-content/themes/kadence/assets/css/global.min.css?ver=1.4.5
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:61295 Closing
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:56235 Accepted
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:53651 [200]: GET /wp-content/themes/kadence/assets/css/header.min.css?ver=1.4.5
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:61951 Closing
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:54284 Accepted
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:56235 [200]: GET /wp-content/themes/kadence/assets/css/content.min.css?ver=1.4.5
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:59027 Closing
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:49988 Accepted
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:54284 [200]: GET /wp-content/themes/kadence/assets/css/footer.min.css?ver=1.4.5
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:53127 Closing
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:50322 Accepted
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:49988 [200]: GET /wp-content/themes/kadence/assets/js/mcprices-integrated.js?ver=1.4.5
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:53651 Closing
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:50322 [200]: GET /wp-content/themes/kadence/assets/js/navigation.min.js?ver=1.4.5
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:56235 Closing
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:54284 Closing
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:49988 Closing
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:50322 Closing
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:63256 Accepted
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:63256 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-integrated.css?ver=1.4.5
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:63256 Closing
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:64381 Accepted
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:64381 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-enhanced-layer.css?ver=1.4.5
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:53872 Accepted
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:53872 [200]: GET /wp-content/themes/kadence/assets/js/mcprices-integrated.js?ver=1.4.5
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:64381 Closing
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:53872 Closing
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:51317 Accepted
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:51317 [200]: GET /wp-content/themes/kadence/assets/js/navigation.min.js?ver=1.4.5
+[Wed Apr 15 21:47:36 2026] 127.0.0.1:51317 Closing
+[Wed Apr 15 21:47:37 2026] 127.0.0.1:49303 Accepted
+[Wed Apr 15 21:47:37 2026] 127.0.0.1:49303 [200]: GET /wp-content/themes/kadence/assets/css/footer.min.css?ver=1.4.5
+[Wed Apr 15 21:47:37 2026] 127.0.0.1:60140 Accepted
+[Wed Apr 15 21:47:37 2026] 127.0.0.1:49303 Closing
+[Wed Apr 15 21:47:37 2026] 127.0.0.1:60140 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-integrated.css?ver=1.4.5
+[Wed Apr 15 21:47:37 2026] 127.0.0.1:60140 Closing
+[Wed Apr 15 21:47:37 2026] 127.0.0.1:59749 Accepted
+[Wed Apr 15 21:47:37 2026] 127.0.0.1:59749 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-enhanced-layer.css?ver=1.4.5
+[Wed Apr 15 21:47:37 2026] 127.0.0.1:59749 Closing
+[Wed Apr 15 21:47:37 2026] 127.0.0.1:61592 Accepted
+[Wed Apr 15 21:47:37 2026] 127.0.0.1:61592 [200]: GET /wp-content/themes/kadence/assets/js/mcprices-integrated.js?ver=1.4.5
+[Wed Apr 15 21:47:37 2026] 127.0.0.1:61592 Closing
+[Wed Apr 15 21:47:37 2026] 127.0.0.1:60636 Accepted
+[Wed Apr 15 21:47:37 2026] 127.0.0.1:60636 [200]: GET /wp-content/themes/kadence/assets/js/navigation.min.js?ver=1.4.5
+[Wed Apr 15 21:47:37 2026] 127.0.0.1:60636 Closing
+[Wed Apr 15 21:47:40 2026] 127.0.0.1:55822 Accepted
+[Wed Apr 15 21:47:40 2026] 127.0.0.1:55822 [404]: GET /favicon.ico - No such file or directory
+[Wed Apr 15 21:47:40 2026] 127.0.0.1:55822 Closing
+[Wed Apr 15 21:47:40 2026] 127.0.0.1:62855 Accepted
+[Wed Apr 15 21:47:40 2026] 127.0.0.1:62855 [404]: GET /favicon.ico - No such file or directory
+[Wed Apr 15 21:47:40 2026] 127.0.0.1:62855 Closing
+[Wed Apr 15 21:47:42 2026] 127.0.0.1:64777 Accepted
+[Wed Apr 15 21:47:42 2026] 127.0.0.1:64777 [404]: GET /favicon.ico - No such file or directory
+[Wed Apr 15 21:47:42 2026] 127.0.0.1:64777 Closing
+[Wed Apr 15 21:47:42 2026] 127.0.0.1:53401 Accepted
+[Wed Apr 15 21:47:42 2026] 127.0.0.1:53401 [200]: GET /wp-includes/js/wp-emoji-release.min.js?ver=6.9.4
+[Wed Apr 15 21:47:42 2026] 127.0.0.1:53401 Closing
+[Wed Apr 15 21:47:42 2026] 127.0.0.1:63859 Accepted
+[Wed Apr 15 21:47:42 2026] 127.0.0.1:63859 [404]: GET /favicon.ico - No such file or directory
+[Wed Apr 15 21:47:42 2026] 127.0.0.1:63859 Closing
+[Wed Apr 15 21:47:47 2026] 127.0.0.1:54302 Accepted
+[Wed Apr 15 21:47:47 2026] 127.0.0.1:54302 [200]: GET /wp-includes/js/wp-emoji-release.min.js?ver=6.9.4
+[Wed Apr 15 21:47:47 2026] 127.0.0.1:54302 Closing
+[Wed Apr 15 21:47:50 2026] 127.0.0.1:50013 Accepted
+[Wed Apr 15 21:47:50 2026] 127.0.0.1:51222 Accepted
+[Wed Apr 15 21:47:50 2026] 127.0.0.1:51222 [404]: GET /favicon.ico - No such file or directory
+[Wed Apr 15 21:47:50 2026] 127.0.0.1:50013 [200]: GET /wp-includes/js/wp-emoji-release.min.js?ver=6.9.4
+[Wed Apr 15 21:47:50 2026] 127.0.0.1:51222 Closing
+[Wed Apr 15 21:47:50 2026] 127.0.0.1:50013 Closing
+[Wed Apr 15 21:47:52 2026] 127.0.0.1:58998 Accepted
+[Wed Apr 15 21:47:52 2026] 127.0.0.1:49287 Accepted
+[Wed Apr 15 21:47:52 2026] 127.0.0.1:58998 [404]: GET /favicon.ico - No such file or directory
+[Wed Apr 15 21:47:52 2026] 127.0.0.1:49287 [200]: GET /wp-includes/js/wp-emoji-release.min.js?ver=6.9.4
+[Wed Apr 15 21:47:52 2026] 127.0.0.1:58998 Closing
+[Wed Apr 15 21:47:52 2026] 127.0.0.1:49287 Closing
+[Wed Apr 15 21:58:02 2026] 127.0.0.1:55483 Accepted
+[Wed Apr 15 21:58:04 2026] 127.0.0.1:55483 [200]: GET /
+[Wed Apr 15 21:58:04 2026] 127.0.0.1:55483 Closing
+[Wed Apr 15 21:59:06 2026] 127.0.0.1:55743 Accepted
+[Wed Apr 15 21:59:06 2026] 127.0.0.1:62585 Accepted
+[Wed Apr 15 21:59:06 2026] 127.0.0.1:55743 Closed without sending a request; it was probably just an unused speculative preconnection
+[Wed Apr 15 21:59:06 2026] 127.0.0.1:55743 Closing
+[Wed Apr 15 21:59:06 2026] 127.0.0.1:62585 Closed without sending a request; it was probably just an unused speculative preconnection
+[Wed Apr 15 21:59:06 2026] 127.0.0.1:62585 Closing
+[Wed Apr 15 21:59:06 2026] 127.0.0.1:59670 Accepted
+[Wed Apr 15 21:59:08 2026] 127.0.0.1:59670 [200]: GET /
+[Wed Apr 15 21:59:08 2026] 127.0.0.1:59670 Closing
+[Wed Apr 15 21:59:08 2026] 127.0.0.1:55913 Accepted
+[Wed Apr 15 21:59:08 2026] 127.0.0.1:56189 Accepted
+[Wed Apr 15 21:59:08 2026] 127.0.0.1:55913 Closed without sending a request; it was probably just an unused speculative preconnection
+[Wed Apr 15 21:59:08 2026] 127.0.0.1:55913 Closing
+[Wed Apr 15 21:59:08 2026] 127.0.0.1:49601 Accepted
+[Wed Apr 15 21:59:10 2026] 127.0.0.1:56189 [200]: GET /
+[Wed Apr 15 21:59:10 2026] 127.0.0.1:56189 Closing
+[Wed Apr 15 21:59:10 2026] 127.0.0.1:50166 Accepted
+[Wed Apr 15 21:59:10 2026] 127.0.0.1:49601 Closed without sending a request; it was probably just an unused speculative preconnection
+[Wed Apr 15 21:59:10 2026] 127.0.0.1:49601 Closing
+[Wed Apr 15 21:59:10 2026] 127.0.0.1:52024 Accepted
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:50166 [200]: GET /
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:50166 Closing
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:58121 Accepted
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:52024 [200]: GET /wp-content/themes/kadence/assets/css/global.min.css?ver=1.4.5
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:57762 Accepted
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:58121 [200]: GET /wp-content/themes/kadence/assets/css/header.min.css?ver=1.4.5
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:53108 Accepted
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:57762 [200]: GET /wp-content/themes/kadence/assets/css/content.min.css?ver=1.4.5
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:51989 Accepted
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:53108 [200]: GET /wp-content/themes/kadence/assets/css/footer.min.css?ver=1.4.5
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:52024 Closing
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:51816 Accepted
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:51989 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-integrated.css?ver=1.4.5
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:58121 Closing
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:59478 Accepted
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:51816 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-enhanced-layer.css?ver=1.4.5
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:57762 Closing
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:53493 Accepted
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:59478 [200]: GET /wp-content/themes/kadence/assets/css/global.min.css?ver=1.4.5
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:53108 Closing
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:63936 Accepted
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:53493 [200]: GET /wp-content/themes/kadence/assets/css/header.min.css?ver=1.4.5
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:51989 Closing
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:52388 Accepted
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:63936 [200]: GET /wp-content/themes/kadence/assets/css/content.min.css?ver=1.4.5
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:51816 Closing
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:56874 Accepted
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:52388 [200]: GET /wp-content/themes/kadence/assets/css/footer.min.css?ver=1.4.5
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:59478 Closing
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:62559 Accepted
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:56874 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-integrated.css?ver=1.4.5
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:53493 Closing
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:54257 Accepted
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:62559 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-enhanced-layer.css?ver=1.4.5
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:63936 Closing
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:55650 Accepted
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:54257 [200]: GET /wp-content/themes/kadence/assets/js/mcprices-integrated.js?ver=1.4.5
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:52388 Closing
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:62751 Accepted
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:55650 [200]: GET /wp-content/themes/kadence/assets/js/navigation.min.js?ver=1.4.5
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:56874 Closing
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:54398 Accepted
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:62751 [200]: GET /wp-content/themes/kadence/assets/js/mcprices-integrated.js?ver=1.4.5
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:62559 Closing
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:54398 [200]: GET /wp-content/themes/kadence/assets/js/navigation.min.js?ver=1.4.5
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:54257 Closing
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:55650 Closing
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:62751 Closing
+[Wed Apr 15 21:59:11 2026] 127.0.0.1:54398 Closing
+[Wed Apr 15 21:59:12 2026] 127.0.0.1:64062 Accepted
+[Wed Apr 15 21:59:12 2026] 127.0.0.1:56301 Accepted
+[Wed Apr 15 21:59:12 2026] 127.0.0.1:57599 Accepted
+[Wed Apr 15 21:59:12 2026] 127.0.0.1:52155 Accepted
+[Wed Apr 15 21:59:12 2026] 127.0.0.1:57983 Accepted
+[Wed Apr 15 21:59:12 2026] 127.0.0.1:59533 Accepted
+[Wed Apr 15 21:59:12 2026] 127.0.0.1:59533 [200]: GET /wp-content/themes/kadence/assets/css/global.min.css?ver=1.4.5
+[Wed Apr 15 21:59:12 2026] 127.0.0.1:52155 [200]: GET /wp-content/themes/kadence/assets/css/content.min.css?ver=1.4.5
+[Wed Apr 15 21:59:12 2026] 127.0.0.1:57983 [200]: GET /wp-content/themes/kadence/assets/css/header.min.css?ver=1.4.5
+[Wed Apr 15 21:59:12 2026] 127.0.0.1:64062 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-enhanced-layer.css?ver=1.4.5
+[Wed Apr 15 21:59:12 2026] 127.0.0.1:56301 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-integrated.css?ver=1.4.5
+[Wed Apr 15 21:59:12 2026] 127.0.0.1:57599 [200]: GET /wp-content/themes/kadence/assets/css/footer.min.css?ver=1.4.5
+[Wed Apr 15 21:59:12 2026] 127.0.0.1:59533 Closing
+[Wed Apr 15 21:59:12 2026] 127.0.0.1:52155 Closing
+[Wed Apr 15 21:59:12 2026] 127.0.0.1:57983 Closing
+[Wed Apr 15 21:59:12 2026] 127.0.0.1:57677 Accepted
+[Wed Apr 15 21:59:12 2026] 127.0.0.1:64062 Closing
+[Wed Apr 15 21:59:12 2026] 127.0.0.1:56301 Closing
+[Wed Apr 15 21:59:12 2026] 127.0.0.1:57599 Closing
+[Wed Apr 15 21:59:12 2026] 127.0.0.1:57677 [200]: GET /wp-content/themes/kadence/assets/js/mcprices-integrated.js?ver=1.4.5
+[Wed Apr 15 21:59:12 2026] 127.0.0.1:57677 Closing
+[Wed Apr 15 21:59:12 2026] 127.0.0.1:54362 Accepted
+[Wed Apr 15 21:59:12 2026] 127.0.0.1:54362 [200]: GET /wp-content/themes/kadence/assets/js/navigation.min.js?ver=1.4.5
+[Wed Apr 15 21:59:12 2026] 127.0.0.1:54362 Closing
+[Wed Apr 15 21:59:13 2026] 127.0.0.1:53545 Accepted
+[Wed Apr 15 21:59:13 2026] 127.0.0.1:53545 [404]: GET /favicon.ico - No such file or directory
+[Wed Apr 15 21:59:13 2026] 127.0.0.1:53545 Closing
+[Wed Apr 15 21:59:13 2026] 127.0.0.1:65375 Accepted
+[Wed Apr 15 21:59:13 2026] 127.0.0.1:65375 [200]: GET /wp-includes/js/wp-emoji-release.min.js?ver=6.9.4
+[Wed Apr 15 21:59:13 2026] 127.0.0.1:65375 Closing
+[Wed Apr 15 21:59:13 2026] 127.0.0.1:55572 Accepted
+[Wed Apr 15 21:59:13 2026] 127.0.0.1:55572 [404]: GET /favicon.ico - No such file or directory
+[Wed Apr 15 21:59:13 2026] 127.0.0.1:55572 Closing
+[Wed Apr 15 21:59:13 2026] 127.0.0.1:65392 Accepted
+[Wed Apr 15 21:59:13 2026] 127.0.0.1:65392 [200]: GET /wp-includes/js/wp-emoji-release.min.js?ver=6.9.4
+[Wed Apr 15 21:59:13 2026] 127.0.0.1:65392 Closing
+[Wed Apr 15 21:59:14 2026] 127.0.0.1:59841 Accepted
+[Wed Apr 15 21:59:14 2026] 127.0.0.1:59841 [404]: GET /favicon.ico - No such file or directory
+[Wed Apr 15 21:59:14 2026] 127.0.0.1:59841 Closing
+[Wed Apr 15 21:59:14 2026] 127.0.0.1:56131 Accepted
+[Wed Apr 15 21:59:14 2026] 127.0.0.1:56131 [200]: GET /wp-includes/js/wp-emoji-release.min.js?ver=6.9.4
+[Wed Apr 15 21:59:14 2026] 127.0.0.1:56131 Closing
+[Wed Apr 15 21:59:40 2026] 127.0.0.1:50297 Accepted
+[Wed Apr 15 21:59:40 2026] 127.0.0.1:60174 Accepted
+[Wed Apr 15 21:59:40 2026] 127.0.0.1:57126 Accepted
+[Wed Apr 15 21:59:40 2026] 127.0.0.1:63246 Accepted
+[Wed Apr 15 21:59:42 2026] 127.0.0.1:63246 [200]: GET /
+[Wed Apr 15 21:59:42 2026] 127.0.0.1:63246 Closing
+[Wed Apr 15 21:59:42 2026] 127.0.0.1:58628 Accepted
+[Wed Apr 15 21:59:42 2026] 127.0.0.1:50297 Closed without sending a request; it was probably just an unused speculative preconnection
+[Wed Apr 15 21:59:42 2026] 127.0.0.1:50297 Closing
+[Wed Apr 15 21:59:44 2026] 127.0.0.1:60174 [200]: GET /
+[Wed Apr 15 21:59:44 2026] 127.0.0.1:60174 Closing
+[Wed Apr 15 21:59:44 2026] 127.0.0.1:57126 Closed without sending a request; it was probably just an unused speculative preconnection
+[Wed Apr 15 21:59:44 2026] 127.0.0.1:57126 Closing
+[Wed Apr 15 21:59:44 2026] 127.0.0.1:63857 Accepted
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:58628 [200]: GET /
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:58628 Closing
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:60565 Accepted
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:63857 Closed without sending a request; it was probably just an unused speculative preconnection
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:63857 Closing
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:55047 Accepted
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:60565 [200]: GET /wp-content/themes/kadence/assets/css/global.min.css?ver=1.4.5
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:51236 Accepted
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:55047 [200]: GET /wp-content/themes/kadence/assets/css/content.min.css?ver=1.4.5
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:53314 Accepted
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:51236 [200]: GET /wp-content/themes/kadence/assets/css/header.min.css?ver=1.4.5
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:58397 Accepted
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:53314 [200]: GET /wp-content/themes/kadence/assets/css/footer.min.css?ver=1.4.5
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:60565 Closing
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:64838 Accepted
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:58397 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-integrated.css?ver=1.4.5
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:55047 Closing
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:54971 Accepted
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:64838 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-enhanced-layer.css?ver=1.4.5
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:51236 Closing
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:64528 Accepted
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:54971 [200]: GET /wp-content/themes/kadence/assets/css/global.min.css?ver=1.4.5
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:53314 Closing
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:60506 Accepted
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:64528 [200]: GET /wp-content/themes/kadence/assets/css/header.min.css?ver=1.4.5
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:58397 Closing
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:49436 Accepted
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:60506 [200]: GET /wp-content/themes/kadence/assets/css/content.min.css?ver=1.4.5
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:64838 Closing
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:49935 Accepted
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:49436 [200]: GET /wp-content/themes/kadence/assets/css/footer.min.css?ver=1.4.5
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:54971 Closing
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:54090 Accepted
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:49935 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-integrated.css?ver=1.4.5
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:64528 Closing
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:51335 Accepted
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:54090 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-enhanced-layer.css?ver=1.4.5
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:60506 Closing
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:58548 Accepted
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:51335 [200]: GET /wp-content/themes/kadence/assets/js/mcprices-integrated.js?ver=1.4.5
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:49436 Closing
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:58221 Accepted
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:58548 [200]: GET /wp-content/themes/kadence/assets/js/mcprices-integrated.js?ver=1.4.5
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:49935 Closing
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:58221 [200]: GET /wp-content/themes/kadence/assets/js/navigation.min.js?ver=1.4.5
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:54090 Closing
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:51335 Closing
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:58548 Closing
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:58221 Closing
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:58071 Accepted
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:58071 [200]: GET /wp-content/themes/kadence/assets/js/navigation.min.js?ver=1.4.5
+[Wed Apr 15 21:59:46 2026] 127.0.0.1:58071 Closing
+[Wed Apr 15 21:59:47 2026] 127.0.0.1:61265 Accepted
+[Wed Apr 15 21:59:47 2026] 127.0.0.1:61265 [200]: GET /wp-content/themes/kadence/assets/css/global.min.css?ver=1.4.5
+[Wed Apr 15 21:59:47 2026] 127.0.0.1:57900 Accepted
+[Wed Apr 15 21:59:47 2026] 127.0.0.1:60967 Accepted
+[Wed Apr 15 21:59:47 2026] 127.0.0.1:57900 [200]: GET /wp-content/themes/kadence/assets/css/header.min.css?ver=1.4.5
+[Wed Apr 15 21:59:47 2026] 127.0.0.1:52486 Accepted
+[Wed Apr 15 21:59:47 2026] 127.0.0.1:60967 [200]: GET /wp-content/themes/kadence/assets/css/content.min.css?ver=1.4.5
+[Wed Apr 15 21:59:47 2026] 127.0.0.1:61265 Closing
+[Wed Apr 15 21:59:47 2026] 127.0.0.1:54919 Accepted
+[Wed Apr 15 21:59:47 2026] 127.0.0.1:52486 [200]: GET /wp-content/themes/kadence/assets/css/footer.min.css?ver=1.4.5
+[Wed Apr 15 21:59:47 2026] 127.0.0.1:53173 Accepted
+[Wed Apr 15 21:59:47 2026] 127.0.0.1:54919 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-integrated.css?ver=1.4.5
+[Wed Apr 15 21:59:47 2026] 127.0.0.1:57900 Closing
+[Wed Apr 15 21:59:47 2026] 127.0.0.1:65295 Accepted
+[Wed Apr 15 21:59:47 2026] 127.0.0.1:53173 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-enhanced-layer.css?ver=1.4.5
+[Wed Apr 15 21:59:47 2026] 127.0.0.1:60967 Closing
+[Wed Apr 15 21:59:47 2026] 127.0.0.1:57699 Accepted
+[Wed Apr 15 21:59:47 2026] 127.0.0.1:65295 [200]: GET /wp-content/themes/kadence/assets/js/mcprices-integrated.js?ver=1.4.5
+[Wed Apr 15 21:59:47 2026] 127.0.0.1:52486 Closing
+[Wed Apr 15 21:59:47 2026] 127.0.0.1:57699 [200]: GET /wp-content/themes/kadence/assets/js/navigation.min.js?ver=1.4.5
+[Wed Apr 15 21:59:47 2026] 127.0.0.1:54919 Closing
+[Wed Apr 15 21:59:47 2026] 127.0.0.1:53173 Closing
+[Wed Apr 15 21:59:47 2026] 127.0.0.1:65295 Closing
+[Wed Apr 15 21:59:47 2026] 127.0.0.1:57699 Closing
+[Wed Apr 15 21:59:48 2026] 127.0.0.1:49526 Accepted
+[Wed Apr 15 21:59:48 2026] 127.0.0.1:49526 [404]: GET /favicon.ico - No such file or directory
+[Wed Apr 15 21:59:48 2026] 127.0.0.1:49526 Closing
+[Wed Apr 15 21:59:48 2026] 127.0.0.1:53595 Accepted
+[Wed Apr 15 21:59:48 2026] 127.0.0.1:53595 [200]: GET /wp-includes/js/wp-emoji-release.min.js?ver=6.9.4
+[Wed Apr 15 21:59:48 2026] 127.0.0.1:53595 Closing
+[Wed Apr 15 21:59:48 2026] 127.0.0.1:58953 Accepted
+[Wed Apr 15 21:59:48 2026] 127.0.0.1:58953 [200]: GET /wp-includes/js/wp-emoji-release.min.js?ver=6.9.4
+[Wed Apr 15 21:59:48 2026] 127.0.0.1:58953 Closing
+[Wed Apr 15 21:59:48 2026] 127.0.0.1:63800 Accepted
+[Wed Apr 15 21:59:48 2026] 127.0.0.1:63800 [404]: GET /favicon.ico - No such file or directory
+[Wed Apr 15 21:59:48 2026] 127.0.0.1:63800 Closing
+[Wed Apr 15 21:59:49 2026] 127.0.0.1:56534 Accepted
+[Wed Apr 15 21:59:49 2026] 127.0.0.1:56534 [404]: GET /favicon.ico - No such file or directory
+[Wed Apr 15 21:59:49 2026] 127.0.0.1:56534 Closing
+[Wed Apr 15 22:01:44 2026] 127.0.0.1:59889 Accepted
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:59889 [200]: GET /
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:59889 Closing
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:61383 Accepted
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:62642 Accepted
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:60840 Accepted
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:50210 Accepted
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:61383 [200]: GET /wp-content/themes/kadence/assets/css/global.min.css?ver=1.4.5
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:62642 [200]: GET /wp-content/themes/kadence/assets/css/header.min.css?ver=1.4.5
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:60840 [200]: GET /wp-content/themes/kadence/assets/css/content.min.css?ver=1.4.5
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:50210 [200]: GET /wp-content/themes/kadence/assets/css/footer.min.css?ver=1.4.5
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:62017 Accepted
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:50460 Accepted
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:61383 Closing
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:62642 Closing
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:60840 Closing
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:50210 Closing
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:62017 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-integrated.css?ver=1.4.5
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:50460 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-enhanced-layer.css?ver=1.4.5
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:62017 Closing
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:50460 Closing
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:52932 Accepted
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:52932 [200]: GET /wp-content/themes/kadence/assets/js/mcprices-integrated.js?ver=1.4.5
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:52932 Closing
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:52365 Accepted
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:52365 [200]: GET /wp-content/themes/kadence/assets/js/navigation.min.js?ver=1.4.5
+[Wed Apr 15 22:01:45 2026] 127.0.0.1:52365 Closing
+[Wed Apr 15 22:01:48 2026] 127.0.0.1:56419 Accepted
+[Wed Apr 15 22:01:48 2026] 127.0.0.1:56419 [200]: GET /wp-includes/js/wp-emoji-release.min.js?ver=6.9.4
+[Wed Apr 15 22:01:48 2026] 127.0.0.1:56419 Closing
+[Wed Apr 15 22:02:37 2026] 127.0.0.1:57843 Accepted
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:57843 [200]: GET /
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:57843 Closing
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:51730 Accepted
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:51730 [200]: GET /wp-content/themes/kadence/assets/css/global.min.css?ver=1.4.5
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:61704 Accepted
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:51632 Accepted
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:51730 Closing
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:63714 Accepted
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:61704 [200]: GET /wp-content/themes/kadence/assets/css/header.min.css?ver=1.4.5
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:51632 [200]: GET /wp-content/themes/kadence/assets/css/content.min.css?ver=1.4.5
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:63714 [200]: GET /wp-content/themes/kadence/assets/css/footer.min.css?ver=1.4.5
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:61704 Closing
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:51632 Closing
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:63714 Closing
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:56332 Accepted
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:60590 Accepted
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:56332 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-integrated.css?ver=1.4.5
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:60590 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-enhanced-layer.css?ver=1.4.5
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:57509 Accepted
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:56332 Closing
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:60590 Closing
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:57509 [200]: GET /wp-content/themes/kadence/assets/js/mcprices-integrated.js?ver=1.4.5
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:57509 Closing
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:62778 Accepted
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:62778 [200]: GET /wp-content/themes/kadence/assets/js/navigation.min.js?ver=1.4.5
+[Wed Apr 15 22:02:38 2026] 127.0.0.1:62778 Closing
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:50359 Accepted
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:50359 [200]: GET /
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:50359 Closing
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:64123 Accepted
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:64123 [200]: GET /wp-content/themes/kadence/assets/css/global.min.css?ver=1.4.5
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:63606 Accepted
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:53869 Accepted
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:64123 Closing
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:62230 Accepted
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:63606 [200]: GET /wp-content/themes/kadence/assets/css/header.min.css?ver=1.4.5
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:53869 [200]: GET /wp-content/themes/kadence/assets/css/content.min.css?ver=1.4.5
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:62230 [200]: GET /wp-content/themes/kadence/assets/css/footer.min.css?ver=1.4.5
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:60550 Accepted
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:59194 Accepted
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:63606 Closing
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:53869 Closing
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:61384 Accepted
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:62230 Closing
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:60550 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-integrated.css?ver=1.4.5
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:59194 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-enhanced-layer.css?ver=1.4.5
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:61384 [200]: GET /wp-content/themes/kadence/assets/js/mcprices-integrated.js?ver=1.4.5
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:60550 Closing
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:59194 Closing
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:61384 Closing
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:64100 Accepted
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:64100 [200]: GET /wp-content/themes/kadence/assets/js/navigation.min.js?ver=1.4.5
+[Wed Apr 15 22:04:15 2026] 127.0.0.1:64100 Closing
+[Wed Apr 15 22:04:17 2026] 127.0.0.1:54323 Accepted
+[Wed Apr 15 22:04:17 2026] 127.0.0.1:54323 [404]: GET /favicon.ico - No such file or directory
+[Wed Apr 15 22:04:17 2026] 127.0.0.1:54323 Closing
+[Wed Apr 15 22:04:17 2026] 127.0.0.1:63852 Accepted
+[Wed Apr 15 22:04:17 2026] 127.0.0.1:63852 [200]: GET /wp-includes/js/wp-emoji-release.min.js?ver=6.9.4
+[Wed Apr 15 22:04:17 2026] 127.0.0.1:63852 Closing
+[Wed Apr 15 22:05:07 2026] 127.0.0.1:49198 Accepted
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:49198 [200]: GET /
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:49198 Closing
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:59347 Accepted
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:62910 Accepted
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:63845 Accepted
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:53094 Accepted
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:59347 [200]: GET /wp-content/themes/kadence/assets/css/global.min.css?ver=1.4.5
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:62910 [200]: GET /wp-content/themes/kadence/assets/css/header.min.css?ver=1.4.5
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:63845 [200]: GET /wp-content/themes/kadence/assets/css/content.min.css?ver=1.4.5
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:53094 [200]: GET /wp-content/themes/kadence/assets/css/footer.min.css?ver=1.4.5
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:63337 Accepted
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:61810 Accepted
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:59347 Closing
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:63337 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-integrated.css?ver=1.4.5
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:61810 [200]: GET /wp-content/themes/kadence/assets/css/mcprices-enhanced-layer.css?ver=1.4.5
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:62910 Closing
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:63845 Closing
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:53094 Closing
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:63337 Closing
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:61810 Closing
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:60647 Accepted
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:60647 [200]: GET /wp-content/themes/kadence/assets/js/mcprices-integrated.js?ver=1.4.5
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:60647 Closing
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:57874 Accepted
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:57874 [200]: GET /wp-content/themes/kadence/assets/js/navigation.min.js?ver=1.4.5
+[Wed Apr 15 22:05:08 2026] 127.0.0.1:57874 Closing
+[Wed Apr 15 22:05:09 2026] 127.0.0.1:55905 Accepted
+[Wed Apr 15 22:05:09 2026] 127.0.0.1:55905 [200]: GET /wp-includes/js/wp-emoji-release.min.js?ver=6.9.4
+[Wed Apr 15 22:05:09 2026] 127.0.0.1:55905 Closing

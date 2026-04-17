@@ -1,0 +1,421 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+.wrap { padding: 1rem 0; }
+.search-bar { display: flex; gap: 8px; margin-bottom: 1.5rem; align-items: center; }
+.search-bar input { flex: 1; padding: 8px 12px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); font-size: 14px; }
+.search-bar input:focus { outline: none; border-color: var(--color-border-primary); }
+.filter-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.5rem; }
+.tab { padding: 5px 12px; border-radius: 99px; border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-secondary); font-size: 12px; cursor: pointer; white-space: nowrap; }
+.tab.active { background: var(--color-background-tertiary); color: var(--color-text-primary); border-color: var(--color-border-primary); font-weight: 500; }
+.section { margin-bottom: 2rem; }
+.section-header { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 2px solid var(--color-border-tertiary); margin-bottom: 0; }
+.section-icon { font-size: 16px; }
+.section-title { font-size: 15px; font-weight: 500; color: var(--color-text-primary); }
+.section-count { font-size: 11px; color: var(--color-text-tertiary); margin-left: auto; }
+table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+th { font-size: 11px; font-weight: 500; color: var(--color-text-secondary); text-align: left; padding: 8px 10px; border-bottom: 0.5px solid var(--color-border-tertiary); background: var(--color-background-secondary); }
+th:nth-child(2), td:nth-child(2) { text-align: right; width: 70px; }
+th:nth-child(3), td:nth-child(3) { text-align: right; width: 80px; }
+td { font-size: 13px; padding: 8px 10px; border-bottom: 0.5px solid var(--color-border-tertiary); color: var(--color-text-primary); vertical-align: middle; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--color-background-secondary); }
+.badge { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 99px; margin-left: 6px; font-weight: 500; vertical-align: middle; }
+.badge-ltd { background: #FAEEDA; color: #854F0B; }
+.badge-new { background: #E1F5EE; color: #0F6E56; }
+.badge-veg { background: #EAF3DE; color: #3B6D11; }
+.badge-vegan { background: #9FE1CB; color: #085041; }
+.price { color: var(--color-text-primary); font-weight: 500; }
+.cal { color: var(--color-text-secondary); }
+.no-results { padding: 2rem; text-align: center; color: var(--color-text-tertiary); font-size: 14px; }
+.note { font-size: 11px; color: var(--color-text-tertiary); margin-top: 1.5rem; line-height: 1.5; padding: 10px; background: var(--color-background-secondary); border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-tertiary); }
+</style>
+
+<div class="wrap">
+  <h2 class="sr-only">McDonald's UK full menu with prices and calories, April 2026</h2>
+
+  <div class="search-bar">
+    <input type="text" id="search" placeholder="Search menu items..." oninput="filterMenu()" />
+  </div>
+
+  <div class="filter-tabs" id="tabs"></div>
+
+  <div id="menu-content"></div>
+
+  <p class="note">Prices and calories are approximate for standard-size items (April 2026). Prices vary by location. Items marked LTD are limited time. V = vegetarian, VG = vegan. Nutritional info from mcdonalds.com/gb and verified third-party sources.</p>
+</div>
+
+<script>
+const menuData = [
+  {
+    id: "whats-new", icon: "★", title: "McDonald's CARDS / What's New",
+    items: [
+      { name: "CARDS Double Big Mac® with Bacon Meal", price: "£9.99", cal: 1100, tags: ["ltd"] },
+      { name: "CARDS Double Big Mac® Meal", price: "£9.09", cal: 1053, tags: ["ltd"] },
+      { name: "CARDS 9 Spicy McNuggets® Meal", price: "£7.99", cal: 690, tags: ["ltd"] },
+      { name: "CARDS McPlant® Meal", price: "£7.69", cal: 764, tags: ["ltd","veg","vegan"] },
+      { name: "Double Big Mac®", price: "£7.09", cal: 715, tags: ["ltd"] },
+      { name: "Double Big Mac® with Bacon", price: "£7.99", cal: 762, tags: ["ltd"] },
+      { name: "Big Arch®", price: "£6.89", cal: 1057, tags: ["new"] },
+      { name: "Sausage & Egg McGriddles®", price: "£4.99", cal: 492, tags: ["ltd"] },
+      { name: "Spicy Chicken McNuggets® 6 pieces", price: "£4.99", cal: 261, tags: ["ltd"] },
+      { name: "Spicy Chicken McNuggets® 9 pieces", price: "£6.49", cal: 392, tags: ["ltd"] },
+      { name: "20 Spicy Chicken McNuggets® Sharebox®", price: "£8.49", cal: 869, tags: ["ltd"] },
+      { name: "Cheesy Garlic Bread Dippers Sharebox®", price: "£5.49", cal: 548, tags: ["ltd","veg"] },
+      { name: "Cadbury Creme Egg® McFlurry®", price: "£2.49", cal: 290, tags: ["ltd","veg"] },
+    ]
+  },
+  {
+    id: "sharers", icon: "⬡", title: "Sharers & Bundles",
+    items: [
+      { name: "The McDonald's Chicken Sharebox®", price: "£11.29", cal: 1240 },
+      { name: "9 Chicken Selects Sharebox®", price: "£9.19", cal: 1008 },
+      { name: "20 Chicken McNuggets® Sharebox®", price: "£6.99", cal: 869 },
+    ]
+  },
+  {
+    id: "burgers", icon: "◉", title: "Burgers",
+    items: [
+      { name: "Big Mac®", price: "£5.09", cal: 509 },
+      { name: "Quarter Pounder™ with Cheese", price: "£5.09", cal: 514 },
+      { name: "Double Quarter Pounder™ with Cheese", price: "£6.19", cal: 749 },
+      { name: "McCrispy®", price: "£6.19", cal: 484 },
+      { name: "McSpicy®", price: "£5.89", cal: 454 },
+      { name: "McChicken® Sandwich", price: "£4.79", cal: 371 },
+      { name: "Meal Deal Plus", price: "£5.59", cal: 771 },
+      { name: "Double Filet-O-Fish®", price: "£4.99", cal: 453 },
+      { name: "Filet-O-Fish®", price: "£4.79", cal: 316 },
+      { name: "McPlant®", price: "£5.09", cal: 426, tags: ["veg","vegan"] },
+      { name: "Double Cheeseburger", price: "£2.29", cal: 452 },
+      { name: "Cheeseburger", price: "£1.39", cal: 303 },
+      { name: "Hamburger", price: "£1.19", cal: 255 },
+      { name: "Mayo Chicken", price: "£1.39", cal: 282 },
+      { name: "Vegetable Deluxe", price: "£4.89", cal: 361, tags: ["veg"] },
+    ]
+  },
+  {
+    id: "nuggets", icon: "◈", title: "McNuggets®, Selects® & Dippers",
+    items: [
+      { name: "6 Piece Chicken McNuggets®", price: "£3.49", cal: 261 },
+      { name: "9 Piece Chicken McNuggets®", price: "£4.79", cal: 392 },
+      { name: "20 Chicken McNuggets® Sharebox®", price: "£6.99", cal: 869 },
+      { name: "Chicken Selects® (3 pieces)", price: "£4.99", cal: 359 },
+      { name: "9 Chicken Selects Sharebox®", price: "£9.19", cal: 1008 },
+      { name: "The McDonald's Chicken Sharebox®", price: "£11.29", cal: 1240 },
+      { name: "Cheesy Garlic Bread Dippers (4 pcs)", price: "£3.49", cal: 219, tags: ["ltd","veg"] },
+      { name: "Cheesy Garlic Bread Dippers Sharebox®", price: "£5.49", cal: 548, tags: ["ltd","veg"] },
+      { name: "Spicy Chicken McNuggets® 6 pieces", price: "£4.99", cal: 261, tags: ["ltd"] },
+      { name: "Spicy Chicken McNuggets® 9 pieces", price: "£6.49", cal: 392, tags: ["ltd"] },
+    ]
+  },
+  {
+    id: "wraps", icon: "◎", title: "Wraps & Salads",
+    items: [
+      { name: "Crispy Sweet Chilli Chicken Wrap", price: "£4.99", cal: 482 },
+      { name: "Grilled Sweet Chilli Chicken Wrap", price: "£4.99", cal: 320 },
+      { name: "Crispy BBQ & Bacon Wrap", price: "£4.99", cal: 469 },
+      { name: "Grilled BBQ & Bacon Wrap", price: "£4.99", cal: 366 },
+      { name: "Crispy Tikka Chicken Wrap", price: "£4.99", cal: 471, tags: ["ltd"] },
+      { name: "Grilled Tikka Chicken Wrap", price: "£4.99", cal: 342, tags: ["ltd"] },
+      { name: "Side Salad", price: "£1.19", cal: 18, tags: ["veg"] },
+      { name: "Crispy Chicken Salad", price: "£3.29", cal: 265 },
+      { name: "Crispy Chicken and Bacon Salad", price: "£3.99", cal: 320 },
+      { name: "Grilled Chicken Salad", price: "£3.29", cal: 133 },
+      { name: "Grilled Chicken and Bacon Salad", price: "£4.09", cal: 183 },
+    ]
+  },
+  {
+    id: "mccafe", icon: "◯", title: "McCafé®",
+    items: [
+      { name: "Donut Crumble Latte", price: "£2.99", cal: 220, tags: ["ltd","veg"] },
+      { name: "Toffee Latte", price: "£1.69", cal: 150, tags: ["veg"] },
+      { name: "Flat White", price: "£1.69", cal: 86, tags: ["veg"] },
+      { name: "Latte", price: "£1.69", cal: 145, tags: ["veg"] },
+      { name: "Cappuccino", price: "£1.69", cal: 97, tags: ["veg"] },
+      { name: "White Coffee", price: "£0.99", cal: 54, tags: ["veg"] },
+      { name: "Americano", price: "£0.99", cal: 6, tags: ["veg","vegan"] },
+      { name: "Espresso", price: "£0.99", cal: 1, tags: ["veg","vegan"] },
+      { name: "Espresso Single", price: "£0.99", cal: 1, tags: ["veg","vegan"] },
+      { name: "Hot Chocolate", price: "£0.99", cal: 173, tags: ["veg"] },
+      { name: "Tea", price: "£0.99", cal: 6, tags: ["veg"] },
+      { name: "Iced Latte", price: "£2.49", cal: 136, tags: ["veg"] },
+      { name: "Caramel Iced Frappé", price: "£2.79", cal: 278, tags: ["veg"] },
+      { name: "Frozen Strawberry Lemonade", price: "£2.49", cal: 190, tags: ["veg"] },
+      { name: "Mango & Pineapple Smoothie", price: "£2.79", cal: 162, tags: ["veg"] },
+    ]
+  },
+  {
+    id: "breakfast", icon: "◐", title: "Breakfast Menu (until 11am)",
+    items: [
+      { name: "Sausage & Egg McGriddles®", price: "£4.99", cal: 492, tags: ["ltd"] },
+      { name: "Breakfast Wrap with Ketchup", price: "£5.29", cal: 666 },
+      { name: "Breakfast Wrap with Brown Sauce", price: "£5.29", cal: 666 },
+      { name: "Double Bacon & Egg McMuffin®", price: "£2.59", cal: 377 },
+      { name: "Sausage & Egg McMuffin®", price: "£3.29", cal: 424 },
+      { name: "Bacon & Egg McMuffin®", price: "£3.09", cal: 336 },
+      { name: "Double Sausage & Egg McMuffin®", price: "£4.29", cal: 552 },
+      { name: "Egg & Cheese McMuffin®", price: "£2.69", cal: 296, tags: ["veg"] },
+      { name: "Muffin with Jam", price: "£1.09", cal: 214, tags: ["veg"] },
+      { name: "Sausage Sandwich with Ketchup", price: "£3.59", cal: 327 },
+      { name: "Sausage Sandwich with Brown Sauce", price: "£3.59", cal: 330 },
+      { name: "Cheesy Bacon Flatbread", price: "£3.59", cal: 280 },
+      { name: "Pancakes & Syrup", price: "£3.59", cal: 464, tags: ["veg"] },
+      { name: "Pancakes & Sausage with Syrup", price: "£3.99", cal: 592 },
+      { name: "Hash Brown", price: "£1.89", cal: 127, tags: ["veg","vegan"] },
+      { name: "Porridge", price: "£1.99", cal: 154, tags: ["veg"] },
+      { name: "Porridge with Sugar", price: "£1.99", cal: 166, tags: ["veg"] },
+      { name: "Porridge with Strawberry Jam", price: "£1.99", cal: 189, tags: ["veg"] },
+      { name: "Porridge with Lyle's Golden Syrup®", price: "£1.99", cal: 193, tags: ["veg"] },
+      { name: "Flahavan's® Quick Oats® (selected)", price: "£1.79", cal: 143, tags: ["veg"] },
+    ]
+  },
+  {
+    id: "vegetarian", icon: "◇", title: "Vegetarian",
+    items: [
+      { name: "McPlant®", price: "£5.09", cal: 426, tags: ["veg","vegan"] },
+      { name: "Vegetable Deluxe", price: "£4.89", cal: 361, tags: ["veg"] },
+      { name: "Veggie Dippers (4 pieces)", price: "£4.79", cal: 321, tags: ["veg","vegan"] },
+      { name: "The Spicy Veggie One", price: "£4.99", cal: 365, tags: ["veg","vegan"] },
+      { name: "McDonald's Fries (small)", price: "£1.19", cal: 237, tags: ["veg","vegan"] },
+      { name: "Side Salad", price: "£1.19", cal: 18, tags: ["veg"] },
+      { name: "Oreo® McFlurry® (regular)", price: "£2.19", cal: 330, tags: ["veg"] },
+      { name: "Smarties® McFlurry® (regular)", price: "£2.19", cal: 330, tags: ["veg"] },
+      { name: "Chocolate Brownie", price: "£2.29", cal: 316, tags: ["veg"] },
+      { name: "Mixed Berry Muffin", price: "£2.29", cal: 298, tags: ["veg"] },
+      { name: "Sugar Donut", price: "£2.09", cal: 195, tags: ["veg"] },
+      { name: "Carrot Sticks", price: "£0.99", cal: 25, tags: ["veg","vegan"] },
+      { name: "Apple Slices", price: "£0.99", cal: 40, tags: ["veg","vegan"] },
+    ]
+  },
+  {
+    id: "vegan", icon: "◆", title: "Vegan",
+    items: [
+      { name: "McPlant®", price: "£5.09", cal: 426, tags: ["vegan"] },
+      { name: "McDonald's Fries (small)", price: "£1.19", cal: 237, tags: ["vegan"] },
+      { name: "Carrot Sticks", price: "£0.99", cal: 25, tags: ["vegan"] },
+      { name: "Apple Slices", price: "£0.99", cal: 40, tags: ["vegan"] },
+      { name: "Veggie Dippers (4 pieces)", price: "£4.79", cal: 321, tags: ["vegan"] },
+    ]
+  },
+  {
+    id: "saver", icon: "◁", title: "Saver Menu®",
+    items: [
+      { name: "Meal Deal Plus", price: "£5.59", cal: 771 },
+      { name: "Double Cheeseburger", price: "£2.29", cal: 452 },
+      { name: "Cheeseburger", price: "£1.39", cal: 303 },
+      { name: "Hamburger", price: "£1.19", cal: 255 },
+      { name: "Mayo Chicken", price: "£1.39", cal: 282 },
+      { name: "McDonald's Fries Small", price: "£1.19", cal: 237 },
+      { name: "Chocolate Milkshake Small", price: "£1.99", cal: 235 },
+      { name: "Strawberry Milkshake Small", price: "£1.99", cal: 230 },
+      { name: "Banana Milkshake Small", price: "£1.99", cal: 228 },
+      { name: "Vanilla Milkshake Small", price: "£1.99", cal: 225 },
+      { name: "White Coffee", price: "£0.99", cal: 54 },
+      { name: "Americano", price: "£0.99", cal: 6 },
+      { name: "Coca-Cola® Zero Sugar Small", price: "£1.09", cal: 1 },
+      { name: "Diet Coke® Small", price: "£1.09", cal: 1 },
+      { name: "Sprite® Zero Small", price: "£1.09", cal: 1 },
+      { name: "Fanta® Orange Zero Small", price: "£1.09", cal: 2 },
+      { name: "IRN-BRU® Small (selected)", price: "£1.09", cal: 68 },
+      { name: "Oasis® Summer Fruits Small", price: "£1.09", cal: 48 },
+      { name: "Coca-Cola® Classic Small", price: "£1.09", cal: 89 },
+      { name: "Oreo® McFlurry® Mini", price: "£1.39", cal: 188 },
+      { name: "Smarties® McFlurry® Mini", price: "£1.39", cal: 195 },
+    ]
+  },
+  {
+    id: "bsaver", icon: "◁", title: "Breakfast Saver Menu®",
+    items: [
+      { name: "Sausage Sandwich with Ketchup", price: "£2.99", cal: 327 },
+      { name: "Sausage Sandwich with Brown Sauce", price: "£2.99", cal: 330 },
+      { name: "Cheesy Bacon Flatbread", price: "£2.99", cal: 280 },
+      { name: "Apple Slices", price: "£0.99", cal: 40, tags: ["veg","vegan"] },
+      { name: "Hash Brown", price: "£1.19", cal: 127, tags: ["veg","vegan"] },
+      { name: "White Coffee", price: "£0.99", cal: 54 },
+      { name: "Americano", price: "£0.99", cal: 6 },
+      { name: "Tropicana® Apple Juice", price: "£1.29", cal: 101, tags: ["veg","vegan"] },
+      { name: "Tropicana® Orange Juice", price: "£1.29", cal: 94, tags: ["veg","vegan"] },
+      { name: "Porridge", price: "£1.99", cal: 154, tags: ["veg"] },
+      { name: "Porridge with Sugar", price: "£1.99", cal: 166, tags: ["veg"] },
+      { name: "Porridge with Strawberry Jam", price: "£1.99", cal: 189, tags: ["veg"] },
+      { name: "Porridge with Lyle's Golden Syrup®", price: "£1.99", cal: 193, tags: ["veg"] },
+    ]
+  },
+  {
+    id: "happymeal", icon: "◉", title: "Happy Meal®",
+    items: [
+      { name: "Mayo Chicken Happy Meal", price: "£3.89", cal: 382 },
+      { name: "Hamburger Happy Meal", price: "£3.89", cal: 350 },
+      { name: "Cheeseburger Happy Meal", price: "£3.89", cal: 398 },
+      { name: "Chicken McNuggets® 4 pieces Happy Meal", price: "£3.89", cal: 274 },
+      { name: "McFish® Happy Meal", price: "£3.89", cal: 290 },
+      { name: "Veggie Dippers 2 pieces Happy Meal", price: "£3.89", cal: 197, tags: ["veg","vegan"] },
+    ]
+  },
+  {
+    id: "sides", icon: "◫", title: "Fries & Sides",
+    items: [
+      { name: "McDonald's Fries Small", price: "£1.19", cal: 237, tags: ["veg","vegan"] },
+      { name: "McDonald's Fries Medium", price: "£1.79", cal: 337, tags: ["veg","vegan"] },
+      { name: "McDonald's Fries Large", price: "£1.99", cal: 444, tags: ["veg","vegan"] },
+      { name: "Chilli Cheese Bites", price: "£3.29", cal: 340, tags: ["ltd","veg"] },
+      { name: "Side Salad", price: "£1.19", cal: 18, tags: ["veg"] },
+      { name: "Pineapple Stick", price: "£0.99", cal: 20, tags: ["veg","vegan"] },
+      { name: "Carrot Sticks", price: "£0.99", cal: 25, tags: ["veg","vegan"] },
+    ]
+  },
+  {
+    id: "desserts", icon: "◕", title: "Desserts",
+    items: [
+      { name: "Oreo® McFlurry® (regular)", price: "£2.19", cal: 330, tags: ["veg"] },
+      { name: "Oreo® McFlurry® (mini)", price: "£1.39", cal: 188, tags: ["veg"] },
+      { name: "Smarties® McFlurry® (regular)", price: "£2.19", cal: 330, tags: ["veg"] },
+      { name: "Smarties® McFlurry® (mini)", price: "£1.39", cal: 195, tags: ["veg"] },
+      { name: "Cadbury Creme Egg® McFlurry®", price: "£2.49", cal: 290, tags: ["ltd","veg"] },
+      { name: "Cadbury Mini Eggs® McFlurry®", price: "£2.49", cal: 310, tags: ["ltd","veg"] },
+      { name: "Chocolate Brownie Pie", price: "£2.49", cal: 320, tags: ["ltd","veg"] },
+      { name: "Sugar Donut", price: "£2.09", cal: 195, tags: ["veg"] },
+      { name: "Chocolate Brownie", price: "£2.29", cal: 316, tags: ["veg"] },
+      { name: "Mixed Berry Muffin", price: "£2.29", cal: 298, tags: ["veg"] },
+      { name: "Apple Pie", price: "£1.89", cal: 243, tags: ["veg"] },
+      { name: "Apple Slices", price: "£0.99", cal: 40, tags: ["veg","vegan"] },
+    ]
+  },
+  {
+    id: "drinks", icon: "◑", title: "Milkshakes & Cold Drinks",
+    items: [
+      { name: "Chocolate Milkshake (small/med/large)", price: "from £1.99", cal: 235 },
+      { name: "Strawberry Milkshake (small/med/large)", price: "from £1.99", cal: 230 },
+      { name: "Banana Milkshake (small/med/large)", price: "from £1.99", cal: 228 },
+      { name: "Vanilla Milkshake (small/med/large)", price: "from £1.99", cal: 225 },
+      { name: "Cadbury Mini Eggs® Frappé", price: "£3.49", cal: 355, tags: ["ltd"] },
+      { name: "Frozen Strawberry Lemonade", price: "£2.49", cal: 190, tags: ["veg"] },
+      { name: "Iced Latte", price: "£2.49", cal: 136 },
+      { name: "Caramel Iced Frappé", price: "£2.79", cal: 278 },
+      { name: "Mango & Pineapple Smoothie", price: "£2.79", cal: 162, tags: ["veg","vegan"] },
+      { name: "Coca-Cola® Zero Sugar", price: "£1.09", cal: 1, tags: ["vegan"] },
+      { name: "Diet Coke®", price: "£1.09", cal: 1, tags: ["vegan"] },
+      { name: "Sprite® Zero", price: "£1.09", cal: 1, tags: ["vegan"] },
+      { name: "Fanta® Orange Zero", price: "£1.09", cal: 2, tags: ["vegan"] },
+      { name: "Oasis® Summer Fruits Zero", price: "£1.09", cal: 48, tags: ["vegan"] },
+      { name: "Coca-Cola® Classic", price: "£1.09", cal: 89 },
+      { name: "IRN-BRU® (selected restaurants)", price: "£1.09", cal: 68 },
+      { name: "Organic Milk (selected restaurants)", price: "£0.99", cal: 130, tags: ["veg"] },
+      { name: "Tropicana® Apple Juice", price: "£1.29", cal: 101, tags: ["veg","vegan"] },
+      { name: "Tropicana® Orange Juice", price: "£1.29", cal: 94, tags: ["veg","vegan"] },
+      { name: "Robinsons® Fruit Shoot", price: "£0.99", cal: 4, tags: ["veg","vegan"] },
+      { name: "Semi Skimmed Milk 250ml (selected)", price: "£0.99", cal: 120, tags: ["veg"] },
+    ]
+  },
+  {
+    id: "sauces", icon: "◌", title: "Condiments & Sauces",
+    items: [
+      { name: "Spicy Chilli Dip (for Spicy McNuggets®)", price: "Free", cal: 55 },
+      { name: "Rich Tomato Dip (25ml)", price: "Free", cal: 20 },
+      { name: "Tomato Ketchup (25ml)", price: "Free", cal: 23 },
+      { name: "BBQ Dip (25ml)", price: "Free", cal: 84 },
+      { name: "Sweet & Sour Dip (25ml)", price: "Free", cal: 51 },
+      { name: "Sweet Curry Dip (25ml)", price: "Free", cal: 62 },
+      { name: "Garlic Mayo Dip", price: "Free", cal: 95 },
+      { name: "Sweet Chilli Dip", price: "Free", cal: 89 },
+      { name: "Sweet & Smoky BBQ Dip (40g)", price: "Free", cal: 112 },
+      { name: "McDonald's Balsamic Dressing (30g)", price: "Free", cal: 38 },
+      { name: "Pancake Syrup (40g)", price: "Free", cal: 94 },
+      { name: "Strawberry Jam (15g)", price: "Free", cal: 37 },
+      { name: "Lurpak Spreadable", price: "Free", cal: 72 },
+      { name: "Milk Portion", price: "Free", cal: 14 },
+      { name: "Canderel® Yellow Sweetener Sachet", price: "Free", cal: 2 },
+      { name: "Sugar Stick", price: "Free", cal: 20 },
+      { name: "Golden Syrup", price: "Free", cal: 59 },
+    ]
+  },
+];
+
+const sectionIds = menuData.map(s => s.id);
+let activeSection = "all";
+
+function tagHtml(tags) {
+  if (!tags || !tags.length) return "";
+  return tags.map(t => {
+    if (t === "ltd") return '<span class="badge badge-ltd">LTD</span>';
+    if (t === "new") return '<span class="badge badge-new">NEW</span>';
+    if (t === "vegan") return '<span class="badge badge-vegan">VG</span>';
+    if (t === "veg") return '<span class="badge badge-veg">V</span>';
+    return "";
+  }).filter((v,i,a) => a.indexOf(v) === i).join("");
+}
+
+function renderTabs() {
+  const tabs = document.getElementById("tabs");
+  const allTab = document.createElement("button");
+  allTab.className = "tab active";
+  allTab.textContent = "All";
+  allTab.onclick = () => { activeSection = "all"; setActiveTab(allTab); filterMenu(); };
+  tabs.appendChild(allTab);
+  menuData.forEach(s => {
+    const btn = document.createElement("button");
+    btn.className = "tab";
+    btn.textContent = s.title.split("(")[0].trim();
+    btn.onclick = () => { activeSection = s.id; setActiveTab(btn); filterMenu(); };
+    tabs.appendChild(btn);
+  });
+}
+
+function setActiveTab(el) {
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  el.classList.add("active");
+}
+
+function filterMenu() {
+  const q = document.getElementById("search").value.toLowerCase().trim();
+  const content = document.getElementById("menu-content");
+  content.innerHTML = "";
+  let anyResults = false;
+
+  menuData.forEach(section => {
+    if (activeSection !== "all" && section.id !== activeSection) return;
+    const filtered = section.items.filter(item =>
+      !q || item.name.toLowerCase().includes(q)
+    );
+    if (!filtered.length) return;
+    anyResults = true;
+
+    const div = document.createElement("div");
+    div.className = "section";
+    div.innerHTML = `
+      <div class="section-header">
+        <span class="section-icon">${section.icon}</span>
+        <span class="section-title">${section.title}</span>
+        <span class="section-count">${filtered.length} item${filtered.length !== 1 ? "s" : ""}</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Price</th>
+            <th>Calories</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${filtered.map(item => `
+            <tr>
+              <td>${item.name}${tagHtml(item.tags)}</td>
+              <td class="price">${item.price}</td>
+              <td class="cal">${item.cal} kcal</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      </table>
+    `;
+    content.appendChild(div);
+  });
+
+  if (!anyResults) {
+    content.innerHTML = '<div class="no-results">No menu items found.</div>';
+  }
+}
+
+renderTabs();
+filterMenu();
+</script>
