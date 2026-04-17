@@ -9,26 +9,7 @@
  * Author URI:        https://www.litespeedtech.com
  */
 
-defined( 'WPINC' ) || exit;
-/**
- * LiteSpeed Object Cache
- *
- * @since  1.8
- */
-
-! defined( 'LSCWP_OBJECT_CACHE' ) && define( 'LSCWP_OBJECT_CACHE', true );
-
-// Initialize const `LSCWP_DIR` and locate LSCWP plugin folder
-$lscwp_dir = ( defined( 'WP_PLUGIN_DIR' ) ? WP_PLUGIN_DIR : WP_CONTENT_DIR . '/plugins' ) . '/litespeed-cache/';
-
-// Use plugin as higher priority than MU plugin
-if ( ! file_exists( $lscwp_dir . 'litespeed-cache.php' ) ) {
-	// Check if is mu plugin or not
-	$lscwp_dir = ( defined( 'WPMU_PLUGIN_DIR' ) ? WPMU_PLUGIN_DIR : WP_CONTENT_DIR . '/mu-plugins' ) . '/litespeed-cache/';
-	if ( ! file_exists( $lscwp_dir . 'litespeed-cache.php' ) ) {
-		$lscwp_dir = '';
-	}
-}
+defined( 'WPINC' ) || exi
 
 $data_file = WP_CONTENT_DIR . '/.litespeed_conf.dat';
 $lib_file  = $lscwp_dir . 'src/object.lib.php';
