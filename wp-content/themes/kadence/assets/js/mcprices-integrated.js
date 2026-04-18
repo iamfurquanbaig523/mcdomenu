@@ -103,11 +103,11 @@
       return mediaBaseUrl + relativePath.replace(/^\/+/, "");
     }
 
-    function createMediaImage(url, className) {
+    function createMediaImage(url, className, altText) {
       var image = document.createElement("img");
       image.className = className;
       image.src = url;
-      image.alt = "";
+      image.alt = altText || "";
       image.loading = "lazy";
       image.decoding = "async";
       return image;
@@ -176,6 +176,7 @@
     function applyCategoryMedia() {
       root.querySelectorAll(".cat-card").forEach(function (card) {
         var icon = card.querySelector(".cat-emoji");
+        var nameNode = card.querySelector(".cat-name");
         var sectionId = (card.getAttribute("href") || "").replace(/^#/, "");
         var mediaUrl = getCategoryMedia(sectionId);
 
@@ -187,13 +188,15 @@
         icon.appendChild(
           createMediaImage(
             mediaUrl,
-            "mcprices-media-icon mcprices-media-icon--category"
+            "mcprices-media-icon mcprices-media-icon--category",
+            nameNode ? nameNode.textContent.trim() : sectionId
           )
         );
       });
 
       root.querySelectorAll(".menu-section").forEach(function (section) {
         var icon = section.querySelector(".menu-section-icon");
+        var titleNode = section.querySelector(".menu-section-title");
         var mediaUrl = getCategoryMedia(section.id);
 
         if (!icon || !mediaUrl || icon.querySelector(".mcprices-media-icon")) {
@@ -204,7 +207,8 @@
         icon.appendChild(
           createMediaImage(
             mediaUrl,
-            "mcprices-media-icon mcprices-media-icon--section"
+            "mcprices-media-icon mcprices-media-icon--section",
+            titleNode ? titleNode.textContent.trim() : section.id
           )
         );
       });
@@ -222,7 +226,11 @@
 
         icon.textContent = "";
         icon.appendChild(
-          createMediaImage(mediaUrl, "mcprices-media-icon mcprices-media-icon--item")
+          createMediaImage(
+            mediaUrl,
+            "mcprices-media-icon mcprices-media-icon--item",
+            nameNode ? nameNode.textContent.trim() : ""
+          )
         );
       });
     }
@@ -239,7 +247,11 @@
 
         icon.textContent = "";
         icon.appendChild(
-          createMediaImage(mediaUrl, "mcprices-media-icon mcprices-media-icon--new")
+          createMediaImage(
+            mediaUrl,
+            "mcprices-media-icon mcprices-media-icon--new",
+            nameNode ? nameNode.textContent.trim() : ""
+          )
         );
       });
     }
@@ -260,7 +272,11 @@
 
         clearTextNodes(imageShell);
         imageShell.appendChild(
-          createMediaImage(mediaUrl, "mcprices-card-media")
+          createMediaImage(
+            mediaUrl,
+            "mcprices-card-media",
+            nameNode ? nameNode.textContent.trim() : ""
+          )
         );
       });
     }
@@ -289,7 +305,11 @@
         wrapper.style.gap = "8px";
         wrapper.style.verticalAlign = "middle";
 
-        thumb = createMediaImage(mediaUrl, "mcprices-inline-media__thumb");
+        thumb = createMediaImage(
+          mediaUrl,
+          "mcprices-inline-media__thumb",
+          itemName
+        );
         thumb.style.width = "18px";
         thumb.style.height = "18px";
         thumb.style.minWidth = "18px";

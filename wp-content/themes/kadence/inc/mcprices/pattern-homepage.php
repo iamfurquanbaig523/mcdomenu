@@ -1183,7 +1183,7 @@ return <<<'HTML'
 </section>
 
 <!-- FAQ -->
-<section class="faq-section">
+<section class="faq-section" id="faq">
   <div class="container">
     <div class="section-header">
       <div class="section-label">FAQs</div>
@@ -1399,4 +1399,3 @@ return <<<'HTML'
 </div>
 <!-- /wp:group -->
 HTML;
-

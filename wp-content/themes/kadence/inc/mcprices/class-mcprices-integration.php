@@ -71,10 +71,17 @@ class McPrices_Integration {
 		add_filter( 'kadence_post_layout', array( $this, 'filter_front_page_layout' ) );
 		add_filter( 'body_class', array( $this, 'filter_body_classes' ) );
 		add_filter( 'wp_resource_hints', array( $this, 'filter_resource_hints' ), 10, 2 );
+		add_filter( 'pre_get_document_title', array( $this, 'filter_document_title' ), 20 );
+		add_filter( 'wp_robots', array( $this, 'filter_homepage_robots' ), 20 );
+		add_filter( 'robots_txt', array( $this, 'filter_robots_txt' ), 20, 2 );
 
 		add_action( 'after_setup_theme', array( $this, 'maybe_seed_native_design' ), 30 );
 		add_action( 'customize_register', array( $this, 'register_customizer' ), 100 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ), 30 );
+		add_action( 'wp_head', array( $this, 'render_homepage_meta_tags' ), 2 );
+		add_action( 'wp_head', array( $this, 'render_homepage_schema' ), 30 );
+		add_action( 'template_redirect', array( $this, 'maybe_render_sitemap' ), 0 );
+		add_action( 'template_redirect', array( $this, 'maybe_render_robots' ), 0 );
 		add_action( 'kadence_before_footer', array( $this, 'render_footer_disclaimer' ), 5 );
 		add_action( 'kadence_render_mobile_header_column', array( $this, 'render_mobile_header_search_toggle' ), 20, 2 );
 		add_action( 'init', array( $this, 'register_shortcodes' ), 15 );
@@ -951,6 +958,765 @@ class McPrices_Integration {
 		);
 
 		return $hints;
+	}
+
+	/**
+	 * Return whether the current request is the managed McPrices homepage.
+	 *
+	 * @return bool
+	 */
+	protected function is_seo_homepage() {
+		return $this->design_enabled() && is_front_page() && ! is_home();
+	}
+
+	/**
+	 * Return the homepage primary keyword.
+	 *
+	 * @return string
+	 */
+	protected function get_homepage_primary_keyword() {
+		return "McDonald's Menu Prices UK 2026";
+	}
+
+	/**
+	 * Return the homepage SEO title.
+	 *
+	 * @return string
+	 */
+	protected function get_homepage_meta_title() {
+		return $this->get_homepage_primary_keyword() . ' - Updated April 2026';
+	}
+
+	/**
+	 * Return the homepage SEO meta description.
+	 *
+	 * @return string
+	 */
+	protected function get_homepage_meta_description() {
+		return "McDonald's Menu Prices UK 2026, updated April 2026 with the full UK menu, current prices, calories, breakfast times, deals, delivery tips, FAQs and value picks.";
+	}
+
+	/**
+	 * Return the current homepage HTML so schema can stay aligned with the
+	 * editable front-page content instead of a hard-coded duplicate.
+	 *
+	 * @return string
+	 */
+	protected function get_homepage_seo_html() {
+		static $html = null;
+
+		if ( null !== $html ) {
+			return $html;
+		}
+
+		$front_page_id = (int) get_option( 'page_on_front' );
+		$html          = $front_page_id ? (string) get_post_field( 'post_content', $front_page_id ) : '';
+
+		if ( '' === trim( wp_strip_all_tags( $html ) ) ) {
+			$html = (string) require get_theme_file_path( '/inc/mcprices/pattern-homepage.php' );
+		}
+
+		if ( false !== strpos( $html, '[mcprices_hero_search]' ) ) {
+			$html = do_shortcode( $html );
+		}
+
+		return (string) $html;
+	}
+
+	/**
+	 * Return a DOMXPath parser for the current homepage HTML.
+	 *
+	 * @return \DOMXPath|null
+	 */
+	protected function get_homepage_dom_xpath() {
+		static $xpath = null;
+
+		if ( null !== $xpath ) {
+			return $xpath;
+		}
+
+		if ( ! class_exists( '\DOMDocument' ) || ! class_exists( '\DOMXPath' ) ) {
+			return null;
+		}
+
+		$html     = $this->get_homepage_seo_html();
+		$document = new \DOMDocument( '1.0', 'UTF-8' );
+		$wrapped  = '<!DOCTYPE html><html><body><div id="mcprices-seo-root">' . $html . '</div></body></html>';
+		$previous = libxml_use_internal_errors( true );
+
+		$document->loadHTML( '<?xml encoding="utf-8" ?>' . $wrapped );
+		libxml_clear_errors();
+		libxml_use_internal_errors( $previous );
+
+		$xpath = new \DOMXPath( $document );
+
+		return $xpath;
+	}
+
+	/**
+	 * Return an XPath class matcher expression.
+	 *
+	 * @param string $class_name CSS class name.
+	 * @return string
+	 */
+	protected function get_xpath_class_selector( $class_name ) {
+		return "contains(concat(' ', normalize-space(@class), ' '), ' {$class_name} ')";
+	}
+
+	/**
+	 * Return normalized text from an XPath node query.
+	 *
+	 * @param \DOMXPath $xpath XPath helper.
+	 * @param \DOMNode  $context Query context node.
+	 * @param string    $query Relative XPath query.
+	 * @return string
+	 */
+	protected function get_xpath_node_text( $xpath, $context, $query ) {
+		$node = $xpath->query( $query, $context )->item(0);
+		if ( ! $node ) {
+			return '';
+		}
+
+		return trim( preg_replace( '/\s+/u', ' ', wp_strip_all_tags( (string) $node->textContent ) ) );
+	}
+
+	/**
+	 * Return the FAQ items currently shown on the homepage.
+	 *
+	 * @return array
+	 */
+	protected function get_homepage_faq_items() {
+		static $faq_items = null;
+
+		if ( null !== $faq_items ) {
+			return $faq_items;
+		}
+
+		$faq_items = array();
+		$xpath     = $this->get_homepage_dom_xpath();
+
+		if ( ! $xpath ) {
+			return $faq_items;
+		}
+
+		$faq_nodes = $xpath->query( '//div[' . $this->get_xpath_class_selector( 'faq-item' ) . ']' );
+		foreach ( $faq_nodes as $faq_node ) {
+			$question = $this->get_xpath_node_text( $xpath, $faq_node, './/div[' . $this->get_xpath_class_selector( 'faq-q' ) . ']' );
+			$answer   = $this->get_xpath_node_text( $xpath, $faq_node, './/div[' . $this->get_xpath_class_selector( 'faq-a' ) . ']' );
+
+			$question = trim( preg_replace( '/\s*\+\s*$/u', '', $question ) );
+
+			if ( '' === $question || '' === $answer ) {
+				continue;
+			}
+
+			$faq_items[] = array(
+				'question' => $question,
+				'answer'   => $answer,
+			);
+		}
+
+		return $faq_items;
+	}
+
+	/**
+	 * Return the parsed price value from a text string.
+	 *
+	 * @param string $price_text Price text.
+	 * @return string
+	 */
+	protected function parse_schema_price( $price_text ) {
+		$decoded = html_entity_decode( (string) $price_text, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+
+		if ( preg_match( '/([0-9]+(?:\.[0-9]{1,2})?)/', $decoded, $matches ) ) {
+			return $matches[1];
+		}
+
+		return '';
+	}
+
+	/**
+	 * Return the parsed calorie value from a text string.
+	 *
+	 * @param string $calorie_text Calorie text.
+	 * @return string
+	 */
+	protected function parse_schema_calories( $calorie_text ) {
+		if ( preg_match( '/([\d,]+)\s*kcal/i', (string) $calorie_text, $matches ) ) {
+			return str_replace( ',', '', $matches[1] );
+		}
+
+		return '';
+	}
+
+	/**
+	 * Normalize an item key to match the generated media manifest.
+	 *
+	 * @param string $value Raw item name.
+	 * @return string
+	 */
+	protected function normalize_media_key( $value ) {
+		$normalized = html_entity_decode( (string) $value, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+		$normalized = remove_accents( $normalized );
+		$normalized = strtolower( $normalized );
+		$normalized = str_replace( '&', ' and ', $normalized );
+		$normalized = str_replace( array( '®', '™', '’', '\'' ), '', $normalized );
+		$normalized = preg_replace( '/\b(limited time only|here to stay)\b/', ' ', $normalized );
+		$normalized = preg_replace( '/[^a-z0-9]+/', ' ', $normalized );
+		$normalized = preg_replace( '/\btm\b/', ' ', $normalized );
+
+		return trim( preg_replace( '/\s+/', ' ', (string) $normalized ) );
+	}
+
+	/**
+	 * Return the generated media manifest data.
+	 *
+	 * @return array
+	 */
+	protected function get_media_manifest() {
+		static $media_manifest = null;
+
+		if ( null !== $media_manifest ) {
+			return $media_manifest;
+		}
+
+		$media_manifest_path = get_theme_file_path( '/assets/data/mcprices-media-manifest.json' );
+		$media_manifest      = array();
+
+		if ( file_exists( $media_manifest_path ) ) {
+			$decoded = json_decode( (string) file_get_contents( $media_manifest_path ), true );
+			if ( is_array( $decoded ) ) {
+				$media_manifest = $decoded;
+			}
+		}
+
+		return $media_manifest;
+	}
+
+	/**
+	 * Return the relative media path for a named product.
+	 *
+	 * @param string $item_name Product name.
+	 * @return string
+	 */
+	protected function get_item_media_relative_path( $item_name ) {
+		$manifest = $this->get_media_manifest();
+		$items    = isset( $manifest['items'] ) && is_array( $manifest['items'] ) ? $manifest['items'] : array();
+
+		if ( empty( $items ) || '' === trim( (string) $item_name ) ) {
+			return '';
+		}
+
+		$normalized     = $this->normalize_media_key( $item_name );
+		$stripped_paren = $this->normalize_media_key( preg_replace( '/\([^)]*\)/', ' ', (string) $item_name ) );
+		$no_mcdonalds   = preg_replace( '/^mcdonalds\s+/', '', $normalized );
+		$no_size        = $this->normalize_media_key( preg_replace( '/\b(regular|mini|small|medium|large|selected|restaurants)\b/', ' ', $normalized ) );
+		$variants       = array_filter(
+			array(
+				$normalized,
+				$stripped_paren,
+				$no_mcdonalds,
+				$no_size,
+			)
+		);
+
+		if ( preg_match( '/^mcdonalds fries (small|medium|large)$/', $normalized, $fries_match ) ) {
+			$variants[] = $this->normalize_media_key( 'fries ' . $fries_match[1] );
+			$variants[] = $this->normalize_media_key( $fries_match[1] . ' fries' );
+		}
+
+		$variants = array_values( array_unique( $variants ) );
+
+		foreach ( $variants as $variant ) {
+			if ( isset( $items[ $variant ] ) ) {
+				return (string) $items[ $variant ];
+			}
+		}
+
+		return '';
+	}
+
+	/**
+	 * Return the public media URL for a named product.
+	 *
+	 * @param string $item_name Product name.
+	 * @return string
+	 */
+	protected function get_item_media_url( $item_name ) {
+		$relative_path = $this->get_item_media_relative_path( $item_name );
+		if ( '' === $relative_path ) {
+			return '';
+		}
+
+		return trailingslashit( get_theme_file_uri( '/assets/images/mcprices/official' ) ) . ltrim( $relative_path, '/' );
+	}
+
+	/**
+	 * Return the popular product data shown in the homepage hero.
+	 *
+	 * @return array
+	 */
+	protected function get_homepage_popular_products() {
+		static $products = null;
+
+		if ( null !== $products ) {
+			return $products;
+		}
+
+		$products = array();
+		$xpath    = $this->get_homepage_dom_xpath();
+
+		if ( ! $xpath ) {
+			return $products;
+		}
+
+		$product_nodes = $xpath->query(
+			'//div[' . $this->get_xpath_class_selector( 'hero-card-main' ) . ']//div[' . $this->get_xpath_class_selector( 'featured-item' ) . ']'
+		);
+
+		foreach ( $product_nodes as $product_node ) {
+			$name      = $this->get_xpath_node_text( $xpath, $product_node, './/div[' . $this->get_xpath_class_selector( 'item-name' ) . ']' );
+			$meta_text = $this->get_xpath_node_text( $xpath, $product_node, './/div[' . $this->get_xpath_class_selector( 'item-cal' ) . ']' );
+			$price     = $this->get_xpath_node_text( $xpath, $product_node, './/div[' . $this->get_xpath_class_selector( 'item-price' ) . ']' );
+			$category  = '';
+
+			if ( preg_match( '/kcal\s*[·\x{00B7}-]\s*(.+)$/u', $meta_text, $matches ) ) {
+				$category = trim( $matches[1] );
+			}
+
+			if ( '' === $name || '' === $price ) {
+				continue;
+			}
+
+			$products[] = array(
+				'name'     => $name,
+				'price'    => $this->parse_schema_price( $price ),
+				'calories' => $this->parse_schema_calories( $meta_text ),
+				'category' => $category,
+				'image'    => $this->get_item_media_url( $name ),
+			);
+		}
+
+		return $products;
+	}
+
+	/**
+	 * Return the homepage modified date for SEO metadata.
+	 *
+	 * @return string
+	 */
+	protected function get_homepage_modified_date() {
+		$front_page_id = (int) get_option( 'page_on_front' );
+		if ( $front_page_id ) {
+			$modified = get_post_modified_time( 'c', true, $front_page_id );
+			if ( $modified ) {
+				return $modified;
+			}
+		}
+
+		return gmdate( 'c' );
+	}
+
+	/**
+	 * Return the site logo URL when available.
+	 *
+	 * @return string
+	 */
+	protected function get_site_logo_url() {
+		$logo_id = (int) get_theme_mod( 'custom_logo' );
+		if ( ! $logo_id ) {
+			return '';
+		}
+
+		$logo_url = wp_get_attachment_image_url( $logo_id, 'full' );
+
+		return $logo_url ? (string) $logo_url : '';
+	}
+
+	/**
+	 * Filter the homepage title tag.
+	 *
+	 * @param string $title Current title.
+	 * @return string
+	 */
+	public function filter_document_title( $title ) {
+		if ( ! $this->is_seo_homepage() ) {
+			return $title;
+		}
+
+		return $this->get_homepage_meta_title();
+	}
+
+	/**
+	 * Refine the homepage robots directives.
+	 *
+	 * @param array $robots Existing robots directives.
+	 * @return array
+	 */
+	public function filter_homepage_robots( $robots ) {
+		if ( ! $this->is_seo_homepage() ) {
+			return $robots;
+		}
+
+		unset( $robots['noindex'], $robots['nofollow'] );
+
+		$robots['index']             = true;
+		$robots['follow']            = true;
+		$robots['max-image-preview'] = 'large';
+		$robots['max-snippet']       = '-1';
+		$robots['max-video-preview'] = '-1';
+
+		return $robots;
+	}
+
+	/**
+	 * Output the homepage SEO meta tags without changing the visible design.
+	 *
+	 * @return void
+	 */
+	public function render_homepage_meta_tags() {
+		if ( ! $this->is_seo_homepage() ) {
+			return;
+		}
+
+		$title       = $this->get_homepage_meta_title();
+		$description = $this->get_homepage_meta_description();
+		$url         = home_url( '/' );
+		$sitemap_url = home_url( '/sitemap.xml' );
+		?>
+		<meta name="description" content="<?php echo esc_attr( $description ); ?>">
+		<link rel="canonical" href="<?php echo esc_url( $url ); ?>">
+		<link rel="sitemap" type="application/xml" title="<?php esc_attr_e( 'Sitemap', 'kadence' ); ?>" href="<?php echo esc_url( $sitemap_url ); ?>">
+		<meta property="og:locale" content="en_GB">
+		<meta property="og:type" content="website">
+		<meta property="og:title" content="<?php echo esc_attr( $title ); ?>">
+		<meta property="og:description" content="<?php echo esc_attr( $description ); ?>">
+		<meta property="og:url" content="<?php echo esc_url( $url ); ?>">
+		<meta property="og:site_name" content="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+		<meta name="twitter:card" content="summary_large_image">
+		<meta name="twitter:title" content="<?php echo esc_attr( $title ); ?>">
+		<meta name="twitter:description" content="<?php echo esc_attr( $description ); ?>">
+		<?php
+	}
+
+	/**
+	 * Output homepage JSON-LD for FAQPage, Product/Offer, and site context.
+	 *
+	 * @return void
+	 */
+	public function render_homepage_schema() {
+		if ( ! $this->is_seo_homepage() ) {
+			return;
+		}
+
+		$url         = home_url( '/' );
+		$title       = $this->get_homepage_meta_title();
+		$description = $this->get_homepage_meta_description();
+		$logo_url    = $this->get_site_logo_url();
+		$faq_items   = $this->get_homepage_faq_items();
+		$products    = $this->get_homepage_popular_products();
+		$graph       = array();
+
+		$graph[] = array_filter(
+			array(
+				'@type'       => 'Organization',
+				'@id'         => $url . '#organization',
+				'name'        => get_bloginfo( 'name' ),
+				'url'         => $url,
+				'description' => $description,
+				'logo'        => $logo_url ? array(
+					'@type' => 'ImageObject',
+					'url'   => $logo_url,
+				) : null,
+			)
+		);
+
+		$graph[] = array(
+			'@type'           => 'WebSite',
+			'@id'             => $url . '#website',
+			'url'             => $url,
+			'name'            => $title,
+			'description'     => $description,
+			'inLanguage'      => 'en-GB',
+			'publisher'       => array( '@id' => $url . '#organization' ),
+			'potentialAction' => array(
+				'@type'       => 'SearchAction',
+				'target'      => home_url( '/?s={search_term_string}' ),
+				'query-input' => 'required name=search_term_string',
+			),
+		);
+
+		$graph[] = array(
+			'@type'        => 'CollectionPage',
+			'@id'          => $url . '#webpage',
+			'url'          => $url,
+			'name'         => $title,
+			'description'  => $description,
+			'inLanguage'   => 'en-GB',
+			'isPartOf'     => array( '@id' => $url . '#website' ),
+			'about'        => array(
+				$this->get_homepage_primary_keyword(),
+				"McDonald's UK calories",
+				"McDonald's UK breakfast times",
+				"McDonald's UK deals",
+			),
+			'dateModified' => $this->get_homepage_modified_date(),
+		);
+
+		if ( ! empty( $faq_items ) ) {
+			$graph[] = array(
+				'@type'      => 'FAQPage',
+				'@id'        => $url . '#faq',
+				'url'        => $url,
+				'isPartOf'   => array( '@id' => $url . '#webpage' ),
+				'mainEntity' => array_map(
+					static function ( $faq_item ) {
+						return array(
+							'@type'          => 'Question',
+							'name'           => $faq_item['question'],
+							'acceptedAnswer' => array(
+								'@type' => 'Answer',
+								'text'  => $faq_item['answer'],
+							),
+						);
+					},
+					$faq_items
+				),
+			);
+		}
+
+		if ( ! empty( $products ) ) {
+			$item_list = array();
+
+			foreach ( $products as $index => $product ) {
+				$product_id = $url . '#product-' . sanitize_title( $product['name'] );
+
+				$graph[] = array_filter(
+					array(
+						'@type'              => 'Product',
+						'@id'                => $product_id,
+						'name'               => $product['name'],
+						'image'              => $product['image'] ? array( $product['image'] ) : null,
+						'description'        => sprintf(
+							'%1$s is a popular McDonald\'s UK menu item in the April 2026 update.%2$s',
+							$product['name'],
+							$product['category'] ? ' Category: ' . $product['category'] . '.' : ''
+						),
+						'brand'              => array(
+							'@type' => 'Brand',
+							'name'  => "McDonald's UK",
+						),
+						'additionalProperty' => $product['calories'] ? array(
+							array(
+								'@type' => 'PropertyValue',
+								'name'  => 'Calories',
+								'value' => $product['calories'] . ' kcal',
+							),
+						) : null,
+						'offers'             => $product['price'] ? array(
+							'@type'         => 'Offer',
+							'priceCurrency' => 'GBP',
+							'price'         => $product['price'],
+							'availability'  => 'https://schema.org/InStock',
+							'url'           => $this->get_section_url( 'full-menu' ),
+						) : null,
+					)
+				);
+
+				$item_list[] = array(
+					'@type'    => 'ListItem',
+					'position' => $index + 1,
+					'item'     => array(
+						'@id' => $product_id,
+						'name' => $product['name'],
+					),
+				);
+			}
+
+			$graph[] = array(
+				'@type'           => 'ItemList',
+				'@id'             => $url . '#popular-items',
+				'name'            => 'Popular McDonald\'s UK Menu Items',
+				'itemListElement' => $item_list,
+			);
+		}
+		?>
+		<script type="application/ld+json"><?php echo wp_json_encode( array( '@context' => 'https://schema.org', '@graph' => $graph ), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
+		<?php
+	}
+
+	/**
+	 * Return whether the current request is for the dynamic sitemap endpoint.
+	 *
+	 * @return bool
+	 */
+	protected function is_sitemap_request() {
+		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
+		$request     = is_string( $request_uri ) ? (string) wp_parse_url( $request_uri, PHP_URL_PATH ) : '';
+		$target      = (string) wp_parse_url( home_url( '/sitemap.xml' ), PHP_URL_PATH );
+
+		return '' !== $request && untrailingslashit( $request ) === untrailingslashit( $target );
+	}
+
+	/**
+	 * Return whether the current request is for the dynamic robots endpoint.
+	 *
+	 * @return bool
+	 */
+	protected function is_robots_request() {
+		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
+		$request     = is_string( $request_uri ) ? (string) wp_parse_url( $request_uri, PHP_URL_PATH ) : '';
+		$target      = (string) wp_parse_url( home_url( '/robots.txt' ), PHP_URL_PATH );
+
+		return '' !== $request && untrailingslashit( $request ) === untrailingslashit( $target );
+	}
+
+	/**
+	 * Return the sitemap entries for public pages and posts.
+	 *
+	 * @return array
+	 */
+	protected function get_sitemap_entries() {
+		$entries       = array();
+		$front_page_id = (int) get_option( 'page_on_front' );
+		$posts_page_id = (int) get_option( 'page_for_posts' );
+
+		$append_entry = static function ( &$bucket, $url, $lastmod, $changefreq, $priority ) {
+			if ( empty( $url ) ) {
+				return;
+			}
+
+			$bucket[] = array(
+				'loc'        => $url,
+				'lastmod'    => $lastmod ?: gmdate( 'c' ),
+				'changefreq' => $changefreq,
+				'priority'   => $priority,
+			);
+		};
+
+		if ( $front_page_id ) {
+			$append_entry(
+				$entries,
+				get_permalink( $front_page_id ),
+				get_post_modified_time( 'c', true, $front_page_id ),
+				'weekly',
+				'1.0'
+			);
+		} else {
+			$append_entry( $entries, home_url( '/' ), gmdate( 'c' ), 'weekly', '1.0' );
+		}
+
+		if ( $posts_page_id && $posts_page_id !== $front_page_id ) {
+			$append_entry(
+				$entries,
+				get_permalink( $posts_page_id ),
+				get_post_modified_time( 'c', true, $posts_page_id ),
+				'daily',
+				'0.8'
+			);
+		}
+
+		$content_posts = get_posts(
+			array(
+				'post_type'              => array( 'page', 'post' ),
+				'post_status'            => 'publish',
+				'posts_per_page'         => 200,
+				'post__not_in'           => array_filter( array( $front_page_id, $posts_page_id ) ),
+				'orderby'                => 'modified',
+				'order'                  => 'DESC',
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+			)
+		);
+
+		foreach ( $content_posts as $content_post ) {
+			$append_entry(
+				$entries,
+				get_permalink( $content_post ),
+				get_post_modified_time( 'c', true, $content_post ),
+				'weekly',
+				'page' === $content_post->post_type ? '0.8' : '0.7'
+			);
+		}
+
+		return $entries;
+	}
+
+	/**
+	 * Return XML-safe text.
+	 *
+	 * @param string $value Raw text.
+	 * @return string
+	 */
+	protected function escape_xml( $value ) {
+		return htmlspecialchars( (string) $value, ENT_XML1 | ENT_COMPAT, 'UTF-8' );
+	}
+
+	/**
+	 * Render a dynamic sitemap.xml response.
+	 *
+	 * @return void
+	 */
+	public function maybe_render_sitemap() {
+		if ( ! $this->design_enabled() || is_admin() || ! $this->is_sitemap_request() ) {
+			return;
+		}
+
+		nocache_headers();
+		status_header( 200 );
+		header( 'Content-Type: application/xml; charset=UTF-8' );
+
+		echo '<?xml version="1.0" encoding="UTF-8"?>';
+		echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+
+		foreach ( $this->get_sitemap_entries() as $entry ) {
+			echo '<url>';
+			echo '<loc>' . $this->escape_xml( $entry['loc'] ) . '</loc>';
+			echo '<lastmod>' . $this->escape_xml( $entry['lastmod'] ) . '</lastmod>';
+			echo '<changefreq>' . $this->escape_xml( $entry['changefreq'] ) . '</changefreq>';
+			echo '<priority>' . $this->escape_xml( $entry['priority'] ) . '</priority>';
+			echo '</url>';
+		}
+
+		echo '</urlset>';
+		exit;
+	}
+
+	/**
+	 * Render a dynamic robots.txt response.
+	 *
+	 * @return void
+	 */
+	public function maybe_render_robots() {
+		if ( ! $this->design_enabled() || is_admin() || ! $this->is_robots_request() ) {
+			return;
+		}
+
+		nocache_headers();
+		status_header( 200 );
+		header( 'Content-Type: text/plain; charset=UTF-8' );
+		echo $this->filter_robots_txt( '', (bool) get_option( 'blog_public', 1 ) );
+		exit;
+	}
+
+	/**
+	 * Output a sitewide robots.txt that points crawlers to the custom sitemap.
+	 *
+	 * @param string $output Current robots content.
+	 * @param bool   $public Whether the site is public.
+	 * @return string
+	 */
+	public function filter_robots_txt( $output, $public ) {
+		$lines = array(
+			'User-agent: *',
+			'Allow: /',
+			'Disallow: /wp-admin/',
+			'Allow: /wp-admin/admin-ajax.php',
+			'',
+			'Sitemap: ' . home_url( '/sitemap.xml' ),
+		);
+
+		return implode( "\n", $lines );
 	}
 
 	/**
