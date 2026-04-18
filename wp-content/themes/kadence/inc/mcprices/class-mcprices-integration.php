@@ -40,7 +40,7 @@ class McPrices_Integration {
 	/**
 	 * Current seeding version for the native design integration.
 	 */
-	const SEED_VERSION = '1.3.0';
+	const SEED_VERSION = '1.4.0';
 
 	/**
 	 * Singleton instance.
@@ -262,23 +262,24 @@ class McPrices_Integration {
 				esc_url( $this->get_home_path_url() )
 			),
 			'footer2' => sprintf(
-				'<!-- wp:html --><div class="footer-col-title">Menu Categories</div><ul class="footer-links"><li><a href="%1$s">What&#8217;s New 2026</a></li><li><a href="%2$s">Burger Prices</a></li><li><a href="%3$s">Saver Menu</a></li><li><a href="%4$s">Breakfast Prices</a></li><li><a href="%5$s">McCaf&#233; Prices</a></li><li><a href="%6$s">McFlurry Prices</a></li><li><a href="%7$s">Happy Meal</a></li><li><a href="%8$s">Wraps</a></li><li><a href="%9$s">Sharers &amp; Bundles</a></li><li><a href="%10$s">Condiments &amp; Sauces</a></li><li><a href="%11$s">Breakfast Saver</a></li></ul><!-- /wp:html -->',
+				'<!-- wp:html --><div class="footer-col-title">Menu Categories</div><ul class="footer-links"><li><a href="%1$s">What&#8217;s New 2026</a></li><li><a href="%2$s">Burger Prices</a></li><li><a href="%3$s">Saver Menu</a></li><li><a href="%4$s">Breakfast Prices</a></li><li><a href="%5$s">McCaf&#233; Prices</a></li><li><a href="%6$s">Desserts &amp; McFlurry</a></li><li><a href="%7$s">Happy Meal</a></li><li><a href="%8$s">Wraps &amp; Salads</a></li><li><a href="%9$s">Sharers &amp; Bundles</a></li><li><a href="%10$s">Condiments &amp; Sauces</a></li><li><a href="%11$s">Breakfast Saver</a></li></ul><!-- /wp:html -->',
 				esc_url( $this->get_section_url( 'whats-new' ) ),
 				esc_url( $this->get_section_url( 'burgers' ) ),
 				esc_url( $this->get_section_url( 'saver' ) ),
 				esc_url( $this->get_section_url( 'breakfast' ) ),
 				esc_url( $this->get_section_url( 'mccafe' ) ),
-				esc_url( $this->get_section_url( 'mcflurry' ) ),
-				esc_url( $this->get_section_url( 'happy-meal' ) ),
+				esc_url( $this->get_section_url( 'desserts' ) ),
+				esc_url( $this->get_section_url( 'happymeal' ) ),
 				esc_url( $this->get_section_url( 'wraps' ) ),
 				esc_url( $this->get_section_url( 'sharers' ) ),
 				esc_url( $this->get_section_url( 'sauces' ) ),
-				esc_url( $this->get_section_url( 'bfast-saver' ) )
+				esc_url( $this->get_section_url( 'bsaver' ) )
 			),
 			'footer3' => '<!-- wp:html --><div class="footer-col-title">Information</div><ul class="footer-links"><li><a href="#">About Us</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Cookie Policy</a></li><li><a href="#">Ad Disclosure</a></li><li><a href="#">Disclaimer</a></li><li><a href="#">Contact</a></li><li><a href="#">Sitemap</a></li></ul><!-- /wp:html -->',
 			'footer4' => sprintf(
-				'<!-- wp:html --><div class="footer-col-title">Popular Guides</div><ul class="footer-links"><li><a href="#">Big Mac Price UK</a></li><li><a href="#">McDonald&#8217;s App Deals</a></li><li><a href="#">Calorie Counter</a></li><li><a href="#">Breakfast Times</a></li><li><a href="#">Allergen Guide</a></li><li><a href="#">Price History</a></li><li><a href="#">Vegan Options</a></li><li><a href="#">Limited-Time Menu</a></li><li><a href="#">McDelivery Guide</a></li><li><a href="%1$s">Under 400 Kcal</a></li></ul><!-- /wp:html -->',
-				esc_url( $this->get_section_url( 'under400' ) )
+				'<!-- wp:html --><div class="footer-col-title">Popular Guides</div><ul class="footer-links"><li><a href="#">Big Mac Price UK</a></li><li><a href="#">McDonald&#8217;s App Deals</a></li><li><a href="#">Calorie Counter</a></li><li><a href="#">Breakfast Times</a></li><li><a href="#">Allergen Guide</a></li><li><a href="#">Price History</a></li><li><a href="%1$s">Vegan Options</a></li><li><a href="#">Limited-Time Menu</a></li><li><a href="#">McDelivery Guide</a></li><li><a href="%2$s">Desserts &amp; McFlurry</a></li></ul><!-- /wp:html -->',
+				esc_url( $this->get_section_url( 'vegan' ) ),
+				esc_url( $this->get_section_url( 'desserts' ) )
 			),
 		);
 	}
@@ -1440,6 +1441,19 @@ class McPrices_Integration {
 			kadence()->get_asset_version( get_theme_file_path( '/assets/js/mcprices-integrated.js' ) ),
 			true
 		);
+
+		$media_manifest_path = get_theme_file_path( '/assets/data/mcprices-media-manifest.json' );
+		if ( file_exists( $media_manifest_path ) ) {
+			$media_manifest = json_decode( (string) file_get_contents( $media_manifest_path ), true );
+			if ( is_array( $media_manifest ) ) {
+				wp_add_inline_script(
+					'kadence-mcprices-interactions',
+					'window.mcpricesMediaBaseUrl = ' . wp_json_encode( trailingslashit( get_theme_file_uri( '/assets/images/mcprices/official' ) ) ) . ';'
+					. 'window.mcpricesMediaManifest = ' . wp_json_encode( $media_manifest ) . ';',
+					'before'
+				);
+			}
+		}
 	}
 
 	/**

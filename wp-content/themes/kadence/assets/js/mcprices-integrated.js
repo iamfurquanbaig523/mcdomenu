@@ -46,6 +46,10 @@
       ".new-item-name",
       ".menu-section-title",
     ];
+    var mediaManifest = window.mcpricesMediaManifest || {};
+    var mediaItems = mediaManifest.items || {};
+    var mediaCategories = mediaManifest.categories || {};
+    var mediaBaseUrl = window.mcpricesMediaBaseUrl || "";
 
     function getSearchInput(form) {
       if (!form) {
@@ -64,6 +68,258 @@
         searchInputs.push(input);
       }
     });
+
+    function normalizeMediaKey(value) {
+      var normalized = value || "";
+
+      if (normalized.normalize) {
+        normalized = normalized.normalize("NFKD");
+      }
+
+      normalized = normalized
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(/&/g, " and ")
+        .replace(/[®™]/g, "")
+        .replace(/[’']/g, "")
+        .replace(/\b(limited time only|here to stay)\b/g, " ")
+        .replace(/[^a-z0-9]+/g, " ")
+        .replace(/\btm\b/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+
+      return normalized;
+    }
+
+    function getMediaUrl(relativePath) {
+      if (!relativePath) {
+        return "";
+      }
+
+      if (/^https?:\/\//i.test(relativePath)) {
+        return relativePath;
+      }
+
+      return mediaBaseUrl + relativePath.replace(/^\/+/, "");
+    }
+
+    function createMediaImage(url, className) {
+      var image = document.createElement("img");
+      image.className = className;
+      image.src = url;
+      image.alt = "";
+      image.loading = "lazy";
+      image.decoding = "async";
+      return image;
+    }
+
+    function clearTextNodes(node) {
+      Array.prototype.slice.call(node.childNodes).forEach(function (childNode) {
+        if (childNode.nodeType === 3) {
+          childNode.textContent = "";
+        }
+      });
+    }
+
+    function getCategoryMedia(sectionId) {
+      return getMediaUrl(mediaCategories[sectionId] || "");
+    }
+
+    function getItemMedia(itemName) {
+      if (!itemName) {
+        return "";
+      }
+
+      var normalized = normalizeMediaKey(itemName);
+      var variants = [normalized];
+      var strippedParens = normalizeMediaKey(itemName.replace(/\([^)]*\)/g, " "));
+      var noMcdonalds = normalized.replace(/^mcdonalds /, "");
+      var noSize = normalized.replace(
+        /\b(regular|mini|small|medium|large|selected|restaurants)\b/g,
+        " "
+      );
+      var friesMatch = normalized.match(/^mcdonalds fries (small|medium|large)$/);
+
+      if (strippedParens && variants.indexOf(strippedParens) === -1) {
+        variants.push(strippedParens);
+      }
+
+      if (noMcdonalds && variants.indexOf(noMcdonalds) === -1) {
+        variants.push(noMcdonalds);
+      }
+
+      noSize = normalizeMediaKey(noSize);
+      if (noSize && variants.indexOf(noSize) === -1) {
+        variants.push(noSize);
+      }
+
+      if (friesMatch) {
+        ["fries " + friesMatch[1], friesMatch[1] + " fries"].forEach(function (
+          variant
+        ) {
+          variant = normalizeMediaKey(variant);
+          if (variant && variants.indexOf(variant) === -1) {
+            variants.push(variant);
+          }
+        });
+      }
+
+      for (var index = 0; index < variants.length; index += 1) {
+        if (mediaItems[variants[index]]) {
+          return getMediaUrl(mediaItems[variants[index]]);
+        }
+      }
+
+      return "";
+    }
+
+    function applyCategoryMedia() {
+      root.querySelectorAll(".cat-card").forEach(function (card) {
+        var icon = card.querySelector(".cat-emoji");
+        var sectionId = (card.getAttribute("href") || "").replace(/^#/, "");
+        var mediaUrl = getCategoryMedia(sectionId);
+
+        if (!icon || !mediaUrl || icon.querySelector(".mcprices-media-icon")) {
+          return;
+        }
+
+        icon.textContent = "";
+        icon.appendChild(
+          createMediaImage(
+            mediaUrl,
+            "mcprices-media-icon mcprices-media-icon--category"
+          )
+        );
+      });
+
+      root.querySelectorAll(".menu-section").forEach(function (section) {
+        var icon = section.querySelector(".menu-section-icon");
+        var mediaUrl = getCategoryMedia(section.id);
+
+        if (!icon || !mediaUrl || icon.querySelector(".mcprices-media-icon")) {
+          return;
+        }
+
+        icon.textContent = "";
+        icon.appendChild(
+          createMediaImage(
+            mediaUrl,
+            "mcprices-media-icon mcprices-media-icon--section"
+          )
+        );
+      });
+    }
+
+    function applyFeaturedItemMedia() {
+      root.querySelectorAll(".featured-item").forEach(function (item) {
+        var icon = item.querySelector(".item-emoji");
+        var nameNode = item.querySelector(".item-name");
+        var mediaUrl = getItemMedia(nameNode ? nameNode.textContent : "");
+
+        if (!icon || !mediaUrl || icon.querySelector(".mcprices-media-icon")) {
+          return;
+        }
+
+        icon.textContent = "";
+        icon.appendChild(
+          createMediaImage(mediaUrl, "mcprices-media-icon mcprices-media-icon--item")
+        );
+      });
+    }
+
+    function applyNewItemMedia() {
+      root.querySelectorAll(".new-item-card").forEach(function (card) {
+        var icon = card.querySelector(".new-item-emoji");
+        var nameNode = card.querySelector(".new-item-name");
+        var mediaUrl = getItemMedia(nameNode ? nameNode.textContent : "");
+
+        if (!icon || !mediaUrl || icon.querySelector(".mcprices-media-icon")) {
+          return;
+        }
+
+        icon.textContent = "";
+        icon.appendChild(
+          createMediaImage(mediaUrl, "mcprices-media-icon mcprices-media-icon--new")
+        );
+      });
+    }
+
+    function applyMenuCardMedia() {
+      root.querySelectorAll(".menu-card").forEach(function (card) {
+        var imageShell = card.querySelector(".card-img");
+        var nameNode = card.querySelector(".card-name");
+        var mediaUrl = getItemMedia(nameNode ? nameNode.textContent : "");
+
+        if (
+          !imageShell ||
+          !mediaUrl ||
+          imageShell.querySelector(".mcprices-card-media")
+        ) {
+          return;
+        }
+
+        clearTextNodes(imageShell);
+        imageShell.appendChild(
+          createMediaImage(mediaUrl, "mcprices-card-media")
+        );
+      });
+    }
+
+    function applyTableItemMedia() {
+      root.querySelectorAll(".menu-table .td-name").forEach(function (nameNode) {
+        var itemName = nameNode.textContent.trim();
+        var mediaUrl = getItemMedia(itemName);
+        var thumb;
+
+        if (!itemName || !mediaUrl || nameNode.querySelector(".mcprices-inline-media")) {
+          return;
+        }
+
+        var label = document.createElement("span");
+        label.className = "mcprices-inline-media__label";
+        label.textContent = itemName;
+        label.style.display = "inline";
+        label.style.lineHeight = "1.3";
+        label.style.verticalAlign = "middle";
+
+        var wrapper = document.createElement("span");
+        wrapper.className = "mcprices-inline-media";
+        wrapper.style.display = "inline-flex";
+        wrapper.style.alignItems = "center";
+        wrapper.style.gap = "8px";
+        wrapper.style.verticalAlign = "middle";
+
+        thumb = createMediaImage(mediaUrl, "mcprices-inline-media__thumb");
+        thumb.style.width = "18px";
+        thumb.style.height = "18px";
+        thumb.style.minWidth = "18px";
+        thumb.style.maxWidth = "18px";
+        thumb.style.maxHeight = "18px";
+        thumb.style.flex = "0 0 18px";
+        thumb.style.objectFit = "contain";
+        thumb.style.borderRadius = "0";
+        thumb.style.background = "transparent";
+        thumb.style.boxShadow = "none";
+        thumb.style.verticalAlign = "middle";
+        wrapper.appendChild(thumb);
+        wrapper.appendChild(label);
+
+        nameNode.textContent = "";
+        nameNode.appendChild(wrapper);
+      });
+    }
+
+    function applyOfficialMedia() {
+      if (!mediaBaseUrl || !Object.keys(mediaCategories).length) {
+        return;
+      }
+
+      applyCategoryMedia();
+      applyFeaturedItemMedia();
+      applyNewItemMedia();
+      applyMenuCardMedia();
+      applyTableItemMedia();
+    }
 
     function isMobileViewport() {
       return window.innerWidth <= 1024;
@@ -437,6 +693,8 @@
         setMobileSearchOpen(false);
       }
     }
+
+    applyOfficialMedia();
 
     tabs.forEach(function (tab) {
       tab.addEventListener("click", function () {

@@ -7,7 +7,7 @@
 
 return <<<'HTML'
 <!-- wp:group {"className":"mcprices-page mcprices-managed-homepage","layout":{"type":"default"}} -->
-<div class="wp-block-group mcprices-page mcprices-managed-homepage" data-mcprices-pattern-version="2.2.0">
+<div class="wp-block-group mcprices-page mcprices-managed-homepage" data-mcprices-pattern-version="2.3.0">
 <!-- wp:html -->
 <!-- UPDATE BAR -->
 
@@ -34,11 +34,11 @@ return <<<'HTML'
       </div>
       <div class="hero-stats">
         <div class="stat-item">
-          <div class="stat-num">150+</div>
+          <div class="stat-num">202</div>
           <div class="stat-label">Menu Items</div>
         </div>
         <div class="stat-item">
-          <div class="stat-num">17</div>
+          <div class="stat-num">16</div>
           <div class="stat-label">Categories</div>
         </div>
         <div class="stat-item">
@@ -156,8 +156,8 @@ return <<<'HTML'
       </a>
       <a href="#wraps" class="cat-card">
         <span class="cat-emoji">&#127791;</span>
-        <div class="cat-name">Wraps</div>
-        <div class="cat-count">6 wraps</div>
+        <div class="cat-name">Wraps &amp; Salads</div>
+        <div class="cat-count">11 items</div>
         <div class="cat-arrow">&rarr;</div>
       </a>
       <a href="#vegetarian" class="cat-card">
@@ -166,16 +166,16 @@ return <<<'HTML'
         <div class="cat-count">13 items</div>
         <div class="cat-arrow">&rarr;</div>
       </a>
-      <a href="#happy-meal" class="cat-card">
-        <span class="cat-emoji">&#127881;</span>
-        <div class="cat-name">Happy Meal</div>
-        <div class="cat-count">6 items</div>
+      <a href="#vegan" class="cat-card">
+        <span class="cat-emoji">&#127807;</span>
+        <div class="cat-name">Vegan</div>
+        <div class="cat-count">5 items</div>
         <div class="cat-arrow">&rarr;</div>
       </a>
-      <a href="#salads" class="cat-card">
-        <span class="cat-emoji">&#129367;</span>
-        <div class="cat-name">Salads</div>
-        <div class="cat-count">5 salads</div>
+      <a href="#happymeal" class="cat-card">
+        <span class="cat-emoji">&#127881;</span>
+        <div class="cat-name">Happy Meal</div>
+        <div class="cat-count">6 meals</div>
         <div class="cat-arrow">&rarr;</div>
       </a>
       <a href="#breakfast" class="cat-card">
@@ -184,52 +184,52 @@ return <<<'HTML'
         <div class="cat-count">20 items</div>
         <div class="cat-arrow">&rarr;</div>
       </a>
+      <a href="#bsaver" class="cat-card">
+        <span class="cat-emoji">&#127859;</span>
+        <div class="cat-name">Breakfast Saver</div>
+        <div class="cat-count">13 morning picks</div>
+        <div class="cat-arrow">&rarr;</div>
+      </a>
       <a href="#mccafe" class="cat-card">
         <span class="cat-emoji">&#9749;</span>
-        <div class="cat-name">McCaf&eacute;</div>
+        <div class="cat-name">McCaf&#233;</div>
         <div class="cat-count">15 drinks</div>
         <div class="cat-arrow">&rarr;</div>
       </a>
-      <a href="#mcflurry" class="cat-card">
+      <a href="#desserts" class="cat-card">
         <span class="cat-emoji">&#127846;</span>
-        <div class="cat-name">McFlurry</div>
-        <div class="cat-count">4 current flavours</div>
+        <div class="cat-name">Desserts &amp; McFlurry</div>
+        <div class="cat-count">12 sweet picks</div>
         <div class="cat-arrow">&rarr;</div>
       </a>
       <a href="#drinks" class="cat-card">
         <span class="cat-emoji">&#127865;</span>
         <div class="cat-name">Drinks</div>
-        <div class="cat-count">21 drinks</div>
+        <div class="cat-count">21 cold drinks</div>
         <div class="cat-arrow">&rarr;</div>
       </a>
       <a href="#sides" class="cat-card">
         <span class="cat-emoji">&#127839;</span>
-        <div class="cat-name">Sides &amp; Snacks</div>
+        <div class="cat-name">Fries &amp; Sides</div>
         <div class="cat-count">7 items</div>
         <div class="cat-arrow">&rarr;</div>
       </a>
-      <a href="#under400" class="cat-card">
-        <span class="cat-emoji">&#128170;</span>
-        <div class="cat-name">Under 400 Kcal</div>
-        <div class="cat-count">10 lighter picks</div>
-        <div class="cat-arrow">&rarr;</div>
-      </a>
-      <a href="#desserts" class="cat-card">
-        <span class="cat-emoji">&#127849;</span>
-        <div class="cat-name">Desserts</div>
-        <div class="cat-count">6 items</div>
+      <a href="#sharers" class="cat-card">
+        <span class="cat-emoji">&#128230;</span>
+        <div class="cat-name">Sharers &amp; Bundles</div>
+        <div class="cat-count">3 share boxes</div>
         <div class="cat-arrow">&rarr;</div>
       </a>
       <a href="#sauces" class="cat-card">
         <span class="cat-emoji">&#129514;</span>
-        <div class="cat-name">Sauces &amp; Condiments</div>
-        <div class="cat-count">17 items</div>
+        <div class="cat-name">Condiments &amp; Sauces</div>
+        <div class="cat-count">17 dips &amp; extras</div>
         <div class="cat-arrow">&rarr;</div>
       </a>
       <a href="#deals" class="cat-card red">
         <span class="cat-emoji">&#128293;</span>
         <div class="cat-name">Deals</div>
-        <div class="cat-count">Current value picks</div>
+        <div class="cat-count">Live value picks</div>
         <div class="cat-arrow">&rarr;</div>
       </a>
     </div>
@@ -242,10 +242,10 @@ return <<<'HTML'
     <div class="section-header">
       <div class="section-label">April 2026</div>
       <h2 class="section-title">What's New at McDonald's UK 2026</h2>
-      <p class="section-sub">McDonald's is kicking off April 2026 with some exciting new and limited-time menu items. Don't miss these before they're gone.</p>
+      <p class="section-sub">McDonald's is kicking off April 2026 with limited-time burgers, spicy chicken, returning breakfast favourites and seasonal desserts.</p>
     </div>
     <div class="mcprices-whats-new-intro">
-      <p class="mcprices-whats-new-intro-text">McDonald's Menu is starting <strong class="mcprices-whats-new-date">April 2026</strong> with some exciting new menu items. Burger fans can enjoy the <strong>Double Big Mac</strong> and the <strong>Double Big Mac with Bacon</strong>, both bigger and bolder than the original. There's also the <strong>Big Arch</strong>, a large burger made for those who want something extra filling. Breakfast gets a tasty upgrade too, with the return of <strong>Sausage &amp; Egg McGriddles</strong>. For dessert, look out for the <strong>Cadbury Creme Egg McFlurry</strong>, <strong>Cadbury Mini Eggs McFlurry</strong>, and the <strong>Chocolate Brownie Pie</strong>. All limited-time only.</p>
+      <p class="mcprices-whats-new-intro-text">The attached April 2026 source adds <strong class="mcprices-whats-new-date">Big Arch</strong>, <strong>Double Big Mac</strong>, <strong>Double Big Mac with Bacon</strong>, <strong>Sausage &amp; Egg McGriddles</strong>, <strong>Spicy Chicken McNuggets</strong> and the <strong>Cheesy Garlic Bread Dippers Sharebox</strong>, alongside CARDS meal bundles and the seasonal <strong>Cadbury Creme Egg McFlurry</strong>.</p>
     </div>
     <div class="new-items-grid">
       <div class="new-item-card">
@@ -254,7 +254,7 @@ return <<<'HTML'
           <span class="new-item-avail avail-new">New</span>
         </div>
         <div class="new-item-body">
-          <div class="new-item-name">Big Arch</div>
+          <div class="new-item-name">Big Arch&#174;</div>
           <div class="new-item-cal">1,057 kcal</div>
           <div class="new-item-price">&pound;6.89</div>
         </div>
@@ -265,7 +265,7 @@ return <<<'HTML'
           <span class="new-item-avail avail-limited">Limited Time</span>
         </div>
         <div class="new-item-body">
-          <div class="new-item-name">Double Big Mac</div>
+          <div class="new-item-name">Double Big Mac&#174;</div>
           <div class="new-item-cal">715 kcal</div>
           <div class="new-item-price">&pound;7.09</div>
         </div>
@@ -276,7 +276,7 @@ return <<<'HTML'
           <span class="new-item-avail avail-limited">Limited Time</span>
         </div>
         <div class="new-item-body">
-          <div class="new-item-name">Double Big Mac with Bacon</div>
+          <div class="new-item-name">Double Big Mac&#174; with Bacon</div>
           <div class="new-item-cal">762 kcal</div>
           <div class="new-item-price">&pound;7.99</div>
         </div>
@@ -287,7 +287,7 @@ return <<<'HTML'
           <span class="new-item-avail avail-limited">Limited Time</span>
         </div>
         <div class="new-item-body">
-          <div class="new-item-name">Sausage &amp; Egg McGriddles</div>
+          <div class="new-item-name">Sausage &amp; Egg McGriddles&#174;</div>
           <div class="new-item-cal">492 kcal</div>
           <div class="new-item-price">&pound;4.99</div>
         </div>
@@ -298,7 +298,7 @@ return <<<'HTML'
           <span class="new-item-avail avail-limited">Limited Time</span>
         </div>
         <div class="new-item-body">
-          <div class="new-item-name">9 Spicy Chicken McNuggets</div>
+          <div class="new-item-name">Spicy Chicken McNuggets&#174; 9 pieces</div>
           <div class="new-item-cal">392 kcal</div>
           <div class="new-item-price">&pound;6.49</div>
         </div>
@@ -309,7 +309,7 @@ return <<<'HTML'
           <span class="new-item-avail avail-limited">Limited Time</span>
         </div>
         <div class="new-item-body">
-          <div class="new-item-name">Cadbury Creme Egg McFlurry</div>
+          <div class="new-item-name">Cadbury Creme Egg&#174; McFlurry&#174;</div>
           <div class="new-item-cal">290 kcal</div>
           <div class="new-item-price">&pound;2.49</div>
         </div>
@@ -408,7 +408,6 @@ return <<<'HTML'
       <p class="section-sub">Every item, every price &#8212; updated for April 2026. Click a category to jump directly.</p>
     </div>
 
-    <!-- SIZE KEY -->
     <div class="size-legend">
       <span class="size-legend-title">Size Key:</span>
       <div class="size-legend-items">
@@ -424,485 +423,450 @@ return <<<'HTML'
       <button class="menu-tab active" type="button" data-menu-filter="all" aria-pressed="true">&#9776; All</button>
       <button class="menu-tab" type="button" data-menu-filter="whats-new">&#127381; What's New</button>
       <button class="menu-tab" type="button" data-menu-filter="burgers">&#127828; Burgers</button>
-      <button class="menu-tab" type="button" data-menu-filter="saver">&#127991;&#65039; Saver</button>
+      <button class="menu-tab" type="button" data-menu-filter="saver">&#127991;&#65039; Saver Menu</button>
       <button class="menu-tab" type="button" data-menu-filter="nuggets">&#127831; McNuggets</button>
-      <button class="menu-tab" type="button" data-menu-filter="wraps">&#127791; Wraps</button>
-      <button class="menu-tab" type="button" data-menu-filter="vegetarian">&#127793; Vegetarian</button>
-      <button class="menu-tab" type="button" data-menu-filter="happy-meal">&#127881; Happy Meal</button>
-      <button class="menu-tab" type="button" data-menu-filter="salads">&#129367; Salads</button>
+      <button class="menu-tab" type="button" data-menu-filter="wraps">&#127791; Wraps &amp; Salads</button>
       <button class="menu-tab" type="button" data-menu-filter="breakfast">&#129374; Breakfast</button>
+      <button class="menu-tab" type="button" data-menu-filter="bsaver">&#127859; Breakfast Saver</button>
+      <button class="menu-tab" type="button" data-menu-filter="vegetarian">&#127793; Vegetarian</button>
+      <button class="menu-tab" type="button" data-menu-filter="vegan">&#127807; Vegan</button>
+      <button class="menu-tab" type="button" data-menu-filter="happymeal">&#127881; Happy Meal</button>
       <button class="menu-tab" type="button" data-menu-filter="mccafe">&#9749; McCaf&eacute;</button>
-      <button class="menu-tab" type="button" data-menu-filter="mcflurry">&#127846; McFlurry</button>
+      <button class="menu-tab" type="button" data-menu-filter="desserts">&#127846; Desserts &amp; McFlurry</button>
       <button class="menu-tab" type="button" data-menu-filter="drinks">&#127865; Drinks</button>
-      <button class="menu-tab" type="button" data-menu-filter="sides">&#127839; Sides</button>
-      <button class="menu-tab" type="button" data-menu-filter="under400">&#128170; Under 400 Kcal</button>
-      <button class="menu-tab" type="button" data-menu-filter="sharers">&#128230; Sharers</button>
-      <button class="menu-tab" type="button" data-menu-filter="sauces">&#129514; Sauces</button>
-      <button class="menu-tab" type="button" data-menu-filter="bfast-saver">&#127859; Bfast Saver</button>
+      <button class="menu-tab" type="button" data-menu-filter="sides">&#127839; Fries &amp; Sides</button>
+      <button class="menu-tab" type="button" data-menu-filter="sharers">&#128230; Sharers &amp; Bundles</button>
+      <button class="menu-tab" type="button" data-menu-filter="sauces">&#129514; Condiments &amp; Sauces</button>
     </div>
 
     <div class="menu-section" id="burgers" data-menu-category="burgers">
-  <div class="menu-section-head">
-    <span class="menu-section-icon">&#127828;</span>
-    <span class="menu-section-title">Burgers</span>
-    <span class="menu-section-count">15 items</span>
-  </div>
-  <p class="menu-section-desc">McDonald's burger line-up now runs from value picks like the Hamburger and Cheeseburger to premium favourites such as the Big Mac, McCrispy, McSpicy, McPlant, and the new Big Arch.</p>
-  <table class="menu-table">
-    <thead>
-      <tr><th style="width:38%">Item</th><th>Price</th><th>Meal Price</th><th>Calories</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-  <tr><td><div class="td-name">Big Mac&#174;</div></td><td class="td-price">&#163;5.09</td><td class="td-price">&mdash;</td><td class="td-cal"><span class="high">509</span> kcal</td><td></td></tr>
-  <tr><td><div class="td-name">Quarter Pounder&trade; with Cheese</div></td><td class="td-price">&pound;5.09</td><td class="td-price">&mdash;</td><td class="td-cal"><span class="high">514</span> kcal</td><td></td></tr>
-  <tr><td><div class="td-name">Double Quarter Pounder&trade; with Cheese</div></td><td class="td-price">&pound;6.19</td><td class="td-price">&mdash;</td><td class="td-cal"><span class="high">749</span> kcal</td><td></td></tr>
-  <tr><td><div class="td-name">McCrispy&#174;</div></td><td class="td-price">&#163;6.19</td><td class="td-price">&mdash;</td><td class="td-cal">484 kcal</td><td></td></tr>
-  <tr><td><div class="td-name">McSpicy&#174;</div></td><td class="td-price">&#163;5.89</td><td class="td-price">&mdash;</td><td class="td-cal">454 kcal</td><td></td></tr>
-  <tr><td><div class="td-name">McChicken&#174; Sandwich</div></td><td class="td-price">&#163;4.79</td><td class="td-price">&mdash;</td><td class="td-cal">371 kcal</td><td></td></tr>
-  <tr><td><div class="td-name">Meal Deal Plus</div><div class="td-desc">Cheeseburger, fries, drink and dessert bundle</div></td><td class="td-price">&#163;5.59</td><td class="td-price">&mdash;</td><td class="td-cal"><span class="high">771</span> kcal</td><td></td></tr>
-  <tr><td><div class="td-name">Double Filet-O-Fish&#174;</div></td><td class="td-price">&#163;4.99</td><td class="td-price">&mdash;</td><td class="td-cal">453 kcal</td><td></td></tr>
-  <tr><td><div class="td-name">Filet-O-Fish&#174;</div></td><td class="td-price">&#163;4.79</td><td class="td-price">&mdash;</td><td class="td-cal">316 kcal</td><td></td></tr>
-  <tr><td><div class="td-name">McPlant&#174;</div></td><td class="td-price">&#163;5.09</td><td class="td-price">&#163;7.69</td><td class="td-cal">426 kcal</td><td></td></tr>
-  <tr><td><div class="td-name">Double Cheeseburger</div><div class="td-desc">Two patties, double American cheese</div></td><td class="td-price">&#163;2.29</td><td class="td-price">&#163;5.09</td><td class="td-cal">452 kcal</td><td></td></tr>
-  <tr><td><div class="td-name">Cheeseburger</div><div class="td-desc">Classic beef patty with American cheese</div></td><td class="td-price">&#163;1.39</td><td class="td-price">&#163;4.89</td><td class="td-cal">303 kcal</td><td></td></tr>
-  <tr><td><div class="td-name">Hamburger</div><div class="td-desc">Classic beef burger, no cheese</div></td><td class="td-price">&#163;1.19</td><td class="td-price">&#163;4.69</td><td class="td-cal"><span class="low">255</span> kcal</td><td></td></tr>
-  <tr><td><div class="td-name">Mayo Chicken</div><div class="td-desc">Crispy chicken fillet, mayo</div></td><td class="td-price">&#163;1.39</td><td class="td-price">&#163;4.89</td><td class="td-cal"><span class="low">282</span> kcal</td><td></td></tr>
-  <tr><td><div class="td-name">Vegetable Deluxe</div><div class="td-desc">Red pesto veggie goujons with sandwich sauce and lettuce</div></td><td class="td-price">&#163;4.89</td><td class="td-price">&#163;6.49</td><td class="td-cal">361 kcal</td><td></td></tr>
-    </tbody>
-  </table>
-</div>
+      <div class="menu-section-head">
+        <span class="menu-section-icon">&#127828;</span>
+        <span class="menu-section-title">Burgers</span>
+        <span class="menu-section-count">15 items</span>
+      </div>
+      <p class="menu-section-desc">All current burgers from the April 2026 source, from value picks like the Hamburger to premium builds like the Big Arch and McPlant.</p>
+      <table class="menu-table">
+        <thead>
+          <tr><th style="width:52%">Item</th><th>Price</th><th>Calories</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><div class="td-name">Big Mac&#174;</div></td><td class="td-price">&pound;5.09</td><td class="td-cal">509 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Quarter Pounder&#8482; with Cheese</div></td><td class="td-price">&pound;5.09</td><td class="td-cal">514 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Double Quarter Pounder&#8482; with Cheese</div></td><td class="td-price">&pound;6.19</td><td class="td-cal"><span class="high">749</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">McCrispy&#174;</div></td><td class="td-price">&pound;6.19</td><td class="td-cal">484 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">McSpicy&#174;</div></td><td class="td-price">&pound;5.89</td><td class="td-cal">454 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">McChicken&#174; Sandwich</div></td><td class="td-price">&pound;4.79</td><td class="td-cal">371 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Meal Deal Plus</div></td><td class="td-price">&pound;5.59</td><td class="td-cal"><span class="high">771</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Double Filet-O-Fish&#174;</div></td><td class="td-price">&pound;4.99</td><td class="td-cal">453 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Filet-O-Fish&#174;</div></td><td class="td-price">&pound;4.79</td><td class="td-cal">316 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">McPlant&#174;</div></td><td class="td-price">&pound;5.09</td><td class="td-cal">426 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">Double Cheeseburger</div></td><td class="td-price">&pound;2.29</td><td class="td-cal">452 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Cheeseburger</div></td><td class="td-price">&pound;1.39</td><td class="td-cal">303 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Hamburger</div></td><td class="td-price">&pound;1.19</td><td class="td-cal"><span class="low">255</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Mayo Chicken</div></td><td class="td-price">&pound;1.39</td><td class="td-cal"><span class="low">282</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Vegetable Deluxe</div></td><td class="td-price">&pound;4.89</td><td class="td-cal">361 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+        </tbody>
+      </table>
+    </div>
 
     <div class="menu-section" id="saver" data-menu-category="saver">
-  <div class="menu-section-head">
-    <span class="menu-section-icon">&#127991;&#65039;</span>
-    <span class="menu-section-title">Saver Menu</span>
-    <span class="menu-section-count">21 value picks</span>
-  </div>
-  <p class="menu-section-desc">The April 2026 Saver Menu mixes budget burgers, fries, hot drinks, small cold drinks and mini McFlurry options. It is the fastest way to build a low-cost order from the current menu.</p>
-  <table class="menu-table">
-    <thead>
-      <tr><th style="width:40%">Item</th><th>Price</th><th>Calories</th></tr>
-    </thead>
-    <tbody>
-  <tr><td><div class="td-name">Meal Deal Plus</div><div class="td-desc">Cheeseburger, fries, drink and dessert bundle</div></td><td class="td-price">&#163;5.59</td><td class="td-cal"><span class="high">771</span> kcal</td></tr>
-  <tr><td><div class="td-name">Double Cheeseburger</div></td><td class="td-price">&#163;2.29</td><td class="td-cal">452 kcal</td></tr>
-  <tr><td><div class="td-name">Cheeseburger</div></td><td class="td-price">&#163;1.39</td><td class="td-cal">303 kcal</td></tr>
-  <tr><td><div class="td-name">Hamburger</div></td><td class="td-price">&#163;1.19</td><td class="td-cal"><span class="low">255</span> kcal</td></tr>
-  <tr><td><div class="td-name">Mayo Chicken</div></td><td class="td-price">&#163;1.39</td><td class="td-cal"><span class="low">282</span> kcal</td></tr>
-  <tr><td><div class="td-name">Fries (Small)</div></td><td class="td-price">&#163;1.19</td><td class="td-cal"><span class="low">237</span> kcal</td></tr>
-  <tr><td><div class="td-name">Chocolate Milkshake Small</div></td><td class="td-price">&#163;1.99</td><td class="td-cal"><span class="low">235</span> kcal</td></tr>
-  <tr><td><div class="td-name">Strawberry Milkshake Small</div></td><td class="td-price">&#163;1.99</td><td class="td-cal"><span class="low">230</span> kcal</td></tr>
-  <tr><td><div class="td-name">Banana Milkshake Small</div></td><td class="td-price">&#163;1.99</td><td class="td-cal"><span class="low">228</span> kcal</td></tr>
-  <tr><td><div class="td-name">Vanilla Milkshake Small</div></td><td class="td-price">&#163;1.99</td><td class="td-cal"><span class="low">225</span> kcal</td></tr>
-  <tr><td><div class="td-name">White Coffee</div></td><td class="td-price">&#163;0.99</td><td class="td-cal"><span class="low">54</span> kcal</td></tr>
-  <tr><td><div class="td-name">Americano</div></td><td class="td-price">&#163;0.99</td><td class="td-cal"><span class="low">6</span> kcal</td></tr>
-  <tr><td><div class="td-name">Coca-Cola&#174; Zero Sugar Small</div></td><td class="td-price">&#163;1.09</td><td class="td-cal"><span class="low">1</span> kcal</td></tr>
-  <tr><td><div class="td-name">Diet Coke&#174; Small</div></td><td class="td-price">&#163;1.09</td><td class="td-cal"><span class="low">1</span> kcal</td></tr>
-  <tr><td><div class="td-name">Sprite&#174; Zero Small</div></td><td class="td-price">&#163;1.09</td><td class="td-cal"><span class="low">1</span> kcal</td></tr>
-  <tr><td><div class="td-name">Fanta&#174; Orange Zero Small</div></td><td class="td-price">&#163;1.09</td><td class="td-cal"><span class="low">2</span> kcal</td></tr>
-  <tr><td><div class="td-name">IRN-BRU&#174; Small (selected)</div></td><td class="td-price">&#163;1.09</td><td class="td-cal"><span class="low">68</span> kcal</td></tr>
-  <tr><td><div class="td-name">Oasis&#174; Summer Fruits Small</div></td><td class="td-price">&#163;1.09</td><td class="td-cal"><span class="low">48</span> kcal</td></tr>
-  <tr><td><div class="td-name">Coca-Cola&#174; Classic Small</div></td><td class="td-price">&#163;1.09</td><td class="td-cal"><span class="low">89</span> kcal</td></tr>
-  <tr><td><div class="td-name">Oreo&#174; McFlurry&#174; Mini</div></td><td class="td-price">&#163;1.39</td><td class="td-cal"><span class="low">188</span> kcal</td></tr>
-  <tr><td><div class="td-name">Smarties&#174; McFlurry&#174; Mini</div></td><td class="td-price">&#163;1.39</td><td class="td-cal"><span class="low">195</span> kcal</td></tr>
-    </tbody>
-  </table>
-</div>
-
-    <div class="menu-section" id="sharers" data-menu-category="sharers">
-  <div class="menu-section-head">
-    <span class="menu-section-icon">&#128230;</span>
-    <span class="menu-section-title">Sharers &amp; Bundles</span>
-    <span class="menu-section-count">3 bundles</span>
-  </div>
-  <p class="menu-section-desc">These group-sized boxes are built for sharing. Chicken Sharebox and Selects Sharebox remain the biggest sharer picks, with the 20 McNuggets Sharebox offering the entry point for groups.</p>
-  <table class="menu-table">
-    <thead>
-      <tr><th style="width:40%">Item</th><th>Price</th><th>Serves</th><th>Calories</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-  <tr><td><div class="td-name">The McDonald&#x27;s Chicken Sharebox&#174;</div></td><td class="td-price">&#163;11.29</td><td>2&ndash;3</td><td class="td-cal"><span class="high">1,240</span> kcal</td><td></td></tr>
-  <tr><td><div class="td-name">9 Chicken Selects Sharebox&#174;</div></td><td class="td-price">&#163;9.19</td><td>2&ndash;3</td><td class="td-cal"><span class="high">1,008</span> kcal</td><td></td></tr>
-  <tr><td><div class="td-name">20 Chicken McNuggets&#174; Sharebox&#174;</div></td><td class="td-price">&#163;6.99</td><td>2&ndash;3</td><td class="td-cal"><span class="high">869</span> kcal</td><td></td></tr>
-    </tbody>
-  </table>
-</div>
+      <div class="menu-section-head">
+        <span class="menu-section-icon">&#127991;&#65039;</span>
+        <span class="menu-section-title">Saver Menu</span>
+        <span class="menu-section-count">21 items</span>
+      </div>
+      <p class="menu-section-desc">The official Saver Menu mixes budget burgers, fries, drinks and add-ons with the lowest current entry prices.</p>
+      <table class="menu-table">
+        <thead>
+          <tr><th style="width:52%">Item</th><th>Price</th><th>Calories</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><div class="td-name">Meal Deal Plus</div></td><td class="td-price">&pound;5.59</td><td class="td-cal"><span class="high">771</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Double Cheeseburger</div></td><td class="td-price">&pound;2.29</td><td class="td-cal">452 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Cheeseburger</div></td><td class="td-price">&pound;1.39</td><td class="td-cal">303 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Hamburger</div></td><td class="td-price">&pound;1.19</td><td class="td-cal"><span class="low">255</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Mayo Chicken</div></td><td class="td-price">&pound;1.39</td><td class="td-cal"><span class="low">282</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">McDonald's Fries Small</div></td><td class="td-price">&pound;1.19</td><td class="td-cal"><span class="low">237</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Chocolate Milkshake Small</div></td><td class="td-price">&pound;1.99</td><td class="td-cal"><span class="low">235</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Strawberry Milkshake Small</div></td><td class="td-price">&pound;1.99</td><td class="td-cal"><span class="low">230</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Banana Milkshake Small</div></td><td class="td-price">&pound;1.99</td><td class="td-cal"><span class="low">228</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Vanilla Milkshake Small</div></td><td class="td-price">&pound;1.99</td><td class="td-cal"><span class="low">225</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">White Coffee</div></td><td class="td-price">&pound;0.99</td><td class="td-cal"><span class="low">54</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Americano</div></td><td class="td-price">&pound;0.99</td><td class="td-cal"><span class="low">6</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Coca-Cola&#174; Zero Sugar Small</div></td><td class="td-price">&pound;1.09</td><td class="td-cal"><span class="low">1</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Diet Coke&#174; Small</div></td><td class="td-price">&pound;1.09</td><td class="td-cal"><span class="low">1</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Sprite&#174; Zero Small</div></td><td class="td-price">&pound;1.09</td><td class="td-cal"><span class="low">1</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Fanta&#174; Orange Zero Small</div></td><td class="td-price">&pound;1.09</td><td class="td-cal"><span class="low">2</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">IRN-BRU&#174; Small (selected)</div></td><td class="td-price">&pound;1.09</td><td class="td-cal"><span class="low">68</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Oasis&#174; Summer Fruits Small</div></td><td class="td-price">&pound;1.09</td><td class="td-cal"><span class="low">48</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Coca-Cola&#174; Classic Small</div></td><td class="td-price">&pound;1.09</td><td class="td-cal"><span class="low">89</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Oreo&#174; McFlurry&#174; Mini</div></td><td class="td-price">&pound;1.39</td><td class="td-cal"><span class="low">188</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Smarties&#174; McFlurry&#174; Mini</div></td><td class="td-price">&pound;1.39</td><td class="td-cal"><span class="low">195</span> kcal</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
 
     <div class="menu-section" id="nuggets" data-menu-category="nuggets">
-  <div class="menu-section-head">
-    <span class="menu-section-icon">&#127831;</span>
-    <span class="menu-section-title">McNuggets, Selects &amp; Dippers</span>
-    <span class="menu-section-count">10 items</span>
-  </div>
-  <p class="menu-section-desc">The current chicken snacks range includes Chicken McNuggets, Selects, the full Chicken Sharebox and the latest limited-time spicy nuggets and cheesy garlic bread dippers.</p>
-  <table class="menu-table">
-    <thead>
-      <tr><th style="width:40%">Item</th><th>Price</th><th>Calories</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-  <tr><td><div class="td-name">6 Piece Chicken McNuggets&#174;</div></td><td class="td-price">&#163;3.49</td><td class="td-cal"><span class="low">261</span> kcal</td><td></td></tr>
-  <tr><td><div class="td-name">9 Piece Chicken McNuggets&#174;</div></td><td class="td-price">&#163;4.79</td><td class="td-cal">392 kcal</td><td></td></tr>
-  <tr><td><div class="td-name">20 Chicken McNuggets&#174; Sharebox&#174;</div></td><td class="td-price">&#163;6.99</td><td class="td-cal"><span class="high">869</span> kcal</td><td></td></tr>
-  <tr><td><div class="td-name">Chicken Selects&#174; (3 pieces)</div></td><td class="td-price">&#163;4.99</td><td class="td-cal">359 kcal</td><td></td></tr>
-  <tr><td><div class="td-name">9 Chicken Selects Sharebox&#174;</div></td><td class="td-price">&#163;9.19</td><td class="td-cal"><span class="high">1,008</span> kcal</td><td></td></tr>
-  <tr><td><div class="td-name">The McDonald&#x27;s Chicken Sharebox&#174;</div></td><td class="td-price">&#163;11.29</td><td class="td-cal"><span class="high">1,240</span> kcal</td><td></td></tr>
-  <tr><td><div class="td-name">Cheesy Garlic Bread Dippers (4 pcs)</div></td><td class="td-price">&#163;3.49</td><td class="td-cal"><span class="low">219</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="avail-badge avail-limited-badge">Limited</span></td></tr>
-  <tr><td><div class="td-name">Cheesy Garlic Bread Dippers Sharebox&#174;</div></td><td class="td-price">&#163;5.49</td><td class="td-cal"><span class="high">548</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="avail-badge avail-limited-badge">Limited</span></td></tr>
-  <tr><td><div class="td-name">Spicy Chicken McNuggets&#174; 6 pieces</div></td><td class="td-price">&#163;4.99</td><td class="td-cal"><span class="low">261</span> kcal</td><td><span class="avail-badge avail-limited-badge">Limited</span></td></tr>
-  <tr><td><div class="td-name">Spicy Chicken McNuggets&#174; 9 pieces</div></td><td class="td-price">&#163;6.49</td><td class="td-cal">392 kcal</td><td><span class="avail-badge avail-limited-badge">Limited</span></td></tr>
-    </tbody>
-  </table>
-</div>
+      <div class="menu-section-head">
+        <span class="menu-section-icon">&#127831;</span>
+        <span class="menu-section-title">McNuggets</span>
+        <span class="menu-section-count">10 items</span>
+      </div>
+      <p class="menu-section-desc">McNuggets, Chicken Selects and current dippers, including spicy limited-time variants and share boxes.</p>
+      <table class="menu-table">
+        <thead>
+          <tr><th style="width:52%">Item</th><th>Price</th><th>Calories</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><div class="td-name">6 Piece Chicken McNuggets&#174;</div></td><td class="td-price">&pound;3.49</td><td class="td-cal"><span class="low">261</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">9 Piece Chicken McNuggets&#174;</div></td><td class="td-price">&pound;4.79</td><td class="td-cal">392 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">20 Chicken McNuggets&#174; Sharebox&#174;</div></td><td class="td-price">&pound;6.99</td><td class="td-cal"><span class="high">869</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Chicken Selects&#174; (3 pieces)</div></td><td class="td-price">&pound;4.99</td><td class="td-cal">359 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">9 Chicken Selects Sharebox&#174;</div></td><td class="td-price">&pound;9.19</td><td class="td-cal"><span class="high">1,008</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">The McDonald's Chicken Sharebox&#174;</div></td><td class="td-price">&pound;11.29</td><td class="td-cal"><span class="high">1,240</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Cheesy Garlic Bread Dippers (4 pcs)</div></td><td class="td-price">&pound;3.49</td><td class="td-cal"><span class="low">219</span> kcal</td><td><span class="avail-badge avail-limited-badge">Limited</span> <span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Cheesy Garlic Bread Dippers Sharebox&#174;</div></td><td class="td-price">&pound;5.49</td><td class="td-cal">548 kcal</td><td><span class="avail-badge avail-limited-badge">Limited</span> <span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Spicy Chicken McNuggets&#174; 6 pieces</div></td><td class="td-price">&pound;4.99</td><td class="td-cal"><span class="low">261</span> kcal</td><td><span class="avail-badge avail-limited-badge">Limited</span></td></tr>
+          <tr><td><div class="td-name">Spicy Chicken McNuggets&#174; 9 pieces</div></td><td class="td-price">&pound;6.49</td><td class="td-cal">392 kcal</td><td><span class="avail-badge avail-limited-badge">Limited</span></td></tr>
+        </tbody>
+      </table>
+    </div>
 
     <div class="menu-section" id="wraps" data-menu-category="wraps">
-  <div class="menu-section-head">
-    <span class="menu-section-icon">&#127791;</span>
-    <span class="menu-section-title">Wraps</span>
-    <span class="menu-section-count">6 wraps</span>
-  </div>
-  <p class="menu-section-desc">McDonald's wraps now cover sweet chilli, BBQ & bacon, and the limited-time tikka chicken flavours in both crispy and grilled builds.</p>
-  <table class="menu-table">
-    <thead>
-      <tr><th style="width:40%">Item</th><th>Price</th><th>Calories</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-  <tr><td><div class="td-name">Crispy Sweet Chilli Chicken Wrap</div><div class="td-desc">Crispy chicken with sweet chilli sauce</div></td><td class="td-price">&#163;4.99</td><td class="td-cal">482 kcal</td><td></td></tr>
-  <tr><td><div class="td-name">Grilled Sweet Chilli Chicken Wrap</div><div class="td-desc">Grilled chicken with sweet chilli sauce</div></td><td class="td-price">&#163;4.99</td><td class="td-cal">320 kcal</td><td></td></tr>
-  <tr><td><div class="td-name">Crispy BBQ &amp; Bacon Wrap</div><div class="td-desc">Crispy chicken, smoky BBQ sauce and bacon</div></td><td class="td-price">&#163;4.99</td><td class="td-cal">469 kcal</td><td></td></tr>
-  <tr><td><div class="td-name">Grilled BBQ &amp; Bacon Wrap</div><div class="td-desc">Grilled chicken, smoky BBQ sauce and bacon</div></td><td class="td-price">&#163;4.99</td><td class="td-cal">366 kcal</td><td></td></tr>
-  <tr><td><div class="td-name">Crispy Tikka Chicken Wrap</div><div class="td-desc">Crispy chicken wrap with tikka sauce</div></td><td class="td-price">&#163;4.99</td><td class="td-cal">471 kcal</td><td><span class="avail-badge avail-limited-badge">Limited</span></td></tr>
-  <tr><td><div class="td-name">Grilled Tikka Chicken Wrap</div><div class="td-desc">Grilled chicken wrap with tikka sauce</div></td><td class="td-price">&#163;4.99</td><td class="td-cal">342 kcal</td><td><span class="avail-badge avail-limited-badge">Limited</span></td></tr>
-    </tbody>
-  </table>
-</div>
-
-    <div class="menu-section" id="vegetarian" data-menu-category="vegetarian">
-  <div class="menu-section-head">
-    <span class="menu-section-icon">&#127793;</span>
-    <span class="menu-section-title">Vegetarian &amp; Plant-Based</span>
-    <span class="menu-section-count">13 items</span>
-  </div>
-  <p class="menu-section-desc">Vegetarian and plant-based choices include burgers, wraps, fries, sides and desserts. Vegan-friendly picks are marked so the section remains useful for quick filtering.</p>
-  <table class="menu-table">
-    <thead>
-      <tr><th style="width:40%">Item</th><th>Price</th><th>Calories</th><th>Diet</th></tr>
-    </thead>
-    <tbody>
-  <tr><td><div class="td-name">McPlant&#174;</div></td><td class="td-price">&#163;5.09</td><td class="td-cal">426 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-  <tr><td><div class="td-name">Vegetable Deluxe</div><div class="td-desc">Red pesto veggie goujons with sandwich sauce and lettuce</div></td><td class="td-price">&#163;4.89</td><td class="td-cal">361 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Veggie Dippers (4 pieces)</div></td><td class="td-price">&#163;4.79</td><td class="td-cal">321 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-  <tr><td><div class="td-name">The Spicy Veggie One</div></td><td class="td-price">&#163;4.99</td><td class="td-cal">365 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-  <tr><td><div class="td-name">Fries (Small)</div></td><td class="td-price">&#163;1.19</td><td class="td-cal"><span class="low">237</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-  <tr><td><div class="td-name">Side Salad</div></td><td class="td-price">&#163;1.19</td><td class="td-cal"><span class="low">18</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Oreo&#174; McFlurry&#174; (regular)</div></td><td class="td-price">&#163;2.19</td><td class="td-cal">330 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Smarties&#174; McFlurry&#174; (regular)</div></td><td class="td-price">&#163;2.19</td><td class="td-cal">330 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Chocolate Brownie</div></td><td class="td-price">&#163;2.29</td><td class="td-cal">316 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Mixed Berry Muffin</div></td><td class="td-price">&#163;2.29</td><td class="td-cal"><span class="low">298</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Sugar Donut</div></td><td class="td-price">&#163;2.09</td><td class="td-cal"><span class="low">195</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Carrot Sticks</div></td><td class="td-price">&#163;0.99</td><td class="td-cal"><span class="low">25</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-  <tr><td><div class="td-name">Apple Slices</div></td><td class="td-price">&#163;0.99</td><td class="td-cal"><span class="low">40</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-    </tbody>
-  </table>
-</div>
-
-    <div class="menu-section" id="happy-meal" data-menu-category="happy-meal">
-  <div class="menu-section-head">
-    <span class="menu-section-icon">&#127881;</span>
-    <span class="menu-section-title">Happy Meal</span>
-    <span class="menu-section-count">6 items</span>
-  </div>
-  <p class="menu-section-desc">The Happy Meal range now includes classic burger choices, nuggets, McFish and veggie dippers, all shown here with the current all-in price and calories.</p>
-  <table class="menu-table">
-    <thead>
-      <tr><th style="width:40%">Item</th><th>Price</th><th>Calories</th></tr>
-    </thead>
-    <tbody>
-  <tr><td><div class="td-name">Mayo Chicken Happy Meal</div></td><td class="td-price">&#163;3.89</td><td class="td-cal">382 kcal</td></tr>
-  <tr><td><div class="td-name">Hamburger Happy Meal</div></td><td class="td-price">&#163;3.89</td><td class="td-cal">350 kcal</td></tr>
-  <tr><td><div class="td-name">Cheeseburger Happy Meal</div></td><td class="td-price">&#163;3.89</td><td class="td-cal">398 kcal</td></tr>
-  <tr><td><div class="td-name">Chicken McNuggets&#174; 4 pieces Happy Meal</div></td><td class="td-price">&#163;3.89</td><td class="td-cal"><span class="low">274</span> kcal</td></tr>
-  <tr><td><div class="td-name">McFish&#174; Happy Meal</div></td><td class="td-price">&#163;3.89</td><td class="td-cal"><span class="low">290</span> kcal</td></tr>
-  <tr><td><div class="td-name">Veggie Dippers 2 pieces Happy Meal</div></td><td class="td-price">&#163;3.89</td><td class="td-cal"><span class="low">197</span> kcal</td></tr>
-    </tbody>
-  </table>
-</div>
-
-    <div class="menu-section" id="salads" data-menu-category="salads">
-  <div class="menu-section-head">
-    <span class="menu-section-icon">&#129367;</span>
-    <span class="menu-section-title">Salads</span>
-    <span class="menu-section-count">5 salads</span>
-  </div>
-  <p class="menu-section-desc">These salad options cover both crispy and grilled chicken builds, plus lighter greens for anyone who wants a lower-calorie side or lunch.</p>
-  <table class="menu-table">
-    <thead>
-      <tr><th style="width:40%">Item</th><th>Price</th><th>Calories</th></tr>
-    </thead>
-    <tbody>
-  <tr><td><div class="td-name">Side Salad</div></td><td class="td-price">&#163;1.19</td><td class="td-cal"><span class="low">18</span> kcal</td></tr>
-  <tr><td><div class="td-name">Crispy Chicken Salad</div></td><td class="td-price">&#163;3.29</td><td class="td-cal"><span class="low">265</span> kcal</td></tr>
-  <tr><td><div class="td-name">Crispy Chicken and Bacon Salad</div></td><td class="td-price">&#163;3.99</td><td class="td-cal">320 kcal</td></tr>
-  <tr><td><div class="td-name">Grilled Chicken Salad</div></td><td class="td-price">&#163;3.29</td><td class="td-cal"><span class="low">133</span> kcal</td></tr>
-  <tr><td><div class="td-name">Grilled Chicken and Bacon Salad</div></td><td class="td-price">&#163;4.09</td><td class="td-cal"><span class="low">183</span> kcal</td></tr>
-    </tbody>
-  </table>
-</div>
+      <div class="menu-section-head">
+        <span class="menu-section-icon">&#127791;</span>
+        <span class="menu-section-title">Wraps &amp; Salads</span>
+        <span class="menu-section-count">11 items</span>
+      </div>
+      <p class="menu-section-desc">Crispy and grilled wraps plus current salad options and side salad picks from the latest source.</p>
+      <table class="menu-table">
+        <thead>
+          <tr><th style="width:52%">Item</th><th>Price</th><th>Calories</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><div class="td-name">Crispy Sweet Chilli Chicken Wrap</div></td><td class="td-price">&pound;4.99</td><td class="td-cal">482 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Grilled Sweet Chilli Chicken Wrap</div></td><td class="td-price">&pound;4.99</td><td class="td-cal">320 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Crispy BBQ &amp; Bacon Wrap</div></td><td class="td-price">&pound;4.99</td><td class="td-cal">469 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Grilled BBQ &amp; Bacon Wrap</div></td><td class="td-price">&pound;4.99</td><td class="td-cal">366 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Crispy Tikka Chicken Wrap</div></td><td class="td-price">&pound;4.99</td><td class="td-cal">471 kcal</td><td><span class="avail-badge avail-limited-badge">Limited</span></td></tr>
+          <tr><td><div class="td-name">Grilled Tikka Chicken Wrap</div></td><td class="td-price">&pound;4.99</td><td class="td-cal">342 kcal</td><td><span class="avail-badge avail-limited-badge">Limited</span></td></tr>
+          <tr><td><div class="td-name">Side Salad</div></td><td class="td-price">&pound;1.19</td><td class="td-cal"><span class="low">18</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Crispy Chicken Salad</div></td><td class="td-price">&pound;3.29</td><td class="td-cal"><span class="low">265</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Crispy Chicken and Bacon Salad</div></td><td class="td-price">&pound;3.99</td><td class="td-cal">320 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Grilled Chicken Salad</div></td><td class="td-price">&pound;3.29</td><td class="td-cal"><span class="low">133</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Grilled Chicken and Bacon Salad</div></td><td class="td-price">&pound;4.09</td><td class="td-cal"><span class="low">183</span> kcal</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
 
     <div class="menu-section" id="breakfast" data-menu-category="breakfast">
-  <div class="menu-section-head">
-    <span class="menu-section-icon">&#129374;</span>
-    <span class="menu-section-title">Breakfast</span>
-    <span class="menu-section-count">20 items</span>
-  </div>
-  <p class="menu-section-desc">Breakfast is served until 11am and includes McMuffins, wraps, porridge, pancakes, hash browns and the returning Sausage & Egg McGriddles.</p>
-  <table class="menu-table">
-    <thead>
-      <tr><th style="width:38%">Item</th><th>Price</th><th>Meal Price</th><th>Calories</th></tr>
-    </thead>
-    <tbody>
-  <tr><td><div class="td-name">Sausage &amp; Egg McGriddles&#174;</div></td><td class="td-price">&#163;4.99</td><td class="td-price">&mdash;</td><td class="td-cal">492 kcal</td></tr>
-  <tr><td><div class="td-name">Breakfast Wrap with Ketchup</div></td><td class="td-price">&#163;5.29</td><td class="td-price">&mdash;</td><td class="td-cal"><span class="high">666</span> kcal</td></tr>
-  <tr><td><div class="td-name">Breakfast Wrap with Brown Sauce</div></td><td class="td-price">&#163;5.29</td><td class="td-price">&mdash;</td><td class="td-cal"><span class="high">666</span> kcal</td></tr>
-  <tr><td><div class="td-name">Double Bacon &amp; Egg McMuffin&#174;</div></td><td class="td-price">&#163;2.59</td><td class="td-price">&mdash;</td><td class="td-cal">377 kcal</td></tr>
-  <tr><td><div class="td-name">Sausage &amp; Egg McMuffin&#174;</div></td><td class="td-price">&#163;3.29</td><td class="td-price">&mdash;</td><td class="td-cal">424 kcal</td></tr>
-  <tr><td><div class="td-name">Bacon &amp; Egg McMuffin&#174;</div></td><td class="td-price">&#163;3.09</td><td class="td-price">&mdash;</td><td class="td-cal">336 kcal</td></tr>
-  <tr><td><div class="td-name">Double Sausage &amp; Egg McMuffin&#174;</div></td><td class="td-price">&#163;4.29</td><td class="td-price">&mdash;</td><td class="td-cal"><span class="high">552</span> kcal</td></tr>
-  <tr><td><div class="td-name">Egg &amp; Cheese McMuffin&#174;</div></td><td class="td-price">&#163;2.69</td><td class="td-price">&mdash;</td><td class="td-cal"><span class="low">296</span> kcal</td></tr>
-  <tr><td><div class="td-name">Muffin with Jam</div></td><td class="td-price">&#163;1.09</td><td class="td-price">&mdash;</td><td class="td-cal"><span class="low">214</span> kcal</td></tr>
-  <tr><td><div class="td-name">Sausage Sandwich with Ketchup</div></td><td class="td-price">&#163;3.59</td><td class="td-price">&mdash;</td><td class="td-cal">327 kcal</td></tr>
-  <tr><td><div class="td-name">Sausage Sandwich with Brown Sauce</div></td><td class="td-price">&#163;3.59</td><td class="td-price">&mdash;</td><td class="td-cal">330 kcal</td></tr>
-  <tr><td><div class="td-name">Cheesy Bacon Flatbread</div></td><td class="td-price">&#163;3.59</td><td class="td-price">&#163;4.69</td><td class="td-cal"><span class="low">280</span> kcal</td></tr>
-  <tr><td><div class="td-name">Pancakes &amp; Syrup</div><div class="td-desc">Three fluffy pancakes with maple syrup</div></td><td class="td-price">&#163;3.59</td><td class="td-price">&#8212;</td><td class="td-cal">464 kcal</td></tr>
-  <tr><td><div class="td-name">Pancakes &amp; Sausage with Syrup</div></td><td class="td-price">&#163;3.99</td><td class="td-price">&mdash;</td><td class="td-cal"><span class="high">592</span> kcal</td></tr>
-  <tr><td><div class="td-name">Hash Brown</div></td><td class="td-price">&#163;1.89</td><td class="td-price">&#8212;</td><td class="td-cal"><span class="low">127</span> kcal</td></tr>
-  <tr><td><div class="td-name">Porridge</div></td><td class="td-price">&#163;1.99</td><td class="td-price">&mdash;</td><td class="td-cal"><span class="low">154</span> kcal</td></tr>
-  <tr><td><div class="td-name">Porridge with Sugar</div></td><td class="td-price">&#163;1.99</td><td class="td-price">&mdash;</td><td class="td-cal"><span class="low">166</span> kcal</td></tr>
-  <tr><td><div class="td-name">Porridge with Strawberry Jam</div></td><td class="td-price">&#163;1.99</td><td class="td-price">&mdash;</td><td class="td-cal"><span class="low">189</span> kcal</td></tr>
-  <tr><td><div class="td-name">Porridge with Lyle&#x27;s Golden Syrup&#174;</div></td><td class="td-price">&#163;1.99</td><td class="td-price">&mdash;</td><td class="td-cal"><span class="low">193</span> kcal</td></tr>
-  <tr><td><div class="td-name">Flahavan&#x27;s&#174; Quick Oats&#174; (selected)</div></td><td class="td-price">&#163;1.79</td><td class="td-price">&mdash;</td><td class="td-cal"><span class="low">143</span> kcal</td></tr>
-    </tbody>
-  </table>
-</div>
+      <div class="menu-section-head">
+        <span class="menu-section-icon">&#129374;</span>
+        <span class="menu-section-title">Breakfast</span>
+        <span class="menu-section-count">20 items</span>
+      </div>
+      <p class="menu-section-desc">Breakfast is served until 11am and includes McMuffins, wraps, pancakes, porridge and the returning McGriddles.</p>
+      <table class="menu-table">
+        <thead>
+          <tr><th style="width:52%">Item</th><th>Price</th><th>Calories</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><div class="td-name">Sausage &amp; Egg McGriddles&#174;</div></td><td class="td-price">&pound;4.99</td><td class="td-cal">492 kcal</td><td><span class="avail-badge avail-limited-badge">Limited</span></td></tr>
+          <tr><td><div class="td-name">Breakfast Wrap with Ketchup</div></td><td class="td-price">&pound;5.29</td><td class="td-cal">666 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Breakfast Wrap with Brown Sauce</div></td><td class="td-price">&pound;5.29</td><td class="td-cal">666 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Double Bacon &amp; Egg McMuffin&#174;</div></td><td class="td-price">&pound;2.59</td><td class="td-cal">377 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Sausage &amp; Egg McMuffin&#174;</div></td><td class="td-price">&pound;3.29</td><td class="td-cal">424 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Bacon &amp; Egg McMuffin&#174;</div></td><td class="td-price">&pound;3.09</td><td class="td-cal">336 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Double Sausage &amp; Egg McMuffin&#174;</div></td><td class="td-price">&pound;4.29</td><td class="td-cal">552 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Egg &amp; Cheese McMuffin&#174;</div></td><td class="td-price">&pound;2.69</td><td class="td-cal"><span class="low">296</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Muffin with Jam</div></td><td class="td-price">&pound;1.09</td><td class="td-cal"><span class="low">214</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Sausage Sandwich with Ketchup</div></td><td class="td-price">&pound;3.59</td><td class="td-cal">327 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Sausage Sandwich with Brown Sauce</div></td><td class="td-price">&pound;3.59</td><td class="td-cal">330 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Cheesy Bacon Flatbread</div></td><td class="td-price">&pound;3.59</td><td class="td-cal"><span class="low">280</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Pancakes &amp; Syrup</div></td><td class="td-price">&pound;3.59</td><td class="td-cal">464 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Pancakes &amp; Sausage with Syrup</div></td><td class="td-price">&pound;3.99</td><td class="td-cal">592 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Hash Brown</div></td><td class="td-price">&pound;1.89</td><td class="td-cal"><span class="low">127</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">Porridge</div></td><td class="td-price">&pound;1.99</td><td class="td-cal"><span class="low">154</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Porridge with Sugar</div></td><td class="td-price">&pound;1.99</td><td class="td-cal"><span class="low">166</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Porridge with Strawberry Jam</div></td><td class="td-price">&pound;1.99</td><td class="td-cal"><span class="low">189</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Porridge with Lyle's Golden Syrup&#174;</div></td><td class="td-price">&pound;1.99</td><td class="td-cal"><span class="low">193</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Flahavan's&#174; Quick Oats&#174; (selected)</div></td><td class="td-price">&pound;1.79</td><td class="td-cal"><span class="low">143</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+        </tbody>
+      </table>
+    </div>
 
-    <div class="menu-section" id="bfast-saver" data-menu-category="bfast-saver">
-  <div class="menu-section-head">
-    <span class="menu-section-icon">&#127859;</span>
-    <span class="menu-section-title">Breakfast Saver Menu</span>
-    <span class="menu-section-count">13 items</span>
-  </div>
-  <p class="menu-section-desc">If you are ordering before 11am, the Breakfast Saver line-up gives the best value. It combines breakfast mains, juices, coffee, hash browns and porridge at lower entry prices.</p>
-  <table class="menu-table">
-    <thead>
-      <tr><th style="width:40%">Item</th><th>Price</th><th>Calories</th></tr>
-    </thead>
-    <tbody>
-  <tr><td><div class="td-name">Sausage Sandwich with Ketchup</div></td><td class="td-price">&#163;2.99</td><td class="td-cal">327 kcal</td></tr>
-  <tr><td><div class="td-name">Sausage Sandwich with Brown Sauce</div></td><td class="td-price">&#163;2.99</td><td class="td-cal">330 kcal</td></tr>
-  <tr><td><div class="td-name">Cheesy Bacon Flatbread</div></td><td class="td-price">&#163;2.99</td><td class="td-cal"><span class="low">280</span> kcal</td></tr>
-  <tr><td><div class="td-name">Apple Slices</div></td><td class="td-price">&#163;0.99</td><td class="td-cal"><span class="low">40</span> kcal</td></tr>
-  <tr><td><div class="td-name">Hash Brown</div></td><td class="td-price">&#163;1.19</td><td class="td-cal"><span class="low">127</span> kcal</td></tr>
-  <tr><td><div class="td-name">White Coffee</div></td><td class="td-price">&#163;0.99</td><td class="td-cal"><span class="low">54</span> kcal</td></tr>
-  <tr><td><div class="td-name">Americano</div></td><td class="td-price">&#163;0.99</td><td class="td-cal"><span class="low">6</span> kcal</td></tr>
-  <tr><td><div class="td-name">Tropicana&#174; Apple Juice</div></td><td class="td-price">&#163;1.29</td><td class="td-cal"><span class="low">101</span> kcal</td></tr>
-  <tr><td><div class="td-name">Tropicana&#174; Orange Juice</div></td><td class="td-price">&#163;1.29</td><td class="td-cal"><span class="low">94</span> kcal</td></tr>
-  <tr><td><div class="td-name">Porridge</div></td><td class="td-price">&#163;1.99</td><td class="td-cal"><span class="low">154</span> kcal</td></tr>
-  <tr><td><div class="td-name">Porridge with Sugar</div></td><td class="td-price">&#163;1.99</td><td class="td-cal"><span class="low">166</span> kcal</td></tr>
-  <tr><td><div class="td-name">Porridge with Strawberry Jam</div></td><td class="td-price">&#163;1.99</td><td class="td-cal"><span class="low">189</span> kcal</td></tr>
-  <tr><td><div class="td-name">Porridge with Lyle&#x27;s Golden Syrup&#174;</div></td><td class="td-price">&#163;1.99</td><td class="td-cal"><span class="low">193</span> kcal</td></tr>
-    </tbody>
-  </table>
-</div>
+    <div class="menu-section" id="bsaver" data-menu-category="bsaver">
+      <div class="menu-section-head">
+        <span class="menu-section-icon">&#127859;</span>
+        <span class="menu-section-title">Breakfast Saver</span>
+        <span class="menu-section-count">13 items</span>
+      </div>
+      <p class="menu-section-desc">Budget breakfast sandwiches, drinks and porridge options available before 11am.</p>
+      <table class="menu-table">
+        <thead>
+          <tr><th style="width:52%">Item</th><th>Price</th><th>Calories</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><div class="td-name">Sausage Sandwich with Ketchup</div></td><td class="td-price">&pound;2.99</td><td class="td-cal">327 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Sausage Sandwich with Brown Sauce</div></td><td class="td-price">&pound;2.99</td><td class="td-cal">330 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Cheesy Bacon Flatbread</div></td><td class="td-price">&pound;2.99</td><td class="td-cal"><span class="low">280</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Apple Slices</div></td><td class="td-price">&pound;0.99</td><td class="td-cal"><span class="low">40</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">Hash Brown</div></td><td class="td-price">&pound;1.19</td><td class="td-cal"><span class="low">127</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">White Coffee</div></td><td class="td-price">&pound;0.99</td><td class="td-cal"><span class="low">54</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Americano</div></td><td class="td-price">&pound;0.99</td><td class="td-cal"><span class="low">6</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Tropicana&#174; Apple Juice</div></td><td class="td-price">&pound;1.29</td><td class="td-cal"><span class="low">101</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">Tropicana&#174; Orange Juice</div></td><td class="td-price">&pound;1.29</td><td class="td-cal"><span class="low">94</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">Porridge</div></td><td class="td-price">&pound;1.99</td><td class="td-cal"><span class="low">154</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Porridge with Sugar</div></td><td class="td-price">&pound;1.99</td><td class="td-cal"><span class="low">166</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Porridge with Strawberry Jam</div></td><td class="td-price">&pound;1.99</td><td class="td-cal"><span class="low">189</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Porridge with Lyle's Golden Syrup&#174;</div></td><td class="td-price">&pound;1.99</td><td class="td-cal"><span class="low">193</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="menu-section" id="vegetarian" data-menu-category="vegetarian">
+      <div class="menu-section-head">
+        <span class="menu-section-icon">&#127793;</span>
+        <span class="menu-section-title">Vegetarian</span>
+        <span class="menu-section-count">13 items</span>
+      </div>
+      <p class="menu-section-desc">Vegetarian-friendly mains, desserts and sides currently listed in the menu source.</p>
+      <table class="menu-table">
+        <thead>
+          <tr><th style="width:52%">Item</th><th>Price</th><th>Calories</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><div class="td-name">McPlant&#174;</div></td><td class="td-price">&pound;5.09</td><td class="td-cal">426 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">Vegetable Deluxe</div></td><td class="td-price">&pound;4.89</td><td class="td-cal">361 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Veggie Dippers (4 pieces)</div></td><td class="td-price">&pound;4.79</td><td class="td-cal">321 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">The Spicy Veggie One</div></td><td class="td-price">&pound;4.99</td><td class="td-cal">365 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">McDonald's Fries (small)</div></td><td class="td-price">&pound;1.19</td><td class="td-cal"><span class="low">237</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">Side Salad</div></td><td class="td-price">&pound;1.19</td><td class="td-cal"><span class="low">18</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Oreo&#174; McFlurry&#174; (regular)</div></td><td class="td-price">&pound;2.19</td><td class="td-cal">330 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Smarties&#174; McFlurry&#174; (regular)</div></td><td class="td-price">&pound;2.19</td><td class="td-cal">330 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Chocolate Brownie</div></td><td class="td-price">&pound;2.29</td><td class="td-cal">316 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Mixed Berry Muffin</div></td><td class="td-price">&pound;2.29</td><td class="td-cal"><span class="low">298</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Sugar Donut</div></td><td class="td-price">&pound;2.09</td><td class="td-cal"><span class="low">195</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Carrot Sticks</div></td><td class="td-price">&pound;0.99</td><td class="td-cal"><span class="low">25</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">Apple Slices</div></td><td class="td-price">&pound;0.99</td><td class="td-cal"><span class="low">40</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="menu-section" id="vegan" data-menu-category="vegan">
+      <div class="menu-section-head">
+        <span class="menu-section-icon">&#127807;</span>
+        <span class="menu-section-title">Vegan</span>
+        <span class="menu-section-count">5 items</span>
+      </div>
+      <p class="menu-section-desc">Current vegan-friendly picks including the McPlant, Veggie Dippers, fries and fruit or veg sides.</p>
+      <table class="menu-table">
+        <thead>
+          <tr><th style="width:52%">Item</th><th>Price</th><th>Calories</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><div class="td-name">McPlant&#174;</div></td><td class="td-price">&pound;5.09</td><td class="td-cal">426 kcal</td><td><span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">McDonald's Fries (small)</div></td><td class="td-price">&pound;1.19</td><td class="td-cal"><span class="low">237</span> kcal</td><td><span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">Carrot Sticks</div></td><td class="td-price">&pound;0.99</td><td class="td-cal"><span class="low">25</span> kcal</td><td><span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">Apple Slices</div></td><td class="td-price">&pound;0.99</td><td class="td-cal"><span class="low">40</span> kcal</td><td><span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">Veggie Dippers (4 pieces)</div></td><td class="td-price">&pound;4.79</td><td class="td-cal">321 kcal</td><td><span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="menu-section" id="happymeal" data-menu-category="happymeal">
+      <div class="menu-section-head">
+        <span class="menu-section-icon">&#127881;</span>
+        <span class="menu-section-title">Happy Meal</span>
+        <span class="menu-section-count">6 items</span>
+      </div>
+      <p class="menu-section-desc">Current Happy Meal mains with their latest all-in prices and calories.</p>
+      <table class="menu-table">
+        <thead>
+          <tr><th style="width:52%">Item</th><th>Price</th><th>Calories</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><div class="td-name">Mayo Chicken Happy Meal</div></td><td class="td-price">&pound;3.89</td><td class="td-cal">382 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Hamburger Happy Meal</div></td><td class="td-price">&pound;3.89</td><td class="td-cal">350 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Cheeseburger Happy Meal</div></td><td class="td-price">&pound;3.89</td><td class="td-cal">398 kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Chicken McNuggets&#174; 4 pieces Happy Meal</div></td><td class="td-price">&pound;3.89</td><td class="td-cal"><span class="low">274</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">McFish&#174; Happy Meal</div></td><td class="td-price">&pound;3.89</td><td class="td-cal"><span class="low">290</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Veggie Dippers 2 pieces Happy Meal</div></td><td class="td-price">&pound;3.89</td><td class="td-cal"><span class="low">197</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+        </tbody>
+      </table>
+    </div>
 
     <div class="menu-section" id="mccafe" data-menu-category="mccafe">
-  <div class="menu-section-head">
-    <span class="menu-section-icon">&#9749;</span>
-    <span class="menu-section-title">McCaf&eacute;</span>
-    <span class="menu-section-count">15 drinks</span>
-  </div>
-  <p class="menu-section-desc">McCaf&eacute; now covers core coffees, tea, hot chocolate and chilled favourites like iced latte, frapp&eacute; and smoothie options. Limited drinks are marked in the status column.</p>
-  <table class="menu-table">
-    <thead>
-      <tr><th style="width:40%">Item</th><th>Regular</th><th>Large</th><th>Calories</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-  <tr><td><div class="td-name">Donut Crumble Latte</div></td><td class="td-price">&#163;2.99</td><td class="td-price">&mdash;</td><td class="td-cal"><span class="low">220</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="avail-badge avail-limited-badge">Limited</span></td></tr>
-  <tr><td><div class="td-name">Toffee Latte</div></td><td class="td-price">&#163;1.69</td><td class="td-price">&#163;2.49</td><td class="td-cal"><span class="low">150</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Flat White</div></td><td class="td-price">&#163;1.69</td><td class="td-price">&mdash;</td><td class="td-cal"><span class="low">86</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Latte</div></td><td class="td-price">&#163;1.69</td><td class="td-price">&#163;2.49</td><td class="td-cal"><span class="low">145</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Cappuccino</div></td><td class="td-price">&#163;1.69</td><td class="td-price">&#163;2.49</td><td class="td-cal"><span class="low">97</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">White Coffee</div></td><td class="td-price">&#163;0.99</td><td class="td-price">&#8212;</td><td class="td-cal"><span class="low">54</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Americano</div></td><td class="td-price">&#163;0.99</td><td class="td-price">&mdash;</td><td class="td-cal"><span class="low">6</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-  <tr><td><div class="td-name">Espresso</div></td><td class="td-price">&#163;0.99</td><td class="td-price">&mdash;</td><td class="td-cal"><span class="low">1</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-  <tr><td><div class="td-name">Espresso Single</div></td><td class="td-price">&#163;0.99</td><td class="td-price">&#8212;</td><td class="td-cal"><span class="low">1</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-  <tr><td><div class="td-name">Hot Chocolate</div></td><td class="td-price">&#163;0.99</td><td class="td-price">&#163;1.69</td><td class="td-cal"><span class="low">173</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Tea</div></td><td class="td-price">&#163;0.99</td><td class="td-price">&#8212;</td><td class="td-cal"><span class="low">6</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Iced Latte</div></td><td class="td-price">&#163;2.49</td><td class="td-price">&mdash;</td><td class="td-cal"><span class="low">136</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Caramel Iced Frapp&#233;</div></td><td class="td-price">&#163;2.79</td><td class="td-price">&#163;2.99</td><td class="td-cal"><span class="low">278</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Frozen Strawberry Lemonade</div></td><td class="td-price">&#163;2.49</td><td class="td-price">&mdash;</td><td class="td-cal"><span class="low">190</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Mango &amp; Pineapple Smoothie</div></td><td class="td-price">&#163;2.79</td><td class="td-price">&mdash;</td><td class="td-cal"><span class="low">162</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-    </tbody>
-  </table>
-</div>
-
-    <div class="menu-section" id="mcflurry" data-menu-category="mcflurry">
-  <div class="menu-section-head">
-    <span class="menu-section-icon">&#127846;</span>
-    <span class="menu-section-title">McFlurry</span>
-    <span class="menu-section-count">4 current flavours</span>
-  </div>
-  <p class="menu-section-desc">The current McFlurry line-up combines the core Oreo and Smarties choices with two seasonal Cadbury flavours. Mini and regular sizes are shown whenever they are listed in the latest source menu.</p>
-  <table class="menu-table">
-    <thead>
-      <tr><th style="width:40%">Flavour</th><th>Mini (M)</th><th>Regular (R)</th><th>Calories</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-  <tr><td><div class="td-name">Oreo&#174; McFlurry&#174;</div></td><td class="td-price">&#163;1.39</td><td class="td-price">&#163;2.19</td><td class="td-cal"><span class="low">188</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Smarties&#174; McFlurry&#174;</div></td><td class="td-price">&#163;1.39</td><td class="td-price">&#163;2.19</td><td class="td-cal"><span class="low">195</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Cadbury Creme Egg&#174; McFlurry&#174;</div></td><td class="td-price">&mdash;</td><td class="td-price">&#163;2.49</td><td class="td-cal"><span class="low">290</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="avail-badge avail-limited-badge">Limited</span></td></tr>
-  <tr><td><div class="td-name">Cadbury Mini Eggs&#174; McFlurry&#174;</div></td><td class="td-price">&mdash;</td><td class="td-price">&#163;2.49</td><td class="td-cal">310 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="avail-badge avail-limited-badge">Limited</span></td></tr>
-    </tbody>
-  </table>
-</div>
-
-    <div class="menu-section" id="drinks" data-menu-category="drinks">
-  <div class="menu-section-head">
-    <span class="menu-section-icon">&#127865;</span>
-    <span class="menu-section-title">Milkshakes &amp; Cold Drinks</span>
-    <span class="menu-section-count">21 drinks</span>
-  </div>
-  <p class="menu-section-desc">Cold drinks range from milkshakes and frapp&eacute;s to no-sugar fizzy drinks, juices and smoothies. Where the latest source only lists a base price, that price is shown in the first size column.</p>
-  <table class="menu-table">
-    <thead>
-      <tr><th style="width:38%">Item</th><th>Small (S)</th><th>Medium (M)</th><th>Large (L)</th></tr>
-    </thead>
-    <tbody>
-  <tr><td><div class="td-name">Chocolate Milkshake</div></td><td class="td-price">&#163;1.99</td><td class="td-price">&#163;2.39</td><td class="td-price">&#163;2.69</td></tr>
-  <tr><td><div class="td-name">Strawberry Milkshake</div></td><td class="td-price">&#163;1.99</td><td class="td-price">&#163;2.39</td><td class="td-price">&#163;2.69</td></tr>
-  <tr><td><div class="td-name">Banana Milkshake</div></td><td class="td-price">&#163;1.99</td><td class="td-price">&#163;2.39</td><td class="td-price">&#163;2.69</td></tr>
-  <tr><td><div class="td-name">Vanilla Milkshake</div></td><td class="td-price">&#163;1.99</td><td class="td-price">&#163;2.39</td><td class="td-price">&#163;2.69</td></tr>
-  <tr><td><div class="td-name">Cadbury Mini Eggs&#174; Frapp&#233;</div></td><td class="td-price">&#163;3.49</td><td class="td-price">&mdash;</td><td class="td-price">&mdash;</td></tr>
-  <tr><td><div class="td-name">Frozen Strawberry Lemonade</div></td><td class="td-price">&#163;2.49</td><td class="td-price">&mdash;</td><td class="td-price">&mdash;</td></tr>
-  <tr><td><div class="td-name">Iced Latte</div></td><td class="td-price">&#163;2.49</td><td class="td-price">&mdash;</td><td class="td-price">&mdash;</td></tr>
-  <tr><td><div class="td-name">Caramel Iced Frapp&#233;</div></td><td class="td-price">&#163;2.79</td><td class="td-price">&mdash;</td><td class="td-price">&mdash;</td></tr>
-  <tr><td><div class="td-name">Mango &amp; Pineapple Smoothie</div></td><td class="td-price">&#163;2.79</td><td class="td-price">&mdash;</td><td class="td-price">&mdash;</td></tr>
-  <tr><td><div class="td-name">Coca-Cola&#174; Zero Sugar</div></td><td class="td-price">&#163;1.09</td><td class="td-price">&mdash;</td><td class="td-price">&mdash;</td></tr>
-  <tr><td><div class="td-name">Diet Coke&#174;</div></td><td class="td-price">&#163;1.09</td><td class="td-price">&mdash;</td><td class="td-price">&mdash;</td></tr>
-  <tr><td><div class="td-name">Sprite&#174; Zero</div></td><td class="td-price">&#163;1.09</td><td class="td-price">&mdash;</td><td class="td-price">&mdash;</td></tr>
-  <tr><td><div class="td-name">Fanta&#174; Orange Zero</div></td><td class="td-price">&#163;1.09</td><td class="td-price">&mdash;</td><td class="td-price">&mdash;</td></tr>
-  <tr><td><div class="td-name">Oasis&#174; Summer Fruits Zero</div></td><td class="td-price">&#163;1.09</td><td class="td-price">&mdash;</td><td class="td-price">&mdash;</td></tr>
-  <tr><td><div class="td-name">Coca-Cola&#174; Classic</div></td><td class="td-price">&#163;1.09</td><td class="td-price">&mdash;</td><td class="td-price">&mdash;</td></tr>
-  <tr><td><div class="td-name">IRN-BRU&#174; (selected restaurants)</div></td><td class="td-price">&#163;1.09</td><td class="td-price">&mdash;</td><td class="td-price">&mdash;</td></tr>
-  <tr><td><div class="td-name">Organic Milk (selected restaurants)</div></td><td class="td-price">&#163;0.99</td><td class="td-price">&mdash;</td><td class="td-price">&mdash;</td></tr>
-  <tr><td><div class="td-name">Tropicana&#174; Apple Juice</div></td><td class="td-price">&#163;1.29</td><td class="td-price">&mdash;</td><td class="td-price">&mdash;</td></tr>
-  <tr><td><div class="td-name">Tropicana&#174; Orange Juice</div></td><td class="td-price">&#163;1.29</td><td class="td-price">&mdash;</td><td class="td-price">&mdash;</td></tr>
-  <tr><td><div class="td-name">Robinsons&#174; Fruit Shoot</div></td><td class="td-price">&#163;0.99</td><td class="td-price">&mdash;</td><td class="td-price">&mdash;</td></tr>
-  <tr><td><div class="td-name">Semi Skimmed Milk 250ml (selected)</div></td><td class="td-price">&#163;0.99</td><td class="td-price">&mdash;</td><td class="td-price">&mdash;</td></tr>
-    </tbody>
-  </table>
-</div>
-
-    <div class="menu-section" id="sides" data-menu-category="sides">
-  <div class="menu-section-head">
-    <span class="menu-section-icon">&#127839;</span>
-    <span class="menu-section-title">Sides &amp; Fries</span>
-    <span class="menu-section-count">7 items</span>
-  </div>
-  <p class="menu-section-desc">Fries still anchor the side menu, but the latest April 2026 update also includes chilli cheese bites and lighter fruit and veg sides such as pineapple and carrot sticks.</p>
-  <table class="menu-table">
-    <thead>
-      <tr><th style="width:40%">Item</th><th>Price</th><th>Calories</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-  <tr><td><div class="td-name">Fries (Small)</div></td><td class="td-price">&#163;1.19</td><td class="td-cal"><span class="low">237</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-  <tr><td><div class="td-name">Fries (Medium)</div></td><td class="td-price">&#163;1.79</td><td class="td-cal">337 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-  <tr><td><div class="td-name">Fries (Large)</div></td><td class="td-price">&#163;1.99</td><td class="td-cal">444 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-  <tr><td><div class="td-name">Chilli Cheese Bites</div></td><td class="td-price">&#163;3.29</td><td class="td-cal">340 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="avail-badge avail-limited-badge">Limited</span></td></tr>
-  <tr><td><div class="td-name">Side Salad</div></td><td class="td-price">&#163;1.19</td><td class="td-cal"><span class="low">18</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Pineapple Stick</div></td><td class="td-price">&#163;0.99</td><td class="td-cal"><span class="low">20</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-  <tr><td><div class="td-name">Carrot Sticks</div></td><td class="td-price">&#163;0.99</td><td class="td-cal"><span class="low">25</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-    </tbody>
-  </table>
-</div>
-
-    <div class="menu-section" id="sauces" data-menu-category="sauces">
-  <div class="menu-section-head">
-    <span class="menu-section-icon">&#129514;</span>
-    <span class="menu-section-title">Condiments &amp; Sauces</span>
-    <span class="menu-section-count">17 items</span>
-  </div>
-  <p class="menu-section-desc">The latest condiment list includes nugget dips, breakfast extras, salad dressing and coffee add-ons. These items are currently listed as free in the attached April 2026 source.</p>
-  <table class="menu-table">
-    <thead>
-      <tr><th style="width:38%">Item</th><th>Price</th><th>Calories</th><th>Best With</th><th>Diet</th></tr>
-    </thead>
-    <tbody>
-  <tr><td><div class="td-name">Spicy Chilli Dip (for Spicy McNuggets&#174;)</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">55</span> kcal</td><td>Menu extra</td><td></td></tr>
-  <tr><td><div class="td-name">Rich Tomato Dip (25ml)</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">20</span> kcal</td><td>Fries, burgers</td><td><span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-  <tr><td><div class="td-name">Tomato Ketchup (25ml)</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">23</span> kcal</td><td>Fries, burgers</td><td><span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-  <tr><td><div class="td-name">BBQ Dip (25ml)</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">84</span> kcal</td><td>McNuggets, fries</td><td><span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-  <tr><td><div class="td-name">Sweet &amp; Sour Dip (25ml)</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">51</span> kcal</td><td>McNuggets, Selects</td><td><span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-  <tr><td><div class="td-name">Sweet Curry Dip (25ml)</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">62</span> kcal</td><td>McNuggets, Selects</td><td><span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-  <tr><td><div class="td-name">Garlic Mayo Dip</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">95</span> kcal</td><td>Wraps, nuggets</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Sweet Chilli Dip</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">89</span> kcal</td><td>Wraps, nuggets</td><td><span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-  <tr><td><div class="td-name">Sweet &amp; Smoky BBQ Dip (40g)</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">112</span> kcal</td><td>Sharers, chicken</td><td><span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-  <tr><td><div class="td-name">McDonald&#x27;s Balsamic Dressing (30g)</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">38</span> kcal</td><td>Salads</td><td><span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-  <tr><td><div class="td-name">Pancake Syrup (40g)</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">94</span> kcal</td><td>Pancakes, porridge</td><td><span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-  <tr><td><div class="td-name">Strawberry Jam (15g)</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">37</span> kcal</td><td>Muffins, porridge</td><td><span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-  <tr><td><div class="td-name">Lurpak Spreadable</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">72</span> kcal</td><td>Muffins, breakfast</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Milk Portion</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">14</span> kcal</td><td>Tea, coffee</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Canderel&#174; Yellow Sweetener Sachet</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">2</span> kcal</td><td>Menu extra</td><td></td></tr>
-  <tr><td><div class="td-name">Sugar Stick</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">20</span> kcal</td><td>Tea, coffee, porridge</td><td><span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-  <tr><td><div class="td-name">Golden Syrup</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">59</span> kcal</td><td>Porridge, pancakes</td><td><span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-    </tbody>
-  </table>
-</div>
-
-    <div class="menu-section" id="under400" data-menu-category="under400">
-  <div class="menu-section-head">
-    <span class="menu-section-icon">&#128170;</span>
-    <span class="menu-section-title">Under 400 Kcal</span>
-    <span class="menu-section-count">10 lighter picks</span>
-  </div>
-  <p class="menu-section-desc">This shortlist pulls together current menu items that stay under 400 kcal without changing the site design. It makes the lighter choices easier to find in one place.</p>
-  <table class="menu-table">
-    <thead>
-      <tr><th style="width:40%">Item</th><th>Price</th><th>Calories</th></tr>
-    </thead>
-    <tbody>
-  <tr><td><div class="td-name">Grilled Chicken Salad</div></td><td class="td-price">&#163;3.29</td><td class="td-cal"><span class="low">133</span> kcal</td></tr>
-  <tr><td><div class="td-name">Iced Latte</div></td><td class="td-price">&#163;2.49</td><td class="td-cal"><span class="low">136</span> kcal</td></tr>
-  <tr><td><div class="td-name">Porridge</div></td><td class="td-price">&#163;1.99</td><td class="td-cal"><span class="low">154</span> kcal</td></tr>
-  <tr><td><div class="td-name">Apple Pie</div></td><td class="td-price">&#163;1.89</td><td class="td-cal"><span class="low">243</span> kcal</td></tr>
-  <tr><td><div class="td-name">Vegetable Deluxe</div><div class="td-desc">Red pesto veggie goujons with sandwich sauce and lettuce</div></td><td class="td-price">&#163;4.89</td><td class="td-cal">361 kcal</td></tr>
-  <tr><td><div class="td-name">Frozen Strawberry Lemonade</div></td><td class="td-price">&#163;2.49</td><td class="td-cal"><span class="low">190</span> kcal</td></tr>
-    </tbody>
-  </table>
-</div>
+      <div class="menu-section-head">
+        <span class="menu-section-icon">&#9749;</span>
+        <span class="menu-section-title">McCaf&#233;</span>
+        <span class="menu-section-count">15 items</span>
+      </div>
+      <p class="menu-section-desc">Hot and iced McCaf&#233; drinks, frapp&#233;s and smoothies from the latest UK menu.</p>
+      <table class="menu-table">
+        <thead>
+          <tr><th style="width:52%">Item</th><th>Price</th><th>Calories</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><div class="td-name">Donut Crumble Latte</div></td><td class="td-price">&pound;2.99</td><td class="td-cal"><span class="low">220</span> kcal</td><td><span class="avail-badge avail-limited-badge">Limited</span> <span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Toffee Latte</div></td><td class="td-price">&pound;1.69</td><td class="td-cal"><span class="low">150</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Flat White</div></td><td class="td-price">&pound;1.69</td><td class="td-cal"><span class="low">86</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Latte</div></td><td class="td-price">&pound;1.69</td><td class="td-cal"><span class="low">145</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Cappuccino</div></td><td class="td-price">&pound;1.69</td><td class="td-cal"><span class="low">97</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">White Coffee</div></td><td class="td-price">&pound;0.99</td><td class="td-cal"><span class="low">54</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Americano</div></td><td class="td-price">&pound;0.99</td><td class="td-cal"><span class="low">6</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">Espresso</div></td><td class="td-price">&pound;0.99</td><td class="td-cal"><span class="low">1</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">Espresso Single</div></td><td class="td-price">&pound;0.99</td><td class="td-cal"><span class="low">1</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">Hot Chocolate</div></td><td class="td-price">&pound;0.99</td><td class="td-cal"><span class="low">173</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Tea</div></td><td class="td-price">&pound;0.99</td><td class="td-cal"><span class="low">6</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Iced Latte</div></td><td class="td-price">&pound;2.49</td><td class="td-cal"><span class="low">136</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Caramel Iced Frapp&#233;</div></td><td class="td-price">&pound;2.79</td><td class="td-cal"><span class="low">278</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Frozen Strawberry Lemonade</div></td><td class="td-price">&pound;2.49</td><td class="td-cal"><span class="low">190</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Mango &amp; Pineapple Smoothie</div></td><td class="td-price">&pound;2.79</td><td class="td-cal"><span class="low">162</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+        </tbody>
+      </table>
+    </div>
 
     <div class="menu-section" id="desserts" data-menu-category="desserts">
-  <div class="menu-section-head">
-    <span class="menu-section-icon">&#127849;</span>
-    <span class="menu-section-title">Desserts</span>
-    <span class="menu-section-count">6 items</span>
-  </div>
-  <p class="menu-section-desc">Dessert classics now include the seasonal Chocolate Brownie Pie plus staples like Apple Pie, doughnuts, muffins and brownies. McFlurry flavours are listed in their own section above.</p>
-  <table class="menu-table">
-    <thead>
-      <tr><th style="width:40%">Item</th><th>Price</th><th>Calories</th><th>Status</th></tr>
-    </thead>
-    <tbody>
-  <tr><td><div class="td-name">Chocolate Brownie Pie</div><div class="td-desc">Warm chocolate-filled pie served for a limited time</div></td><td class="td-price">&#163;2.49</td><td class="td-cal">320 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="avail-badge avail-limited-badge">Limited</span></td></tr>
-  <tr><td><div class="td-name">Sugar Donut</div></td><td class="td-price">&#163;2.09</td><td class="td-cal"><span class="low">195</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Chocolate Brownie</div></td><td class="td-price">&#163;2.29</td><td class="td-cal">316 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Mixed Berry Muffin</div></td><td class="td-price">&#163;2.29</td><td class="td-cal"><span class="low">298</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Apple Pie</div></td><td class="td-price">&#163;1.89</td><td class="td-cal"><span class="low">243</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
-  <tr><td><div class="td-name">Apple Slices</div></td><td class="td-price">&#163;0.99</td><td class="td-cal"><span class="low">40</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
-    </tbody>
-  </table>
-</div>
+      <div class="menu-section-head">
+        <span class="menu-section-icon">&#127846;</span>
+        <span class="menu-section-title">Desserts &amp; McFlurry</span>
+        <span class="menu-section-count">12 items</span>
+      </div>
+      <p class="menu-section-desc">Current McFlurry flavours, pies, muffins, brownies and fruit desserts from the April 2026 menu.</p>
+      <table class="menu-table">
+        <thead>
+          <tr><th style="width:52%">Item</th><th>Price</th><th>Calories</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><div class="td-name">Oreo&#174; McFlurry&#174; (regular)</div></td><td class="td-price">&pound;2.19</td><td class="td-cal">330 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Oreo&#174; McFlurry&#174; (mini)</div></td><td class="td-price">&pound;1.39</td><td class="td-cal"><span class="low">188</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Smarties&#174; McFlurry&#174; (regular)</div></td><td class="td-price">&pound;2.19</td><td class="td-cal">330 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Smarties&#174; McFlurry&#174; (mini)</div></td><td class="td-price">&pound;1.39</td><td class="td-cal"><span class="low">195</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Cadbury Creme Egg&#174; McFlurry&#174;</div></td><td class="td-price">&pound;2.49</td><td class="td-cal"><span class="low">290</span> kcal</td><td><span class="avail-badge avail-limited-badge">Limited</span> <span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Cadbury Mini Eggs&#174; McFlurry&#174;</div></td><td class="td-price">&pound;2.49</td><td class="td-cal">310 kcal</td><td><span class="avail-badge avail-limited-badge">Limited</span> <span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Chocolate Brownie Pie</div></td><td class="td-price">&pound;2.49</td><td class="td-cal">320 kcal</td><td><span class="avail-badge avail-limited-badge">Limited</span> <span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Sugar Donut</div></td><td class="td-price">&pound;2.09</td><td class="td-cal"><span class="low">195</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Chocolate Brownie</div></td><td class="td-price">&pound;2.29</td><td class="td-cal">316 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Mixed Berry Muffin</div></td><td class="td-price">&pound;2.29</td><td class="td-cal"><span class="low">298</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Apple Pie</div></td><td class="td-price">&pound;1.89</td><td class="td-cal"><span class="low">243</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Apple Slices</div></td><td class="td-price">&pound;0.99</td><td class="td-cal"><span class="low">40</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+        </tbody>
+      </table>
+    </div>
 
-  </div>
-</section>
+    <div class="menu-section" id="drinks" data-menu-category="drinks">
+      <div class="menu-section-head">
+        <span class="menu-section-icon">&#127865;</span>
+        <span class="menu-section-title">Drinks</span>
+        <span class="menu-section-count">21 items</span>
+      </div>
+      <p class="menu-section-desc">Milkshakes, fizzy drinks, juice, smoothies and cold coffee drinks from the current menu source.</p>
+      <table class="menu-table">
+        <thead>
+          <tr><th style="width:52%">Item</th><th>Price</th><th>Calories</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><div class="td-name">Chocolate Milkshake (small/med/large)</div></td><td class="td-price">from &pound;1.99</td><td class="td-cal"><span class="low">235</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Strawberry Milkshake (small/med/large)</div></td><td class="td-price">from &pound;1.99</td><td class="td-cal"><span class="low">230</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Banana Milkshake (small/med/large)</div></td><td class="td-price">from &pound;1.99</td><td class="td-cal"><span class="low">228</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Vanilla Milkshake (small/med/large)</div></td><td class="td-price">from &pound;1.99</td><td class="td-cal"><span class="low">225</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Cadbury Mini Eggs&#174; Frapp&#233;</div></td><td class="td-price">&pound;3.49</td><td class="td-cal">355 kcal</td><td><span class="avail-badge avail-limited-badge">Limited</span></td></tr>
+          <tr><td><div class="td-name">Frozen Strawberry Lemonade</div></td><td class="td-price">&pound;2.49</td><td class="td-cal"><span class="low">190</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Iced Latte</div></td><td class="td-price">&pound;2.49</td><td class="td-cal"><span class="low">136</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Caramel Iced Frapp&#233;</div></td><td class="td-price">&pound;2.79</td><td class="td-cal"><span class="low">278</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Mango &amp; Pineapple Smoothie</div></td><td class="td-price">&pound;2.79</td><td class="td-cal"><span class="low">162</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">Coca-Cola&#174; Zero Sugar</div></td><td class="td-price">&pound;1.09</td><td class="td-cal"><span class="low">1</span> kcal</td><td><span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">Diet Coke&#174;</div></td><td class="td-price">&pound;1.09</td><td class="td-cal"><span class="low">1</span> kcal</td><td><span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">Sprite&#174; Zero</div></td><td class="td-price">&pound;1.09</td><td class="td-cal"><span class="low">1</span> kcal</td><td><span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">Fanta&#174; Orange Zero</div></td><td class="td-price">&pound;1.09</td><td class="td-cal"><span class="low">2</span> kcal</td><td><span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">Oasis&#174; Summer Fruits Zero</div></td><td class="td-price">&pound;1.09</td><td class="td-cal"><span class="low">48</span> kcal</td><td><span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">Coca-Cola&#174; Classic</div></td><td class="td-price">&pound;1.09</td><td class="td-cal"><span class="low">89</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">IRN-BRU&#174; (selected restaurants)</div></td><td class="td-price">&pound;1.09</td><td class="td-cal"><span class="low">68</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Organic Milk (selected restaurants)</div></td><td class="td-price">&pound;0.99</td><td class="td-cal"><span class="low">130</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Tropicana&#174; Apple Juice</div></td><td class="td-price">&pound;1.29</td><td class="td-cal"><span class="low">101</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">Tropicana&#174; Orange Juice</div></td><td class="td-price">&pound;1.29</td><td class="td-cal"><span class="low">94</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">Robinsons&#174; Fruit Shoot</div></td><td class="td-price">&pound;0.99</td><td class="td-cal"><span class="low">4</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">Semi Skimmed Milk 250ml (selected)</div></td><td class="td-price">&pound;0.99</td><td class="td-cal"><span class="low">120</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="menu-section" id="sides" data-menu-category="sides">
+      <div class="menu-section-head">
+        <span class="menu-section-icon">&#127839;</span>
+        <span class="menu-section-title">Fries &amp; Sides</span>
+        <span class="menu-section-count">7 items</span>
+      </div>
+      <p class="menu-section-desc">Fries in every size plus bites, salads and fruit or veg side options.</p>
+      <table class="menu-table">
+        <thead>
+          <tr><th style="width:52%">Item</th><th>Price</th><th>Calories</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><div class="td-name">McDonald's Fries Small</div></td><td class="td-price">&pound;1.19</td><td class="td-cal"><span class="low">237</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">McDonald's Fries Medium</div></td><td class="td-price">&pound;1.79</td><td class="td-cal">337 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">McDonald's Fries Large</div></td><td class="td-price">&pound;1.99</td><td class="td-cal">444 kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">Chilli Cheese Bites</div></td><td class="td-price">&pound;3.29</td><td class="td-cal">340 kcal</td><td><span class="avail-badge avail-limited-badge">Limited</span> <span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Side Salad</div></td><td class="td-price">&pound;1.19</td><td class="td-cal"><span class="low">18</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span></td></tr>
+          <tr><td><div class="td-name">Pineapple Stick</div></td><td class="td-price">&pound;0.99</td><td class="td-cal"><span class="low">20</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+          <tr><td><div class="td-name">Carrot Sticks</div></td><td class="td-price">&pound;0.99</td><td class="td-cal"><span class="low">25</span> kcal</td><td><span class="badge badge-yellow" style="font-size:10px;">Veg</span> <span class="badge badge-green" style="font-size:10px;">Vegan</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="menu-section" id="sharers" data-menu-category="sharers">
+      <div class="menu-section-head">
+        <span class="menu-section-icon">&#128230;</span>
+        <span class="menu-section-title">Sharers &amp; Bundles</span>
+        <span class="menu-section-count">3 items</span>
+      </div>
+      <p class="menu-section-desc">Current share boxes and bigger-format bundles for groups or hungrier orders.</p>
+      <table class="menu-table">
+        <thead>
+          <tr><th style="width:52%">Item</th><th>Price</th><th>Calories</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><div class="td-name">The McDonald's Chicken Sharebox&#174;</div></td><td class="td-price">&pound;11.29</td><td class="td-cal"><span class="high">1,240</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">9 Chicken Selects Sharebox&#174;</div></td><td class="td-price">&pound;9.19</td><td class="td-cal"><span class="high">1,008</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">20 Chicken McNuggets&#174; Sharebox&#174;</div></td><td class="td-price">&pound;6.99</td><td class="td-cal"><span class="high">869</span> kcal</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="menu-section" id="sauces" data-menu-category="sauces">
+      <div class="menu-section-head">
+        <span class="menu-section-icon">&#129514;</span>
+        <span class="menu-section-title">Condiments &amp; Sauces</span>
+        <span class="menu-section-count">17 items</span>
+      </div>
+      <p class="menu-section-desc">Free dips, syrups and breakfast extras from the latest condiment list.</p>
+      <table class="menu-table">
+        <thead>
+          <tr><th style="width:52%">Item</th><th>Price</th><th>Calories</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><div class="td-name">Spicy Chilli Dip (for Spicy McNuggets&#174;)</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">55</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Rich Tomato Dip (25ml)</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">20</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Tomato Ketchup (25ml)</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">23</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">BBQ Dip (25ml)</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">84</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Sweet &amp; Sour Dip (25ml)</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">51</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Sweet Curry Dip (25ml)</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">62</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Garlic Mayo Dip</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">95</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Sweet Chilli Dip</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">89</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Sweet &amp; Smoky BBQ Dip (40g)</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">112</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">McDonald's Balsamic Dressing (30g)</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">38</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Pancake Syrup (40g)</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">94</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Strawberry Jam (15g)</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">37</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Lurpak Spreadable</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">72</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Milk Portion</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">14</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Canderel&#174; Yellow Sweetener Sachet</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">2</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Sugar Stick</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">20</span> kcal</td><td>&mdash;</td></tr>
+          <tr><td><div class="td-name">Golden Syrup</div></td><td class="td-price">Free</td><td class="td-cal"><span class="low">59</span> kcal</td><td>&mdash;</td></tr>
+        </tbody>
+      </table>
+    </div>
 
   </div>
 </section>
@@ -913,28 +877,28 @@ return <<<'HTML'
     <div class="section-header" style="position:relative;z-index:1;">
       <div class="section-label" style="background: rgba(255,199,44,0.15); color: var(--yellow);">Live Deals</div>
       <h2 class="section-title" style="color: white;">McDonald's UK Value Picks 2026</h2>
-      <p class="section-sub" style="color: rgba(255,255,255,0.55);">Current value-led menu options pulled from the latest April 2026 menu data.</p>
+      <p class="section-sub" style="color: rgba(255,255,255,0.55);">Current value-led menu options pulled from the attached April 2026 menu data.</p>
     </div>
     <div class="deals-grid">
       <div class="deal-card deal-red">
         <div class="deal-badge-top">&#11088; Best Value</div>
         <div class="deal-title">Meal Deal Plus</div>
-        <div class="deal-sub">Burger, fries, drink and dessert bundle from the latest menu source.</div>
+        <div class="deal-sub">Burger, fries, drink and dessert bundle from the current Saver Menu listing.</div>
         <div class="deal-price">&pound;5.59 <span style="font-size:14px; opacity:0.6; font-weight:400;">Bundle</span></div>
         <div class="deal-emoji">&#127828;&#127839;</div>
       </div>
       <div class="deal-card deal-yellow">
         <div class="deal-badge-top">&#127991;&#65039; Saver Range</div>
-        <div class="deal-title">Everyday 99p Picks</div>
-        <div class="deal-sub">White Coffee, Americano, Espresso, fruit sides and kids' drink add-ons start from 99p.</div>
+        <div class="deal-title">Everyday Low-Cost Picks</div>
+        <div class="deal-sub">White Coffee, Americano, Espresso, Apple Slices and Carrot Sticks all sit at 99p in the latest source.</div>
         <div class="deal-price">From &pound;0.99 <span style="font-size:14px; opacity:0.5; font-weight:400;">Current price</span></div>
         <div class="deal-emoji">&#128176;</div>
       </div>
       <div class="deal-card deal-dark">
         <div class="deal-badge-top">&#127859; Breakfast Saver</div>
         <div class="deal-title">Morning Value Menu</div>
-        <div class="deal-sub">Breakfast Saver prices start at &pound;2.99 for the Sausage Sandwich or Cheesy Bacon Flatbread before 11am.</div>
-        <div class="deal-price">From &pound;2.99 <span style="font-size:14px; opacity:0.5; font-weight:400;">Until 11am</span></div>
+        <div class="deal-sub">Breakfast Saver extras start at 99p, while hot sandwiches and flatbread sit from &pound;2.99 before 11am.</div>
+        <div class="deal-price">From &pound;0.99 <span style="font-size:14px; opacity:0.5; font-weight:400;">Until 11am</span></div>
         <div class="deal-emoji">&#129374;</div>
       </div>
     </div>
@@ -1044,14 +1008,14 @@ return <<<'HTML'
     <div class="section-header">
       <div class="section-label">Nutrition Guide</div>
       <h2 class="section-title">McDonald's UK Calorie Guide 2026</h2>
-      <p class="section-sub">Key calorie facts for planning your McDonald's order. McDonald's UK publishes full nutritional data online.</p>
+      <p class="section-sub">Key calorie facts pulled directly from the attached April 2026 menu source.</p>
     </div>
     <div class="cal-grid">
       <div class="cal-card">
         <div class="cal-icon">&#129367;</div>
-        <div class="cal-name">Lowest Calorie Meal</div>
-        <div class="cal-value">133 kcal</div>
-        <div class="cal-label">Grilled Chicken Salad</div>
+        <div class="cal-name">Lowest Calorie Food Item</div>
+        <div class="cal-value">18 kcal</div>
+        <div class="cal-label">Side Salad</div>
       </div>
       <div class="cal-card">
         <div class="cal-icon">&#127828;</div>
@@ -1067,21 +1031,21 @@ return <<<'HTML'
       </div>
       <div class="cal-card">
         <div class="cal-icon">&#127846;</div>
-        <div class="cal-name">Popular McFlurry</div>
-        <div class="cal-value">330 kcal</div>
-        <div class="cal-label">Oreo McFlurry</div>
+        <div class="cal-name">Lowest Calorie McFlurry</div>
+        <div class="cal-value">290 kcal</div>
+        <div class="cal-label">Cadbury Creme Egg McFlurry</div>
       </div>
       <div class="cal-card">
         <div class="cal-icon">&#129374;</div>
-        <div class="cal-name">Low-Cal Breakfast</div>
+        <div class="cal-name">Lowest Calorie Breakfast</div>
         <div class="cal-value">127 kcal</div>
         <div class="cal-label">Hash Brown</div>
       </div>
       <div class="cal-card">
-        <div class="cal-icon">&#127839;</div>
-        <div class="cal-name">Regular Fries</div>
-        <div class="cal-value">337 kcal</div>
-        <div class="cal-label">Medium Fries</div>
+        <div class="cal-icon">&#128230;</div>
+        <div class="cal-name">Highest Calorie Sharer</div>
+        <div class="cal-value">1,240 kcal</div>
+        <div class="cal-label">McDonald's Chicken Sharebox</div>
       </div>
     </div>
   </div>
@@ -1093,8 +1057,8 @@ return <<<'HTML'
     <div class="seo-layout">
       <div class="seo-content">
         <h2>McDonald's UK Menu Prices 2026 &mdash; Everything You Need to Know</h2>
-        <p>The current McDonald's UK menu spans everything from 99p McCaf&eacute; drinks and fruit sides to &pound;11.29 sharer boxes. Core burger prices now place the Big Mac at &pound;5.09, while April 2026 limited-time launches such as the Big Arch, Double Big Mac and Cadbury Creme Egg McFlurry push the menu forward with fresh seasonal choice.</p>
-        <p>The latest April 2026 update adds limited-time burgers, spicy chicken snacks, returning breakfast items and seasonal desserts. That means the menu now mixes staples like the Quarter Pounder, Fries and McFlurry with short-run products such as Sausage &amp; Egg McGriddles, Spicy Chicken McNuggets, Cadbury Mini Eggs McFlurry and Chocolate Brownie Pie.</p>
+        <p>The current McDonald's UK menu spans 202 listed items across 16 core categories in the attached April 2026 source. Core burger prices still place the Big Mac at &pound;5.09, while limited-time launches such as the Big Arch, Double Big Mac and Cadbury Creme Egg McFlurry push the menu forward with fresh seasonal choice.</p>
+        <p>The latest April 2026 update mixes staples like the Quarter Pounder, Fries and McFlurry with short-run products such as Sausage &amp; Egg McGriddles, Spicy Chicken McNuggets, Cheesy Garlic Bread Dippers Sharebox and CARDS meal bundles.</p>
         <p>McDonald's breakfast hours in the UK still typically run from 5:00 AM to 11:00 AM, with the Breakfast Saver range giving the best morning value. The McDonald's UK App remains the quickest way to check location-specific pricing, live offers and restaurant opening times before you order.</p>
         <p>McDelivery is available across most UK locations through the McDonald's App plus third-party partners including Uber Eats, Just Eat and Deliveroo. Delivery charges vary by platform and location, and app users can still pair those orders with Rewards points and weekly vouchers.</p>
         <p><strong>Important:</strong> This is an independent, unofficial website. All prices are sourced from publicly available menus and may vary by location. Prices were last verified in April 2026.</p>
@@ -1106,14 +1070,15 @@ return <<<'HTML'
           <a href="#burgers" class="sidebar-link">&#127828; All Burgers</a>
           <a href="#saver" class="sidebar-link">&#127991;&#65039; Saver Menu Prices</a>
           <a href="#breakfast" class="sidebar-link">&#129374; Breakfast Menu</a>
-          <a href="#happy-meal" class="sidebar-link">&#127881; Happy Meal Prices</a>
-          <a href="#mccafe" class="sidebar-link">&rarr; McCaf&eacute; Prices</a>
-          <a href="#mcflurry" class="sidebar-link">&#127846; Current McFlurry Flavours</a>
-          <a href="#under400" class="sidebar-link">&#128170; Under 400 Kcal Picks</a>
+          <a href="#happymeal" class="sidebar-link">&#127881; Happy Meal Prices</a>
+          <a href="#mccafe" class="sidebar-link">&#9749; McCaf&eacute; Prices</a>
+          <a href="#desserts" class="sidebar-link">&#127846; Desserts &amp; McFlurry</a>
+          <a href="#drinks" class="sidebar-link">&#127865; Drinks &amp; Milkshakes</a>
+          <a href="#vegan" class="sidebar-link">&#127807; Vegan Options</a>
           <a href="#deals" class="sidebar-link">&#127991;&#65039; Latest Deals</a>
           <a href="#sharers" class="sidebar-link">&#128230; Sharers &amp; Bundles</a>
           <a href="#sauces" class="sidebar-link">&#129514; Condiments &amp; Sauces</a>
-          <a href="#bfast-saver" class="sidebar-link">&#127859; Breakfast Saver</a>
+          <a href="#bsaver" class="sidebar-link">&#127859; Breakfast Saver</a>
         </div>
       </div>
     </div>
@@ -1227,7 +1192,7 @@ return <<<'HTML'
     </div>
     <div class="faq-grid">
       <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How much is a Big Mac in the UK in 2026?<span class="faq-icon">+</span></div><div class="faq-a">A Big Mac on its own costs &pound;5.09 in this April 2026 update. Meal pricing can vary by restaurant and local offer, so the McDonald's app is the best place to confirm the current bundled price near you.</div></div>
-      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What's new on McDonald's UK menu in 2026?<span class="faq-icon">+</span></div><div class="faq-a">The latest April 2026 additions include Big Arch, Double Big Mac, Double Big Mac with Bacon, Spicy Chicken McNuggets, Sausage &amp; Egg McGriddles, Cadbury Creme Egg McFlurry, Cadbury Mini Eggs McFlurry and Chocolate Brownie Pie.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What's new on McDonald's UK menu in 2026?<span class="faq-icon">+</span></div><div class="faq-a">The latest April 2026 additions highlighted in the source include Big Arch, Double Big Mac, Double Big Mac with Bacon, Spicy Chicken McNuggets, Sausage &amp; Egg McGriddles, Cheesy Garlic Bread Dippers Sharebox and Cadbury Creme Egg McFlurry.</div></div>
       <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How often are McDonald's UK prices updated?<span class="faq-icon">+</span></div><div class="faq-a">We review and update prices whenever new verified menu data is available. The current full site refresh is based on an April 2026 menu source, and any newer confirmed changes will be rolled in on the next update.</div></div>
       <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How can I get cheaper McDonald's in the UK?<span class="faq-icon">+</span></div><div class="faq-a">Use the McDonald's app for rotating vouchers and Rewards points, and check the Saver Menu and Breakfast Saver section for the lowest current entry prices. Right now, several drinks and side picks start at 99p, and Meal Deal Plus is listed at &pound;5.59.</div></div>
       <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Do McDonald's prices vary by location in the UK?<span class="faq-icon">+</span></div><div class="faq-a">Yes. Prices can vary by branch, especially at airports, motorway services and some city-centre sites. The prices on this page reflect a current public menu source, but your nearest restaurant can be slightly higher or lower.</div></div>
@@ -1311,7 +1276,7 @@ return <<<'HTML'
         <div class="stat-row"><span class="stat-row-label">Daily UK Customers</span><span class="stat-row-value">4 million+</span></div>
         <div class="stat-row"><span class="stat-row-label">Drive-Thru Locations</span><span class="stat-row-value">1,000+</span></div>
         <div class="stat-row"><span class="stat-row-label">McDelivery Coverage</span><span class="stat-row-value">90%</span></div>
-        <div class="stat-row"><span class="stat-row-label">Menu Items</span><span class="stat-row-value">150+</span></div>
+        <div class="stat-row"><span class="stat-row-label">Menu Items</span><span class="stat-row-value">202</span></div>
         <div class="stat-row"><span class="stat-row-label">First UK Restaurant</span><span class="stat-row-value">1974</span></div>
       </div>
     </div>
@@ -1324,97 +1289,97 @@ return <<<'HTML'
     <div class="section-header">
       <div class="section-label">Explore More</div>
       <h2 class="section-title">In-Depth Price Guides</h2>
-      <p class="section-sub">Deep-dive guides for every section of the McDonald's UK menu.</p>
+      <p class="section-sub">Deep-dive guides for the main sections of the McDonald's UK menu.</p>
     </div>
     <div class="links-grid">
-      <a href="#" class="link-card">
+      <a href="#burgers" class="link-card">
         <div class="link-card-emoji">&#127828;</div>
         <div class="link-card-title">Big Mac Price History</div>
-        <div class="link-card-text">Track how Big Mac prices have changed in the UK since 2018.</div>
+        <div class="link-card-text">Track Big Mac pricing and compare it with the rest of the burger range.</div>
         <div class="link-card-arrow">&#8594;</div>
       </a>
-      <a href="#" class="link-card">
+      <a href="#breakfast" class="link-card">
         <div class="link-card-emoji">&#129374;</div>
         <div class="link-card-title">Full Breakfast Menu</div>
-        <div class="link-card-text">Every breakfast item with prices, calories, and allergens.</div>
+        <div class="link-card-text">Every breakfast item with current prices, calories and the latest morning specials.</div>
         <div class="link-card-arrow">&#8594;</div>
       </a>
-      <a href="#" class="link-card">
+      <a href="#nuggets" class="link-card">
         <div class="link-card-emoji">&#127831;</div>
         <div class="link-card-title">McNuggets Guide</div>
-        <div class="link-card-text">Prices for 6-piece, 9-piece and sharebox nuggets &#8212; plus Selects, dippers and sauces.</div>
+        <div class="link-card-text">Prices for nuggets, selects, dippers and share boxes from the live 2026 source.</div>
         <div class="link-card-arrow">&#8594;</div>
       </a>
-      <a href="#" class="link-card">
+      <a href="#deals" class="link-card">
         <div class="link-card-emoji">&#128241;</div>
         <div class="link-card-title">McDonald's App Deals</div>
-        <div class="link-card-text">How to save money using the McDonald's UK app in 2026.</div>
+        <div class="link-card-text">Where the latest value picks sit, from Meal Deal Plus to app-led bundles and 99p add-ons.</div>
         <div class="link-card-arrow">&#8594;</div>
       </a>
-      <a href="#" class="link-card">
-        <div class="link-card-emoji">&#127793;</div>
-        <div class="link-card-title">McPlant Price Guide</div>
-        <div class="link-card-text">Full pricing and nutritional info for the McPlant range.</div>
+      <a href="#vegan" class="link-card">
+        <div class="link-card-emoji">&#127807;</div>
+        <div class="link-card-title">Vegan Options Guide</div>
+        <div class="link-card-text">Current vegan-friendly mains, fries, sides and drinks in one place.</div>
         <div class="link-card-arrow">&#8594;</div>
       </a>
-      <a href="#" class="link-card">
+      <a href="#mccafe" class="link-card">
         <div class="link-card-emoji">&#9749;</div>
-        <div class="link-card-title">McCaf&#233; Price List</div>
-        <div class="link-card-text">Every McCaf&#233; coffee and hot drink with current UK prices.</div>
+        <div class="link-card-title">McCaf&eacute; Price List</div>
+        <div class="link-card-text">Every McCaf&eacute; coffee and hot drink with current UK prices.</div>
         <div class="link-card-arrow">&#8594;</div>
       </a>
-      <a href="#" class="link-card">
+      <a href="#happymeal" class="link-card">
         <div class="link-card-emoji">&#127881;</div>
         <div class="link-card-title">Happy Meal Prices</div>
-        <div class="link-card-text">Happy Meal options, toys, and current pricing for 2026.</div>
+        <div class="link-card-text">Happy Meal options and current pricing for 2026.</div>
         <div class="link-card-arrow">&#8594;</div>
       </a>
-      <a href="#" class="link-card">
-        <div class="link-card-emoji">&#128293;</div>
-        <div class="link-card-title">Calorie Counter</div>
-        <div class="link-card-text">Find the lowest and highest calorie items on the full menu.</div>
-        <div class="link-card-arrow">&#8594;</div>
-      </a>
-      <a href="#" class="link-card">
-        <div class="link-card-emoji">&#127791;</div>
-        <div class="link-card-title">Wrap of the Day Guide</div>
-        <div class="link-card-text">Every wrap with prices, calories, and what day they're available.</div>
-        <div class="link-card-arrow">&#8594;</div>
-      </a>
-      <a href="#" class="link-card">
-        <div class="link-card-emoji">&#128170;</div>
-        <div class="link-card-title">Healthy Options Guide</div>
-        <div class="link-card-text">Best meals under 400 kcal for health-conscious customers.</div>
-        <div class="link-card-arrow">&#8594;</div>
-      </a>
-      <a href="#" class="link-card">
+      <a href="#desserts" class="link-card">
         <div class="link-card-emoji">&#127846;</div>
-        <div class="link-card-title">All McFlurry Flavours</div>
-        <div class="link-card-text">Current McFlurry flavours and seasonal specials with prices &amp; calories.</div>
+        <div class="link-card-title">Desserts &amp; McFlurry</div>
+        <div class="link-card-text">Current McFlurry flavours, pies, muffins and seasonal sweet picks.</div>
+        <div class="link-card-arrow">&#8594;</div>
+      </a>
+      <a href="#wraps" class="link-card">
+        <div class="link-card-emoji">&#127791;</div>
+        <div class="link-card-title">Wraps &amp; Salads Guide</div>
+        <div class="link-card-text">Every wrap and salad with current prices, calories and limited-time variants.</div>
+        <div class="link-card-arrow">&#8594;</div>
+      </a>
+      <a href="#drinks" class="link-card">
+        <div class="link-card-emoji">&#127865;</div>
+        <div class="link-card-title">Drinks &amp; Milkshakes</div>
+        <div class="link-card-text">Cold drinks, milkshakes, smoothies, frapp&eacute;s and juice all in one guide.</div>
+        <div class="link-card-arrow">&#8594;</div>
+      </a>
+      <a href="#saver" class="link-card">
+        <div class="link-card-emoji">&#127991;&#65039;</div>
+        <div class="link-card-title">Saver Menu Breakdown</div>
+        <div class="link-card-text">Every item on the Saver Menu with the latest low-price 2026 update.</div>
         <div class="link-card-arrow">&#8594;</div>
       </a>
       <a href="#sharers" class="link-card">
         <div class="link-card-emoji">&#128230;</div>
         <div class="link-card-title">Sharers &amp; Bundles Guide</div>
-        <div class="link-card-text">Everything in the Sharers &amp; Bundles range with full prices and serving sizes for groups.</div>
+        <div class="link-card-text">Everything in the Sharers &amp; Bundles range with full prices and calories.</div>
         <div class="link-card-arrow">&#8594;</div>
       </a>
       <a href="#sauces" class="link-card">
-        <div class="link-card-emoji">&#129474;</div>
+        <div class="link-card-emoji">&#129514;</div>
         <div class="link-card-title">Condiments &amp; Sauces</div>
-        <div class="link-card-text">Every dipping sauce, dressing, and condiment with prices, calories, and best pairings.</div>
+        <div class="link-card-text">Every dip, syrup and condiment with calories from the latest menu source.</div>
         <div class="link-card-arrow">&#8594;</div>
       </a>
-      <a href="#bfast-saver" class="link-card">
+      <a href="#bsaver" class="link-card">
         <div class="link-card-emoji">&#127859;</div>
         <div class="link-card-title">Breakfast Saver Guide</div>
-        <div class="link-card-text">Budget breakfast options at McDonald's UK &#8212; everything under &#163;3 before 11am.</div>
+        <div class="link-card-text">Budget breakfast options and drinks before 11am, from 99p up to the hot sandwiches.</div>
         <div class="link-card-arrow">&#8594;</div>
       </a>
-      <a href="#" class="link-card">
-        <div class="link-card-emoji">&#127991;&#65039;</div>
-        <div class="link-card-title">Saver Menu Breakdown</div>
-        <div class="link-card-text">Every item on the Saver Menu ranked by value for money.</div>
+      <a href="#vegetarian" class="link-card">
+        <div class="link-card-emoji">&#127793;</div>
+        <div class="link-card-title">Vegetarian Picks</div>
+        <div class="link-card-text">A single place for the full vegetarian-friendly menu, including desserts and sides.</div>
         <div class="link-card-arrow">&#8594;</div>
       </a>
     </div>
@@ -1434,5 +1399,4 @@ return <<<'HTML'
 </div>
 <!-- /wp:group -->
 HTML;
-
 
