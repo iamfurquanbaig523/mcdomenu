@@ -1,0 +1,17 @@
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: PerplexityBot
+User-agent: GoogleOther
+User-agent: *
+
+Allow: /
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /xmlrpc.php
+Disallow: /*?s=
+Disallow: /feed/
+Allow: /wp-admin/admin-ajax.php
+
+Sitemap: https://macdomenuprices.com/sitemap.xml

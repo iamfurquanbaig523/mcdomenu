@@ -7,7 +7,7 @@
 
 return <<<'HTML'
 <!-- wp:group {"className":"mcprices-page mcprices-managed-homepage","layout":{"type":"default"}} -->
-<div class="wp-block-group mcprices-page mcprices-managed-homepage" data-mcprices-pattern-version="2.3.0">
+<div class="wp-block-group mcprices-page mcprices-managed-homepage" data-mcprices-pattern-version="2.4.0">
 <!-- wp:html -->
 <!-- UPDATE BAR -->
 
@@ -1182,33 +1182,6 @@ return <<<'HTML'
   </div>
 </section>
 
-<!-- FAQ -->
-<section class="faq-section" id="faq">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-label">FAQs</div>
-      <h2 class="section-title">Frequently Asked Questions</h2>
-      <p class="section-sub">Quick answers to the most common questions about McDonald's UK menu and prices.</p>
-    </div>
-    <div class="faq-grid">
-      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How much is a Big Mac in the UK in 2026?<span class="faq-icon">+</span></div><div class="faq-a">A Big Mac on its own costs &pound;5.09 in this April 2026 update. Meal pricing can vary by restaurant and local offer, so the McDonald's app is the best place to confirm the current bundled price near you.</div></div>
-      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What's new on McDonald's UK menu in 2026?<span class="faq-icon">+</span></div><div class="faq-a">The latest April 2026 additions highlighted in the source include Big Arch, Double Big Mac, Double Big Mac with Bacon, Spicy Chicken McNuggets, Sausage &amp; Egg McGriddles, Cheesy Garlic Bread Dippers Sharebox and Cadbury Creme Egg McFlurry.</div></div>
-      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How often are McDonald's UK prices updated?<span class="faq-icon">+</span></div><div class="faq-a">We review and update prices whenever new verified menu data is available. The current full site refresh is based on an April 2026 menu source, and any newer confirmed changes will be rolled in on the next update.</div></div>
-      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How can I get cheaper McDonald's in the UK?<span class="faq-icon">+</span></div><div class="faq-a">Use the McDonald's app for rotating vouchers and Rewards points, and check the Saver Menu and Breakfast Saver section for the lowest current entry prices. Right now, several drinks and side picks start at 99p, and Meal Deal Plus is listed at &pound;5.59.</div></div>
-      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Do McDonald's prices vary by location in the UK?<span class="faq-icon">+</span></div><div class="faq-a">Yes. Prices can vary by branch, especially at airports, motorway services and some city-centre sites. The prices on this page reflect a current public menu source, but your nearest restaurant can be slightly higher or lower.</div></div>
-      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What time does McDonald's breakfast end in the UK?<span class="faq-icon">+</span></div><div class="faq-a">McDonald's UK breakfast is typically served from 5:00 AM to 11:00 AM. After 11am, the main daytime menu becomes available. Always check the McDonald's app if you are visiting a specific branch.</div></div>
-      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What are the cheapest items on the McDonald's UK menu?<span class="faq-icon">+</span></div><div class="faq-a">The cheapest items in the latest source are 99p picks such as White Coffee, Americano, Espresso, Apple Slices, Pineapple Stick and Carrot Sticks. The cheapest burger remains the Hamburger at &pound;1.19.</div></div>
-      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is there a vegan option at McDonald's UK?<span class="faq-icon">+</span></div><div class="faq-a">Yes. Current vegan-friendly picks include the McPlant (&pound;5.09), Veggie Dippers, The Spicy Veggie One, Fries, Carrot Sticks and Apple Slices. Availability can still vary a little by restaurant.</div></div>
-      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What limited-time desserts are on the menu right now?<span class="faq-icon">+</span></div><div class="faq-a">The current limited-time desserts in the April 2026 source are Cadbury Creme Egg McFlurry, Cadbury Mini Eggs McFlurry and Chocolate Brownie Pie. These are seasonal and can leave the menu without much notice.</div></div>
-      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How does MyMcDonald's Rewards work?<span class="faq-icon">+</span></div><div class="faq-a">MyMcDonald's Rewards lets app users collect points on qualifying orders and swap them for free food or drinks. The exact offers can change, but the app remains the best place to track live deals, points and personalised vouchers.</div></div>
-      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Does McDonald's UK do home delivery?<span class="faq-icon">+</span></div><div class="faq-a">Yes &mdash; McDelivery is widely available through the McDonald's app and delivery partners such as Uber Eats, Just Eat and Deliveroo. Delivery charges and timing depend on location and platform.</div></div>
-      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is McDonald's beef 100% British?<span class="faq-icon">+</span></div><div class="faq-a">McDonald's UK states that its beef burgers are made with 100% British and Irish beef. For the latest sourcing and allergen details, always refer to the official McDonald's UK app or website.</div></div>
-      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Are McDonald's prices higher at airports and motorway services?<span class="faq-icon">+</span></div><div class="faq-a">They often are. Travel-hub restaurants usually cost more than standard high-street or retail-park branches, which is why checking the app for your exact location is important before ordering.</div></div>
-      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What allergens are in McDonald's UK food?<span class="faq-icon">+</span></div><div class="faq-a">Common allergens across the menu include wheat, soya, egg, milk, sesame and mustard. Always use the official allergen guide in the McDonald's app or on mcdonalds.com/gb before ordering if you have an allergy.</div></div>
-    </div>
-  </div>
-</section>
-
 <!-- AD BANNER -->
 <div class="container" style="padding-top: 20px;">
   <div class="ad-banner">
@@ -1382,6 +1355,47 @@ return <<<'HTML'
         <div class="link-card-text">A single place for the full vegetarian-friendly menu, including desserts and sides.</div>
         <div class="link-card-arrow">&#8594;</div>
       </a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+  <div class="container">
+    <h2 class="section-title">McDonald's UK Menu Prices - Frequently Asked Questions</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary class="faq-q">How much is a Big Mac in the UK?<span class="faq-icon">+</span></summary>
+        <div class="faq-a"><p>A Big Mac costs &pound;5.09 in this April 2026 update. Meal prices can vary a little by restaurant, so the McDonald's app is the best place to confirm your local price.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">What is on the McDonald's Saver Menu UK?<span class="faq-icon">+</span></summary>
+        <div class="faq-a"><p>The Saver Menu includes lower-priced picks such as Hamburger (&pound;1.19), Cheeseburger (&pound;1.39), Mayo Chicken (&pound;1.39), Double Cheeseburger (&pound;2.29), 99p drinks and value add-ons, with Meal Deal Plus listed at &pound;5.59.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">How much is a Happy Meal in the UK?<span class="faq-icon">+</span></summary>
+        <div class="faq-a"><p>Most Happy Meal options are &pound;3.89 in the current April 2026 menu, including Hamburger, Cheeseburger, Mayo Chicken and 4-piece Chicken McNuggets Happy Meals.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">What time does McDonald's serve breakfast in the UK?<span class="faq-icon">+</span></summary>
+        <div class="faq-a"><p>McDonald's UK breakfast is typically served from 5:00 AM until 11:00 AM. After 11:00 AM, the main daytime menu takes over.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">How many calories are in McDonald's large fries?<span class="faq-icon">+</span></summary>
+        <div class="faq-a"><p>A large fries has 444 kcal in the current menu data.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Does McDonald's UK have a vegan burger?<span class="faq-icon">+</span></summary>
+        <div class="faq-a"><p>Yes. McDonald's UK has the McPlant, which is listed at &pound;5.09 and 426 kcal in the current menu data.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">How much is a McFlurry in the UK?<span class="faq-icon">+</span></summary>
+        <div class="faq-a"><p>Regular Oreo and Smarties McFlurry flavours are &pound;2.19, while mini versions are &pound;1.39. Seasonal flavours such as Cadbury Creme Egg and Cadbury Mini Eggs McFlurry are &pound;2.49.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">What is the cheapest item on the McDonald's UK menu?<span class="faq-icon">+</span></summary>
+        <div class="faq-a"><p>The cheapest current items are 99p picks such as White Coffee, Americano, Espresso, Apple Slices, Pineapple Stick and Carrot Sticks. The cheapest burger is the Hamburger at &pound;1.19.</p></div>
+      </details>
     </div>
   </div>
 </section>

@@ -282,10 +282,27 @@ class McPrices_Integration {
 				esc_url( $this->get_section_url( 'sauces' ) ),
 				esc_url( $this->get_section_url( 'bsaver' ) )
 			),
-			'footer3' => '<!-- wp:html --><div class="footer-col-title">Information</div><ul class="footer-links"><li><a href="#">About Us</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Cookie Policy</a></li><li><a href="#">Ad Disclosure</a></li><li><a href="#">Disclaimer</a></li><li><a href="#">Contact</a></li><li><a href="#">Sitemap</a></li></ul><!-- /wp:html -->',
+			'footer3' => sprintf(
+				'<!-- wp:html --><div class="footer-col-title">Information</div><ul class="footer-links"><li><a href="%1$s">About Us</a></li><li><a href="%2$s">Privacy Policy</a></li><li><a href="%3$s">Cookie Policy</a></li><li><a href="%4$s">Ad Disclosure</a></li><li><a href="%5$s">Disclaimer</a></li><li><a href="%6$s">Contact</a></li><li><a href="%7$s">Sitemap</a></li></ul><!-- /wp:html -->',
+				esc_url( home_url( '/about/' ) ),
+				esc_url( home_url( '/privacy-policy/' ) ),
+				esc_url( home_url( '/cookie-policy/' ) ),
+				esc_url( home_url( '/ad-disclosure/' ) ),
+				esc_url( home_url( '/disclaimer/' ) ),
+				esc_url( home_url( '/contact/' ) ),
+				esc_url( home_url( '/sitemap/' ) )
+			),
 			'footer4' => sprintf(
-				'<!-- wp:html --><div class="footer-col-title">Popular Guides</div><ul class="footer-links"><li><a href="#">Big Mac Price UK</a></li><li><a href="#">McDonald&#8217;s App Deals</a></li><li><a href="#">Calorie Counter</a></li><li><a href="#">Breakfast Times</a></li><li><a href="#">Allergen Guide</a></li><li><a href="#">Price History</a></li><li><a href="%1$s">Vegan Options</a></li><li><a href="#">Limited-Time Menu</a></li><li><a href="#">McDelivery Guide</a></li><li><a href="%2$s">Desserts &amp; McFlurry</a></li></ul><!-- /wp:html -->',
-				esc_url( $this->get_section_url( 'vegan' ) ),
+				'<!-- wp:html --><div class="footer-col-title">Popular Guides</div><ul class="footer-links"><li><a href="%1$s">Big Mac Price UK</a></li><li><a href="%2$s">McDonald&#8217;s App Deals</a></li><li><a href="%3$s">Calorie Counter</a></li><li><a href="%4$s">Breakfast Times</a></li><li><a href="%5$s">Allergen Guide</a></li><li><a href="%6$s">Price History</a></li><li><a href="%7$s">Vegan Options</a></li><li><a href="%8$s">Limited-Time Menu</a></li><li><a href="%9$s">McDelivery Guide</a></li><li><a href="%10$s">Desserts &amp; McFlurry</a></li></ul><!-- /wp:html -->',
+				esc_url( home_url( '/big-mac-price-uk/' ) ),
+				esc_url( home_url( '/mcdonalds-app-deals/' ) ),
+				esc_url( home_url( '/calorie-counter/' ) ),
+				esc_url( home_url( '/breakfast-times/' ) ),
+				esc_url( home_url( '/allergen-guide/' ) ),
+				esc_url( home_url( '/price-history/' ) ),
+				esc_url( home_url( '/vegan-options/' ) ),
+				esc_url( home_url( '/limited-time-menu/' ) ),
+				esc_url( home_url( '/mcdelivery-guide/' ) ),
 				esc_url( $this->get_section_url( 'desserts' ) )
 			),
 		);
@@ -1167,6 +1184,48 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Return the exact homepage FAQ items used for FAQPage schema.
+	 *
+	 * @return array
+	 */
+	protected function get_homepage_faq_schema_items() {
+		return array(
+			array(
+				'question' => 'How much is a Big Mac in the UK?',
+				'answer'   => 'A Big Mac costs GBP 5.09 in this April 2026 update. Meal prices can vary a little by restaurant, so the McDonald\'s app is the best place to confirm your local price.',
+			),
+			array(
+				'question' => 'What is on the McDonald\'s Saver Menu UK?',
+				'answer'   => 'The Saver Menu includes lower-priced picks such as Hamburger (GBP 1.19), Cheeseburger (GBP 1.39), Mayo Chicken (GBP 1.39), Double Cheeseburger (GBP 2.29), 99p drinks and value add-ons, with Meal Deal Plus listed at GBP 5.59.',
+			),
+			array(
+				'question' => 'How much is a Happy Meal in the UK?',
+				'answer'   => 'Most Happy Meal options are GBP 3.89 in the current April 2026 menu, including Hamburger, Cheeseburger, Mayo Chicken and 4-piece Chicken McNuggets Happy Meals.',
+			),
+			array(
+				'question' => 'What time does McDonald\'s serve breakfast in the UK?',
+				'answer'   => 'McDonald\'s UK breakfast is typically served from 5:00 AM until 11:00 AM. After 11:00 AM, the main daytime menu takes over.',
+			),
+			array(
+				'question' => 'How many calories are in McDonald\'s large fries?',
+				'answer'   => 'A large fries has 444 kcal in the current menu data.',
+			),
+			array(
+				'question' => 'Does McDonald\'s UK have a vegan burger?',
+				'answer'   => 'Yes. McDonald\'s UK has the McPlant, which is listed at GBP 5.09 and 426 kcal in the current menu data.',
+			),
+			array(
+				'question' => 'How much is a McFlurry in the UK?',
+				'answer'   => 'Regular Oreo and Smarties McFlurry flavours are GBP 2.19, while mini versions are GBP 1.39. Seasonal flavours such as Cadbury Creme Egg and Cadbury Mini Eggs McFlurry are GBP 2.49.',
+			),
+			array(
+				'question' => 'What is the cheapest item on the McDonald\'s UK menu?',
+				'answer'   => 'The cheapest current items are 99p picks such as White Coffee, Americano, Espresso, Apple Slices, Pineapple Stick and Carrot Sticks. The cheapest burger is the Hamburger at GBP 1.19.',
+			),
+		);
+	}
+
+	/**
 	 * Return the absolute current request URL for structured data.
 	 *
 	 * @return string
@@ -1670,7 +1729,7 @@ class McPrices_Integration {
 		$title       = $this->is_seo_homepage() ? $this->get_homepage_meta_title() : wp_get_document_title();
 		$description = $this->is_seo_homepage() ? $this->get_homepage_meta_description() : $this->get_schema_site_description();
 		$logo_url    = $this->get_site_logo_url();
-		$faq_items   = $this->is_seo_homepage() ? $this->get_homepage_faq_items() : array();
+		$faq_items   = $this->is_seo_homepage() ? $this->get_homepage_faq_schema_items() : array();
 		$products    = $this->is_seo_homepage() ? $this->get_homepage_popular_products() : array();
 		$current_url = esc_url_raw( $this->get_current_request_url() );
 		$breadcrumbs = $this->get_breadcrumb_schema_items();
