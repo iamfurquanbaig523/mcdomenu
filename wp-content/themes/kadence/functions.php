@@ -47,13 +47,34 @@ function kadence_mcprices_has_active_seo_plugin() {
 }
 
 /**
+ * Return the current site-local date string for McPrices.
+ *
+ * @param string $format PHP date format.
+ * @return string
+ */
+function kadence_mcprices_get_current_site_date( $format = 'd-m-Y' ) {
+	return wp_date( $format, null, wp_timezone() );
+}
+
+/**
+ * Return the current site-local year for McPrices.
+ *
+ * @return string
+ */
+function kadence_mcprices_get_current_site_year() {
+	return kadence_mcprices_get_current_site_date( 'Y' );
+}
+
+/**
  * Build the dynamic meta title for the current request.
  *
  * @return string
  */
 function kadence_mcprices_get_dynamic_meta_title() {
+	$current_year = kadence_mcprices_get_current_site_year();
+
 	if ( is_front_page() && ! is_home() ) {
-		return "McDonald's Menu Prices UK 2026 | Full Price List & Calories";
+		return "McDonald's Menu Prices UK {$current_year} | Full Price List & Calories";
 	}
 
 	if ( is_singular( 'post' ) ) {
@@ -72,7 +93,7 @@ function kadence_mcprices_get_dynamic_meta_title() {
 		}
 
 		if ( '' !== $archive_label ) {
-			return $archive_label . ' Prices UK 2026 | McPrices UK';
+			return $archive_label . ' Prices UK ' . $current_year . ' | McPrices UK';
 		}
 	}
 
@@ -93,8 +114,11 @@ function kadence_mcprices_get_dynamic_meta_title() {
  * @return string
  */
 function kadence_mcprices_get_dynamic_meta_description() {
+	$current_date = kadence_mcprices_get_current_site_date();
+	$current_year = kadence_mcprices_get_current_site_year();
+
 	if ( is_front_page() && ! is_home() ) {
-		return "Complete McDonald's UK menu prices updated April 2026. Find prices for every burger, breakfast, McCafé, McFlurry, and Saver Menu item with calorie counts.";
+		return "Complete McDonald's UK menu prices updated {$current_date}. Find prices for every burger, breakfast, McCafé, McFlurry, and Saver Menu item with calorie counts.";
 	}
 
 	if ( is_singular( 'post' ) ) {
@@ -124,7 +148,7 @@ function kadence_mcprices_get_dynamic_meta_description() {
 		}
 
 		if ( '' !== $archive_label ) {
-			return sprintf( 'Browse %s prices, deals, calories and McDonald\'s UK menu updates for 2026 on McPrices UK.', $archive_label );
+			return sprintf( 'Browse %s prices, deals, calories and McDonald\'s UK menu updates for %s on McPrices UK.', $archive_label, $current_year );
 		}
 	}
 

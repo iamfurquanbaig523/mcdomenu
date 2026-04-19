@@ -43,6 +43,31 @@ class McPrices_Integration {
 	const SEED_VERSION = '1.4.0';
 
 	/**
+	 * Option used to track Rank Math SEO seeding for portable databases.
+	 */
+	const RANK_MATH_SEED_VERSION_OPTION = 'mcprices_rank_math_seed_version';
+
+	/**
+	 * Current Rank Math seed version.
+	 */
+	const RANK_MATH_SEED_VERSION = '1.0.0';
+
+	/**
+	 * Option used to track portable DB-backed setup seeding.
+	 */
+	const PORTABLE_DB_SEED_VERSION_OPTION = 'mcprices_portable_db_seed_version';
+
+	/**
+	 * Current portable DB seed version.
+	 */
+	const PORTABLE_DB_SEED_VERSION = '1.0.0';
+
+	/**
+	 * Option used to trigger a one-time rewrite flush after DB seeding.
+	 */
+	const REWRITE_FLUSH_OPTION = 'mcprices_pending_rewrite_flush';
+
+	/**
 	 * Singleton instance.
 	 *
 	 * @var McPrices_Integration|null
@@ -72,12 +97,19 @@ class McPrices_Integration {
 		add_filter( 'body_class', array( $this, 'filter_body_classes' ) );
 		add_filter( 'wp_resource_hints', array( $this, 'filter_resource_hints' ), 10, 2 );
 		add_filter( 'pre_get_document_title', array( $this, 'filter_document_title' ), 20 );
+		add_filter( 'the_content', array( $this, 'filter_dynamic_date_content' ), 20 );
+		add_filter( 'render_block', array( $this, 'filter_dynamic_date_block_html' ), 20, 2 );
+		add_filter( 'theme_mod_header_html_content', array( $this, 'filter_dynamic_update_bar_html' ) );
+		add_filter( 'theme_mod_mobile_html_content', array( $this, 'filter_dynamic_update_bar_html' ) );
 		add_filter( 'wp_robots', array( $this, 'filter_homepage_robots' ), 20 );
 		add_filter( 'robots_txt', array( $this, 'filter_robots_txt' ), 20, 2 );
 
 		add_action( 'after_setup_theme', array( $this, 'maybe_seed_native_design' ), 30 );
+		add_action( 'after_setup_theme', array( $this, 'maybe_seed_portable_database_settings' ), 34 );
+		add_action( 'after_setup_theme', array( $this, 'maybe_seed_rank_math_settings' ), 35 );
 		add_action( 'customize_register', array( $this, 'register_customizer' ), 100 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ), 30 );
+		add_action( 'init', array( $this, 'maybe_flush_pending_rewrite_rules' ), 99 );
 		add_action( 'wp_head', array( $this, 'render_homepage_meta_tags' ), 2 );
 		add_action( 'wp_head', array( $this, 'render_homepage_schema' ), 30 );
 		add_action( 'template_redirect', array( $this, 'maybe_render_sitemap' ), 0 );
@@ -123,6 +155,67 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Return the current site-local date string.
+	 *
+	 * @param string $format PHP date format.
+	 * @return string
+	 */
+	protected function get_current_site_date( $format = 'd-m-Y' ) {
+		if ( function_exists( 'kadence_mcprices_get_current_site_date' ) ) {
+			return (string) kadence_mcprices_get_current_site_date( $format );
+		}
+
+		return wp_date( $format, null, wp_timezone() );
+	}
+
+	/**
+	 * Return the current site-local year.
+	 *
+	 * @return string
+	 */
+	protected function get_current_site_year() {
+		return $this->get_current_site_date( 'Y' );
+	}
+
+	/**
+	 * Replace managed McPrices date labels with the current date/year at render time.
+	 *
+	 * @param string $content Raw HTML/text.
+	 * @return string
+	 */
+	protected function replace_dynamic_date_strings( $content ) {
+		$current_date = $this->get_current_site_date();
+		$current_year = $this->get_current_site_year();
+
+		$replacements = array(
+			'Prices last verified: <strong>April 2026</strong>'                                      => 'Prices last verified: <strong>' . $current_date . '</strong>',
+			'Updated April 2026'                                                                     => 'Updated ' . $current_date,
+			'updated April 2026'                                                                     => 'updated ' . $current_date,
+			'updated for April 2026'                                                                 => 'updated for ' . $current_date,
+			'latest April 2026 update'                                                               => 'latest ' . $current_date . ' update',
+			'current April 2026 update'                                                              => 'current ' . $current_date . ' update',
+			'Prices were last verified in April 2026.'                                               => 'Prices were last verified on ' . $current_date . '.',
+			'What&#8217;s New 2026'                                                                   => 'What&#8217;s New ' . $current_year,
+			"What's New 2026"                                                                        => "What's New " . $current_year,
+			"McDonald's Menu Prices UK 2026"                                                         => "McDonald's Menu Prices UK " . $current_year,
+			"What's New at McDonald's UK 2026"                                                       => "What's New at McDonald's UK " . $current_year,
+			"Complete McDonald's UK Menu 2026"                                                       => "Complete McDonald's UK Menu " . $current_year,
+			"McDonald's UK Value Picks 2026"                                                         => "McDonald's UK Value Picks " . $current_year,
+			"McDonald's UK Calorie Guide 2026"                                                       => "McDonald's UK Calorie Guide " . $current_year,
+			"McDonald's UK Holiday Hours 2026"                                                       => "McDonald's UK Holiday Hours " . $current_year,
+			"McDonald's UK in Numbers (2026)"                                                        => "McDonald's UK in Numbers (" . $current_year . ')',
+			'UK 2026'                                                                                => 'UK ' . $current_year,
+			'Date 2026'                                                                              => 'Date ' . $current_year,
+			'Prices for nuggets, selects, dippers and share boxes from the live 2026 source.'        => 'Prices for nuggets, selects, dippers and share boxes from the live ' . $current_year . ' source.',
+			'Happy Meal options and current pricing for 2026.'                                       => 'Happy Meal options and current pricing for ' . $current_year . '.',
+			'Every item on the Saver Menu with the latest low-price 2026 update.'                    => 'Every item on the Saver Menu with the latest low-price ' . $current_year . ' update.',
+			'April 2026'                                                                             => $current_date,
+		);
+
+		return strtr( (string) $content, $replacements );
+	}
+
+	/**
 	 * Return the default update bar HTML used in the builder HTML item.
 	 *
 	 * @return string
@@ -149,6 +242,440 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Return the Rank Math titles option values required for the seeded SEO setup.
+	 *
+	 * @return array<string, mixed>
+	 */
+	protected function get_rank_math_titles_seed() {
+		$current_year = $this->get_current_site_year();
+		$current_date = $this->get_current_site_date();
+
+		return array(
+			'website_name'          => 'McPrices UK',
+			'knowledgegraph_name'   => 'McPrices UK',
+			'knowledgegraph_type'   => 'person',
+			'local_business_type'   => 'Organization',
+			'homepage_title'        => "McDonald's Menu Prices UK {$current_year} | Full Price List & Calories",
+			'homepage_description'  => "Complete McDonald's UK menu prices updated {$current_date}. Find prices for every burger, breakfast, McCafé, McFlurry, and Saver Menu item with calorie counts.",
+			'pt_post_title'         => '%title% | McPrices UK',
+			'pt_post_description'   => '%excerpt%',
+			'tax_category_title'    => '%term% Prices UK ' . $current_year . ' | McPrices UK',
+			'tax_category_description' => "Browse %term% prices, deals, calories and McDonald's UK menu updates for {$current_year} on McPrices UK.",
+			'404_title'             => 'Page Not Found | McPrices UK',
+		);
+	}
+
+	/**
+	 * Return the Rank Math general option values required for the seeded SEO setup.
+	 *
+	 * @return array<string, mixed>
+	 */
+	protected function get_rank_math_general_seed() {
+		return array(
+			'setup_mode'                  => 'advanced',
+			'attachment_redirect_default' => home_url( '/' ),
+		);
+	}
+
+	/**
+	 * Return the Rank Math sitemap option values required for the seeded SEO setup.
+	 *
+	 * @return array<string, mixed>
+	 */
+	protected function get_rank_math_sitemap_seed() {
+		return array(
+			'items_per_page'     => 200,
+			'include_images'     => 'on',
+			'html_sitemap'       => 'on',
+			'html_sitemap_display' => 'shortcode',
+			'pt_post_sitemap'    => 'on',
+			'pt_page_sitemap'    => 'on',
+			'tax_category_sitemap' => 'on',
+		);
+	}
+
+	/**
+	 * Return the minimum Rank Math modules that should be active for the seeded setup.
+	 *
+	 * @return string[]
+	 */
+	protected function get_rank_math_seed_modules() {
+		return array(
+			'link-counter',
+			'analytics',
+			'seo-analysis',
+			'sitemap',
+			'rich-snippet',
+			'instant-indexing',
+		);
+	}
+
+	/**
+	 * Return the support and guide pages that should exist in any fresh DB.
+	 *
+	 * @return array<string, array<string, string>>
+	 */
+	protected function get_seeded_support_pages() {
+		return array(
+			'about' => array(
+				'title'   => 'About Us',
+				'content' => '<!-- wp:paragraph --><p>McPrices UK is an independent guide to McDonald&#8217;s UK menu prices, calories, deals and Saver Menu updates. We track the menu monthly so readers can quickly compare prices, find calorie information and check the latest limited-time items without relying on scattered screenshots or outdated PDFs.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>We are not affiliated with McDonald&#8217;s. Prices may vary by restaurant, delivery platform and promotion window.</p><!-- /wp:paragraph -->',
+			),
+			'privacy-policy' => array(
+				'title'   => 'Privacy Policy',
+				'content' => '<!-- wp:paragraph --><p>This Privacy Policy explains how McPrices UK may collect and use limited information such as analytics data, contact submissions and advertising-related data when you use the site. We only use this information to operate, improve and protect the website.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>If you contact us directly, we may retain the information you send so we can respond. Third-party services such as analytics, advertising and embedded tools may also process data according to their own policies.</p><!-- /wp:paragraph -->',
+			),
+			'cookie-policy' => array(
+				'title'   => 'Cookie Policy',
+				'content' => '<!-- wp:paragraph --><p>McPrices UK may use cookies and similar technologies to remember preferences, measure traffic and support advertising or performance tools. Some cookies are essential for the site to work properly, while others help us understand how visitors use the site.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>You can usually control cookies through your browser settings. Disabling some cookies may affect how parts of the site function.</p><!-- /wp:paragraph -->',
+			),
+			'contact' => array(
+				'title'   => 'Contact',
+				'content' => '<!-- wp:paragraph --><p>Use this page to contact McPrices UK about price corrections, menu updates, advertising questions or general feedback. If you spot a menu price that looks outdated, include the item name, restaurant location and the latest price so we can review it quickly.</p><!-- /wp:paragraph -->',
+			),
+			'disclaimer' => array(
+				'title'   => 'Disclaimer',
+				'content' => '<!-- wp:paragraph --><p>McPrices UK is an independent, unofficial website and is not affiliated with, endorsed by or connected to McDonald&#8217;s Corporation or McDonald&#8217;s UK Ltd. Prices, calorie counts, availability and promotions may vary by location and date.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>Always confirm important details such as allergens, opening hours and delivery pricing with the official McDonald&#8217;s UK app, website or restaurant before ordering.</p><!-- /wp:paragraph -->',
+			),
+			'ad-disclosure' => array(
+				'title'   => 'Ad Disclosure',
+				'content' => '<!-- wp:paragraph --><p>McPrices UK may display advertisements, sponsored placements or monetised content to support site operations. Advertising relationships do not change our editorial approach: we still aim to provide clear, practical and regularly updated McDonald&#8217;s UK price information.</p><!-- /wp:paragraph -->',
+			),
+			'sitemap' => array(
+				'title'   => 'Sitemap',
+				'content' => '<!-- wp:paragraph --><p>Browse the main areas of McPrices UK below, or use the XML sitemap at <a href="' . esc_url( home_url( '/sitemap.xml' ) ) . '">' . esc_html( home_url( '/sitemap.xml' ) ) . '</a> for the crawler-friendly version.</p><!-- /wp:paragraph --><!-- wp:shortcode -->[rank_math_html_sitemap]<!-- /wp:shortcode -->',
+			),
+			'big-mac-price-uk' => array(
+				'title'   => 'Big Mac Price UK',
+				'content' => '<!-- wp:paragraph --><p>This guide focuses on the current Big Mac price in the UK, including meal pricing, calorie information and how the Big Mac compares with other burger choices on the McDonald&#8217;s UK menu.</p><!-- /wp:paragraph -->',
+			),
+			'mcdonalds-app-deals' => array(
+				'title'   => 'McDonald&#8217;s App Deals',
+				'content' => '<!-- wp:paragraph --><p>Our McDonald&#8217;s App Deals guide tracks the most useful UK app offers, including meal bundles, Saver Menu combinations and limited-time promotions that can lower the cost of popular items.</p><!-- /wp:paragraph -->',
+			),
+			'calorie-counter' => array(
+				'title'   => 'Calorie Counter',
+				'content' => '<!-- wp:paragraph --><p>The McPrices UK calorie counter page helps you compare menu items by calories so you can spot lighter burgers, breakfast choices, sides, drinks and dessert options more easily.</p><!-- /wp:paragraph -->',
+			),
+			'breakfast-times' => array(
+				'title'   => 'Breakfast Times',
+				'content' => '<!-- wp:paragraph --><p>This page explains typical McDonald&#8217;s breakfast times in the UK, including when breakfast usually ends and which menu items are normally available in the morning period.</p><!-- /wp:paragraph -->',
+			),
+			'allergen-guide' => array(
+				'title'   => 'Allergen Guide',
+				'content' => '<!-- wp:paragraph --><p>Our allergen guide explains how to approach McDonald&#8217;s UK menu choices more carefully, but always use the official McDonald&#8217;s allergen tool and restaurant information for final decisions.</p><!-- /wp:paragraph -->',
+			),
+			'price-history' => array(
+				'title'   => 'Price History',
+				'content' => '<!-- wp:paragraph --><p>The McPrices UK price history page tracks how popular menu prices have changed over time, helping readers compare current pricing with previous months and seasonal promotions.</p><!-- /wp:paragraph -->',
+			),
+			'vegan-options' => array(
+				'title'   => 'Vegan Options',
+				'content' => '<!-- wp:paragraph --><p>This guide covers the current vegan-friendly options on the McDonald&#8217;s UK menu, including burgers, sides and drinks that may suit plant-based customers.</p><!-- /wp:paragraph -->',
+			),
+			'mcdelivery-guide' => array(
+				'title'   => 'McDelivery Guide',
+				'content' => '<!-- wp:paragraph --><p>The McDelivery guide explains what to expect when ordering McDonald&#8217;s UK through delivery platforms, including possible price differences, fees and menu availability changes.</p><!-- /wp:paragraph -->',
+			),
+			'limited-time-menu' => array(
+				'title'   => 'Limited-Time Menu',
+				'content' => '<!-- wp:paragraph --><p>This page highlights current limited-time McDonald&#8217;s UK menu items, seasonal burgers, desserts, breakfast returns and short-run deal bundles that may not stay on the menu for long.</p><!-- /wp:paragraph -->',
+			),
+		);
+	}
+
+	/**
+	 * Return whether the Rank Math plugin files are present.
+	 *
+	 * @return bool
+	 */
+	protected function is_rank_math_plugin_available() {
+		return file_exists( WP_PLUGIN_DIR . '/seo-by-rank-math/rank-math.php' );
+	}
+
+	/**
+	 * Return whether Rank Math is currently active.
+	 *
+	 * @return bool
+	 */
+	protected function is_rank_math_plugin_active() {
+		if ( defined( 'RANK_MATH_VERSION' ) || class_exists( '\RankMath\Helper' ) ) {
+			return true;
+		}
+
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		return function_exists( 'is_plugin_active' ) && is_plugin_active( 'seo-by-rank-math/rank-math.php' );
+	}
+
+	/**
+	 * Return whether the portable DB-backed seed is already current.
+	 *
+	 * @return bool
+	 */
+	protected function portable_db_seed_is_current() {
+		if ( self::PORTABLE_DB_SEED_VERSION !== get_option( self::PORTABLE_DB_SEED_VERSION_OPTION, '' ) ) {
+			return false;
+		}
+
+		if ( '/%postname%/' !== (string) get_option( 'permalink_structure', '' ) ) {
+			return false;
+		}
+
+		if ( $this->is_rank_math_plugin_available() && ! $this->is_rank_math_plugin_active() ) {
+			return false;
+		}
+
+		foreach ( $this->get_seeded_support_pages() as $slug => $page_data ) {
+			$page = get_page_by_path( $slug );
+
+			if ( ! $page instanceof \WP_Post || 'publish' !== $page->post_status ) {
+				return false;
+			}
+		}
+
+		$privacy_page = get_page_by_path( 'privacy-policy' );
+		if ( $privacy_page instanceof \WP_Post && (int) $privacy_page->ID !== (int) get_option( 'wp_page_for_privacy_policy', 0 ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Ensure pretty permalinks are enabled for the seeded site.
+	 *
+	 * @return bool
+	 */
+	protected function maybe_seed_permalink_structure() {
+		if ( '/%postname%/' === (string) get_option( 'permalink_structure', '' ) ) {
+			return false;
+		}
+
+		update_option( 'permalink_structure', '/%postname%/' );
+
+		return true;
+	}
+
+	/**
+	 * Activate Rank Math automatically when its plugin files are already present.
+	 *
+	 * @return bool
+	 */
+	protected function maybe_activate_rank_math_plugin() {
+		if ( ! $this->is_rank_math_plugin_available() || $this->is_rank_math_plugin_active() ) {
+			return false;
+		}
+
+		if ( ! function_exists( 'activate_plugin' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		if ( function_exists( 'activate_plugin' ) ) {
+			$activation = activate_plugin( 'seo-by-rank-math/rank-math.php', '', false, true );
+
+			return ! is_wp_error( $activation );
+		}
+
+		return false;
+	}
+
+	/**
+	 * Ensure the linked support and guide pages exist and are published.
+	 *
+	 * @return bool
+	 */
+	protected function maybe_seed_support_pages() {
+		$changed = false;
+
+		foreach ( $this->get_seeded_support_pages() as $slug => $page_data ) {
+			$page = get_page_by_path( $slug );
+
+			$postarr = array(
+				'post_title'  => $page_data['title'],
+				'post_name'   => $slug,
+				'post_type'   => 'page',
+				'post_status' => 'publish',
+			);
+
+			if ( $page instanceof \WP_Post ) {
+				$update = array(
+					'ID'          => (int) $page->ID,
+					'post_title'  => $page_data['title'],
+					'post_name'   => $slug,
+					'post_status' => 'publish',
+				);
+
+				if ( '' === trim( wp_strip_all_tags( (string) $page->post_content ) ) ) {
+					$update['post_content'] = $page_data['content'];
+				}
+
+				wp_update_post( $update );
+				$changed = true;
+				continue;
+			}
+
+			$postarr['post_content'] = $page_data['content'];
+			$page_id                 = wp_insert_post( $postarr, true );
+
+			if ( ! is_wp_error( $page_id ) && $page_id ) {
+				$changed = true;
+			}
+		}
+
+		return $changed;
+	}
+
+	/**
+	 * Assign the seeded privacy policy page in WordPress settings.
+	 *
+	 * @return bool
+	 */
+	protected function maybe_seed_privacy_policy_page() {
+		$privacy_page = get_page_by_path( 'privacy-policy' );
+
+		if ( ! $privacy_page instanceof \WP_Post ) {
+			return false;
+		}
+
+		if ( (int) $privacy_page->ID === (int) get_option( 'wp_page_for_privacy_policy', 0 ) ) {
+			return false;
+		}
+
+		update_option( 'wp_page_for_privacy_policy', (int) $privacy_page->ID );
+
+		return true;
+	}
+
+	/**
+	 * Flag rewrite rules for a one-time flush on init.
+	 *
+	 * @return void
+	 */
+	protected function mark_rewrite_flush_pending() {
+		update_option( self::REWRITE_FLUSH_OPTION, '1', false );
+	}
+
+	/**
+	 * Flush rewrite rules when the portable DB seed requested it.
+	 *
+	 * @return void
+	 */
+	public function maybe_flush_pending_rewrite_rules() {
+		if ( '1' !== (string) get_option( self::REWRITE_FLUSH_OPTION, '' ) ) {
+			return;
+		}
+
+		flush_rewrite_rules( false );
+		delete_option( self::REWRITE_FLUSH_OPTION );
+	}
+
+	/**
+	 * Seed all remaining DB-backed settings that should survive a fresh database.
+	 *
+	 * @return void
+	 */
+	public function maybe_seed_portable_database_settings() {
+		if ( $this->portable_db_seed_is_current() ) {
+			return;
+		}
+
+		$changed = false;
+
+		if ( $this->maybe_seed_permalink_structure() ) {
+			$changed = true;
+		}
+
+		if ( $this->maybe_activate_rank_math_plugin() ) {
+			$changed = true;
+		}
+
+		if ( $this->maybe_seed_support_pages() ) {
+			$changed = true;
+		}
+
+		if ( $this->maybe_seed_privacy_policy_page() ) {
+			$changed = true;
+		}
+
+		if ( $changed ) {
+			$this->mark_rewrite_flush_pending();
+		}
+
+		update_option( self::PORTABLE_DB_SEED_VERSION_OPTION, self::PORTABLE_DB_SEED_VERSION, false );
+	}
+
+	/**
+	 * Merge a seed array into a stored Rank Math option array.
+	 *
+	 * @param string               $option_name Option name.
+	 * @param array<string, mixed> $seed_values Seeded values.
+	 * @return void
+	 */
+	protected function merge_rank_math_option_array( $option_name, $seed_values ) {
+		$current_values = get_option( $option_name, array() );
+		$current_values = is_array( $current_values ) ? $current_values : array();
+		$merged_values  = array_replace_recursive( $current_values, $seed_values );
+
+		update_option( $option_name, $merged_values, false );
+	}
+
+	/**
+	 * Determine whether the critical Rank Math SEO seed values already exist.
+	 *
+	 * @return bool
+	 */
+	protected function rank_math_seed_is_current() {
+		$titles = get_option( 'rank-math-options-titles', array() );
+		$titles = is_array( $titles ) ? $titles : array();
+		$current_year = $this->get_current_site_year();
+		$current_date = $this->get_current_site_date();
+
+		if ( self::RANK_MATH_SEED_VERSION === get_option( self::RANK_MATH_SEED_VERSION_OPTION, '' )
+			&& '1' === (string) get_option( 'rank_math_registration_skip', '' )
+			&& '1' === (string) get_option( 'rank_math_wizard_completed', '' )
+			&& '1' === (string) get_option( 'blog_public', '' )
+			&& "McDonald's Menu Prices UK {$current_year} | Full Price List & Calories" === ( $titles['homepage_title'] ?? '' )
+			&& "Complete McDonald's UK menu prices updated {$current_date}. Find prices for every burger, breakfast, McCafé, McFlurry, and Saver Menu item with calorie counts." === ( $titles['homepage_description'] ?? '' )
+			&& '%title% | McPrices UK' === ( $titles['pt_post_title'] ?? '' )
+			&& '%term% Prices UK ' . $current_year . ' | McPrices UK' === ( $titles['tax_category_title'] ?? '' )
+			&& 'Page Not Found | McPrices UK' === ( $titles['404_title'] ?? '' ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Seed Rank Math configuration into the current database so SEO settings are
+	 * recreated automatically on fresh local or production installs.
+	 *
+	 * @return void
+	 */
+	public function maybe_seed_rank_math_settings() {
+		if ( $this->rank_math_seed_is_current() ) {
+			return;
+		}
+
+		update_option( 'rank_math_registration_skip', '1', false );
+		update_option( 'rank_math_wizard_completed', '1', false );
+		update_option( 'blog_public', '1', false );
+
+		$current_modules = get_option( 'rank_math_modules', array() );
+		$current_modules = is_array( $current_modules ) ? $current_modules : array();
+		$seed_modules    = array_values( array_unique( array_merge( $current_modules, $this->get_rank_math_seed_modules() ) ) );
+
+		update_option( 'rank_math_modules', $seed_modules, false );
+		$this->merge_rank_math_option_array( 'rank-math-options-titles', $this->get_rank_math_titles_seed() );
+		$this->merge_rank_math_option_array( 'rank-math-options-general', $this->get_rank_math_general_seed() );
+		$this->merge_rank_math_option_array( 'rank-math-options-sitemap', $this->get_rank_math_sitemap_seed() );
+
+		update_option( self::RANK_MATH_SEED_VERSION_OPTION, self::RANK_MATH_SEED_VERSION, false );
+	}
+
+	/**
 	 * Build a homepage section URL that still works from inner pages.
 	 *
 	 * @param string $section Section anchor without the leading #.
@@ -164,7 +691,7 @@ class McPrices_Integration {
 	 * @return string
 	 */
 	protected function get_seeded_update_bar_html() {
-		return '<p>&#9989; Prices last verified: <strong>April 2026</strong> &mdash; <a href="' . esc_url( $this->get_section_url( 'full-menu' ) ) . '">View full price list &darr;</a></p>';
+		return '<p>&#9989; Prices last verified: <strong>' . esc_html( $this->get_current_site_date() ) . '</strong> &mdash; <a href="' . esc_url( $this->get_section_url( 'full-menu' ) ) . '">View full price list &darr;</a></p>';
 	}
 
 	/**
@@ -255,6 +782,55 @@ class McPrices_Integration {
 			</div>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Filter managed homepage content so update dates stay current daily.
+	 *
+	 * @param string $content Rendered content.
+	 * @return string
+	 */
+	public function filter_dynamic_date_content( $content ) {
+		if ( ! $this->design_enabled() || ! is_front_page() || is_home() ) {
+			return $content;
+		}
+
+		return $this->replace_dynamic_date_strings( $content );
+	}
+
+	/**
+	 * Filter rendered block HTML that belongs to the managed McPrices surface.
+	 *
+	 * @param string $block_content Rendered block HTML.
+	 * @param array  $block         Parsed block data.
+	 * @return string
+	 */
+	public function filter_dynamic_date_block_html( $block_content, $block ) {
+		unset( $block );
+
+		if ( ! $this->design_enabled() ) {
+			return $block_content;
+		}
+
+		if ( false === strpos( (string) $block_content, '2026' ) && false === strpos( (string) $block_content, 'April 2026' ) && false === strpos( (string) $block_content, 'Prices last verified:' ) ) {
+			return $block_content;
+		}
+
+		return $this->replace_dynamic_date_strings( $block_content );
+	}
+
+	/**
+	 * Keep the Kadence header update bar using the current date without forcing DB writes.
+	 *
+	 * @param string $content Theme mod HTML content.
+	 * @return string
+	 */
+	public function filter_dynamic_update_bar_html( $content ) {
+		if ( ! $this->design_enabled() || false === strpos( (string) $content, 'Prices last verified:' ) ) {
+			return $content;
+		}
+
+		return $this->get_seeded_update_bar_html();
 	}
 
 	/**
@@ -992,7 +1568,7 @@ class McPrices_Integration {
 	 * @return string
 	 */
 	protected function get_homepage_primary_keyword() {
-		return "McDonald's Menu Prices UK 2026";
+		return "McDonald's Menu Prices UK " . $this->get_current_site_year();
 	}
 
 	/**
@@ -1010,7 +1586,7 @@ class McPrices_Integration {
 	 * @return string
 	 */
 	protected function get_schema_site_description() {
-		return "McPrices UK covers McDonald's UK menu prices, calories, breakfast times, deals, delivery info and FAQs with a current April 2026 update.";
+		return 'McPrices UK covers McDonald\'s UK menu prices, calories, breakfast times, deals, delivery info and FAQs with a current ' . $this->get_current_site_date() . ' update.';
 	}
 
 	/**
@@ -1019,7 +1595,7 @@ class McPrices_Integration {
 	 * @return string
 	 */
 	protected function get_homepage_meta_title() {
-		return $this->get_homepage_primary_keyword() . ' - Updated April 2026';
+		return $this->get_homepage_primary_keyword() . ' - Updated ' . $this->get_current_site_date();
 	}
 
 	/**
@@ -1028,7 +1604,7 @@ class McPrices_Integration {
 	 * @return string
 	 */
 	protected function get_homepage_meta_description() {
-		return "McDonald's Menu Prices UK 2026, updated April 2026 with the full UK menu, current prices, calories, breakfast times, deals, delivery tips, FAQs and value picks.";
+		return "McDonald's Menu Prices UK " . $this->get_current_site_year() . ', updated ' . $this->get_current_site_date() . ' with the full UK menu, current prices, calories, breakfast times, deals, delivery tips, FAQs and value picks.';
 	}
 
 	/**
@@ -1051,7 +1627,9 @@ class McPrices_Integration {
 			$html = (string) require get_theme_file_path( '/inc/mcprices/pattern-homepage.php' );
 		}
 
-		if ( false !== strpos( $html, '[mcprices_hero_search]' ) ) {
+		$html = $this->replace_dynamic_date_strings( $html );
+
+		if ( false !== strpos( $html, '[mcprices_' ) ) {
 			$html = do_shortcode( $html );
 		}
 
@@ -1127,10 +1705,12 @@ class McPrices_Integration {
 			return $faq_items;
 		}
 
+		$current_date = $this->get_current_site_date();
+
 		$faq_items = array(
 			array(
 				'question' => 'How much is a Big Mac in the UK?',
-				'answer'   => 'A Big Mac costs £5.09 in this April 2026 update. Meal pricing can vary slightly by restaurant and local offer.',
+				'answer'   => 'A Big Mac costs £5.09 in this ' . $current_date . ' update. Meal pricing can vary slightly by restaurant and local offer.',
 			),
 			array(
 				'question' => 'What is on the McDonald\'s Saver Menu?',
@@ -1138,7 +1718,7 @@ class McPrices_Integration {
 			),
 			array(
 				'question' => 'How much is a Happy Meal in the UK?',
-				'answer'   => 'Most current Happy Meal options are £3.89 in this April 2026 update, including Hamburger, Cheeseburger, Mayo Chicken and 4-piece Chicken McNuggets Happy Meals.',
+				'answer'   => 'Most current Happy Meal options are £3.89 in this ' . $current_date . ' update, including Hamburger, Cheeseburger, Mayo Chicken and 4-piece Chicken McNuggets Happy Meals.',
 			),
 		);
 		$xpath     = $this->get_homepage_dom_xpath();
@@ -1189,10 +1769,12 @@ class McPrices_Integration {
 	 * @return array
 	 */
 	protected function get_homepage_faq_schema_items() {
+		$current_date = $this->get_current_site_date();
+
 		return array(
 			array(
 				'question' => 'How much is a Big Mac in the UK?',
-				'answer'   => 'A Big Mac costs GBP 5.09 in this April 2026 update. Meal prices can vary a little by restaurant, so the McDonald\'s app is the best place to confirm your local price.',
+				'answer'   => 'A Big Mac costs GBP 5.09 in this ' . $current_date . ' update. Meal prices can vary a little by restaurant, so the McDonald\'s app is the best place to confirm your local price.',
 			),
 			array(
 				'question' => 'What is on the McDonald\'s Saver Menu UK?',
@@ -1200,7 +1782,7 @@ class McPrices_Integration {
 			),
 			array(
 				'question' => 'How much is a Happy Meal in the UK?',
-				'answer'   => 'Most Happy Meal options are GBP 3.89 in the current April 2026 menu, including Hamburger, Cheeseburger, Mayo Chicken and 4-piece Chicken McNuggets Happy Meals.',
+				'answer'   => 'Most Happy Meal options are GBP 3.89 in the current ' . $current_date . ' menu, including Hamburger, Cheeseburger, Mayo Chicken and 4-piece Chicken McNuggets Happy Meals.',
 			),
 			array(
 				'question' => 'What time does McDonald\'s serve breakfast in the UK?',
@@ -1614,15 +2196,7 @@ class McPrices_Integration {
 	 * @return string
 	 */
 	protected function get_homepage_modified_date() {
-		$front_page_id = (int) get_option( 'page_on_front' );
-		if ( $front_page_id ) {
-			$modified = get_post_modified_time( 'c', true, $front_page_id );
-			if ( $modified ) {
-				return $modified;
-			}
-		}
-
-		return gmdate( 'c' );
+		return wp_date( 'c', null, wp_timezone() );
 	}
 
 	/**
@@ -1822,9 +2396,10 @@ class McPrices_Integration {
 						'name'               => $product['name'],
 						'image'              => $product['image'] ? array( $product['image'] ) : null,
 						'description'        => sprintf(
-							'%1$s is a popular McDonald\'s UK menu item in the April 2026 update.%2$s',
+							'%1$s is a popular McDonald\'s UK menu item in the %3$s update.%2$s',
 							$product['name'],
-							$product['category'] ? ' Category: ' . $product['category'] . '.' : ''
+							$product['category'] ? ' Category: ' . $product['category'] . '.' : '',
+							$this->get_current_site_date()
 						),
 						'brand'              => array(
 							'@type' => 'Brand',
