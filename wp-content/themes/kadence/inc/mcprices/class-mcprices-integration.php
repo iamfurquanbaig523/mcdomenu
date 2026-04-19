@@ -979,6 +979,24 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Return the structured-data organization name.
+	 *
+	 * @return string
+	 */
+	protected function get_schema_organization_name() {
+		return 'McPrices UK';
+	}
+
+	/**
+	 * Return the structured-data site description.
+	 *
+	 * @return string
+	 */
+	protected function get_schema_site_description() {
+		return "McPrices UK covers McDonald's UK menu prices, calories, breakfast times, deals, delivery info and FAQs with a current April 2026 update.";
+	}
+
+	/**
 	 * Return the homepage SEO title.
 	 *
 	 * @return string
@@ -1092,7 +1110,20 @@ class McPrices_Integration {
 			return $faq_items;
 		}
 
-		$faq_items = array();
+		$faq_items = array(
+			array(
+				'question' => 'How much is a Big Mac in the UK?',
+				'answer'   => 'A Big Mac costs £5.09 in this April 2026 update. Meal pricing can vary slightly by restaurant and local offer.',
+			),
+			array(
+				'question' => 'What is on the McDonald\'s Saver Menu?',
+				'answer'   => 'The Saver Menu currently covers McDonald\'s lowest-entry burgers, fries, drinks and add-ons, with prices starting from £1.19 and Meal Deal Plus listed at £5.59.',
+			),
+			array(
+				'question' => 'How much is a Happy Meal in the UK?',
+				'answer'   => 'Most current Happy Meal options are £3.89 in this April 2026 update, including Hamburger, Cheeseburger, Mayo Chicken and 4-piece Chicken McNuggets Happy Meals.',
+			),
+		);
 		$xpath     = $this->get_homepage_dom_xpath();
 
 		if ( ! $xpath ) {
@@ -1116,7 +1147,225 @@ class McPrices_Integration {
 			);
 		}
 
+		$unique_faq_items = array();
+		$seen_questions   = array();
+
+		foreach ( $faq_items as $faq_item ) {
+			$key = strtolower( trim( preg_replace( '/[^a-z0-9]+/i', ' ', remove_accents( (string) $faq_item['question'] ) ) ) );
+
+			if ( '' === $key || isset( $seen_questions[ $key ] ) ) {
+				continue;
+			}
+
+			$seen_questions[ $key ] = true;
+			$unique_faq_items[]     = $faq_item;
+		}
+
+		$faq_items = $unique_faq_items;
+
 		return $faq_items;
+	}
+
+	/**
+	 * Return the absolute current request URL for structured data.
+	 *
+	 * @return string
+	 */
+	protected function get_current_request_url() {
+		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
+
+		if ( is_string( $request_uri ) && '' !== $request_uri ) {
+			return esc_url_raw( home_url( $request_uri ) );
+		}
+
+		return esc_url_raw( home_url( '/' ) );
+	}
+
+	/**
+	 * Return an absolute section URL for schema references.
+	 *
+	 * @param string $section Section hash.
+	 * @return string
+	 */
+	protected function get_schema_section_url( $section ) {
+		return esc_url_raw( trailingslashit( home_url( '/' ) ) . '#' . ltrim( $section, '#' ) );
+	}
+
+	/**
+	 * Return breadcrumb items for the current inner page.
+	 *
+	 * @return array
+	 */
+	protected function get_breadcrumb_schema_items() {
+		$items    = array();
+		$home_url = esc_url_raw( home_url( '/' ) );
+
+		$items[] = array(
+			'name' => 'Home',
+			'url'  => $home_url,
+		);
+
+		if ( is_front_page() ) {
+			return array();
+		}
+
+		if ( is_home() ) {
+			$posts_page_id = (int) get_option( 'page_for_posts' );
+			$items[]       = array(
+				'name' => $posts_page_id ? get_the_title( $posts_page_id ) : 'Blog',
+				'url'  => $posts_page_id ? esc_url_raw( get_permalink( $posts_page_id ) ) : esc_url_raw( $this->get_current_request_url() ),
+			);
+
+			return $items;
+		}
+
+		if ( is_page() ) {
+			$page = get_queried_object();
+
+			if ( $page instanceof \WP_Post ) {
+				$ancestors = array_reverse( get_post_ancestors( $page ) );
+
+				foreach ( $ancestors as $ancestor_id ) {
+					$items[] = array(
+						'name' => get_the_title( $ancestor_id ),
+						'url'  => esc_url_raw( get_permalink( $ancestor_id ) ),
+					);
+				}
+
+				$items[] = array(
+					'name' => get_the_title( $page ),
+					'url'  => esc_url_raw( get_permalink( $page ) ),
+				);
+			}
+
+			return $items;
+		}
+
+		if ( is_single() ) {
+			$post = get_queried_object();
+
+			if ( $post instanceof \WP_Post ) {
+				$post_type = get_post_type( $post );
+
+				if ( 'post' === $post_type ) {
+					$posts_page_id = (int) get_option( 'page_for_posts' );
+
+					if ( $posts_page_id ) {
+						$items[] = array(
+							'name' => get_the_title( $posts_page_id ),
+							'url'  => esc_url_raw( get_permalink( $posts_page_id ) ),
+						);
+					}
+				} else {
+					$post_type_object = get_post_type_object( $post_type );
+					$archive_link     = get_post_type_archive_link( $post_type );
+
+					if ( $post_type_object && $archive_link ) {
+						$items[] = array(
+							'name' => $post_type_object->labels->name,
+							'url'  => esc_url_raw( $archive_link ),
+						);
+					}
+				}
+
+				$items[] = array(
+					'name' => get_the_title( $post ),
+					'url'  => esc_url_raw( get_permalink( $post ) ),
+				);
+			}
+
+			return $items;
+		}
+
+		if ( is_category() || is_tag() || is_tax() ) {
+			$term = get_queried_object();
+
+			if ( $term instanceof \WP_Term ) {
+				$posts_page_id = (int) get_option( 'page_for_posts' );
+
+				if ( $posts_page_id && in_array( $term->taxonomy, array( 'category', 'post_tag' ), true ) ) {
+					$items[] = array(
+						'name' => get_the_title( $posts_page_id ),
+						'url'  => esc_url_raw( get_permalink( $posts_page_id ) ),
+					);
+				}
+
+				$ancestors = array_reverse( get_ancestors( $term->term_id, $term->taxonomy ) );
+				foreach ( $ancestors as $ancestor_id ) {
+					$ancestor = get_term( $ancestor_id, $term->taxonomy );
+
+					if ( ! $ancestor || is_wp_error( $ancestor ) ) {
+						continue;
+					}
+
+					$ancestor_link = get_term_link( $ancestor );
+
+					if ( is_wp_error( $ancestor_link ) ) {
+						continue;
+					}
+
+					$items[] = array(
+						'name' => $ancestor->name,
+						'url'  => esc_url_raw( $ancestor_link ),
+					);
+				}
+
+				$term_link = get_term_link( $term );
+
+				if ( ! is_wp_error( $term_link ) ) {
+					$items[] = array(
+						'name' => $term->name,
+						'url'  => esc_url_raw( $term_link ),
+					);
+				}
+			}
+
+			return $items;
+		}
+
+		if ( is_post_type_archive() ) {
+			$post_type = get_query_var( 'post_type' );
+			$post_type = is_array( $post_type ) ? reset( $post_type ) : $post_type;
+
+			if ( is_string( $post_type ) && '' !== $post_type ) {
+				$post_type_object = get_post_type_object( $post_type );
+				$archive_link     = get_post_type_archive_link( $post_type );
+
+				if ( $post_type_object && $archive_link ) {
+					$items[] = array(
+						'name' => $post_type_object->labels->name,
+						'url'  => esc_url_raw( $archive_link ),
+					);
+				}
+			}
+
+			return $items;
+		}
+
+		if ( is_search() ) {
+			$items[] = array(
+				'name' => 'Search results for: ' . get_search_query(),
+				'url'  => esc_url_raw( $this->get_current_request_url() ),
+			);
+
+			return $items;
+		}
+
+		if ( is_404() ) {
+			$items[] = array(
+				'name' => 'Not Found',
+				'url'  => esc_url_raw( $this->get_current_request_url() ),
+			);
+
+			return $items;
+		}
+
+		$items[] = array(
+			'name' => wp_get_document_title(),
+			'url'  => esc_url_raw( $this->get_current_request_url() ),
+		);
+
+		return $items;
 	}
 
 	/**
@@ -1324,13 +1573,21 @@ class McPrices_Integration {
 	 */
 	protected function get_site_logo_url() {
 		$logo_id = (int) get_theme_mod( 'custom_logo' );
-		if ( ! $logo_id ) {
-			return '';
+		if ( $logo_id ) {
+			$logo_url = wp_get_attachment_image_url( $logo_id, 'full' );
+
+			if ( $logo_url ) {
+				return (string) $logo_url;
+			}
 		}
 
-		$logo_url = wp_get_attachment_image_url( $logo_id, 'full' );
+		$site_icon_url = get_site_icon_url( 512 );
 
-		return $logo_url ? (string) $logo_url : '';
+		if ( $site_icon_url ) {
+			return (string) $site_icon_url;
+		}
+
+		return (string) get_theme_file_uri( '/assets/images/mcprices/mcprices-logo-schema.svg' );
 	}
 
 	/**
@@ -1400,33 +1657,36 @@ class McPrices_Integration {
 	}
 
 	/**
-	 * Output homepage JSON-LD for FAQPage, Product/Offer, and site context.
+	 * Output JSON-LD structured data in the theme header via wp_head.
 	 *
 	 * @return void
 	 */
 	public function render_homepage_schema() {
-		if ( ! $this->is_seo_homepage() ) {
+		if ( ! $this->design_enabled() ) {
 			return;
 		}
 
-		$url         = home_url( '/' );
-		$title       = $this->get_homepage_meta_title();
-		$description = $this->get_homepage_meta_description();
+		$url         = esc_url_raw( home_url( '/' ) );
+		$title       = $this->is_seo_homepage() ? $this->get_homepage_meta_title() : wp_get_document_title();
+		$description = $this->is_seo_homepage() ? $this->get_homepage_meta_description() : $this->get_schema_site_description();
 		$logo_url    = $this->get_site_logo_url();
-		$faq_items   = $this->get_homepage_faq_items();
-		$products    = $this->get_homepage_popular_products();
+		$faq_items   = $this->is_seo_homepage() ? $this->get_homepage_faq_items() : array();
+		$products    = $this->is_seo_homepage() ? $this->get_homepage_popular_products() : array();
+		$current_url = esc_url_raw( $this->get_current_request_url() );
+		$breadcrumbs = $this->get_breadcrumb_schema_items();
+		$search_url  = $url . '?s={search_term_string}';
 		$graph       = array();
 
 		$graph[] = array_filter(
 			array(
 				'@type'       => 'Organization',
 				'@id'         => $url . '#organization',
-				'name'        => get_bloginfo( 'name' ),
+				'name'        => $this->get_schema_organization_name(),
 				'url'         => $url,
-				'description' => $description,
+				'description' => $this->get_schema_site_description(),
 				'logo'        => $logo_url ? array(
 					'@type' => 'ImageObject',
-					'url'   => $logo_url,
+					'url'   => esc_url_raw( $logo_url ),
 				) : null,
 			)
 		);
@@ -1435,33 +1695,38 @@ class McPrices_Integration {
 			'@type'           => 'WebSite',
 			'@id'             => $url . '#website',
 			'url'             => $url,
-			'name'            => $title,
-			'description'     => $description,
+			'name'            => $this->get_schema_organization_name(),
+			'description'     => $this->get_schema_site_description(),
 			'inLanguage'      => 'en-GB',
 			'publisher'       => array( '@id' => $url . '#organization' ),
-			'potentialAction' => array(
-				'@type'       => 'SearchAction',
-				'target'      => home_url( '/?s={search_term_string}' ),
-				'query-input' => 'required name=search_term_string',
-			),
+				'potentialAction' => array(
+					'@type'       => 'SearchAction',
+					'target'      => array(
+						'@type'       => 'EntryPoint',
+						'urlTemplate' => $search_url,
+					),
+					'query-input' => 'required name=search_term_string',
+				),
 		);
 
-		$graph[] = array(
-			'@type'        => 'CollectionPage',
-			'@id'          => $url . '#webpage',
-			'url'          => $url,
-			'name'         => $title,
-			'description'  => $description,
-			'inLanguage'   => 'en-GB',
-			'isPartOf'     => array( '@id' => $url . '#website' ),
-			'about'        => array(
-				$this->get_homepage_primary_keyword(),
-				"McDonald's UK calories",
-				"McDonald's UK breakfast times",
-				"McDonald's UK deals",
-			),
-			'dateModified' => $this->get_homepage_modified_date(),
-		);
+		if ( $this->is_seo_homepage() ) {
+			$graph[] = array(
+				'@type'        => 'CollectionPage',
+				'@id'          => $url . '#webpage',
+				'url'          => $url,
+				'name'         => $title,
+				'description'  => $description,
+				'inLanguage'   => 'en-GB',
+				'isPartOf'     => array( '@id' => $url . '#website' ),
+				'about'        => array(
+					$this->get_homepage_primary_keyword(),
+					"McDonald's UK calories",
+					"McDonald's UK breakfast times",
+					"McDonald's UK deals",
+				),
+				'dateModified' => $this->get_homepage_modified_date(),
+			);
+		}
 
 		if ( ! empty( $faq_items ) ) {
 			$graph[] = array(
@@ -1518,7 +1783,7 @@ class McPrices_Integration {
 							'priceCurrency' => 'GBP',
 							'price'         => $product['price'],
 							'availability'  => 'https://schema.org/InStock',
-							'url'           => $this->get_section_url( 'full-menu' ),
+							'url'           => $this->get_schema_section_url( 'full-menu' ),
 						) : null,
 					)
 				);
@@ -1539,6 +1804,31 @@ class McPrices_Integration {
 				'name'            => 'Popular McDonald\'s UK Menu Items',
 				'itemListElement' => $item_list,
 			);
+		}
+
+		if ( ! empty( $breadcrumbs ) && count( $breadcrumbs ) > 1 ) {
+			$breadcrumb_items = array();
+
+			foreach ( $breadcrumbs as $index => $breadcrumb ) {
+				if ( empty( $breadcrumb['name'] ) || empty( $breadcrumb['url'] ) ) {
+					continue;
+				}
+
+				$breadcrumb_items[] = array(
+					'@type'    => 'ListItem',
+					'position' => $index + 1,
+					'name'     => $breadcrumb['name'],
+					'item'     => $breadcrumb['url'],
+				);
+			}
+
+			if ( ! empty( $breadcrumb_items ) ) {
+				$graph[] = array(
+					'@type'           => 'BreadcrumbList',
+					'@id'             => $current_url . '#breadcrumb',
+					'itemListElement' => $breadcrumb_items,
+				);
+			}
 		}
 		?>
 		<script type="application/ld+json"><?php echo wp_json_encode( array( '@context' => 'https://schema.org', '@graph' => $graph ), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
