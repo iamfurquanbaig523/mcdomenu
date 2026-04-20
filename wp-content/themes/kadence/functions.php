@@ -311,6 +311,20 @@ function kadence_mcprices_filter_rank_math_description( $description ) {
 }
 
 /**
+ * Provide a homepage Open Graph image for Rank Math when none is set.
+ *
+ * @param string $image Open Graph image URL.
+ * @return string
+ */
+function kadence_mcprices_filter_rank_math_facebook_image( $image ) {
+	if ( ! is_front_page() || ! empty( $image ) ) {
+		return $image;
+	}
+
+	return esc_url_raw( get_template_directory_uri() . '/assets/images/mcprices/official/items/big-mac.jpg' );
+}
+
+/**
  * Replace the old homepage-only meta handlers with the shared theme-level ones.
  *
  * @return void
@@ -329,5 +343,6 @@ function kadence_mcprices_register_dynamic_meta_hooks() {
 	add_action( 'wp_head', 'kadence_mcprices_output_canonical_tag', 3 );
 	add_filter( 'rank_math/frontend/title', 'kadence_mcprices_filter_rank_math_title', 20 );
 	add_filter( 'rank_math/frontend/description', 'kadence_mcprices_filter_rank_math_description', 20 );
+	add_filter( 'rank_math/opengraph/facebook/image', 'kadence_mcprices_filter_rank_math_facebook_image' );
 }
 add_action( 'after_setup_theme', 'kadence_mcprices_register_dynamic_meta_hooks', 60 );

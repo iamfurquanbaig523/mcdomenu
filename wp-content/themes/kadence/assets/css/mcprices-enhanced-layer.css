@@ -297,6 +297,7 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
 }
 
 .mcprices-page .new-item-card {
+  position: relative;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--mc-radius-lg);
@@ -317,7 +318,15 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
   padding: 20px 20px 12px;
 }
 
+.mcprices-page .new-item-tag {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin: 18px 20px 6px;
+}
+
 .mcprices-page .new-item-emoji {
+  margin: 4px 20px 0;
   font-size: 56px;
   line-height: 1;
 }
@@ -532,13 +541,28 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
 
 .mcprices-page .delivery-card-icon {
   flex-shrink: 0;
-  font-size: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  min-width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #fff6d6 0%, #ffc72c 100%);
+  box-shadow: 0 10px 24px rgba(255, 199, 44, 0.25);
+  font-size: 26px;
+}
+
+.mcprices-page .delivery-card-content {
+  flex: 1;
+  min-width: 0;
 }
 
 .mcprices-page .delivery-card-title {
   margin-bottom: 8px;
   font-size: 17px;
   font-weight: 800;
+  line-height: 1.35;
 }
 
 .mcprices-page .delivery-card-text {
@@ -547,6 +571,7 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
   line-height: 1.7;
 }
 
+.mcprices-page .delivery-card-chips,
 .mcprices-page .delivery-platform-list {
   display: flex;
   flex-wrap: wrap;

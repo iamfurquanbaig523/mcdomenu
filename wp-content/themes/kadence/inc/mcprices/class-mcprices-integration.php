@@ -2035,7 +2035,12 @@ class McPrices_Integration {
 		);
 
 		if ( is_front_page() ) {
-			return array();
+			$items[] = array(
+				'name' => $this->get_schema_organization_name(),
+				'url'  => $home_url,
+			);
+
+			return $items;
 		}
 
 		if ( is_home() ) {
@@ -2460,6 +2465,7 @@ class McPrices_Integration {
 		$title       = $this->get_homepage_meta_title();
 		$description = $this->get_homepage_meta_description();
 		$url         = home_url( '/' );
+		$image_url   = get_template_directory_uri() . '/assets/images/mcprices/official/items/big-mac.jpg';
 		$sitemap_url = home_url( '/sitemap.xml' );
 		?>
 		<meta name="description" content="<?php echo esc_attr( $description ); ?>">
@@ -2470,6 +2476,7 @@ class McPrices_Integration {
 		<meta property="og:title" content="<?php echo esc_attr( $title ); ?>">
 		<meta property="og:description" content="<?php echo esc_attr( $description ); ?>">
 		<meta property="og:url" content="<?php echo esc_url( $url ); ?>">
+		<meta property="og:image" content="<?php echo esc_url( $image_url ); ?>">
 		<meta property="og:site_name" content="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
 		<meta name="twitter:card" content="summary_large_image">
 		<meta name="twitter:title" content="<?php echo esc_attr( $title ); ?>">

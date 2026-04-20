@@ -210,7 +210,7 @@ $big_mac_row           = $find_menu_row( 'burgers', 'Big Mac' );
 $mcgriddles_row        = $find_menu_row( 'bfast', 'Sausage, Egg & Cheese McGriddles' );
 $mccrispy_row          = $find_menu_row( 'chicken', 'McCrispy' );
 $oreo_mcflurry_row     = $find_menu_row( 'sweets', 'OREO McFlurry' );
-$large_fries_row       = $find_menu_row( 'sides', 'World Famous Fries - Large' );
+$large_fries_row       = $find_menu_row( 'sides', 'World Famous Fries Large' );
 $egg_mcmuffin_row      = $find_menu_row( 'bfast', 'Egg McMuffin' );
 $nuggets_six_row       = $find_menu_row( 'nuggets', '6 pc Chicken McNuggets' );
 $huntrix_row           = $find_menu_row( 'kpop', 'The HUNTRIX Meal' );
@@ -222,7 +222,7 @@ $big_arch_meal_row     = $find_menu_row( 'bigarch', 'The BIG ARCHTM Meal' );
 $featured_items = array(
 	array(
 		'name'  => 'Big Mac',
-		'cal'   => $format_calories( $big_mac_row['calories'] ?? '' ) . ' - Burger',
+		'cal'   => $format_calories( $big_mac_row['calories'] ?? '' ) . ' - Burgers',
 		'price' => $big_mac_row['price'] ?? '$5.99',
 		'emoji' => '&#127828;',
 	),
@@ -240,13 +240,13 @@ $featured_items = array(
 	),
 	array(
 		'name'  => 'OREO McFlurry',
-		'cal'   => $format_calories( $oreo_mcflurry_row['calories'] ?? '' ) . ' - Dessert',
+		'cal'   => $format_calories( $oreo_mcflurry_row['calories'] ?? '' ) . ' - Desserts',
 		'price' => $oreo_mcflurry_row['price'] ?? '$5.59',
 		'emoji' => '&#127846;',
 	),
 	array(
 		'name'  => 'World Famous Fries - Large',
-		'cal'   => $format_calories( $large_fries_row['calories'] ?? '' ) . ' - Side',
+		'cal'   => $format_calories( $large_fries_row['calories'] ?? '' ) . ' - Sides',
 		'price' => $large_fries_row['price'] ?? '$4.99',
 		'emoji' => '&#127839;',
 	),
@@ -417,36 +417,42 @@ foreach ( $menu_section_blueprints as $section_blueprint ) {
 
 $deal_cards = array(
 	array(
+		'class' => 'deal-red',
 		'label' => '$5 Meal Deal',
 		'title' => 'McChicken Meal Deal',
 		'price' => '$5.00',
 		'copy'  => 'McChicken, 4 pc McNuggets, small fries, and a small drink from the attached McValue lineup.',
 	),
 	array(
+		'class' => 'deal-dark',
 		'label' => '$5 Meal Deal',
 		'title' => 'McDouble Meal Deal',
 		'price' => '$5.00',
 		'copy'  => 'McDouble, 4 pc McNuggets, small fries, and a small drink from the same current McValue offer set.',
 	),
 	array(
+		'class' => 'deal-dark',
 		'label' => '$6 Meal Deal',
 		'title' => 'Daily Double Meal Deal',
 		'price' => '~$6.00',
 		'copy'  => 'The Daily Double Meal Deal appears in the attached McValue data as the higher-entry limited-time meal deal option.',
 	),
 	array(
+		'class' => 'deal-yellow',
 		'label' => 'Breakfast BOGO',
 		'title' => 'Buy 1, Add 1 for $1',
 		'price' => '$2.99 base items',
 		'copy'  => 'The breakfast offer applies to Sausage Biscuit, Sausage McMuffin, Sausage Burrito, and Hash Browns.',
 	),
 	array(
+		'class' => 'deal-dark',
 		'label' => 'Lunch BOGO',
 		'title' => 'Buy 1, Add 1 for $1',
 		'price' => '$2.89-$4.39 items',
 		'copy'  => 'Current lunch and dinner McValue add-on picks include Double Cheeseburger, McChicken, 6 pc McNuggets, and Small World Famous Fries.',
 	),
 	array(
+		'class' => 'deal-dark',
 		'label' => 'Mini dessert',
 		'title' => 'McValue Mini McFlurry Picks',
 		'price' => '$3.19',
@@ -638,8 +644,9 @@ ob_start();
 		</div>
 		<div class="new-items-grid">
 			<?php foreach ( $whats_new_items as $item ) : ?>
+				<?php $status_class = false !== stripos( $item['status'], 'new' ) ? 'avail-new' : 'avail-limited'; ?>
 				<div class="new-item-card">
-					<div class="new-item-tag"><?php echo esc_html( $item['status'] ); ?></div>
+					<div class="new-item-tag avail-badge <?php echo esc_attr( $status_class ); ?>"><?php echo esc_html( $item['status'] ); ?></div>
 					<div class="new-item-emoji"><?php echo $item['emoji']; ?></div>
 					<div class="new-item-name"><?php echo esc_html( $item['name'] ); ?></div>
 					<div class="new-item-cal"><?php echo esc_html( $item['cal'] ); ?></div>
@@ -657,7 +664,7 @@ ob_start();
 			<h2 class="section-title">Popular McDonald's USA Picks</h2>
 			<p class="section-sub">High-interest menu favorites that people compare most often: burgers, breakfast, chicken, fries, and dessert picks from the current USA file.</p>
 		</div>
-		<div class="menu-cards-grid">
+		<div class="menu-cards-grid featured-grid">
 			<?php foreach ( $menu_cards as $card ) : ?>
 				<div class="menu-card">
 					<div class="card-badge-top"><?php echo wp_kses_post( $card['badge'] ); ?></div>
@@ -728,13 +735,13 @@ ob_start();
 <section class="deals" id="deals">
 	<div class="container">
 		<div class="section-header center">
-			<div class="section-label" style="background: rgba(255,199,44,0.15); color: var(--yellow);">Live Deals</div>
+			<div class="section-label" style="background: rgba(255,199,44,0.15); color: var(--mc-yellow);">Live Deals</div>
 			<h2 class="section-title" style="color: white;">McDonald's USA Value Deals <?php echo esc_html( $current_year ); ?></h2>
 			<p class="section-sub" style="color: rgba(255,255,255,0.65);">Current deal structures, app savings, and McValue-led offers surfaced across the attached USA menu file.</p>
 		</div>
 		<div class="deals-grid">
 			<?php foreach ( $deal_cards as $card ) : ?>
-				<div class="deal-card">
+				<div class="deal-card <?php echo esc_attr( $card['class'] ); ?>">
 					<div class="deal-badge-top"><?php echo esc_html( $card['label'] ); ?></div>
 					<div class="deal-title"><?php echo esc_html( $card['title'] ); ?></div>
 					<div class="deal-price"><?php echo esc_html( $card['price'] ); ?></div>
@@ -745,14 +752,14 @@ ob_start();
 	</div>
 </section>
 
-<section class="ordering">
+<section class="ordering ordering-section">
 	<div class="container">
 		<div class="section-header center">
 			<div class="section-label">Ways to order</div>
 			<h2 class="section-title">Ways to Order at McDonald's USA</h2>
 			<p class="section-sub">Ordering habits in the US menu ecosystem are heavily shaped by the app, drive-thru speed, McDelivery and value-led combo shopping.</p>
 		</div>
-		<div class="order-grid">
+		<div class="order-grid ordering-grid">
 			<div class="order-card">
 				<div class="order-icon">&#128241;</div>
 				<div class="order-title">McDonald&rsquo;s App</div>
@@ -777,7 +784,7 @@ ob_start();
 	</div>
 </section>
 
-<section class="delivery-rewards">
+<section class="delivery-rewards delivery-section">
 	<div class="container">
 		<div class="section-header">
 			<div class="section-label">Delivery &amp; rewards</div>
@@ -786,27 +793,33 @@ ob_start();
 		</div>
 		<div class="delivery-grid">
 			<div class="delivery-card">
-				<div class="delivery-card-title">McDelivery</div>
+				<div class="delivery-card-icon">&#128666;</div>
+				<div class="delivery-card-content">
+					<div class="delivery-card-title">McDelivery</div>
 				<div class="delivery-card-text">McDelivery is one of the easiest ways to compare the “menu price” against the real delivered total. Delivery platform fees, bundled promotions and menu availability can all change the final value equation.</div>
-				<div class="delivery-card-chips">
-					<span class="platform-chip">Delivery pricing varies</span>
-					<span class="platform-chip">Partner fees apply</span>
+					<div class="delivery-card-chips">
+						<span class="platform-chip">Delivery pricing varies</span>
+						<span class="platform-chip">Partner fees apply</span>
+					</div>
 				</div>
 			</div>
 			<div class="delivery-card">
-				<div class="delivery-card-title">MyMcDonald&rsquo;s Rewards &amp; App Offers</div>
+				<div class="delivery-card-icon">&#127873;</div>
+				<div class="delivery-card-content">
+					<div class="delivery-card-title">MyMcDonald&rsquo;s Rewards &amp; App Offers</div>
 				<div class="delivery-card-text">App-led rewards and exclusive coupons are a major part of McDonald&rsquo;s USA value positioning right now. This is especially important for combo meals, fries promotions and limited-time promo tie-ins.</div>
-				<div class="delivery-card-chips">
-					<span class="platform-chip">$5 meal deals</span>
-					<span class="platform-chip">App-exclusive offers</span>
-					<span class="platform-chip">Rewards points</span>
+					<div class="delivery-card-chips">
+						<span class="platform-chip">$5 meal deals</span>
+						<span class="platform-chip">App-exclusive offers</span>
+						<span class="platform-chip">Rewards points</span>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </section>
 
-<section class="calories" id="calories">
+<section class="calories calories-section" id="calories">
 	<div class="container">
 		<div class="section-header center">
 			<div class="section-label">Calorie guide</div>
@@ -848,16 +861,16 @@ ob_start();
 	</div>
 </section>
 
-<section class="content-sidebar">
-	<div class="container content-sidebar-grid">
-		<div class="content-main">
+<section class="content-sidebar seo-section">
+	<div class="container content-sidebar-grid seo-layout">
+		<div class="content-main seo-main">
 			<h2>McDonald's USA Menu Prices <?php echo esc_html( $current_year ); ?> &mdash; Everything You Need to Know</h2>
 			<p>This McDonald&#8217;s Menu Prices USA build keeps the native Kadence parent-theme integration in place while focusing the content entirely on the United States menu ecosystem. The homepage now tracks Extra Value Meals, McValue, breakfast sandwiches, burgers, chicken and fish sandwiches, McNuggets, Snack Wraps, fries and sides, Happy Meals, sweets, McCafe coffees, beverages, and sauces from the attached menu source.</p>
 			<p>US pricing can vary heavily by market. The same item can shift between locations, app offers, delivery channels, and tax settings. That is why the site emphasizes current sample pricing, price ranges, and location variability rather than pretending there is one fixed national menu board.</p>
 			<p>US value positioning is also different. Current savings revolve around McValue, buy-one-add-one offers, app-exclusive coupons, combo-style meal deals, and low-entry dessert add-ons. On this version of the site, those offers are surfaced both inside the main menu section and again in the dedicated deals block so readers can compare individual items with full combo options faster.</p>
 			<p><strong>Important:</strong> This is an independent, unofficial website. Prices may vary by franchise, city, delivery platform, app promotion and date. Always confirm your final local total in the official McDonald&rsquo;s app or on the order screen before buying.</p>
 		</div>
-		<div class="content-sidebar-panel">
+		<div class="content-sidebar-panel seo-sidebar">
 			<div class="sidebar-card">
 				<div class="sidebar-card-title">Quick Links</div>
 				<div class="sidebar-links">
@@ -880,8 +893,8 @@ ob_start();
 	</div>
 </section>
 
-<section class="holiday-hours">
-	<div class="container hours-grid">
+<section class="holiday-hours hours-section">
+	<div class="container hours-grid hours-wrapper">
 		<div class="hours-main">
 			<div class="section-label">Typical hours</div>
 			<h2 class="section-title">McDonald's Hours (USA)</h2>
@@ -901,10 +914,10 @@ ob_start();
 					<tr><td>Saturday</td><td>4:00 AM &ndash; 10:59 AM</td><td>11:00 AM &ndash; 4:59 PM</td><td>5:00 PM &ndash; 3:59 AM</td></tr>
 				</tbody>
 			</table>
-			<p style="font-size:13px;color:var(--grey-500);margin-top:14px;font-style:italic;">&#9888;&#65039; Hours can vary by franchise and 24-hour status. Always verify your exact restaurant hours in the official McDonald&rsquo;s app before ordering.</p>
+			<p style="font-size:13px;color:var(--mc-grey-500);margin-top:14px;font-style:italic;">&#9888;&#65039; Hours can vary by franchise and 24-hour status. Always verify your exact restaurant hours in the official McDonald&rsquo;s app before ordering.</p>
 		</div>
 		<div class="hours-sidebar">
-			<div class="hours-tip-card">
+			<div class="hours-tip-card hours-tip-box">
 				<div class="hours-tip-title">&#128204; Quick Tips</div>
 				<div class="hours-tip-item"><span class="hours-tip-em">&#128241;</span> Use the <strong>McDonald&rsquo;s app</strong> to confirm live breakfast cut-off times at your local restaurant.</div>
 				<div class="hours-tip-item"><span class="hours-tip-em">&#128663;</span> Drive-thru restaurants often have the most predictable breakfast-to-lunch transition flow.</div>
@@ -916,7 +929,7 @@ ob_start();
 	</div>
 </section>
 
-<section class="quality">
+<section class="quality quality-section">
 	<div class="container">
 		<div class="section-header center">
 			<div class="section-label">Ingredient notes</div>
@@ -934,7 +947,7 @@ ob_start();
 	</div>
 </section>
 
-<section class="history">
+<section class="history history-section">
 	<div class="container history-grid">
 		<div class="history-main">
 			<div class="section-label">McDonald's in America</div>
@@ -972,7 +985,7 @@ ob_start();
 			<h2 class="section-title">In-Depth Price Guides</h2>
 			<p class="section-sub">Anchor-based guides for the key US menu sections and value areas that readers compare most often.</p>
 		</div>
-		<div class="link-grid">
+		<div class="link-grid links-grid">
 			<?php foreach ( $guide_cards as $card ) : ?>
 				<a href="<?php echo esc_url( $card['href'] ); ?>" class="link-card">
 					<div class="link-card-icon">&#8594;</div>

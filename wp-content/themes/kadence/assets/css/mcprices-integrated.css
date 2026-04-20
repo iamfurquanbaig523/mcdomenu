@@ -1162,7 +1162,10 @@ body.mcprices-theme-active #kt-scroll-up-reader:hover {
   position: relative;
   overflow: hidden;
   padding: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--mc-radius-lg);
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--mc-white);
   transition: var(--mc-transition);
 }
 
@@ -1201,6 +1204,31 @@ body.mcprices-theme-active #kt-scroll-up-reader:hover {
   font-size: 36px;
   font-weight: 900;
   line-height: 1;
+}
+
+.mcprices-page .deal-dark .deal-title,
+.mcprices-page .deal-dark .deal-price,
+.mcprices-page .deal-red .deal-title,
+.mcprices-page .deal-red .deal-price {
+  color: var(--mc-white);
+}
+
+.mcprices-page .deal-dark .deal-sub,
+.mcprices-page .deal-red .deal-sub {
+  color: rgba(255, 255, 255, 0.72);
+  opacity: 1;
+}
+
+.mcprices-page .deal-yellow .deal-title,
+.mcprices-page .deal-yellow .deal-price,
+.mcprices-page .deal-yellow .deal-badge-top {
+  color: var(--mc-black);
+}
+
+.mcprices-page .deal-yellow .deal-sub,
+.mcprices-page .deal-yellow .deal-price span {
+  color: rgba(26, 26, 24, 0.72);
+  opacity: 1;
 }
 
 .mcprices-page .deal-price span { font-size: 14px; font-weight: 400; opacity: 0.6; }

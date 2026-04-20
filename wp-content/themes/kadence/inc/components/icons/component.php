@@ -899,56 +899,56 @@ class Component implements Component_Interface, Templating_Component_Interface {
 				break;
 			case 'arrow-up':
 				$output .= '<svg' . ( ! $aria ? ' aria-hidden="true"' : '' ) . ' class="kadence-svg-icon kadence-arrow-up-svg" fill="currentColor" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">';
-				if ( $display_title ) {
-					$output .= '<title>' . ( ! empty( $icon_title ) ? $icon_title : esc_html__( 'Arrow Up', 'kadence' ) ) . '</title>';
+				if ( $display_title && ! empty( $icon_title ) ) {
+					$output .= '<title>' . $icon_title . '</title>';
 				}
 				$output .= '<path d="M5.707 12.707l5.293-5.293v11.586c0 0.552 0.448 1 1 1s1-0.448 1-1v-11.586l5.293 5.293c0.391 0.391 1.024 0.391 1.414 0s0.391-1.024 0-1.414l-7-7c-0.092-0.092-0.202-0.166-0.324-0.217s-0.253-0.076-0.383-0.076c-0.256 0-0.512 0.098-0.707 0.293l-7 7c-0.391 0.391-0.391 1.024 0 1.414s1.024 0.391 1.414 0z"></path>
 				</svg>';
 				break;
 			case 'arrow-up2':
 				$output .= '<svg' . ( ! $aria ? ' aria-hidden="true"' : '' ) . ' class="kadence-svg-icon kadence-arrow-up2-svg" fill="currentColor" version="1.1" xmlns="http://www.w3.org/2000/svg" width="26" height="28" viewBox="0 0 26 28">';
-				if ( $display_title ) {
-					$output .= '<title>' . ( ! empty( $icon_title ) ? $icon_title : esc_html__( 'Arrow Up', 'kadence' ) ) . '</title>';
+				if ( $display_title && ! empty( $icon_title ) ) {
+					$output .= '<title>' . $icon_title . '</title>';
 				}
 				$output .= '<path d="M25.172 15.172c0 0.531-0.219 1.031-0.578 1.406l-1.172 1.172c-0.375 0.375-0.891 0.594-1.422 0.594s-1.047-0.219-1.406-0.594l-4.594-4.578v11c0 1.125-0.938 1.828-2 1.828h-2c-1.062 0-2-0.703-2-1.828v-11l-4.594 4.578c-0.359 0.375-0.875 0.594-1.406 0.594s-1.047-0.219-1.406-0.594l-1.172-1.172c-0.375-0.375-0.594-0.875-0.594-1.406s0.219-1.047 0.594-1.422l10.172-10.172c0.359-0.375 0.875-0.578 1.406-0.578s1.047 0.203 1.422 0.578l10.172 10.172c0.359 0.375 0.578 0.891 0.578 1.422z"></path>
 				</svg>';
 				break;
 			case 'chevron-up':
 				$output .= '<svg' . ( ! $aria ? ' aria-hidden="true"' : '' ) . ' class="kadence-svg-icon kadence-chevron-up-svg" fill="currentColor" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">';
-				if ( $display_title ) {
-					$output .= '<title>' . ( ! empty( $icon_title ) ? $icon_title : esc_html__( 'Arrow Up', 'kadence' ) ) . '</title>';
+				if ( $display_title && ! empty( $icon_title ) ) {
+					$output .= '<title>' . $icon_title . '</title>';
 				}
 				$output .= '<path d="M18.707 14.293l-6-6c-0.391-0.391-1.024-0.391-1.414 0l-6 6c-0.391 0.391-0.391 1.024 0 1.414s1.024 0.391 1.414 0l5.293-5.293 5.293 5.293c0.391 0.391 1.024 0.391 1.414 0s0.391-1.024 0-1.414z"></path>
 				</svg>';
 				break;
 			case 'chevron-up2':
 				$output .= '<svg' . ( ! $aria ? ' aria-hidden="true"' : '' ) . ' class="kadence-svg-icon kadence-chevron-up2-svg" fill="currentColor" version="1.1" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">';
-				if ( $display_title ) {
-					$output .= '<title>' . ( ! empty( $icon_title ) ? $icon_title : esc_html__( 'Arrow Up', 'kadence' ) ) . '</title>';
+				if ( $display_title && ! empty( $icon_title ) ) {
+					$output .= '<title>' . $icon_title . '</title>';
 				}
 				$output .= '<path d="M26.297 20.797l-2.594 2.578c-0.391 0.391-1.016 0.391-1.406 0l-8.297-8.297-8.297 8.297c-0.391 0.391-1.016 0.391-1.406 0l-2.594-2.578c-0.391-0.391-0.391-1.031 0-1.422l11.594-11.578c0.391-0.391 1.016-0.391 1.406 0l11.594 11.578c0.391 0.391 0.391 1.031 0 1.422z"></path>
 				</svg>';
 				break;
 			case 'menu':
 				$output .= '<svg' . ( ! $aria ? ' aria-hidden="true"' : '' ) . ' class="kadence-svg-icon kadence-menu-svg" fill="currentColor" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">';
-				if ( $display_title ) {
-					$output .= '<title>' . ( ! empty( $icon_title ) ? $icon_title : esc_html__( 'Toggle Menu', 'kadence' ) ) . '</title>';
+				if ( $display_title && ! empty( $icon_title ) ) {
+					$output .= '<title>' . $icon_title . '</title>';
 				}
 				$output .= '<path d="M3 13h18c0.552 0 1-0.448 1-1s-0.448-1-1-1h-18c-0.552 0-1 0.448-1 1s0.448 1 1 1zM3 7h18c0.552 0 1-0.448 1-1s-0.448-1-1-1h-18c-0.552 0-1 0.448-1 1s0.448 1 1 1zM3 19h18c0.552 0 1-0.448 1-1s-0.448-1-1-1h-18c-0.552 0-1 0.448-1 1s0.448 1 1 1z"></path>
 				</svg>';
 				break;
 			case 'menu2':
 				$output .= '<svg class="kadence-svg-icon kadence-menu2-svg" fill="currentColor" version="1.1" xmlns="http://www.w3.org/2000/svg" width="24" height="28" viewBox="0 0 24 28">';
-				if ( $display_title ) {
-					$output .= '<title>' . ( ! empty( $icon_title ) ? $icon_title : esc_html__( 'Toggle Menu', 'kadence' ) ) . '</title>';
+				if ( $display_title && ! empty( $icon_title ) ) {
+					$output .= '<title>' . $icon_title . '</title>';
 				}
 				$output .= '<path d="M24 21v2c0 0.547-0.453 1-1 1h-22c-0.547 0-1-0.453-1-1v-2c0-0.547 0.453-1 1-1h22c0.547 0 1 0.453 1 1zM24 13v2c0 0.547-0.453 1-1 1h-22c-0.547 0-1-0.453-1-1v-2c0-0.547 0.453-1 1-1h22c0.547 0 1 0.453 1 1zM24 5v2c0 0.547-0.453 1-1 1h-22c-0.547 0-1-0.453-1-1v-2c0-0.547 0.453-1 1-1h22c0.547 0 1 0.453 1 1z"></path>
 				</svg>';
 				break;
 			case 'menu3':
 				$output .= '<svg class="kadence-svg-icon kadence-menu3-svg" fill="currentColor" version="1.1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">';
-				if ( $display_title ) {
-					$output .= '<title>' . ( ! empty( $icon_title ) ? $icon_title : esc_html__( 'Toggle Menu', 'kadence' ) ) . '</title>';
+				if ( $display_title && ! empty( $icon_title ) ) {
+					$output .= '<title>' . $icon_title . '</title>';
 				}
 				$output .= '<path d="M6 3c0-1.105 0.895-2 2-2s2 0.895 2 2c0 1.105-0.895 2-2 2s-2-0.895-2-2zM6 8c0-1.105 0.895-2 2-2s2 0.895 2 2c0 1.105-0.895 2-2 2s-2-0.895-2-2zM6 13c0-1.105 0.895-2 2-2s2 0.895 2 2c0 1.105-0.895 2-2 2s-2-0.895-2-2z"></path>
 				</svg>';
