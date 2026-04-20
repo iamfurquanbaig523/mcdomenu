@@ -40,7 +40,7 @@ class McPrices_Integration {
 	/**
 	 * Current seeding version for the native design integration.
 	 */
-	const SEED_VERSION = '1.4.0';
+	const SEED_VERSION = '2.0.1';
 
 	/**
 	 * Option used to track Rank Math SEO seeding for portable databases.
@@ -50,7 +50,7 @@ class McPrices_Integration {
 	/**
 	 * Current Rank Math seed version.
 	 */
-	const RANK_MATH_SEED_VERSION = '1.0.0';
+	const RANK_MATH_SEED_VERSION = '2.0.0';
 
 	/**
 	 * Option used to track portable DB-backed setup seeding.
@@ -60,12 +60,27 @@ class McPrices_Integration {
 	/**
 	 * Current portable DB seed version.
 	 */
-	const PORTABLE_DB_SEED_VERSION = '1.0.0';
+	const PORTABLE_DB_SEED_VERSION = '2.0.0';
 
 	/**
 	 * Option used to trigger a one-time rewrite flush after DB seeding.
 	 */
 	const REWRITE_FLUSH_OPTION = 'mcprices_pending_rewrite_flush';
+
+	/**
+	 * Option used to track the currently seeded homepage pattern signature.
+	 */
+	const HOMEPAGE_PATTERN_SIGNATURE_OPTION = 'mcprices_homepage_pattern_signature';
+
+	/**
+	 * Option used to track the currently seeded menu signature.
+	 */
+	const MENU_SIGNATURE_OPTION = 'mcprices_menu_signature';
+
+	/**
+	 * Option used to track the currently seeded footer widget signature.
+	 */
+	const FOOTER_WIDGET_SIGNATURE_OPTION = 'mcprices_footer_widget_signature';
 
 	/**
 	 * Singleton instance.
@@ -107,6 +122,7 @@ class McPrices_Integration {
 		add_action( 'after_setup_theme', array( $this, 'maybe_seed_native_design' ), 30 );
 		add_action( 'after_setup_theme', array( $this, 'maybe_seed_portable_database_settings' ), 34 );
 		add_action( 'after_setup_theme', array( $this, 'maybe_seed_rank_math_settings' ), 35 );
+		add_action( 'after_setup_theme', array( $this, 'maybe_sync_managed_site_content' ), 40 );
 		add_action( 'customize_register', array( $this, 'register_customizer' ), 100 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ), 30 );
 		add_action( 'init', array( $this, 'maybe_flush_pending_rewrite_rules' ), 99 );
@@ -137,7 +153,7 @@ class McPrices_Integration {
 	 * @return string
 	 */
 	protected function get_default_disclaimer_text() {
-		return '&#9888;&#65039; <strong>Disclaimer:</strong> This is an independent, unofficial website. McPrices UK is not affiliated with, endorsed by, or connected to McDonald\'s Corporation or McDonald\'s UK Ltd in any way. All prices are sourced from publicly available menus and may vary by location and date. This site may contain advertisements.';
+		return '&#9888;&#65039; <strong>Disclaimer:</strong> This is an independent, unofficial website. McDonald&#8217;s Menu Prices USA is not affiliated with, endorsed by, or connected to McDonald&#8217;s Corporation in any way. All prices are sourced from publicly available menus and may vary by location, market, promotion, and date. This site may contain advertisements.';
 	}
 
 	/**
@@ -188,28 +204,31 @@ class McPrices_Integration {
 		$current_year = $this->get_current_site_year();
 
 		$replacements = array(
-			'Prices last verified: <strong>April 2026</strong>'                                      => 'Prices last verified: <strong>' . $current_date . '</strong>',
-			'Updated April 2026'                                                                     => 'Updated ' . $current_date,
-			'updated April 2026'                                                                     => 'updated ' . $current_date,
-			'updated for April 2026'                                                                 => 'updated for ' . $current_date,
-			'latest April 2026 update'                                                               => 'latest ' . $current_date . ' update',
-			'current April 2026 update'                                                              => 'current ' . $current_date . ' update',
-			'Prices were last verified in April 2026.'                                               => 'Prices were last verified on ' . $current_date . '.',
-			'What&#8217;s New 2026'                                                                   => 'What&#8217;s New ' . $current_year,
-			"What's New 2026"                                                                        => "What's New " . $current_year,
-			"McDonald's Menu Prices UK 2026"                                                         => "McDonald's Menu Prices UK " . $current_year,
-			"What's New at McDonald's UK 2026"                                                       => "What's New at McDonald's UK " . $current_year,
-			"Complete McDonald's UK Menu 2026"                                                       => "Complete McDonald's UK Menu " . $current_year,
-			"McDonald's UK Value Picks 2026"                                                         => "McDonald's UK Value Picks " . $current_year,
-			"McDonald's UK Calorie Guide 2026"                                                       => "McDonald's UK Calorie Guide " . $current_year,
-			"McDonald's UK Holiday Hours 2026"                                                       => "McDonald's UK Holiday Hours " . $current_year,
-			"McDonald's UK in Numbers (2026)"                                                        => "McDonald's UK in Numbers (" . $current_year . ')',
-			'UK 2026'                                                                                => 'UK ' . $current_year,
-			'Date 2026'                                                                              => 'Date ' . $current_year,
-			'Prices for nuggets, selects, dippers and share boxes from the live 2026 source.'        => 'Prices for nuggets, selects, dippers and share boxes from the live ' . $current_year . ' source.',
-			'Happy Meal options and current pricing for 2026.'                                       => 'Happy Meal options and current pricing for ' . $current_year . '.',
-			'Every item on the Saver Menu with the latest low-price 2026 update.'                    => 'Every item on the Saver Menu with the latest low-price ' . $current_year . ' update.',
-			'April 2026'                                                                             => $current_date,
+			'Prices last verified: <strong>April 2026</strong>'                               => 'Prices last verified: <strong>' . $current_date . '</strong>',
+			'Updated April 2026'                                                              => 'Updated ' . $current_date,
+			'updated April 2026'                                                              => 'updated ' . $current_date,
+			'updated for April 2026'                                                          => 'updated for ' . $current_date,
+			'latest April 2026 update'                                                        => 'latest ' . $current_date . ' update',
+			'current April 2026 update'                                                       => 'current ' . $current_date . ' update',
+			'Prices were last verified in April 2026.'                                        => 'Prices were last verified on ' . $current_date . '.',
+			'What&#8217;s New 2026'                                                            => 'What&#8217;s New ' . $current_year,
+			"What's New 2026"                                                                 => "What's New " . $current_year,
+			"McDonald's Menu Prices UK 2026"                                                  => "McDonald's Menu Prices USA " . $current_year,
+			"McDonald's Menu Prices USA 2026"                                                 => "McDonald's Menu Prices USA " . $current_year,
+			"What's New at McDonald's UK 2026"                                                => "What's New at McDonald's USA " . $current_year,
+			"What's New at McDonald's USA 2026"                                               => "What's New at McDonald's USA " . $current_year,
+			"Complete McDonald's UK Menu 2026"                                                => "Complete McDonald's USA Menu " . $current_year,
+			"Complete McDonald's USA Menu 2026"                                               => "Complete McDonald's USA Menu " . $current_year,
+			"McDonald's UK Value Picks 2026"                                                  => "McDonald's USA Value Deals " . $current_year,
+			"McDonald's USA Value Deals 2026"                                                 => "McDonald's USA Value Deals " . $current_year,
+			"McDonald's UK Calorie Guide 2026"                                                => "McDonald's USA Calorie Guide " . $current_year,
+			"McDonald's USA Calorie Guide 2026"                                               => "McDonald's USA Calorie Guide " . $current_year,
+			"McDonald's UK Holiday Hours 2026"                                                => "McDonald's Hours (USA) " . $current_year,
+			"McDonald's UK in Numbers (2026)"                                                 => "McDonald's USA in Numbers (" . $current_year . ')',
+			'UK 2026'                                                                         => 'USA ' . $current_year,
+			'USA 2026'                                                                        => 'USA ' . $current_year,
+			'Date 2026'                                                                       => 'Date ' . $current_year,
+			'April 2026'                                                                      => $current_date,
 		);
 
 		return strtr( (string) $content, $replacements );
@@ -251,17 +270,17 @@ class McPrices_Integration {
 		$current_date = $this->get_current_site_date();
 
 		return array(
-			'website_name'          => 'McPrices UK',
-			'knowledgegraph_name'   => 'McPrices UK',
+			'website_name'          => "McDonald's Menu Prices USA",
+			'knowledgegraph_name'   => "McDonald's Menu Prices USA",
 			'knowledgegraph_type'   => 'person',
 			'local_business_type'   => 'Organization',
-			'homepage_title'        => "McDonald's Menu Prices UK {$current_year} | Full Price List & Calories",
-			'homepage_description'  => "Complete McDonald's UK menu prices updated {$current_date}. Find prices for every burger, breakfast, McCafé, McFlurry, and Saver Menu item with calorie counts.",
-			'pt_post_title'         => '%title% | McPrices UK',
+			'homepage_title'        => "McDonald's Menu Prices USA {$current_year} | Full Price List & Calories",
+			'homepage_description'  => "Complete McDonald's USA menu prices updated {$current_date}. Find prices for burgers, breakfast, McCafe, drinks, McValue deals, McNuggets, Happy Meals, desserts, and combo meals in dollars.",
+			'pt_post_title'         => "%title% | McDonald's Menu Prices USA",
 			'pt_post_description'   => '%excerpt%',
-			'tax_category_title'    => '%term% Prices UK ' . $current_year . ' | McPrices UK',
-			'tax_category_description' => "Browse %term% prices, deals, calories and McDonald's UK menu updates for {$current_year} on McPrices UK.",
-			'404_title'             => 'Page Not Found | McPrices UK',
+			'tax_category_title'    => "%term% Prices USA {$current_year} | McDonald's Menu Prices USA",
+			'tax_category_description' => "Browse %term% prices, deals, calories, and McDonald's USA menu updates for {$current_year} on McDonald's Menu Prices USA.",
+			'404_title'             => "Page Not Found | McDonald's Menu Prices USA",
 		);
 	}
 
@@ -319,67 +338,123 @@ class McPrices_Integration {
 		return array(
 			'about' => array(
 				'title'   => 'About Us',
-				'content' => '<!-- wp:paragraph --><p>McPrices UK is an independent guide to McDonald&#8217;s UK menu prices, calories, deals and Saver Menu updates. We track the menu monthly so readers can quickly compare prices, find calorie information and check the latest limited-time items without relying on scattered screenshots or outdated PDFs.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>We are not affiliated with McDonald&#8217;s. Prices may vary by restaurant, delivery platform and promotion window.</p><!-- /wp:paragraph -->',
+				'content' => '<!-- wp:paragraph --><p>McDonald&#8217;s Menu Prices USA is an independent guide to McDonald&#8217;s USA menu prices, calories, deals, breakfast hours, drinks, desserts, and combo meals. We update the site regularly so readers can compare prices, understand category coverage, and check new menu rollouts without relying on scattered screenshots.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>We are not affiliated with McDonald&#8217;s. Prices can vary by location, franchise, app offer, taxes, and delivery platform.</p><!-- /wp:paragraph -->',
 			),
 			'privacy-policy' => array(
 				'title'   => 'Privacy Policy',
-				'content' => '<!-- wp:paragraph --><p>This Privacy Policy explains how McPrices UK may collect and use limited information such as analytics data, contact submissions and advertising-related data when you use the site. We only use this information to operate, improve and protect the website.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>If you contact us directly, we may retain the information you send so we can respond. Third-party services such as analytics, advertising and embedded tools may also process data according to their own policies.</p><!-- /wp:paragraph -->',
+				'content' => '<!-- wp:paragraph --><p>This Privacy Policy explains how McDonald&#8217;s Menu Prices USA may collect and use limited information such as analytics data, contact submissions, and advertising-related data when you use the site. We only use this information to operate, improve, and protect the website.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>If you contact us directly, we may retain the information you send so we can respond. Third-party services such as analytics, advertising, and embedded tools may also process data according to their own policies.</p><!-- /wp:paragraph -->',
 			),
 			'cookie-policy' => array(
 				'title'   => 'Cookie Policy',
-				'content' => '<!-- wp:paragraph --><p>McPrices UK may use cookies and similar technologies to remember preferences, measure traffic and support advertising or performance tools. Some cookies are essential for the site to work properly, while others help us understand how visitors use the site.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>You can usually control cookies through your browser settings. Disabling some cookies may affect how parts of the site function.</p><!-- /wp:paragraph -->',
+				'content' => '<!-- wp:paragraph --><p>McDonald&#8217;s Menu Prices USA may use cookies and similar technologies to remember preferences, measure traffic, and support advertising or performance tools. Some cookies are essential for the site to work properly, while others help us understand how visitors use the site.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>You can usually control cookies through your browser settings. Disabling some cookies may affect how parts of the site function.</p><!-- /wp:paragraph -->',
 			),
 			'contact' => array(
 				'title'   => 'Contact',
-				'content' => '<!-- wp:paragraph --><p>Use this page to contact McPrices UK about price corrections, menu updates, advertising questions or general feedback. If you spot a menu price that looks outdated, include the item name, restaurant location and the latest price so we can review it quickly.</p><!-- /wp:paragraph -->',
+				'content' => '<!-- wp:paragraph --><p>Use this page to contact McDonald&#8217;s Menu Prices USA about price corrections, menu updates, advertising questions, or general feedback. If you spot a menu price that looks outdated, include the item name, restaurant location, and latest observed price so we can review it quickly.</p><!-- /wp:paragraph -->',
 			),
 			'disclaimer' => array(
 				'title'   => 'Disclaimer',
-				'content' => '<!-- wp:paragraph --><p>McPrices UK is an independent, unofficial website and is not affiliated with, endorsed by or connected to McDonald&#8217;s Corporation or McDonald&#8217;s UK Ltd. Prices, calorie counts, availability and promotions may vary by location and date.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>Always confirm important details such as allergens, opening hours and delivery pricing with the official McDonald&#8217;s UK app, website or restaurant before ordering.</p><!-- /wp:paragraph -->',
+				'content' => '<!-- wp:paragraph --><p>McDonald&#8217;s Menu Prices USA is an independent, unofficial website and is not affiliated with, endorsed by, or connected to McDonald&#8217;s Corporation. Prices, calories, availability, and promotions may vary by location and date.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>Always confirm important details such as allergens, breakfast hours, delivery pricing, and final local totals with the official McDonald&#8217;s app, website, or restaurant before ordering.</p><!-- /wp:paragraph -->',
 			),
 			'ad-disclosure' => array(
 				'title'   => 'Ad Disclosure',
-				'content' => '<!-- wp:paragraph --><p>McPrices UK may display advertisements, sponsored placements or monetised content to support site operations. Advertising relationships do not change our editorial approach: we still aim to provide clear, practical and regularly updated McDonald&#8217;s UK price information.</p><!-- /wp:paragraph -->',
+				'content' => '<!-- wp:paragraph --><p>McDonald&#8217;s Menu Prices USA may display advertisements, sponsored placements, or monetised content to support site operations. Advertising relationships do not change our editorial approach: we still aim to provide clear, practical, and regularly updated McDonald&#8217;s USA price information.</p><!-- /wp:paragraph -->',
 			),
 			'sitemap' => array(
 				'title'   => 'Sitemap',
-				'content' => '<!-- wp:paragraph --><p>Browse the main areas of McPrices UK below, or use the XML sitemap at <a href="' . esc_url( home_url( '/sitemap.xml' ) ) . '">' . esc_html( home_url( '/sitemap.xml' ) ) . '</a> for the crawler-friendly version.</p><!-- /wp:paragraph --><!-- wp:shortcode -->[rank_math_html_sitemap]<!-- /wp:shortcode -->',
+				'content' => '<!-- wp:paragraph --><p>Browse the main areas of McDonald&#8217;s Menu Prices USA below, or use the XML sitemap at <a href="' . esc_url( home_url( '/sitemap.xml' ) ) . '">' . esc_html( home_url( '/sitemap.xml' ) ) . '</a> for the crawler-friendly version.</p><!-- /wp:paragraph --><!-- wp:shortcode -->[rank_math_html_sitemap]<!-- /wp:shortcode -->',
 			),
-			'big-mac-price-uk' => array(
-				'title'   => 'Big Mac Price UK',
-				'content' => '<!-- wp:paragraph --><p>This guide focuses on the current Big Mac price in the UK, including meal pricing, calorie information and how the Big Mac compares with other burger choices on the McDonald&#8217;s UK menu.</p><!-- /wp:paragraph -->',
+			'big-mac-price-usa' => array(
+				'title'   => 'Big Mac Price USA',
+				'content' => '<!-- wp:paragraph --><p>This guide focuses on the current Big Mac price in the USA, including sandwich pricing, combo meal pricing, calorie information, and how the Big Mac compares with other burger choices on the McDonald&#8217;s USA menu.</p><!-- /wp:paragraph -->',
 			),
 			'mcdonalds-app-deals' => array(
 				'title'   => 'McDonald&#8217;s App Deals',
-				'content' => '<!-- wp:paragraph --><p>Our McDonald&#8217;s App Deals guide tracks the most useful UK app offers, including meal bundles, Saver Menu combinations and limited-time promotions that can lower the cost of popular items.</p><!-- /wp:paragraph -->',
+				'content' => '<!-- wp:paragraph --><p>Our McDonald&#8217;s App Deals guide tracks the most useful USA app offers, including McValue bundles, buy-one-add-one deals, meal discounts, rewards offers, and limited-time promotions that can lower the cost of popular items.</p><!-- /wp:paragraph -->',
 			),
 			'calorie-counter' => array(
 				'title'   => 'Calorie Counter',
-				'content' => '<!-- wp:paragraph --><p>The McPrices UK calorie counter page helps you compare menu items by calories so you can spot lighter burgers, breakfast choices, sides, drinks and dessert options more easily.</p><!-- /wp:paragraph -->',
+				'content' => '<!-- wp:paragraph --><p>The McDonald&#8217;s Menu Prices USA calorie counter page helps you compare menu items by calories so you can spot lighter burgers, breakfast choices, sides, drinks, and dessert options more easily.</p><!-- /wp:paragraph -->',
 			),
-			'breakfast-times' => array(
-				'title'   => 'Breakfast Times',
-				'content' => '<!-- wp:paragraph --><p>This page explains typical McDonald&#8217;s breakfast times in the UK, including when breakfast usually ends and which menu items are normally available in the morning period.</p><!-- /wp:paragraph -->',
+			'breakfast-hours' => array(
+				'title'   => 'Breakfast Hours',
+				'content' => '<!-- wp:paragraph --><p>This page explains typical McDonald&#8217;s breakfast hours in the USA, including when breakfast usually ends and which menu items are normally available in the morning window.</p><!-- /wp:paragraph -->',
 			),
 			'allergen-guide' => array(
 				'title'   => 'Allergen Guide',
-				'content' => '<!-- wp:paragraph --><p>Our allergen guide explains how to approach McDonald&#8217;s UK menu choices more carefully, but always use the official McDonald&#8217;s allergen tool and restaurant information for final decisions.</p><!-- /wp:paragraph -->',
+				'content' => '<!-- wp:paragraph --><p>Our allergen guide explains how to approach McDonald&#8217;s USA menu choices more carefully, but always use the official McDonald&#8217;s allergen tool and restaurant information for final decisions.</p><!-- /wp:paragraph -->',
 			),
 			'price-history' => array(
 				'title'   => 'Price History',
-				'content' => '<!-- wp:paragraph --><p>The McPrices UK price history page tracks how popular menu prices have changed over time, helping readers compare current pricing with previous months and seasonal promotions.</p><!-- /wp:paragraph -->',
+				'content' => '<!-- wp:paragraph --><p>The McDonald&#8217;s Menu Prices USA price history page tracks how popular menu prices have changed over time, helping readers compare current pricing with previous months and seasonal promotions.</p><!-- /wp:paragraph -->',
 			),
-			'vegan-options' => array(
-				'title'   => 'Vegan Options',
-				'content' => '<!-- wp:paragraph --><p>This guide covers the current vegan-friendly options on the McDonald&#8217;s UK menu, including burgers, sides and drinks that may suit plant-based customers.</p><!-- /wp:paragraph -->',
+			'delivery-guide' => array(
+				'title'   => 'Delivery Guide',
+				'content' => '<!-- wp:paragraph --><p>This delivery guide explains what to expect when ordering McDonald&#8217;s USA through delivery platforms, including price differences, fees, bundle availability, and app-linked promotions.</p><!-- /wp:paragraph -->',
 			),
-			'mcdelivery-guide' => array(
-				'title'   => 'McDelivery Guide',
-				'content' => '<!-- wp:paragraph --><p>The McDelivery guide explains what to expect when ordering McDonald&#8217;s UK through delivery platforms, including possible price differences, fees and menu availability changes.</p><!-- /wp:paragraph -->',
+			'rewards-guide' => array(
+				'title'   => 'Rewards Guide',
+				'content' => '<!-- wp:paragraph --><p>This guide covers how MyMcDonald&#8217;s Rewards fits into current USA pricing, including points, redemptions, app-only discounts, and how rewards interact with meal deals.</p><!-- /wp:paragraph -->',
 			),
 			'limited-time-menu' => array(
 				'title'   => 'Limited-Time Menu',
-				'content' => '<!-- wp:paragraph --><p>This page highlights current limited-time McDonald&#8217;s UK menu items, seasonal burgers, desserts, breakfast returns and short-run deal bundles that may not stay on the menu for long.</p><!-- /wp:paragraph -->',
+				'content' => '<!-- wp:paragraph --><p>This page highlights current limited-time McDonald&#8217;s USA menu items, seasonal sandwiches, desserts, breakfast collaborations, and short-run deal bundles that may not stay on the menu for long.</p><!-- /wp:paragraph -->',
+			),
+			'breakfast-menu' => array(
+				'title'   => 'Breakfast Menu',
+				'content' => '<!-- wp:paragraph --><p>This guide covers the McDonald&#8217;s USA breakfast menu, including biscuits, McMuffins, McGriddles, bagels, hotcakes, oatmeal, hash browns, and breakfast meal pricing.</p><!-- /wp:paragraph -->',
+			),
+			'burgers-menu' => array(
+				'title'   => 'Burgers Menu',
+				'content' => '<!-- wp:paragraph --><p>This guide covers McDonald&#8217;s USA burger prices, including Big Mac, Quarter Pounder, McDouble, Daily Double, cheeseburgers, hamburgers, and combo meal pricing.</p><!-- /wp:paragraph -->',
+			),
+			'chicken-fish-menu' => array(
+				'title'   => 'Chicken & Fish Menu',
+				'content' => '<!-- wp:paragraph --><p>This guide covers McDonald&#8217;s USA chicken and fish sandwiches, including McCrispy, McChicken, Filet-O-Fish, spicy builds, and sandwich meal pricing.</p><!-- /wp:paragraph -->',
+			),
+			'nuggets-and-strips' => array(
+				'title'   => 'McNuggets & Strips',
+				'content' => '<!-- wp:paragraph --><p>This guide covers Chicken McNuggets, McCrispy Strips, share boxes, and combo options across the current McDonald&#8217;s USA menu.</p><!-- /wp:paragraph -->',
+			),
+			'snack-wrap' => array(
+				'title'   => 'Snack Wrap',
+				'content' => '<!-- wp:paragraph --><p>This guide tracks the current McDonald&#8217;s USA snack wrap lineup, including spicy and ranch builds, pricing, and calories.</p><!-- /wp:paragraph -->',
+			),
+			'fries-sides' => array(
+				'title'   => 'Fries & Sides',
+				'content' => '<!-- wp:paragraph --><p>This guide covers World Famous Fries in each size plus side items such as apple slices, hash browns, and other commonly available side add-ons in the USA menu.</p><!-- /wp:paragraph -->',
+			),
+			'happy-meal-menu' => array(
+				'title'   => 'Happy Meal Menu',
+				'content' => '<!-- wp:paragraph --><p>This guide covers current McDonald&#8217;s USA Happy Meal options, prices, calories, and the main kids&#8217; meal builds readers compare most often.</p><!-- /wp:paragraph -->',
+			),
+			'sweets-treats' => array(
+				'title'   => 'Sweets & Treats',
+				'content' => '<!-- wp:paragraph --><p>This guide covers McFlurry flavors, sundaes, shakes, cones, cookies, and apple pie pricing across the McDonald&#8217;s USA sweets and treats menu.</p><!-- /wp:paragraph -->',
+			),
+			'mccafe-menu' => array(
+				'title'   => 'McCafe Menu',
+				'content' => '<!-- wp:paragraph --><p>This guide covers McCafe coffees, espresso drinks, iced coffees, frappes, lattes, cappuccinos, and related price ranges on the McDonald&#8217;s USA menu.</p><!-- /wp:paragraph -->',
+			),
+			'beverage-menu' => array(
+				'title'   => 'Beverage Menu',
+				'content' => '<!-- wp:paragraph --><p>This guide covers soft drinks, smoothies, frozen drinks, lemonade, tea, orange juice, water, and other McDonald&#8217;s USA beverages with current pricing and calorie ranges.</p><!-- /wp:paragraph -->',
+			),
+			'dollar-menu' => array(
+				'title'   => '$1 $2 $3 Menu',
+				'content' => '<!-- wp:paragraph --><p>This guide covers the budget-focused McDonald&#8217;s USA value lineup, including lower-cost breakfast picks, burgers, nuggets, fries, and other entry-price items.</p><!-- /wp:paragraph -->',
+			),
+			'extra-value-meals' => array(
+				'title'   => 'Extra Value Meals',
+				'content' => '<!-- wp:paragraph --><p>This guide covers McDonald&#8217;s USA combo meals for breakfast, lunch, and dinner, including burger meals, chicken meals, fish meals, and wrap meal pricing.</p><!-- /wp:paragraph -->',
+			),
+			'shareables-bundles' => array(
+				'title'   => 'Shareables & Bundles',
+				'content' => '<!-- wp:paragraph --><p>This guide covers larger McDonald&#8217;s USA share boxes and bundles, including 40-piece McNuggets, large fries packs, cookie totes, and family-style ordering ideas.</p><!-- /wp:paragraph -->',
+			),
+			'sauces-condiments' => array(
+				'title'   => 'Sauces & Condiments',
+				'content' => '<!-- wp:paragraph --><p>This guide covers McDonald&#8217;s USA dipping sauces and condiment packets, including barbecue, ranch, honey mustard, sweet and sour, buffalo, ketchup, mustard, and mayo.</p><!-- /wp:paragraph -->',
 			),
 		);
 	}
@@ -417,6 +492,14 @@ class McPrices_Integration {
 	 */
 	protected function portable_db_seed_is_current() {
 		if ( self::PORTABLE_DB_SEED_VERSION !== get_option( self::PORTABLE_DB_SEED_VERSION_OPTION, '' ) ) {
+			return false;
+		}
+
+		if ( "McDonald's Menu Prices USA" !== (string) get_option( 'blogname', '' ) ) {
+			return false;
+		}
+
+		if ( 'Full USA price list, calories, deals, breakfast hours, and menu guides.' !== (string) get_option( 'blogdescription', '' ) ) {
 			return false;
 		}
 
@@ -460,6 +543,27 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Seed the WordPress site title and tagline for portable deployments.
+	 *
+	 * @return bool
+	 */
+	protected function maybe_seed_site_identity() {
+		$changed = false;
+
+		if ( "McDonald's Menu Prices USA" !== (string) get_option( 'blogname', '' ) ) {
+			update_option( 'blogname', "McDonald's Menu Prices USA" );
+			$changed = true;
+		}
+
+		if ( 'Full USA price list, calories, deals, breakfast hours, and menu guides.' !== (string) get_option( 'blogdescription', '' ) ) {
+			update_option( 'blogdescription', 'Full USA price list, calories, deals, breakfast hours, and menu guides.' );
+			$changed = true;
+		}
+
+		return $changed;
+	}
+
+	/**
 	 * Activate Rank Math automatically when its plugin files are already present.
 	 *
 	 * @return bool
@@ -493,32 +597,39 @@ class McPrices_Integration {
 		foreach ( $this->get_seeded_support_pages() as $slug => $page_data ) {
 			$page = get_page_by_path( $slug );
 
-			$postarr = array(
-				'post_title'  => $page_data['title'],
-				'post_name'   => $slug,
-				'post_type'   => 'page',
-				'post_status' => 'publish',
-			);
-
 			if ( $page instanceof \WP_Post ) {
-				$update = array(
-					'ID'          => (int) $page->ID,
-					'post_title'  => $page_data['title'],
-					'post_name'   => $slug,
-					'post_status' => 'publish',
-				);
+				$needs_update =
+					$page_data['title'] !== (string) $page->post_title ||
+					$slug !== (string) $page->post_name ||
+					'publish' !== (string) $page->post_status ||
+					trim( (string) $page->post_content ) !== trim( (string) $page_data['content'] );
 
-				if ( '' === trim( wp_strip_all_tags( (string) $page->post_content ) ) ) {
-					$update['post_content'] = $page_data['content'];
+				if ( $needs_update ) {
+					wp_update_post(
+						array(
+							'ID'           => (int) $page->ID,
+							'post_title'   => $page_data['title'],
+							'post_name'    => $slug,
+							'post_status'  => 'publish',
+							'post_content' => $page_data['content'],
+						)
+					);
+					$changed = true;
 				}
 
-				wp_update_post( $update );
-				$changed = true;
 				continue;
 			}
 
-			$postarr['post_content'] = $page_data['content'];
-			$page_id                 = wp_insert_post( $postarr, true );
+			$page_id = wp_insert_post(
+				array(
+					'post_title'   => $page_data['title'],
+					'post_name'    => $slug,
+					'post_type'    => 'page',
+					'post_status'  => 'publish',
+					'post_content' => $page_data['content'],
+				),
+				true
+			);
 
 			if ( ! is_wp_error( $page_id ) && $page_id ) {
 				$changed = true;
@@ -584,6 +695,10 @@ class McPrices_Integration {
 
 		$changed = false;
 
+		if ( $this->maybe_seed_site_identity() ) {
+			$changed = true;
+		}
+
 		if ( $this->maybe_seed_permalink_structure() ) {
 			$changed = true;
 		}
@@ -637,11 +752,11 @@ class McPrices_Integration {
 			&& '1' === (string) get_option( 'rank_math_registration_skip', '' )
 			&& '1' === (string) get_option( 'rank_math_wizard_completed', '' )
 			&& '1' === (string) get_option( 'blog_public', '' )
-			&& "McDonald's Menu Prices UK {$current_year} | Full Price List & Calories" === ( $titles['homepage_title'] ?? '' )
-			&& "Complete McDonald's UK menu prices updated {$current_date}. Find prices for every burger, breakfast, McCafé, McFlurry, and Saver Menu item with calorie counts." === ( $titles['homepage_description'] ?? '' )
-			&& '%title% | McPrices UK' === ( $titles['pt_post_title'] ?? '' )
-			&& '%term% Prices UK ' . $current_year . ' | McPrices UK' === ( $titles['tax_category_title'] ?? '' )
-			&& 'Page Not Found | McPrices UK' === ( $titles['404_title'] ?? '' ) ) {
+			&& "McDonald's Menu Prices USA {$current_year} | Full Price List & Calories" === ( $titles['homepage_title'] ?? '' )
+			&& "Complete McDonald's USA menu prices updated {$current_date}. Find prices for burgers, breakfast, McCafe, drinks, McValue deals, McNuggets, Happy Meals, desserts, and combo meals in dollars." === ( $titles['homepage_description'] ?? '' )
+			&& "%title% | McDonald's Menu Prices USA" === ( $titles['pt_post_title'] ?? '' )
+			&& "%term% Prices USA {$current_year} | McDonald's Menu Prices USA" === ( $titles['tax_category_title'] ?? '' )
+			&& "Page Not Found | McDonald's Menu Prices USA" === ( $titles['404_title'] ?? '' ) ) {
 			return true;
 		}
 
@@ -676,6 +791,25 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Keep the managed homepage, menus and footer widgets in sync with the theme
+	 * files so uploading newer files updates older databases automatically.
+	 *
+	 * @return void
+	 */
+	public function maybe_sync_managed_site_content() {
+		if ( ! $this->design_enabled() ) {
+			return;
+		}
+
+		$this->maybe_seed_front_page();
+		$this->maybe_seed_blog_page();
+		$this->maybe_sync_front_page_pattern_content();
+		$this->maybe_seed_support_pages();
+		$this->maybe_sync_seed_menus();
+		$this->maybe_sync_footer_widget_blocks();
+	}
+
+	/**
 	 * Build a homepage section URL that still works from inner pages.
 	 *
 	 * @param string $section Section anchor without the leading #.
@@ -692,6 +826,54 @@ class McPrices_Integration {
 	 */
 	protected function get_seeded_update_bar_html() {
 		return '<p>&#9989; Prices last verified: <strong>' . esc_html( $this->get_current_site_date() ) . '</strong> &mdash; <a href="' . esc_url( $this->get_section_url( 'full-menu' ) ) . '">View full price list &darr;</a></p>';
+	}
+
+	/**
+	 * Return the raw homepage pattern markup from the theme file.
+	 *
+	 * @return string
+	 */
+	protected function get_homepage_pattern_markup() {
+		$homepage_pattern = require get_theme_file_path( '/inc/mcprices/pattern-homepage.php' );
+
+		return is_string( $homepage_pattern ) ? $homepage_pattern : '';
+	}
+
+	/**
+	 * Return a stable signature for managed seeded content.
+	 *
+	 * @param mixed $value Source value.
+	 * @return string
+	 */
+	protected function get_seed_signature( $value ) {
+		if ( is_string( $value ) ) {
+			return hash( 'sha256', $value );
+		}
+
+		return hash( 'sha256', wp_json_encode( $value ) );
+	}
+
+	/**
+	 * Return the current signature for seeded menu definitions.
+	 *
+	 * @return string
+	 */
+	protected function get_seeded_menu_signature() {
+		return $this->get_seed_signature(
+			array(
+				'primary' => $this->get_default_primary_menu_items(),
+				'footer'  => $this->get_default_footer_menu_items(),
+			)
+		);
+	}
+
+	/**
+	 * Return the current signature for seeded footer widgets.
+	 *
+	 * @return string
+	 */
+	protected function get_seeded_footer_widget_signature() {
+		return $this->get_seed_signature( $this->get_default_footer_widget_blocks() );
 	}
 
 	/**
@@ -841,22 +1023,25 @@ class McPrices_Integration {
 	protected function get_default_footer_widget_blocks() {
 		return array(
 			'footer1' => sprintf(
-				'<!-- wp:html --><div class="footer-brand"><a href="%1$s" class="logo"><div class="logo-icon">M</div><div class="logo-text">McPrices UK<span>Independent Price Guide</span></div></a><p>An independent website providing up-to-date McDonald&#8217;s UK menu prices, calories, and deals. Not affiliated with McDonald&#8217;s Corporation or McDonald&#8217;s UK Ltd.</p></div><!-- /wp:html -->',
+				'<!-- wp:html --><div class="footer-brand"><a href="%1$s" class="logo"><div class="logo-icon">M</div><div class="logo-text">McDonald&#8217;s Menu Prices USA<span>Independent Menu Guide</span></div></a><p>An independent website covering McDonald&#8217;s USA menu prices, calories, deals, breakfast hours, drinks, combo meals, and limited-time items. Not affiliated with McDonald&#8217;s Corporation.</p></div><!-- /wp:html -->',
 				esc_url( $this->get_home_path_url() )
 			),
 			'footer2' => sprintf(
-				'<!-- wp:html --><div class="footer-col-title">Menu Categories</div><ul class="footer-links"><li><a href="%1$s">What&#8217;s New 2026</a></li><li><a href="%2$s">Burger Prices</a></li><li><a href="%3$s">Saver Menu</a></li><li><a href="%4$s">Breakfast Prices</a></li><li><a href="%5$s">McCaf&#233; Prices</a></li><li><a href="%6$s">Desserts &amp; McFlurry</a></li><li><a href="%7$s">Happy Meal</a></li><li><a href="%8$s">Wraps &amp; Salads</a></li><li><a href="%9$s">Sharers &amp; Bundles</a></li><li><a href="%10$s">Condiments &amp; Sauces</a></li><li><a href="%11$s">Breakfast Saver</a></li></ul><!-- /wp:html -->',
+				'<!-- wp:html --><div class="footer-col-title">Menu Categories</div><ul class="footer-links"><li><a href="%1$s">What&#8217;s New</a></li><li><a href="%2$s">McValue</a></li><li><a href="%3$s">Breakfast</a></li><li><a href="%4$s">Burgers</a></li><li><a href="%5$s">Chicken &amp; Fish</a></li><li><a href="%6$s">McNuggets &amp; Strips</a></li><li><a href="%7$s">Snack Wrap</a></li><li><a href="%8$s">Fries &amp; Sides</a></li><li><a href="%9$s">Happy Meal</a></li><li><a href="%10$s">Sweets &amp; Treats</a></li><li><a href="%11$s">McCafe</a></li><li><a href="%12$s">Beverages</a></li><li><a href="%13$s">Extra Value Meals</a></li><li><a href="%14$s">Sauces &amp; Condiments</a></li></ul><!-- /wp:html -->',
 				esc_url( $this->get_section_url( 'whats-new' ) ),
-				esc_url( $this->get_section_url( 'burgers' ) ),
-				esc_url( $this->get_section_url( 'saver' ) ),
+				esc_url( $this->get_section_url( 'mcvalue' ) ),
 				esc_url( $this->get_section_url( 'breakfast' ) ),
-				esc_url( $this->get_section_url( 'mccafe' ) ),
-				esc_url( $this->get_section_url( 'desserts' ) ),
+				esc_url( $this->get_section_url( 'burgers' ) ),
+				esc_url( $this->get_section_url( 'chickenfish' ) ),
+				esc_url( $this->get_section_url( 'nuggets' ) ),
+				esc_url( $this->get_section_url( 'snackwrap' ) ),
+				esc_url( $this->get_section_url( 'sides' ) ),
 				esc_url( $this->get_section_url( 'happymeal' ) ),
-				esc_url( $this->get_section_url( 'wraps' ) ),
-				esc_url( $this->get_section_url( 'sharers' ) ),
+				esc_url( $this->get_section_url( 'sweets' ) ),
+				esc_url( $this->get_section_url( 'mccafe' ) ),
+				esc_url( $this->get_section_url( 'beverages' ) ),
+				esc_url( $this->get_section_url( 'meals' ) ),
 				esc_url( $this->get_section_url( 'sauces' ) ),
-				esc_url( $this->get_section_url( 'bsaver' ) )
 			),
 			'footer3' => sprintf(
 				'<!-- wp:html --><div class="footer-col-title">Information</div><ul class="footer-links"><li><a href="%1$s">About Us</a></li><li><a href="%2$s">Privacy Policy</a></li><li><a href="%3$s">Cookie Policy</a></li><li><a href="%4$s">Ad Disclosure</a></li><li><a href="%5$s">Disclaimer</a></li><li><a href="%6$s">Contact</a></li><li><a href="%7$s">Sitemap</a></li></ul><!-- /wp:html -->',
@@ -869,17 +1054,18 @@ class McPrices_Integration {
 				esc_url( home_url( '/sitemap/' ) )
 			),
 			'footer4' => sprintf(
-				'<!-- wp:html --><div class="footer-col-title">Popular Guides</div><ul class="footer-links"><li><a href="%1$s">Big Mac Price UK</a></li><li><a href="%2$s">McDonald&#8217;s App Deals</a></li><li><a href="%3$s">Calorie Counter</a></li><li><a href="%4$s">Breakfast Times</a></li><li><a href="%5$s">Allergen Guide</a></li><li><a href="%6$s">Price History</a></li><li><a href="%7$s">Vegan Options</a></li><li><a href="%8$s">Limited-Time Menu</a></li><li><a href="%9$s">McDelivery Guide</a></li><li><a href="%10$s">Desserts &amp; McFlurry</a></li></ul><!-- /wp:html -->',
-				esc_url( home_url( '/big-mac-price-uk/' ) ),
+				'<!-- wp:html --><div class="footer-col-title">Popular Guides</div><ul class="footer-links"><li><a href="%1$s">Big Mac Price USA</a></li><li><a href="%2$s">McDonald&#8217;s App Deals</a></li><li><a href="%3$s">Calorie Counter</a></li><li><a href="%4$s">Breakfast Hours</a></li><li><a href="%5$s">Allergen Guide</a></li><li><a href="%6$s">Price History</a></li><li><a href="%7$s">Rewards Guide</a></li><li><a href="%8$s">Limited-Time Menu</a></li><li><a href="%9$s">Delivery Guide</a></li><li><a href="%10$s">Breakfast Menu</a></li><li><a href="%11$s">Burgers Menu</a></li></ul><!-- /wp:html -->',
+				esc_url( home_url( '/big-mac-price-usa/' ) ),
 				esc_url( home_url( '/mcdonalds-app-deals/' ) ),
 				esc_url( home_url( '/calorie-counter/' ) ),
-				esc_url( home_url( '/breakfast-times/' ) ),
+				esc_url( home_url( '/breakfast-hours/' ) ),
 				esc_url( home_url( '/allergen-guide/' ) ),
 				esc_url( home_url( '/price-history/' ) ),
-				esc_url( home_url( '/vegan-options/' ) ),
+				esc_url( home_url( '/rewards-guide/' ) ),
 				esc_url( home_url( '/limited-time-menu/' ) ),
-				esc_url( home_url( '/mcdelivery-guide/' ) ),
-				esc_url( $this->get_section_url( 'desserts' ) )
+				esc_url( home_url( '/delivery-guide/' ) ),
+				esc_url( home_url( '/breakfast-menu/' ) ),
+				esc_url( home_url( '/burgers-menu/' ) )
 			),
 		);
 	}
@@ -904,16 +1090,16 @@ class McPrices_Integration {
 				'url'   => $this->get_section_url( 'full-menu' ),
 			),
 			array(
-				'title' => __( 'Sharers', 'kadence' ),
-				'url'   => $this->get_section_url( 'sharers' ),
-			),
-			array(
 				'title' => __( 'Deals', 'kadence' ),
 				'url'   => $this->get_section_url( 'deals' ),
 			),
 			array(
+				'title' => __( 'Breakfast', 'kadence' ),
+				'url'   => $this->get_section_url( 'breakfast' ),
+			),
+			array(
 				'title' => __( 'Guides', 'kadence' ),
-				'url'   => $this->get_section_url( 'blog' ),
+				'url'   => $this->get_section_url( 'guides' ),
 			),
 			array(
 				'title' => __( 'Blogs', 'kadence' ),
@@ -931,19 +1117,19 @@ class McPrices_Integration {
 		return array(
 			array(
 				'title' => __( 'Privacy', 'kadence' ),
-				'url'   => '#',
+				'url'   => home_url( '/privacy-policy/' ),
 			),
 			array(
 				'title' => __( 'Cookies', 'kadence' ),
-				'url'   => '#',
+				'url'   => home_url( '/cookie-policy/' ),
 			),
 			array(
 				'title' => __( 'Disclaimer', 'kadence' ),
-				'url'   => '#',
+				'url'   => home_url( '/disclaimer/' ),
 			),
 			array(
 				'title' => __( 'Ad Policy', 'kadence' ),
-				'url'   => '#',
+				'url'   => home_url( '/ad-disclosure/' ),
 			),
 		);
 	}
@@ -1455,7 +1641,7 @@ class McPrices_Integration {
 		);
 		$defaults['footer_middle_columns']    = '4';
 		$defaults['footer_bottom_columns']    = '2';
-		$defaults['footer_html_content']      = '<p>&copy; {year} McPrices UK. Independent price guide. Not affiliated with McDonald&#8217;s.</p>';
+		$defaults['footer_html_content']      = '<p>&copy; {year} McDonald&#8217;s Menu Prices USA. Independent menu guide. Not affiliated with McDonald&#8217;s.</p>';
 
 		return $defaults;
 	}
@@ -1568,7 +1754,7 @@ class McPrices_Integration {
 	 * @return string
 	 */
 	protected function get_homepage_primary_keyword() {
-		return "McDonald's Menu Prices UK " . $this->get_current_site_year();
+		return "McDonald's Menu Prices USA " . $this->get_current_site_year();
 	}
 
 	/**
@@ -1577,7 +1763,7 @@ class McPrices_Integration {
 	 * @return string
 	 */
 	protected function get_schema_organization_name() {
-		return 'McPrices UK';
+		return "McDonald's Menu Prices USA";
 	}
 
 	/**
@@ -1586,7 +1772,7 @@ class McPrices_Integration {
 	 * @return string
 	 */
 	protected function get_schema_site_description() {
-		return 'McPrices UK covers McDonald\'s UK menu prices, calories, breakfast times, deals, delivery info and FAQs with a current ' . $this->get_current_site_date() . ' update.';
+		return "McDonald's Menu Prices USA is an independent guide covering McDonald's USA menu prices, calories, breakfast hours, McValue deals, combo meals, drinks, desserts, and FAQs with a current " . $this->get_current_site_date() . ' update.';
 	}
 
 	/**
@@ -1595,7 +1781,7 @@ class McPrices_Integration {
 	 * @return string
 	 */
 	protected function get_homepage_meta_title() {
-		return $this->get_homepage_primary_keyword() . ' - Updated ' . $this->get_current_site_date();
+		return $this->get_homepage_primary_keyword() . ' | Full Price List & Calories';
 	}
 
 	/**
@@ -1604,7 +1790,7 @@ class McPrices_Integration {
 	 * @return string
 	 */
 	protected function get_homepage_meta_description() {
-		return "McDonald's Menu Prices UK " . $this->get_current_site_year() . ', updated ' . $this->get_current_site_date() . ' with the full UK menu, current prices, calories, breakfast times, deals, delivery tips, FAQs and value picks.';
+		return "Complete McDonald's USA menu prices updated " . $this->get_current_site_date() . '. Find prices for burgers, breakfast, McCafe, drinks, McValue deals, McNuggets, Happy Meals, desserts, and combo meals in dollars.';
 	}
 
 	/**
@@ -1699,6 +1885,8 @@ class McPrices_Integration {
 	 * @return array
 	 */
 	protected function get_homepage_faq_items() {
+		return $this->get_homepage_faq_schema_items();
+
 		static $faq_items = null;
 
 		if ( null !== $faq_items ) {
@@ -1713,8 +1901,8 @@ class McPrices_Integration {
 				'answer'   => 'A Big Mac costs £5.09 in this ' . $current_date . ' update. Meal pricing can vary slightly by restaurant and local offer.',
 			),
 			array(
-				'question' => 'What is on the McDonald\'s Saver Menu?',
-				'answer'   => 'The Saver Menu currently covers McDonald\'s lowest-entry burgers, fries, drinks and add-ons, with prices starting from £1.19 and Meal Deal Plus listed at £5.59.',
+				'question' => 'What is on the McValue menu right now?',
+				'answer'   => 'The current McValue lineup highlighted on the site includes $5 meal deals, buy one add one for $1 breakfast offers, lunch and dinner add-on offers, and low-entry items such as McChicken, McDouble, McNuggets, fries, and hash browns.',
 			),
 			array(
 				'question' => 'How much is a Happy Meal in the UK?',
@@ -1773,36 +1961,36 @@ class McPrices_Integration {
 
 		return array(
 			array(
-				'question' => 'How much is a Big Mac in the UK?',
-				'answer'   => 'A Big Mac costs GBP 5.09 in this ' . $current_date . ' update. Meal prices can vary a little by restaurant, so the McDonald\'s app is the best place to confirm your local price.',
+				'question' => 'How much is a Big Mac in the USA?',
+				'answer'   => 'The current USA menu data on this site lists the Big Mac at $5.99 on the core burger menu. Local restaurant, app, tax, and delivery pricing can still change the final total.',
 			),
 			array(
-				'question' => 'What is on the McDonald\'s Saver Menu UK?',
-				'answer'   => 'The Saver Menu includes lower-priced picks such as Hamburger (GBP 1.19), Cheeseburger (GBP 1.39), Mayo Chicken (GBP 1.39), Double Cheeseburger (GBP 2.29), 99p drinks and value add-ons, with Meal Deal Plus listed at GBP 5.59.',
+				'question' => 'What is on the McValue menu right now?',
+				'answer'   => 'The current McValue lineup includes $5 McChicken and McDouble meal deals, an about-$6 Daily Double meal deal, breakfast buy one add one for $1 items like Sausage Biscuit and Hash Browns, lunch and dinner add-on picks like McChicken, Double Cheeseburger, 6 pc McNuggets, Small Fries, plus mini McFlurry treats.',
 			),
 			array(
-				'question' => 'How much is a Happy Meal in the UK?',
-				'answer'   => 'Most Happy Meal options are GBP 3.89 in the current ' . $current_date . ' menu, including Hamburger, Cheeseburger, Mayo Chicken and 4-piece Chicken McNuggets Happy Meals.',
+				'question' => 'How much is a Happy Meal in the USA?',
+				'answer'   => 'This USA update lists Hamburger Happy Meal at about $5.89, 4 pc McNuggets Happy Meal at about $6.19, and 6 pc McNuggets Happy Meal at about $7.29.',
 			),
 			array(
-				'question' => 'What time does McDonald\'s serve breakfast in the UK?',
-				'answer'   => 'McDonald\'s UK breakfast is typically served from 5:00 AM until 11:00 AM. After 11:00 AM, the main daytime menu takes over.',
+				'question' => 'What time does McDonald\'s serve breakfast in the USA?',
+				'answer'   => 'The attached breakfast data notes that breakfast is typically served until 10:30 AM on weekdays and 11:00 AM on weekends, although exact cutoffs can vary by restaurant.',
 			),
 			array(
 				'question' => 'How many calories are in McDonald\'s large fries?',
-				'answer'   => 'A large fries has 444 kcal in the current menu data.',
+				'answer'   => 'Large World Famous Fries are listed at 480 calories in the current USA menu data on this site.',
 			),
 			array(
-				'question' => 'Does McDonald\'s UK have a vegan burger?',
-				'answer'   => 'Yes. McDonald\'s UK has the McPlant, which is listed at GBP 5.09 and 426 kcal in the current menu data.',
+				'question' => 'Does McDonald\'s USA have a vegan burger?',
+				'answer'   => 'This USA menu build does not currently show a national vegan burger on the main McDonald\'s USA lineup. Most location coverage is centered on burgers, chicken, breakfast, fries, coffee, and desserts.',
 			),
 			array(
-				'question' => 'How much is a McFlurry in the UK?',
-				'answer'   => 'Regular Oreo and Smarties McFlurry flavours are GBP 2.19, while mini versions are GBP 1.39. Seasonal flavours such as Cadbury Creme Egg and Cadbury Mini Eggs McFlurry are GBP 2.49.',
+				'question' => 'How much is a McFlurry in the USA?',
+				'answer'   => 'The current USA sweets data lists a regular OREO McFlurry at $5.59, a regular M&M\'s McFlurry at $5.59, and mini McFlurry options at $3.19 in the McValue section.',
 			),
 			array(
-				'question' => 'What is the cheapest item on the McDonald\'s UK menu?',
-				'answer'   => 'The cheapest current items are 99p picks such as White Coffee, Americano, Espresso, Apple Slices, Pineapple Stick and Carrot Sticks. The cheapest burger is the Hamburger at GBP 1.19.',
+				'question' => 'What is the cheapest item on the McDonald\'s USA menu?',
+				'answer'   => 'The lowest paid items in the current USA menu data on this site are Vanilla Cone at $1.29 and the Honest Kids Appley Ever After juice box at $1.29, followed by several $1.69 drink options.',
 			),
 		);
 	}
@@ -2277,7 +2465,7 @@ class McPrices_Integration {
 		<meta name="description" content="<?php echo esc_attr( $description ); ?>">
 		<link rel="canonical" href="<?php echo esc_url( $url ); ?>">
 		<link rel="sitemap" type="application/xml" title="<?php esc_attr_e( 'Sitemap', 'kadence' ); ?>" href="<?php echo esc_url( $sitemap_url ); ?>">
-		<meta property="og:locale" content="en_GB">
+		<meta property="og:locale" content="en_US">
 		<meta property="og:type" content="website">
 		<meta property="og:title" content="<?php echo esc_attr( $title ); ?>">
 		<meta property="og:description" content="<?php echo esc_attr( $description ); ?>">
@@ -2330,7 +2518,7 @@ class McPrices_Integration {
 			'url'             => $url,
 			'name'            => $this->get_schema_organization_name(),
 			'description'     => $this->get_schema_site_description(),
-			'inLanguage'      => 'en-GB',
+			'inLanguage'      => 'en-US',
 			'publisher'       => array( '@id' => $url . '#organization' ),
 				'potentialAction' => array(
 					'@type'       => 'SearchAction',
@@ -2349,13 +2537,14 @@ class McPrices_Integration {
 				'url'          => $url,
 				'name'         => $title,
 				'description'  => $description,
-				'inLanguage'   => 'en-GB',
+				'inLanguage'   => 'en-US',
 				'isPartOf'     => array( '@id' => $url . '#website' ),
 				'about'        => array(
 					$this->get_homepage_primary_keyword(),
-					"McDonald's UK calories",
-					"McDonald's UK breakfast times",
-					"McDonald's UK deals",
+					"McDonald's USA calories",
+					"McDonald's USA breakfast hours",
+					"McDonald's USA deals",
+					'McValue menu',
 				),
 				'dateModified' => $this->get_homepage_modified_date(),
 			);
@@ -2396,14 +2585,14 @@ class McPrices_Integration {
 						'name'               => $product['name'],
 						'image'              => $product['image'] ? array( $product['image'] ) : null,
 						'description'        => sprintf(
-							'%1$s is a popular McDonald\'s UK menu item in the %3$s update.%2$s',
+							'%1$s is a popular McDonald\'s USA menu item in the %3$s update.%2$s',
 							$product['name'],
 							$product['category'] ? ' Category: ' . $product['category'] . '.' : '',
 							$this->get_current_site_date()
 						),
 						'brand'              => array(
 							'@type' => 'Brand',
-							'name'  => "McDonald's UK",
+							'name'  => "McDonald's",
 						),
 						'additionalProperty' => $product['calories'] ? array(
 							array(
@@ -2414,7 +2603,7 @@ class McPrices_Integration {
 						) : null,
 						'offers'             => $product['price'] ? array(
 							'@type'         => 'Offer',
-							'priceCurrency' => 'GBP',
+							'priceCurrency' => 'USD',
 							'price'         => $product['price'],
 							'availability'  => 'https://schema.org/InStock',
 							'url'           => $this->get_schema_section_url( 'full-menu' ),
@@ -2435,7 +2624,7 @@ class McPrices_Integration {
 			$graph[] = array(
 				'@type'           => 'ItemList',
 				'@id'             => $url . '#popular-items',
-				'name'            => 'Popular McDonald\'s UK Menu Items',
+				'name'            => 'Popular McDonald\'s USA Menu Items',
 				'itemListElement' => $item_list,
 			);
 		}
@@ -2816,7 +3005,7 @@ class McPrices_Integration {
 			return;
 		}
 
-		$homepage_pattern = require get_theme_file_path( '/inc/mcprices/pattern-homepage.php' );
+		$homepage_pattern = $this->get_homepage_pattern_markup();
 		if ( empty( $homepage_pattern ) ) {
 			return;
 		}
@@ -2845,6 +3034,65 @@ class McPrices_Integration {
 				'post_content' => $homepage_pattern,
 			)
 		);
+		update_option( self::HOMEPAGE_PATTERN_SIGNATURE_OPTION, $this->get_seed_signature( $homepage_pattern ), false );
+	}
+
+	/**
+	 * Synchronize the managed homepage page body when the pattern file changes.
+	 *
+	 * @return void
+	 */
+	protected function maybe_sync_front_page_pattern_content() {
+		if ( 'page' !== get_option( 'show_on_front' ) ) {
+			return;
+		}
+
+		$front_page_id = (int) get_option( 'page_on_front' );
+		if ( ! $front_page_id ) {
+			return;
+		}
+
+		$front_page = get_post( $front_page_id );
+		if ( ! $front_page || 'page' !== $front_page->post_type ) {
+			return;
+		}
+
+		$homepage_pattern = $this->get_homepage_pattern_markup();
+		if ( '' === $homepage_pattern ) {
+			return;
+		}
+
+		$content           = (string) $front_page->post_content;
+		$is_managed        = $this->is_managed_homepage_content( $content );
+		$pattern_signature = $this->get_seed_signature( $homepage_pattern );
+		$stored_signature  = (string) get_option( self::HOMEPAGE_PATTERN_SIGNATURE_OPTION, '' );
+		$pattern_version   = $this->get_homepage_pattern_version( $homepage_pattern );
+		$has_current_version = $pattern_version && false !== strpos( $content, 'data-mcprices-pattern-version="' . $pattern_version . '"' );
+
+		$content_without_block_comments = preg_replace( '/<!--[\s\S]*?-->/', '', $content );
+		$plain_content                  = trim( wp_strip_all_tags( (string) $content_without_block_comments ) );
+		$is_empty                       = '' === $plain_content;
+		$content_matches_pattern        = trim( $content ) === trim( $homepage_pattern );
+
+		if ( $is_empty ) {
+			$this->maybe_seed_front_page_content( true );
+			return;
+		}
+
+		if ( ! $is_managed ) {
+			return;
+		}
+
+		if ( ! $has_current_version || $stored_signature !== $pattern_signature || ! $content_matches_pattern ) {
+			wp_update_post(
+				array(
+					'ID'           => $front_page_id,
+					'post_content' => $homepage_pattern,
+				)
+			);
+		}
+
+		update_option( self::HOMEPAGE_PATTERN_SIGNATURE_OPTION, $pattern_signature, false );
 	}
 
 	/**
@@ -2961,6 +3209,22 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Synchronize the managed McPrices menus when the file-driven defaults change.
+	 *
+	 * @return void
+	 */
+	protected function maybe_sync_seed_menus() {
+		$current_signature = $this->get_seeded_menu_signature();
+		$stored_signature  = (string) get_option( self::MENU_SIGNATURE_OPTION, '' );
+
+		if ( $stored_signature !== $current_signature ) {
+			$this->maybe_seed_nav_menus( true );
+		}
+
+		update_option( self::MENU_SIGNATURE_OPTION, $current_signature, false );
+	}
+
+	/**
 	 * Seed footer block widgets into Kadence footer sidebars when those areas
 	 * are still empty.
 	 *
@@ -3005,6 +3269,22 @@ class McPrices_Integration {
 
 		update_option( 'widget_block', $widget_blocks );
 		wp_set_sidebars_widgets( $sidebars_widgets );
+	}
+
+	/**
+	 * Synchronize the managed footer widget blocks when their file defaults change.
+	 *
+	 * @return void
+	 */
+	protected function maybe_sync_footer_widget_blocks() {
+		$current_signature = $this->get_seeded_footer_widget_signature();
+		$stored_signature  = (string) get_option( self::FOOTER_WIDGET_SIGNATURE_OPTION, '' );
+
+		if ( $stored_signature !== $current_signature ) {
+			$this->maybe_seed_footer_widgets( true );
+		}
+
+		update_option( self::FOOTER_WIDGET_SIGNATURE_OPTION, $current_signature, false );
 	}
 
 	/**
@@ -3060,7 +3340,7 @@ class McPrices_Integration {
 		}
 
 		$looks_like_legacy_mcprices_css =
-			false !== strpos( $custom_css, 'McPrices UK' ) &&
+			( false !== strpos( $custom_css, 'McPrices UK' ) || false !== strpos( $custom_css, 'McPrices USA' ) || false !== strpos( $custom_css, "McDonald's Menu Prices USA" ) ) &&
 			false !== strpos( $custom_css, '--mcprice-red' ) &&
 			false !== strpos( $custom_css, '.hero-search-wrap' );
 

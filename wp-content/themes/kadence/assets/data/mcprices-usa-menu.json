@@ -1,0 +1,1428 @@
+[
+  {
+    "id": "kpop",
+    "title": "KPop Demon Hunters Meal",
+    "note": "Limited time",
+    "icon": "",
+    "subs": [
+      {
+        "sub": null,
+        "rows": [
+          {
+            "name": "The HUNTRIX Meal (10 pc McNuggets, fries, drink)",
+            "price": "~$11.99",
+            "calories": "~990",
+            "tags": [
+              "ltd"
+            ]
+          },
+          {
+            "name": "The Saja Boys Breakfast Meal (Spicy McMuffin, hashbrown, drink)",
+            "price": "~$10.49",
+            "calories": "~880",
+            "tags": [
+              "ltd"
+            ]
+          },
+          {
+            "name": "Ramyeon McShakerTM Fries (medium)",
+            "price": "~$4.49",
+            "calories": "~420",
+            "tags": [
+              "ltd"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bigarch",
+    "title": "The BIG ARCHTM",
+    "note": "Limited time",
+    "icon": "",
+    "subs": [
+      {
+        "sub": null,
+        "rows": [
+          {
+            "name": "The BIG ARCHTM (two 1/4 lb beef patties, special sauce, lettuce, cheese, pickles, onions)",
+            "price": "~$8.99",
+            "calories": "670",
+            "tags": [
+              "ltd"
+            ]
+          },
+          {
+            "name": "The BIG ARCHTM Meal (with med fries & drink)",
+            "price": "~$13.49",
+            "calories": "~1,250",
+            "tags": [
+              "ltd"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "evm",
+    "title": "Extra Value Meals",
+    "icon": "",
+    "subs": [
+      {
+        "sub": "Breakfast Meals",
+        "rows": [
+          {
+            "name": "Egg McMuffin Meal",
+            "price": "~$9.49",
+            "calories": "~600"
+          },
+          {
+            "name": "Sausage McMuffin with Egg Meal",
+            "price": "~$9.69",
+            "calories": "~780"
+          },
+          {
+            "name": "Bacon, Egg & Cheese Biscuit Meal",
+            "price": "~$9.99",
+            "calories": "~760"
+          },
+          {
+            "name": "Sausage Biscuit with Egg Meal",
+            "price": "~$9.49",
+            "calories": "~830"
+          },
+          {
+            "name": "Bacon, Egg & Cheese McGriddles Meal",
+            "price": "~$9.99",
+            "calories": "~850"
+          },
+          {
+            "name": "Sausage, Egg & Cheese McGriddles Meal",
+            "price": "~$10.49",
+            "calories": "~900"
+          },
+          {
+            "name": "Sausage McGriddles Meal",
+            "price": "~$8.99",
+            "calories": "~680"
+          },
+          {
+            "name": "Sausage Burrito Meal (2 burritos)",
+            "price": "~$8.99",
+            "calories": "~740"
+          },
+          {
+            "name": "Bacon, Egg & Cheese Bagel Meal",
+            "price": "~$10.99",
+            "calories": "~860"
+          },
+          {
+            "name": "Steak, Egg & Cheese Bagel Meal",
+            "price": "~$11.59",
+            "calories": "~980"
+          }
+        ]
+      },
+      {
+        "sub": "Lunch & Dinner Meals",
+        "rows": [
+          {
+            "name": "Big Mac Meal",
+            "price": "~$10.19",
+            "calories": "~1,100"
+          },
+          {
+            "name": "Quarter Pounder with Cheese Meal",
+            "price": "~$10.79",
+            "calories": "~1,100"
+          },
+          {
+            "name": "Bacon Quarter Pounder with Cheese Meal",
+            "price": "~$11.79",
+            "calories": "~1,200"
+          },
+          {
+            "name": "Quarter Pounder with Cheese Deluxe Meal",
+            "price": "~$11.49",
+            "calories": "~1,150"
+          },
+          {
+            "name": "Double Quarter Pounder with Cheese Meal",
+            "price": "~$12.49",
+            "calories": "~1,320"
+          },
+          {
+            "name": "Cheeseburger Meal",
+            "price": "~$8.49",
+            "calories": "~880"
+          },
+          {
+            "name": "10 pc Chicken McNuggets Meal (med)",
+            "price": "~$10.09",
+            "calories": "~990"
+          },
+          {
+            "name": "McCrispy Meal",
+            "price": "~$10.29",
+            "calories": "~1,050"
+          },
+          {
+            "name": "Spicy McCrispy Meal",
+            "price": "~$10.29",
+            "calories": "~1,110"
+          },
+          {
+            "name": "Deluxe McCrispy Meal",
+            "price": "~$10.79",
+            "calories": "~1,110"
+          },
+          {
+            "name": "Spicy Deluxe McCrispy Meal",
+            "price": "~$10.99",
+            "calories": "~1,120"
+          },
+          {
+            "name": "McCrispy Strips Meal (3 pc)",
+            "price": "~$9.99",
+            "calories": "~900",
+            "tags": [
+              "new"
+            ]
+          },
+          {
+            "name": "Ranch Snack Wrap Meal",
+            "price": "~$7.49",
+            "calories": "~720"
+          },
+          {
+            "name": "Spicy Snack Wrap Meal",
+            "price": "~$7.49",
+            "calories": "~730"
+          },
+          {
+            "name": "Ranch & Spicy Snack Wrap Meal (2 wraps)",
+            "price": "~$9.49",
+            "calories": "~1,040"
+          },
+          {
+            "name": "Filet-O-Fish Meal",
+            "price": "~$9.79",
+            "calories": "~900"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "mcvalue",
+    "title": "McValue",
+    "icon": "",
+    "subs": [
+      {
+        "sub": "Meal Deals from $5 (LTD)",
+        "rows": [
+          {
+            "name": "The McChicken Meal Deal (McChicken, 4 pc nuggets, sm fries, sm drink)",
+            "price": "$5.00",
+            "calories": "~850",
+            "tags": [
+              "ltd",
+              "mv"
+            ]
+          },
+          {
+            "name": "The McDouble Meal Deal (McDouble, 4 pc nuggets, sm fries, sm drink)",
+            "price": "$5.00",
+            "calories": "~900",
+            "tags": [
+              "ltd",
+              "mv"
+            ]
+          },
+          {
+            "name": "The Daily Double Meal Deal",
+            "price": "~$6.00",
+            "calories": "~970",
+            "tags": [
+              "ltd",
+              "mv"
+            ]
+          }
+        ]
+      },
+      {
+        "sub": "Buy 1, Add 1 for $1 Breakfast",
+        "rows": [
+          {
+            "name": "Sausage Biscuit",
+            "price": "$2.99",
+            "calories": "460",
+            "tags": [
+              "mv"
+            ]
+          },
+          {
+            "name": "Sausage McMuffin",
+            "price": "$2.99",
+            "calories": "400",
+            "tags": [
+              "mv"
+            ]
+          },
+          {
+            "name": "Sausage Burrito",
+            "price": "$2.99",
+            "calories": "300",
+            "tags": [
+              "mv"
+            ]
+          },
+          {
+            "name": "Hash Browns",
+            "price": "$2.99",
+            "calories": "150",
+            "tags": [
+              "mv"
+            ]
+          }
+        ]
+      },
+      {
+        "sub": "Buy 1, Add 1 for $1 Lunch & Dinner",
+        "rows": [
+          {
+            "name": "Double Cheeseburger",
+            "price": "$3.99",
+            "calories": "450",
+            "tags": [
+              "mv"
+            ]
+          },
+          {
+            "name": "McChicken",
+            "price": "$3.59",
+            "calories": "400",
+            "tags": [
+              "mv"
+            ]
+          },
+          {
+            "name": "6 pc Chicken McNuggets",
+            "price": "$4.39",
+            "calories": "250",
+            "tags": [
+              "mv"
+            ]
+          },
+          {
+            "name": "Small World Famous Fries",
+            "price": "$2.89",
+            "calories": "230",
+            "tags": [
+              "mv"
+            ]
+          }
+        ]
+      },
+      {
+        "sub": "Eats",
+        "rows": [
+          {
+            "name": "Cheeseburger",
+            "price": "$2.99",
+            "calories": "300",
+            "tags": [
+              "mv"
+            ]
+          },
+          {
+            "name": "4 pc Chicken McNuggets",
+            "price": "$3.19",
+            "calories": "170",
+            "tags": [
+              "mv"
+            ]
+          },
+          {
+            "name": "McFlurry with M&M'S Candies (mini)",
+            "price": "$3.19",
+            "calories": "~340",
+            "tags": [
+              "mv"
+            ]
+          },
+          {
+            "name": "McFlurry with OREO Cookies (mini)",
+            "price": "$3.19",
+            "calories": "~310",
+            "tags": [
+              "mv"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bfast",
+    "title": "Breakfast",
+    "note": "until 10:30am weekdays / 11am weekends",
+    "icon": "",
+    "subs": [
+      {
+        "sub": "Biscuit Sandwiches",
+        "rows": [
+          {
+            "name": "Bacon, Egg & Cheese Biscuit",
+            "price": "$5.19",
+            "calories": "460"
+          },
+          {
+            "name": "Sausage Biscuit",
+            "price": "$2.99",
+            "calories": "460"
+          },
+          {
+            "name": "Sausage Biscuit with Egg",
+            "price": "$4.89",
+            "calories": "530"
+          }
+        ]
+      },
+      {
+        "sub": "McMuffins",
+        "rows": [
+          {
+            "name": "Egg McMuffin",
+            "price": "$4.89",
+            "calories": "300"
+          },
+          {
+            "name": "Sausage McMuffin",
+            "price": "$2.99",
+            "calories": "400"
+          },
+          {
+            "name": "Sausage McMuffin with Egg",
+            "price": "$4.79",
+            "calories": "480"
+          }
+        ]
+      },
+      {
+        "sub": "McGriddles",
+        "rows": [
+          {
+            "name": "Bacon, Egg & Cheese McGriddles",
+            "price": "$5.19",
+            "calories": "550"
+          },
+          {
+            "name": "Sausage McGriddles",
+            "price": "$3.19",
+            "calories": "430"
+          },
+          {
+            "name": "Sausage, Egg & Cheese McGriddles",
+            "price": "$5.99",
+            "calories": "600"
+          }
+        ]
+      },
+      {
+        "sub": "Bagels (select locations)",
+        "rows": [
+          {
+            "name": "Bagel (plain)",
+            "price": "$2.69",
+            "calories": "270"
+          },
+          {
+            "name": "Egg and Cheese Bagel",
+            "price": "$4.19",
+            "calories": "400"
+          },
+          {
+            "name": "Bacon, Egg & Cheese Bagel",
+            "price": "$5.59",
+            "calories": "560"
+          },
+          {
+            "name": "Sausage, Egg & Cheese Bagel",
+            "price": "$5.59",
+            "calories": "620"
+          },
+          {
+            "name": "Steak, Egg & Cheese Bagel",
+            "price": "$6.79",
+            "calories": "680"
+          }
+        ]
+      },
+      {
+        "sub": "Platters & Sides",
+        "rows": [
+          {
+            "name": "Big Breakfast",
+            "price": "$6.39",
+            "calories": "750"
+          },
+          {
+            "name": "Big Breakfast with Hotcakes",
+            "price": "$7.89",
+            "calories": "1,340"
+          },
+          {
+            "name": "Hotcakes",
+            "price": "$4.99",
+            "calories": "580"
+          },
+          {
+            "name": "Hotcakes and Sausage",
+            "price": "$6.19",
+            "calories": "770"
+          },
+          {
+            "name": "Sausage Burrito",
+            "price": "$2.99",
+            "calories": "300"
+          },
+          {
+            "name": "Hash Browns",
+            "price": "$2.99",
+            "calories": "150"
+          },
+          {
+            "name": "Fruit & Maple Oatmeal",
+            "price": "$3.69",
+            "calories": "320"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "burgers",
+    "title": "Burgers",
+    "icon": "",
+    "subs": [
+      {
+        "sub": null,
+        "rows": [
+          {
+            "name": "Big Mac",
+            "price": "$5.99",
+            "calories": "590"
+          },
+          {
+            "name": "Quarter Pounder with Cheese",
+            "price": "$5.79",
+            "calories": "520"
+          },
+          {
+            "name": "Double Quarter Pounder with Cheese",
+            "price": "$7.49",
+            "calories": "740"
+          },
+          {
+            "name": "Quarter Pounder with Cheese Deluxe",
+            "price": "$6.79",
+            "calories": "630"
+          },
+          {
+            "name": "Bacon Quarter Pounder with Cheese",
+            "price": "$7.59",
+            "calories": "620"
+          },
+          {
+            "name": "McDouble",
+            "price": "$3.59",
+            "calories": "400"
+          },
+          {
+            "name": "Daily Double",
+            "price": "$4.39",
+            "calories": "440"
+          },
+          {
+            "name": "Double Cheeseburger",
+            "price": "$3.99",
+            "calories": "450"
+          },
+          {
+            "name": "Cheeseburger",
+            "price": "$2.99",
+            "calories": "300"
+          },
+          {
+            "name": "Hamburger",
+            "price": "$2.69",
+            "calories": "250"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "chicken",
+    "title": "Chicken & Fish Sandwiches",
+    "icon": "",
+    "subs": [
+      {
+        "sub": null,
+        "rows": [
+          {
+            "name": "McCrispy",
+            "price": "$4.99",
+            "calories": "470"
+          },
+          {
+            "name": "Deluxe McCrispy",
+            "price": "$5.79",
+            "calories": "530"
+          },
+          {
+            "name": "Spicy McCrispy",
+            "price": "$4.99",
+            "calories": "530"
+          },
+          {
+            "name": "Spicy Deluxe McCrispy",
+            "price": "$6.29",
+            "calories": "540"
+          },
+          {
+            "name": "Filet-O-Fish",
+            "price": "$5.69",
+            "calories": "390"
+          },
+          {
+            "name": "McChicken",
+            "price": "$3.59",
+            "calories": "400"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nuggets",
+    "title": "McNuggets & McCrispy Strips",
+    "icon": "",
+    "subs": [
+      {
+        "sub": "Chicken McNuggets",
+        "rows": [
+          {
+            "name": "4 pc Chicken McNuggets",
+            "price": "$3.19",
+            "calories": "170"
+          },
+          {
+            "name": "6 pc Chicken McNuggets",
+            "price": "$4.39",
+            "calories": "250"
+          },
+          {
+            "name": "10 pc Chicken McNuggets",
+            "price": "$5.79",
+            "calories": "410"
+          },
+          {
+            "name": "20 pc Chicken McNuggets",
+            "price": "$7.00",
+            "calories": "830"
+          },
+          {
+            "name": "40 pc Chicken McNuggets",
+            "price": "$13.19",
+            "calories": "1,660"
+          }
+        ]
+      },
+      {
+        "sub": "McCrispy Strips",
+        "rows": [
+          {
+            "name": "McCrispy Strips (3 pc)",
+            "price": "$4.99",
+            "calories": "~380",
+            "tags": [
+              "new"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "wrap",
+    "title": "Snack Wrap",
+    "icon": "",
+    "subs": [
+      {
+        "sub": null,
+        "rows": [
+          {
+            "name": "Ranch Snack Wrap",
+            "price": "$2.99",
+            "calories": "390"
+          },
+          {
+            "name": "Spicy Snack Wrap",
+            "price": "$2.99",
+            "calories": "380"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "sides",
+    "title": "Fries & Sides",
+    "icon": "",
+    "subs": [
+      {
+        "sub": null,
+        "rows": [
+          {
+            "name": "World Famous Fries Small",
+            "price": "$2.89",
+            "calories": "230"
+          },
+          {
+            "name": "World Famous Fries Medium",
+            "price": "$3.99",
+            "calories": "320"
+          },
+          {
+            "name": "World Famous Fries Large",
+            "price": "$4.99",
+            "calories": "480"
+          },
+          {
+            "name": "Apple Slices",
+            "price": "$1.39",
+            "calories": "15"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "happy",
+    "title": "Happy Meal",
+    "icon": "",
+    "subs": [
+      {
+        "sub": null,
+        "rows": [
+          {
+            "name": "Hamburger Happy Meal (w/ apple slices or sm fries + drink + toy)",
+            "price": "~$5.89",
+            "calories": "~475"
+          },
+          {
+            "name": "4 pc McNuggets Happy Meal (w/ apple slices or sm fries + drink + toy)",
+            "price": "~$6.19",
+            "calories": "~420"
+          },
+          {
+            "name": "6 pc McNuggets Happy Meal (w/ apple slices or sm fries + drink + toy)",
+            "price": "~$7.29",
+            "calories": "~510"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "sweets",
+    "title": "Sweets & Treats",
+    "icon": "",
+    "subs": [
+      {
+        "sub": "McFlurry",
+        "rows": [
+          {
+            "name": "Derpy McFlurry (Berry Popping Pearls)",
+            "price": "~$5.59",
+            "calories": "~560",
+            "tags": [
+              "ltd"
+            ]
+          },
+          {
+            "name": "OREO McFlurry (regular)",
+            "price": "$5.59",
+            "calories": "510"
+          },
+          {
+            "name": "M&M'S McFlurry (regular)",
+            "price": "$5.59",
+            "calories": "640"
+          }
+        ]
+      },
+      {
+        "sub": "Ice Cream & Sundaes",
+        "rows": [
+          {
+            "name": "Vanilla Cone",
+            "price": "$1.29",
+            "calories": "200"
+          },
+          {
+            "name": "Hot Fudge Sundae",
+            "price": "$3.99",
+            "calories": "330"
+          },
+          {
+            "name": "Hot Caramel Sundae",
+            "price": "$3.99",
+            "calories": "340"
+          }
+        ]
+      },
+      {
+        "sub": "Shakes",
+        "rows": [
+          {
+            "name": "Chocolate Shake Small",
+            "price": "$3.49",
+            "calories": "430"
+          },
+          {
+            "name": "Chocolate Shake Medium",
+            "price": "$3.99",
+            "calories": "560"
+          },
+          {
+            "name": "Chocolate Shake Large",
+            "price": "$4.49",
+            "calories": "840"
+          },
+          {
+            "name": "Vanilla Shake Small",
+            "price": "$3.49",
+            "calories": "410"
+          },
+          {
+            "name": "Vanilla Shake Medium",
+            "price": "$3.99",
+            "calories": "530"
+          },
+          {
+            "name": "Vanilla Shake Large",
+            "price": "$4.49",
+            "calories": "790"
+          },
+          {
+            "name": "Strawberry Shake Small",
+            "price": "$3.49",
+            "calories": "420"
+          },
+          {
+            "name": "Strawberry Shake Medium",
+            "price": "$3.99",
+            "calories": "550"
+          },
+          {
+            "name": "Strawberry Shake Large",
+            "price": "$4.49",
+            "calories": "820"
+          }
+        ]
+      },
+      {
+        "sub": "Baked Treats",
+        "rows": [
+          {
+            "name": "Baked Apple Pie",
+            "price": "$1.89",
+            "calories": "230"
+          },
+          {
+            "name": "Chocolate Chip Cookie (1)",
+            "price": "$1.79",
+            "calories": "170"
+          },
+          {
+            "name": "Chocolate Chip Cookies (2)",
+            "price": "$2.79",
+            "calories": "340"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "coffee",
+    "title": "McCafe Coffees",
+    "icon": "",
+    "subs": [
+      {
+        "sub": "Hot Espresso & Coffee",
+        "rows": [
+          {
+            "name": "Premium Roast Coffee (any size)",
+            "price": "$1.69",
+            "calories": "0"
+          },
+          {
+            "name": "Americano Small",
+            "price": "$2.39",
+            "calories": "0"
+          },
+          {
+            "name": "Americano Medium",
+            "price": "$3.19",
+            "calories": "5"
+          },
+          {
+            "name": "Americano Large",
+            "price": "$4.29",
+            "calories": "5"
+          },
+          {
+            "name": "McCafe Cappuccino Small",
+            "price": "$3.19",
+            "calories": "110"
+          },
+          {
+            "name": "McCafe Cappuccino Medium",
+            "price": "$4.29",
+            "calories": "160"
+          },
+          {
+            "name": "McCafe Cappuccino Large",
+            "price": "$5.19",
+            "calories": "200"
+          },
+          {
+            "name": "McCafe Caramel Cappuccino Small",
+            "price": "$3.39",
+            "calories": "210"
+          },
+          {
+            "name": "McCafe Caramel Cappuccino Medium",
+            "price": "$4.49",
+            "calories": "260"
+          },
+          {
+            "name": "McCafe Caramel Cappuccino Large",
+            "price": "$5.19",
+            "calories": "340"
+          },
+          {
+            "name": "McCafe French Vanilla Cappuccino Small",
+            "price": "$3.39",
+            "calories": "210"
+          },
+          {
+            "name": "McCafe French Vanilla Cappuccino Medium",
+            "price": "$4.19",
+            "calories": "260"
+          },
+          {
+            "name": "McCafe French Vanilla Cappuccino Large",
+            "price": "$4.59",
+            "calories": "340"
+          },
+          {
+            "name": "McCafe Latte Small",
+            "price": "$3.19",
+            "calories": "140"
+          },
+          {
+            "name": "McCafe Latte Medium",
+            "price": "$4.09",
+            "calories": "190"
+          },
+          {
+            "name": "McCafe Latte Large",
+            "price": "$5.09",
+            "calories": "240"
+          },
+          {
+            "name": "McCafe Caramel Latte Small",
+            "price": "$3.59",
+            "calories": "290"
+          },
+          {
+            "name": "McCafe Caramel Latte Medium",
+            "price": "$4.29",
+            "calories": "370"
+          },
+          {
+            "name": "McCafe Caramel Latte Large",
+            "price": "$4.59",
+            "calories": "460"
+          },
+          {
+            "name": "McCafe French Vanilla Latte Small",
+            "price": "$3.59",
+            "calories": "280"
+          },
+          {
+            "name": "McCafe French Vanilla Latte Medium",
+            "price": "$4.29",
+            "calories": "360"
+          },
+          {
+            "name": "McCafe French Vanilla Latte Large",
+            "price": "$4.59",
+            "calories": "440"
+          },
+          {
+            "name": "McCafe Mocha Latte Small",
+            "price": "$3.59",
+            "calories": "290"
+          },
+          {
+            "name": "McCafe Mocha Latte Medium",
+            "price": "$4.29",
+            "calories": "370"
+          },
+          {
+            "name": "McCafe Mocha Latte Large",
+            "price": "$4.59",
+            "calories": "460"
+          },
+          {
+            "name": "McCafe Caramel Macchiato Small",
+            "price": "$3.69",
+            "calories": "200"
+          },
+          {
+            "name": "McCafe Caramel Macchiato Medium",
+            "price": "$4.39",
+            "calories": "260"
+          },
+          {
+            "name": "McCafe Caramel Macchiato Large",
+            "price": "$4.89",
+            "calories": "320"
+          }
+        ]
+      },
+      {
+        "sub": "Iced Coffees & Cold Drinks",
+        "rows": [
+          {
+            "name": "McCafe Iced Coffee Small",
+            "price": "$2.29",
+            "calories": "140"
+          },
+          {
+            "name": "McCafe Iced Coffee Medium",
+            "price": "$2.99",
+            "calories": "190"
+          },
+          {
+            "name": "McCafe Iced Coffee Large",
+            "price": "$3.49",
+            "calories": "260"
+          },
+          {
+            "name": "McCafe Iced Caramel Coffee Small",
+            "price": "$2.49",
+            "calories": "190"
+          },
+          {
+            "name": "McCafe Iced Caramel Coffee Medium",
+            "price": "$3.19",
+            "calories": "250"
+          },
+          {
+            "name": "McCafe Iced French Vanilla Coffee Small",
+            "price": "$2.49",
+            "calories": "180"
+          },
+          {
+            "name": "McCafe Iced French Vanilla Coffee Medium",
+            "price": "$3.19",
+            "calories": "240"
+          },
+          {
+            "name": "McCafe Iced Latte Small",
+            "price": "$3.19",
+            "calories": "260"
+          },
+          {
+            "name": "McCafe Iced Latte Medium",
+            "price": "$4.09",
+            "calories": "260"
+          },
+          {
+            "name": "McCafe Iced Latte Large",
+            "price": "$5.09",
+            "calories": "260"
+          },
+          {
+            "name": "McCafe Iced Caramel Latte Small",
+            "price": "$3.59",
+            "calories": "290"
+          },
+          {
+            "name": "McCafe Iced Caramel Latte Medium",
+            "price": "$4.29",
+            "calories": "370"
+          },
+          {
+            "name": "McCafe Iced French Vanilla Latte Small",
+            "price": "$3.59",
+            "calories": "280"
+          },
+          {
+            "name": "McCafe Iced French Vanilla Latte Medium",
+            "price": "$4.29",
+            "calories": "360"
+          },
+          {
+            "name": "McCafe Iced Caramel Macchiato Small",
+            "price": "$3.69",
+            "calories": "200"
+          },
+          {
+            "name": "McCafe Iced Caramel Macchiato Medium",
+            "price": "$4.39",
+            "calories": "260"
+          },
+          {
+            "name": "McCafe Iced Mocha Latte Small",
+            "price": "$3.69",
+            "calories": "280"
+          },
+          {
+            "name": "McCafe Iced Mocha Latte Medium",
+            "price": "$4.39",
+            "calories": "360"
+          }
+        ]
+      },
+      {
+        "sub": "Frappes",
+        "rows": [
+          {
+            "name": "McCafe Caramel Frappe Small",
+            "price": "$3.89",
+            "calories": "420"
+          },
+          {
+            "name": "McCafe Caramel Frappe Medium",
+            "price": "$4.29",
+            "calories": "510"
+          },
+          {
+            "name": "McCafe Caramel Frappe Large",
+            "price": "$4.89",
+            "calories": "670"
+          },
+          {
+            "name": "McCafe Mocha Frappe Small",
+            "price": "$3.89",
+            "calories": "430"
+          },
+          {
+            "name": "McCafe Mocha Frappe Medium",
+            "price": "$4.29",
+            "calories": "520"
+          },
+          {
+            "name": "McCafe Mocha Frappe Large",
+            "price": "$4.89",
+            "calories": "680"
+          }
+        ]
+      },
+      {
+        "sub": "Hot Chocolate",
+        "rows": [
+          {
+            "name": "McCafe Hot Chocolate Small",
+            "price": "$2.79",
+            "calories": "270"
+          },
+          {
+            "name": "McCafe Hot Chocolate Medium",
+            "price": "$3.39",
+            "calories": "370"
+          },
+          {
+            "name": "McCafe Hot Chocolate Large",
+            "price": "$3.89",
+            "calories": "470"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bev",
+    "title": "Beverages",
+    "icon": "",
+    "subs": [
+      {
+        "sub": "Soft Drinks (Coca-Cola, Sprite, Dr Pepper, Fanta Orange, Diet Coke, Hi-C)",
+        "rows": [
+          {
+            "name": "Soft Drink Small",
+            "price": "$1.69",
+            "calories": "0210"
+          },
+          {
+            "name": "Soft Drink Medium",
+            "price": "$1.69",
+            "calories": "0280"
+          },
+          {
+            "name": "Soft Drink Large",
+            "price": "$1.69",
+            "calories": "0380"
+          }
+        ]
+      },
+      {
+        "sub": "Frozen Drinks",
+        "rows": [
+          {
+            "name": "Frozen Fanta Blue Raspberry Small",
+            "price": "$2.39",
+            "calories": "130"
+          },
+          {
+            "name": "Frozen Fanta Blue Raspberry Medium",
+            "price": "$2.79",
+            "calories": "190"
+          },
+          {
+            "name": "Frozen Fanta Blue Raspberry Large",
+            "price": "$3.39",
+            "calories": "260"
+          },
+          {
+            "name": "Frozen Coca-Cola Classic Small",
+            "price": "$2.39",
+            "calories": "130"
+          },
+          {
+            "name": "Frozen Coca-Cola Classic Medium",
+            "price": "$2.79",
+            "calories": "190"
+          },
+          {
+            "name": "Frozen Coca-Cola Classic Large",
+            "price": "$3.39",
+            "calories": "260"
+          }
+        ]
+      },
+      {
+        "sub": "Smoothies",
+        "rows": [
+          {
+            "name": "Strawberry Banana Smoothie Small",
+            "price": "$3.99",
+            "calories": "210"
+          },
+          {
+            "name": "Strawberry Banana Smoothie Medium",
+            "price": "$4.49",
+            "calories": "260"
+          },
+          {
+            "name": "Strawberry Banana Smoothie Large",
+            "price": "$4.99",
+            "calories": "310"
+          },
+          {
+            "name": "Mango Pineapple Smoothie Small",
+            "price": "$3.99",
+            "calories": "200"
+          },
+          {
+            "name": "Mango Pineapple Smoothie Medium",
+            "price": "$4.49",
+            "calories": "250"
+          },
+          {
+            "name": "Mango Pineapple Smoothie Large",
+            "price": "$4.99",
+            "calories": "300"
+          }
+        ]
+      },
+      {
+        "sub": "Lemonade & Tea",
+        "rows": [
+          {
+            "name": "Lemonade Small",
+            "price": "$2.39",
+            "calories": "100"
+          },
+          {
+            "name": "Lemonade Medium",
+            "price": "$2.89",
+            "calories": "140"
+          },
+          {
+            "name": "Lemonade Large",
+            "price": "$3.19",
+            "calories": "190"
+          },
+          {
+            "name": "Sweet Tea Small",
+            "price": "$1.69",
+            "calories": "90"
+          },
+          {
+            "name": "Sweet Tea Medium",
+            "price": "$1.69",
+            "calories": "130"
+          },
+          {
+            "name": "Sweet Tea Large",
+            "price": "$1.69",
+            "calories": "160"
+          },
+          {
+            "name": "Unsweetened Iced Tea Any size",
+            "price": "$1.69",
+            "calories": "0"
+          },
+          {
+            "name": "Hot Tea Any size",
+            "price": "$1.69",
+            "calories": "0"
+          }
+        ]
+      },
+      {
+        "sub": "Juice & Milk",
+        "rows": [
+          {
+            "name": "Minute Maid Premium Orange Juice Small",
+            "price": "$3.49",
+            "calories": "150"
+          },
+          {
+            "name": "Minute Maid Premium Orange Juice Medium",
+            "price": "$3.79",
+            "calories": "190"
+          },
+          {
+            "name": "Honest Kids Appley Ever After (juice box)",
+            "price": "$1.29",
+            "calories": "35"
+          },
+          {
+            "name": "1% Low Fat Milk Jug",
+            "price": "$1.99",
+            "calories": "100"
+          },
+          {
+            "name": "Reduced Sugar Low Fat Chocolate Milk Jug",
+            "price": "$1.99",
+            "calories": "130"
+          }
+        ]
+      },
+      {
+        "sub": "Water",
+        "rows": [
+          {
+            "name": "DASANI Water (bottle)",
+            "price": "$2.19",
+            "calories": "0"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "sauce",
+    "title": "Sauces & Condiments",
+    "icon": "",
+    "subs": [
+      {
+        "sub": "Dipping Sauces (served with McNuggets / Strips)",
+        "rows": [
+          {
+            "name": "Creamy Chili McCrispy Strip Dip",
+            "price": "Incl.",
+            "calories": "~60"
+          },
+          {
+            "name": "Tangy Barbecue Sauce",
+            "price": "$0.29",
+            "calories": "45"
+          },
+          {
+            "name": "Spicy Buffalo Sauce",
+            "price": "$0.29",
+            "calories": "25"
+          },
+          {
+            "name": "Honey Mustard Sauce",
+            "price": "$0.29",
+            "calories": "60"
+          },
+          {
+            "name": "Creamy Ranch Sauce",
+            "price": "$0.29",
+            "calories": "110"
+          },
+          {
+            "name": "Sweet 'N Sour Sauce",
+            "price": "$0.29",
+            "calories": "50"
+          },
+          {
+            "name": "Hunter Sauce (KPop Demon Hunters LTD)",
+            "price": "Incl.",
+            "calories": "~40",
+            "tags": [
+              "ltd"
+            ]
+          },
+          {
+            "name": "Demon Sauce (KPop Demon Hunters LTD)",
+            "price": "Incl.",
+            "calories": "~55",
+            "tags": [
+              "ltd"
+            ]
+          }
+        ]
+      },
+      {
+        "sub": "Condiment Packets",
+        "rows": [
+          {
+            "name": "Ketchup Packet",
+            "price": "Free",
+            "calories": "10"
+          },
+          {
+            "name": "Mayonnaise Packet",
+            "price": "Free",
+            "calories": "90"
+          },
+          {
+            "name": "Mustard Packet",
+            "price": "Free",
+            "calories": "5"
+          },
+          {
+            "name": "Honey",
+            "price": "Free",
+            "calories": "60"
+          }
+        ]
+      }
+    ]
+  }
+]

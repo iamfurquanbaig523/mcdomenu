@@ -74,11 +74,11 @@ function kadence_mcprices_get_dynamic_meta_title() {
 	$current_year = kadence_mcprices_get_current_site_year();
 
 	if ( is_front_page() && ! is_home() ) {
-		return "McDonald's Menu Prices UK {$current_year} | Full Price List & Calories";
+		return "McDonald's Menu Prices USA {$current_year} | Full Price List & Calories";
 	}
 
 	if ( is_singular( 'post' ) ) {
-		return single_post_title( '', false ) . ' | McPrices UK';
+		return single_post_title( '', false ) . " | McDonald's Menu Prices USA";
 	}
 
 	if ( is_category() || is_tag() || is_tax() || is_post_type_archive() || is_author() || is_date() ) {
@@ -93,16 +93,16 @@ function kadence_mcprices_get_dynamic_meta_title() {
 		}
 
 		if ( '' !== $archive_label ) {
-			return $archive_label . ' Prices UK ' . $current_year . ' | McPrices UK';
+			return $archive_label . ' Prices USA ' . $current_year . " | McDonald's Menu Prices USA";
 		}
 	}
 
 	if ( is_404() ) {
-		return 'Page Not Found | McPrices UK';
+		return "Page Not Found | McDonald's Menu Prices USA";
 	}
 
 	if ( is_page() ) {
-		return single_post_title( '', false ) . ' | McPrices UK';
+		return single_post_title( '', false ) . " | McDonald's Menu Prices USA";
 	}
 
 	return '';
@@ -118,7 +118,7 @@ function kadence_mcprices_get_dynamic_meta_description() {
 	$current_year = kadence_mcprices_get_current_site_year();
 
 	if ( is_front_page() && ! is_home() ) {
-		return "Complete McDonald's UK menu prices updated {$current_date}. Find prices for every burger, breakfast, McCafé, McFlurry, and Saver Menu item with calorie counts.";
+		return "Complete McDonald's USA menu prices updated {$current_date}. Find prices for burgers, breakfast, McCafe, drinks, McValue deals, McNuggets, Happy Meals, desserts, and combo meals in dollars.";
 	}
 
 	if ( is_singular( 'post' ) ) {
@@ -132,7 +132,7 @@ function kadence_mcprices_get_dynamic_meta_description() {
 				return $excerpt;
 			}
 
-			return sprintf( 'Read %s on McPrices UK for McDonald\'s UK menu prices, calories, deals and current food guides.', get_the_title( $post ) );
+			return sprintf( "Read %s on McDonald's Menu Prices USA for current McDonald's USA menu prices, calories, deals, and guides.", get_the_title( $post ) );
 		}
 	}
 
@@ -148,12 +148,12 @@ function kadence_mcprices_get_dynamic_meta_description() {
 		}
 
 		if ( '' !== $archive_label ) {
-			return sprintf( 'Browse %s prices, deals, calories and McDonald\'s UK menu updates for %s on McPrices UK.', $archive_label, $current_year );
+			return sprintf( "Browse %s prices, deals, calories, and McDonald's USA menu updates for %s on McDonald's Menu Prices USA.", $archive_label, $current_year );
 		}
 	}
 
 	if ( is_404() ) {
-		return 'The page you were looking for could not be found. Explore the latest McDonald\'s UK menu prices, calories and guides on McPrices UK.';
+		return "The page you were looking for could not be found. Explore the latest McDonald's USA menu prices, calories, deals, and guides on McDonald's Menu Prices USA.";
 	}
 
 	if ( is_page() ) {
