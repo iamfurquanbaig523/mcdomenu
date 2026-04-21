@@ -14,4 +14,4 @@ Disallow: /*?s=
 Disallow: /feed/
 Allow: /wp-admin/admin-ajax.php
 
-Sitemap: https://macdomenuprices.com/sitemap.xml
+Sitemap: http://localhost/wordpress/sitemap.xml

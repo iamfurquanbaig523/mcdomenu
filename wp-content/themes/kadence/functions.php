@@ -311,17 +311,42 @@ function kadence_mcprices_filter_rank_math_description( $description ) {
 }
 
 /**
- * Provide a homepage Open Graph image for Rank Math when none is set.
+ * Return the default social image URL for the current request.
+ *
+ * @return string
+ */
+function kadence_mcprices_get_default_social_image_url() {
+	$post_id = 0;
+
+	if ( is_singular() ) {
+		$post_id = get_queried_object_id();
+	} elseif ( is_home() ) {
+		$post_id = (int) get_option( 'page_for_posts' );
+	}
+
+	if ( $post_id ) {
+		$featured_image = get_the_post_thumbnail_url( $post_id, 'full' );
+
+		if ( $featured_image ) {
+			return esc_url_raw( $featured_image );
+		}
+	}
+
+	return esc_url_raw( get_template_directory_uri() . '/assets/images/mcprices/official/items/big-mac.jpg' );
+}
+
+/**
+ * Provide a default Open Graph image for Rank Math when none is set.
  *
  * @param string $image Open Graph image URL.
  * @return string
  */
 function kadence_mcprices_filter_rank_math_facebook_image( $image ) {
-	if ( ! is_front_page() || ! empty( $image ) ) {
+	if ( ! empty( $image ) ) {
 		return $image;
 	}
 
-	return esc_url_raw( get_template_directory_uri() . '/assets/images/mcprices/official/items/big-mac.jpg' );
+	return kadence_mcprices_get_default_social_image_url();
 }
 
 /**

@@ -50,7 +50,7 @@ class McPrices_Integration {
 	/**
 	 * Current Rank Math seed version.
 	 */
-	const RANK_MATH_SEED_VERSION = '2.0.0';
+	const RANK_MATH_SEED_VERSION = '2.0.1';
 
 	/**
 	 * Option used to track portable DB-backed setup seeding.
@@ -270,6 +270,7 @@ class McPrices_Integration {
 		$current_date = $this->get_current_site_date();
 
 		return array(
+			'title_separator'      => '|',
 			'website_name'          => "McDonald's Menu Prices USA",
 			'knowledgegraph_name'   => "McDonald's Menu Prices USA",
 			'knowledgegraph_type'   => 'person',
@@ -3110,11 +3111,29 @@ class McPrices_Integration {
 	protected function maybe_seed_blog_page() {
 		$front_page_id = (int) get_option( 'page_on_front' );
 		$posts_page_id = (int) get_option( 'page_for_posts' );
+		$blog_page     = null;
+
 		if ( $posts_page_id && $posts_page_id !== $front_page_id ) {
-			return;
+			$existing_posts_page = get_post( $posts_page_id );
+
+			if ( ! $existing_posts_page instanceof \WP_Post || 'page' !== $existing_posts_page->post_type ) {
+				return;
+			}
+
+			$existing_slug  = sanitize_title( $existing_posts_page->post_name );
+			$existing_title = trim( wp_strip_all_tags( $existing_posts_page->post_title ) );
+
+			if ( ! in_array( $existing_slug, array( 'blog', 'blogs' ), true ) && ! in_array( $existing_title, array( 'Blog', 'Blogs' ), true ) ) {
+				return;
+			}
+
+			$blog_page = $existing_posts_page;
 		}
 
-		$blog_page = get_page_by_path( 'blog' );
+		if ( ! $blog_page instanceof \WP_Post ) {
+			$blog_page = get_page_by_path( 'blog' );
+		}
+
 		if ( ! $blog_page instanceof \WP_Post ) {
 			$blog_page = get_page_by_path( 'blogs' );
 		}
@@ -3122,7 +3141,7 @@ class McPrices_Integration {
 		if ( ! $blog_page instanceof \WP_Post ) {
 			$blog_page_id = wp_insert_post(
 				array(
-					'post_title'  => 'Blogs',
+					'post_title'  => 'Blog',
 					'post_name'   => 'blog',
 					'post_type'   => 'page',
 					'post_status' => 'publish',
@@ -3138,6 +3157,22 @@ class McPrices_Integration {
 		}
 
 		if ( $blog_page instanceof \WP_Post ) {
+			$blog_page_update = array(
+				'ID' => (int) $blog_page->ID,
+			);
+
+			if ( 'Blog' !== $blog_page->post_title ) {
+				$blog_page_update['post_title'] = 'Blog';
+			}
+
+			if ( 'blog' !== $blog_page->post_name ) {
+				$blog_page_update['post_name'] = 'blog';
+			}
+
+			if ( count( $blog_page_update ) > 1 ) {
+				wp_update_post( $blog_page_update );
+			}
+
 			update_option( 'page_for_posts', (int) $blog_page->ID );
 		}
 	}
