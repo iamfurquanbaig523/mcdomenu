@@ -11,6 +11,40 @@ $page_url = static function ( $path ) {
 	return home_url( '/' . trim( (string) $path, '/' ) . '/' );
 };
 
+$mcprices_integration = class_exists( '\Kadence\McPrices_Integration' ) ? \Kadence\McPrices_Integration::get_instance() : null;
+
+$get_category_page_url = static function ( $category_id ) use ( $mcprices_integration ) {
+	if ( $mcprices_integration ) {
+		return $mcprices_integration->get_menu_category_page_url( $category_id );
+	}
+
+	return '#' . ltrim( (string) $category_id, '#' );
+};
+
+$get_item_page_url = static function ( $category_id, $item_identifier ) use ( $mcprices_integration, $get_category_page_url ) {
+	if ( $mcprices_integration ) {
+		return $mcprices_integration->get_menu_item_page_url( $category_id, $item_identifier );
+	}
+
+	return $get_category_page_url( $category_id );
+};
+
+$get_category_media_url = static function ( $category_id ) use ( $mcprices_integration ) {
+	if ( $mcprices_integration ) {
+		return $mcprices_integration->get_menu_category_media_asset_url( $category_id );
+	}
+
+	return '';
+};
+
+$get_item_media_url = static function ( $item_name ) use ( $mcprices_integration ) {
+	if ( $mcprices_integration ) {
+		return $mcprices_integration->get_menu_item_media_asset_url( $item_name );
+	}
+
+	return '';
+};
+
 $menu_source_path = get_theme_file_path( 'assets/data/mcprices-usa-menu.json' );
 $menu_source_json = file_exists( $menu_source_path ) ? file_get_contents( $menu_source_path ) : false;
 $menu_source      = is_string( $menu_source_json ) ? json_decode( $menu_source_json, true ) : array();
@@ -221,61 +255,66 @@ $big_arch_meal_row     = $find_menu_row( 'bigarch', 'The BIG ARCHTM Meal' );
 
 $featured_items = array(
 	array(
-		'name'  => 'Big Mac',
-		'cal'   => $format_calories( $big_mac_row['calories'] ?? '' ) . ' - Burgers',
-		'price' => $big_mac_row['price'] ?? '$5.99',
-		'emoji' => '&#127828;',
+		'name'     => 'Big Mac',
+		'cal'      => $format_calories( $big_mac_row['calories'] ?? '' ) . ' - Burgers',
+		'price'    => $big_mac_row['price'] ?? '$5.99',
+		'emoji'    => '&#127828;',
+		'category' => 'burgers',
 	),
 	array(
-		'name'  => 'Sausage, Egg & Cheese McGriddles',
-		'cal'   => $format_calories( $mcgriddles_row['calories'] ?? '' ) . ' - Breakfast',
-		'price' => $mcgriddles_row['price'] ?? '$5.99',
-		'emoji' => '&#129374;',
+		'name'     => 'Sausage, Egg & Cheese McGriddles',
+		'cal'      => $format_calories( $mcgriddles_row['calories'] ?? '' ) . ' - Breakfast',
+		'price'    => $mcgriddles_row['price'] ?? '$5.99',
+		'emoji'    => '&#129374;',
+		'category' => 'breakfast',
 	),
 	array(
-		'name'  => 'McCrispy',
-		'cal'   => $format_calories( $mccrispy_row['calories'] ?? '' ) . ' - Chicken',
-		'price' => $mccrispy_row['price'] ?? '$4.99',
-		'emoji' => '&#127831;',
+		'name'     => 'McCrispy',
+		'cal'      => $format_calories( $mccrispy_row['calories'] ?? '' ) . ' - Chicken',
+		'price'    => $mccrispy_row['price'] ?? '$4.99',
+		'emoji'    => '&#127831;',
+		'category' => 'chickenfish',
 	),
 	array(
-		'name'  => 'OREO McFlurry',
-		'cal'   => $format_calories( $oreo_mcflurry_row['calories'] ?? '' ) . ' - Desserts',
-		'price' => $oreo_mcflurry_row['price'] ?? '$5.59',
-		'emoji' => '&#127846;',
+		'name'     => 'OREO McFlurry',
+		'cal'      => $format_calories( $oreo_mcflurry_row['calories'] ?? '' ) . ' - Desserts',
+		'price'    => $oreo_mcflurry_row['price'] ?? '$5.59',
+		'emoji'    => '&#127846;',
+		'category' => 'sweets',
 	),
 	array(
-		'name'  => 'World Famous Fries - Large',
-		'cal'   => $format_calories( $large_fries_row['calories'] ?? '' ) . ' - Sides',
-		'price' => $large_fries_row['price'] ?? '$4.99',
-		'emoji' => '&#127839;',
+		'name'     => 'World Famous Fries - Large',
+		'cal'      => $format_calories( $large_fries_row['calories'] ?? '' ) . ' - Sides',
+		'price'    => $large_fries_row['price'] ?? '$4.99',
+		'emoji'    => '&#127839;',
+		'category' => 'sides',
 	),
 );
 
 $category_cards = array(
-	array( 'id' => 'whats-new', 'class' => 'red', 'emoji' => '&#127381;', 'name' => "What's New", 'count' => $whats_new_total . ' limited-time items' ),
-	array( 'id' => 'meals', 'class' => '', 'emoji' => '&#127859;', 'name' => 'Extra Value Meals', 'count' => $count_menu_rows( $evm_section ) . ' meals' ),
-	array( 'id' => 'mcvalue', 'class' => '', 'emoji' => '&#128184;', 'name' => 'McValue', 'count' => $count_menu_rows( $mcvalue_section ) . ' value picks' ),
-	array( 'id' => 'breakfast', 'class' => '', 'emoji' => '&#129374;', 'name' => 'Breakfast', 'count' => $count_menu_rows( $breakfast_section ) . ' breakfast items' ),
-	array( 'id' => 'burgers', 'class' => '', 'emoji' => '&#127828;', 'name' => 'Burgers', 'count' => $count_menu_rows( $burgers_section ) . ' burgers' ),
-	array( 'id' => 'chickenfish', 'class' => '', 'emoji' => '&#127831;', 'name' => 'Chicken & Fish', 'count' => $count_menu_rows( $chicken_section ) . ' sandwiches' ),
-	array( 'id' => 'nuggets', 'class' => '', 'emoji' => '&#127831;', 'name' => 'McNuggets & Strips', 'count' => $count_menu_rows( $nuggets_section ) . ' chicken items' ),
-	array( 'id' => 'snackwrap', 'class' => '', 'emoji' => '&#127791;', 'name' => 'Snack Wrap', 'count' => $count_menu_rows( $wrap_section ) . ' wraps' ),
-	array( 'id' => 'sides', 'class' => '', 'emoji' => '&#127839;', 'name' => 'Fries & Sides', 'count' => $count_menu_rows( $sides_section ) . ' side items' ),
-	array( 'id' => 'happymeal', 'class' => '', 'emoji' => '&#127881;', 'name' => 'Happy Meal', 'count' => $count_menu_rows( $happy_section ) . ' kids meals' ),
-	array( 'id' => 'sweets', 'class' => '', 'emoji' => '&#127846;', 'name' => 'Sweets & Treats', 'count' => $count_menu_rows( $sweets_section ) . ' treats' ),
-	array( 'id' => 'mccafe', 'class' => '', 'emoji' => '&#9749;', 'name' => 'McCafe Coffees', 'count' => $count_menu_rows( $coffee_section ) . ' coffee drinks' ),
-	array( 'id' => 'beverages', 'class' => '', 'emoji' => '&#127865;', 'name' => 'Beverages', 'count' => $count_menu_rows( $beverages_section ) . ' drinks' ),
-	array( 'id' => 'sauces', 'class' => '', 'emoji' => '&#129514;', 'name' => 'Sauces & Condiments', 'count' => $count_menu_rows( $sauces_section ) . ' sauce items' ),
-	array( 'id' => 'deals', 'class' => 'red', 'emoji' => '&#127991;&#65039;', 'name' => 'Deals', 'count' => 'Current McValue offers' ),
+	array( 'id' => 'whats-new', 'class' => 'red', 'emoji' => '&#127381;', 'name' => "What's New", 'count' => $whats_new_total . ' limited-time items', 'url' => $get_category_page_url( 'whats-new' ), 'image' => $get_category_media_url( 'whats-new' ) ),
+	array( 'id' => 'meals', 'class' => '', 'emoji' => '&#127859;', 'name' => 'Extra Value Meals', 'count' => $count_menu_rows( $evm_section ) . ' meals', 'url' => $get_category_page_url( 'meals' ), 'image' => $get_category_media_url( 'meals' ) ),
+	array( 'id' => 'mcvalue', 'class' => '', 'emoji' => '&#128184;', 'name' => 'McValue', 'count' => $count_menu_rows( $mcvalue_section ) . ' value picks', 'url' => $get_category_page_url( 'mcvalue' ), 'image' => $get_category_media_url( 'mcvalue' ) ),
+	array( 'id' => 'breakfast', 'class' => '', 'emoji' => '&#129374;', 'name' => 'Breakfast', 'count' => $count_menu_rows( $breakfast_section ) . ' breakfast items', 'url' => $get_category_page_url( 'breakfast' ), 'image' => $get_category_media_url( 'breakfast' ) ),
+	array( 'id' => 'burgers', 'class' => '', 'emoji' => '&#127828;', 'name' => 'Burgers', 'count' => $count_menu_rows( $burgers_section ) . ' burgers', 'url' => $get_category_page_url( 'burgers' ), 'image' => $get_category_media_url( 'burgers' ) ),
+	array( 'id' => 'chickenfish', 'class' => '', 'emoji' => '&#127831;', 'name' => 'Chicken & Fish', 'count' => $count_menu_rows( $chicken_section ) . ' sandwiches', 'url' => $get_category_page_url( 'chickenfish' ), 'image' => $get_category_media_url( 'chickenfish' ) ),
+	array( 'id' => 'nuggets', 'class' => '', 'emoji' => '&#127831;', 'name' => 'McNuggets & Strips', 'count' => $count_menu_rows( $nuggets_section ) . ' chicken items', 'url' => $get_category_page_url( 'nuggets' ), 'image' => $get_category_media_url( 'nuggets' ) ),
+	array( 'id' => 'snackwrap', 'class' => '', 'emoji' => '&#127791;', 'name' => 'Snack Wrap', 'count' => $count_menu_rows( $wrap_section ) . ' wraps', 'url' => $get_category_page_url( 'snackwrap' ), 'image' => $get_category_media_url( 'snackwrap' ) ),
+	array( 'id' => 'sides', 'class' => '', 'emoji' => '&#127839;', 'name' => 'Fries & Sides', 'count' => $count_menu_rows( $sides_section ) . ' side items', 'url' => $get_category_page_url( 'sides' ), 'image' => $get_category_media_url( 'sides' ) ),
+	array( 'id' => 'happymeal', 'class' => '', 'emoji' => '&#127881;', 'name' => 'Happy Meal', 'count' => $count_menu_rows( $happy_section ) . ' kids meals', 'url' => $get_category_page_url( 'happymeal' ), 'image' => $get_category_media_url( 'happymeal' ) ),
+	array( 'id' => 'sweets', 'class' => '', 'emoji' => '&#127846;', 'name' => 'Sweets & Treats', 'count' => $count_menu_rows( $sweets_section ) . ' treats', 'url' => $get_category_page_url( 'sweets' ), 'image' => $get_category_media_url( 'sweets' ) ),
+	array( 'id' => 'mccafe', 'class' => '', 'emoji' => '&#9749;', 'name' => 'McCafe Coffees', 'count' => $count_menu_rows( $coffee_section ) . ' coffee drinks', 'url' => $get_category_page_url( 'mccafe' ), 'image' => $get_category_media_url( 'mccafe' ) ),
+	array( 'id' => 'beverages', 'class' => '', 'emoji' => '&#127865;', 'name' => 'Beverages', 'count' => $count_menu_rows( $beverages_section ) . ' drinks', 'url' => $get_category_page_url( 'beverages' ), 'image' => $get_category_media_url( 'beverages' ) ),
+	array( 'id' => 'sauces', 'class' => '', 'emoji' => '&#129514;', 'name' => 'Sauces & Condiments', 'count' => $count_menu_rows( $sauces_section ) . ' sauce items', 'url' => $get_category_page_url( 'sauces' ), 'image' => $get_category_media_url( 'sauces' ) ),
+	array( 'id' => 'deals', 'class' => 'red', 'emoji' => '&#127991;&#65039;', 'name' => 'Deals', 'count' => 'Current McValue offers', 'url' => $get_category_page_url( 'deals' ), 'image' => $get_category_media_url( 'deals' ) ),
 );
 
 $whats_new_items = array(
-	array( 'name' => 'The HUNTRIX Meal', 'cal' => $format_calories( $huntrix_row['calories'] ?? '' ), 'price' => $huntrix_row['price'] ?? '~$11.99', 'status' => 'New', 'emoji' => '&#127909;' ),
-	array( 'name' => 'The Saja Boys Breakfast Meal', 'cal' => $format_calories( $saja_boys_row['calories'] ?? '' ), 'price' => $saja_boys_row['price'] ?? '~$10.49', 'status' => 'Limited Time', 'emoji' => '&#127860;' ),
-	array( 'name' => 'Ramyeon McShaker Fries', 'cal' => $format_calories( $ramyeon_fries_row['calories'] ?? '' ), 'price' => $ramyeon_fries_row['price'] ?? '~$4.49', 'status' => 'Limited Time', 'emoji' => '&#127839;' ),
-	array( 'name' => 'The BIG ARCH', 'cal' => $format_calories( $big_arch_row['calories'] ?? '' ), 'price' => $big_arch_row['price'] ?? '~$8.99', 'status' => 'Limited Time', 'emoji' => '&#127828;' ),
-	array( 'name' => 'The BIG ARCH Meal', 'cal' => $format_calories( $big_arch_meal_row['calories'] ?? '' ), 'price' => $big_arch_meal_row['price'] ?? '~$13.49', 'status' => 'Limited Time', 'emoji' => '&#127828;' ),
+	array( 'name' => 'The HUNTRIX Meal', 'cal' => $format_calories( $huntrix_row['calories'] ?? '' ), 'price' => $huntrix_row['price'] ?? '~$11.99', 'status' => 'New', 'emoji' => '&#127909;', 'category' => 'whats-new' ),
+	array( 'name' => 'The Saja Boys Breakfast Meal', 'cal' => $format_calories( $saja_boys_row['calories'] ?? '' ), 'price' => $saja_boys_row['price'] ?? '~$10.49', 'status' => 'Limited Time', 'emoji' => '&#127860;', 'category' => 'whats-new' ),
+	array( 'name' => 'Ramyeon McShaker Fries', 'cal' => $format_calories( $ramyeon_fries_row['calories'] ?? '' ), 'price' => $ramyeon_fries_row['price'] ?? '~$4.49', 'status' => 'Limited Time', 'emoji' => '&#127839;', 'category' => 'whats-new' ),
+	array( 'name' => 'The BIG ARCH', 'cal' => $format_calories( $big_arch_row['calories'] ?? '' ), 'price' => $big_arch_row['price'] ?? '~$8.99', 'status' => 'Limited Time', 'emoji' => '&#127828;', 'category' => 'whats-new' ),
+	array( 'name' => 'The BIG ARCH Meal', 'cal' => $format_calories( $big_arch_meal_row['calories'] ?? '' ), 'price' => $big_arch_meal_row['price'] ?? '~$13.49', 'status' => 'Limited Time', 'emoji' => '&#127828;', 'category' => 'whats-new' ),
 );
 
 $menu_cards = array(
@@ -285,8 +324,9 @@ $menu_cards = array(
 		'price'       => $big_mac_row['price'] ?? '$5.99',
 		'calories'    => $format_calories( $big_mac_row['calories'] ?? '' ),
 		'chip'        => 'Burger',
-		'detail_one'  => 'Core burger pick',
+		'detail_one'  => 'Three-bun burger with signature sauce',
 		'detail_two'  => $format_calories( $big_mac_row['calories'] ?? '' ),
+		'category'    => 'burgers',
 	),
 	array(
 		'badge'       => '&#11088; breakfast favorite',
@@ -294,8 +334,9 @@ $menu_cards = array(
 		'price'       => $egg_mcmuffin_row['price'] ?? '$4.89',
 		'calories'    => $format_calories( $egg_mcmuffin_row['calories'] ?? '' ),
 		'chip'        => 'Breakfast',
-		'detail_one'  => 'Morning staple',
+		'detail_one'  => '300-calorie breakfast sandwich staple',
 		'detail_two'  => $format_calories( $egg_mcmuffin_row['calories'] ?? '' ),
+		'category'    => 'breakfast',
 	),
 	array(
 		'badge'       => '&#9889; value pick',
@@ -303,8 +344,9 @@ $menu_cards = array(
 		'price'       => $nuggets_six_row['price'] ?? '$4.39',
 		'calories'    => $format_calories( $nuggets_six_row['calories'] ?? '' ),
 		'chip'        => 'Popular',
-		'detail_one'  => 'Snack-size favorite',
+		'detail_one'  => 'McValue-friendly nugget order',
 		'detail_two'  => $format_calories( $nuggets_six_row['calories'] ?? '' ),
+		'category'    => 'nuggets',
 	),
 );
 
@@ -422,6 +464,7 @@ $deal_cards = array(
 		'title' => 'McChicken Meal Deal',
 		'price' => '$5.00',
 		'copy'  => 'McChicken, 4 pc McNuggets, small fries, and a small drink from the attached McValue lineup.',
+		'url'   => $get_item_page_url( 'deals', 'McChicken Meal Deal' ),
 	),
 	array(
 		'class' => 'deal-dark',
@@ -429,6 +472,7 @@ $deal_cards = array(
 		'title' => 'McDouble Meal Deal',
 		'price' => '$5.00',
 		'copy'  => 'McDouble, 4 pc McNuggets, small fries, and a small drink from the same current McValue offer set.',
+		'url'   => $get_item_page_url( 'deals', 'McDouble Meal Deal' ),
 	),
 	array(
 		'class' => 'deal-dark',
@@ -436,6 +480,7 @@ $deal_cards = array(
 		'title' => 'Daily Double Meal Deal',
 		'price' => '~$6.00',
 		'copy'  => 'The Daily Double Meal Deal appears in the attached McValue data as the higher-entry limited-time meal deal option.',
+		'url'   => $get_item_page_url( 'deals', 'Daily Double Meal Deal' ),
 	),
 	array(
 		'class' => 'deal-yellow',
@@ -443,6 +488,7 @@ $deal_cards = array(
 		'title' => 'Buy 1, Add 1 for $1',
 		'price' => '$2.99 base items',
 		'copy'  => 'The breakfast offer applies to Sausage Biscuit, Sausage McMuffin, Sausage Burrito, and Hash Browns.',
+		'url'   => $get_item_page_url( 'deals', 'Breakfast Buy 1 Add 1 for $1' ),
 	),
 	array(
 		'class' => 'deal-dark',
@@ -450,6 +496,7 @@ $deal_cards = array(
 		'title' => 'Buy 1, Add 1 for $1',
 		'price' => '$2.89-$4.39 items',
 		'copy'  => 'Current lunch and dinner McValue add-on picks include Double Cheeseburger, McChicken, 6 pc McNuggets, and Small World Famous Fries.',
+		'url'   => $get_item_page_url( 'deals', 'Lunch Buy 1 Add 1 for $1' ),
 	),
 	array(
 		'class' => 'deal-dark',
@@ -457,23 +504,24 @@ $deal_cards = array(
 		'title' => 'McValue Mini McFlurry Picks',
 		'price' => '$3.19',
 		'copy'  => 'Mini M&M\'s and OREO McFlurry cups appear in the attached McValue Eats section as low-entry dessert options.',
+		'url'   => $get_item_page_url( 'deals', 'McValue Mini McFlurry Picks' ),
 	),
 );
 
 $guide_cards = array(
-	array( 'href' => '#whats-new', 'title' => 'Limited-Time Menu', 'text' => 'Current HUNTRIX, Saja Boys, Ramyeon fries, and BIG ARCH items from the latest USA menu file.' ),
-	array( 'href' => '#meals', 'title' => 'Extra Value Meals', 'text' => 'Breakfast and lunch combo meal pricing, including burger meals, McCrispy meals, wrap meals, and nugget meals.' ),
-	array( 'href' => '#mcvalue', 'title' => 'McValue Deals', 'text' => 'The attached McValue data, including $5 meal deals, BOGO offers, and low-entry snack and dessert picks.' ),
-	array( 'href' => '#breakfast', 'title' => 'Breakfast Menu', 'text' => 'Biscuits, McMuffins, McGriddles, bagels, platters, oatmeal, and breakfast sides in one section.' ),
-	array( 'href' => '#burgers', 'title' => 'Burger Prices USA', 'text' => 'Big Mac, Quarter Pounder, McDouble, Daily Double, cheeseburgers, and hamburgers from the attached USA burger data.' ),
-	array( 'href' => '#chickenfish', 'title' => 'Chicken & Fish', 'text' => 'McCrispy, spicy builds, Filet-O-Fish, and McChicken prices from the latest USA sandwich section.' ),
-	array( 'href' => '#nuggets', 'title' => 'McNuggets & Strips', 'text' => '4 pc through 40 pc McNuggets plus McCrispy Strips from the attached chicken data.' ),
-	array( 'href' => '#snackwrap', 'title' => 'Snack Wrap Prices', 'text' => 'Both current Snack Wrap flavors and their latest listed prices.' ),
-	array( 'href' => '#happymeal', 'title' => 'Happy Meal Prices', 'text' => 'Current hamburger and McNuggets Happy Meal pricing from the attached USA source.' ),
-	array( 'href' => '#sweets', 'title' => 'McFlurry & Treats', 'text' => 'Regular McFlurries, mini McFlurries, shakes, sundaes, cones, pies, and cookies in one section.' ),
-	array( 'href' => '#mccafe', 'title' => 'McCafe Coffees', 'text' => 'Hot coffee, iced coffee, espresso drinks, frappes, and hot chocolate with the latest listed prices.' ),
-	array( 'href' => '#beverages', 'title' => 'Drinks & Smoothies', 'text' => 'Soft drinks, frozen drinks, tea, lemonade, juice, milk, smoothies, and water from the USA beverage file.' ),
-	array( 'href' => '#sauces', 'title' => 'Sauces & Condiments', 'text' => 'Included sauces, paid dips, and packet condiments with current prices and calories.' ),
+	array( 'href' => $get_category_page_url( 'whats-new' ), 'title' => 'Limited-Time Menu', 'text' => 'Current HUNTRIX, Saja Boys, Ramyeon fries, and BIG ARCH items from the latest USA menu file.' ),
+	array( 'href' => $get_category_page_url( 'meals' ), 'title' => 'Extra Value Meals', 'text' => 'Breakfast and lunch combo meal pricing, including burger meals, McCrispy meals, wrap meals, and nugget meals.' ),
+	array( 'href' => $get_category_page_url( 'mcvalue' ), 'title' => 'McValue Deals', 'text' => 'The attached McValue data, including $5 meal deals, BOGO offers, and low-entry snack and dessert picks.' ),
+	array( 'href' => $get_category_page_url( 'breakfast' ), 'title' => 'Breakfast Menu', 'text' => 'Biscuits, McMuffins, McGriddles, bagels, platters, oatmeal, and breakfast sides in one section.' ),
+	array( 'href' => $get_category_page_url( 'burgers' ), 'title' => 'Burger Prices USA', 'text' => 'Big Mac, Quarter Pounder, McDouble, Daily Double, cheeseburgers, and hamburgers from the attached USA burger data.' ),
+	array( 'href' => $get_category_page_url( 'chickenfish' ), 'title' => 'Chicken & Fish', 'text' => 'McCrispy, spicy builds, Filet-O-Fish, and McChicken prices from the latest USA sandwich section.' ),
+	array( 'href' => $get_category_page_url( 'nuggets' ), 'title' => 'McNuggets & Strips', 'text' => '4 pc through 40 pc McNuggets plus McCrispy Strips from the attached chicken data.' ),
+	array( 'href' => $get_category_page_url( 'snackwrap' ), 'title' => 'Snack Wrap Prices', 'text' => 'Both current Snack Wrap flavors and their latest listed prices.' ),
+	array( 'href' => $get_category_page_url( 'happymeal' ), 'title' => 'Happy Meal Prices', 'text' => 'Current hamburger and McNuggets Happy Meal pricing from the attached USA source.' ),
+	array( 'href' => $get_category_page_url( 'sweets' ), 'title' => 'McFlurry & Treats', 'text' => 'Regular McFlurries, mini McFlurries, shakes, sundaes, cones, pies, and cookies in one section.' ),
+	array( 'href' => $get_category_page_url( 'mccafe' ), 'title' => 'McCafe Coffees', 'text' => 'Hot coffee, iced coffee, espresso drinks, frappes, and hot chocolate with the latest listed prices.' ),
+	array( 'href' => $get_category_page_url( 'beverages' ), 'title' => 'Drinks & Smoothies', 'text' => 'Soft drinks, frozen drinks, tea, lemonade, juice, milk, smoothies, and water from the USA beverage file.' ),
+	array( 'href' => $get_category_page_url( 'sauces' ), 'title' => 'Sauces & Condiments', 'text' => 'Included sauces, paid dips, and packet condiments with current prices and calories.' ),
 );
 
 $faq_items = array(
@@ -521,11 +569,22 @@ $timeline_items = array(
 
 $footer_disclaimer = '&#9888;&#65039; <strong>Disclaimer:</strong> This is an independent, unofficial website. McDonald&#8217;s Menu Prices USA is not affiliated with, endorsed by, or connected to McDonald&#8217;s Corporation in any way. All prices are sourced from publicly available menus and may vary by location, franchise, taxes, app offer, and date.';
 
-$render_rows = static function ( array $rows ) {
+$render_rows = static function ( array $rows, $category_id ) use ( $get_item_page_url, $get_item_media_url ) {
 	foreach ( $rows as $row ) :
+		$item_url   = $get_item_page_url( $category_id, $row['name'] ?? '' );
+		$item_media = $get_item_media_url( $row['name'] ?? '' );
 		?>
 		<tr>
-			<td><div class="td-name"><?php echo esc_html( $row['name'] ); ?></div></td>
+			<td>
+				<div class="td-name">
+					<a class="mcprices-inline-media" href="<?php echo esc_url( $item_url ); ?>">
+						<?php if ( $item_media ) : ?>
+							<img class="mcprices-inline-media__thumb" src="<?php echo esc_url( $item_media ); ?>" alt="<?php echo esc_attr( 'McDonald\'s ' . $row['name'] . ' price USA 2026' ); ?>" loading="lazy" decoding="async">
+						<?php endif; ?>
+						<span class="mcprices-inline-media__label"><?php echo esc_html( $row['name'] ); ?></span>
+					</a>
+				</div>
+			</td>
 			<td class="td-price"><?php echo esc_html( $row['price'] ); ?></td>
 			<td class="td-cal"><?php echo esc_html( $row['calories'] ); ?></td>
 			<td><?php echo esc_html( $row['status'] ); ?></td>
@@ -537,7 +596,7 @@ $render_rows = static function ( array $rows ) {
 ob_start();
 ?>
 <!-- wp:group {"className":"mcprices-page mcprices-managed-homepage","layout":{"type":"default"}} -->
-<div class="wp-block-group mcprices-page mcprices-managed-homepage" data-mcprices-pattern-version="3.1.0">
+<div class="wp-block-group mcprices-page mcprices-managed-homepage" data-mcprices-pattern-version="3.2.1">
 <!-- wp:html -->
 <section class="hero">
 	<div class="hero-bg"></div>
@@ -550,6 +609,7 @@ ob_start();
 				Prices <span class="highlight">USA <?php echo esc_html( $current_year ); ?></span>
 			</h1>
 			<p class="hero-sub">The most complete and up-to-date McDonald's USA price list. Compare current dollar prices, calories, combo meals, McValue savings, breakfast picks, McCafe drinks, sauces, desserts, and limited-time menu items in one place.</p>
+			<p class="hero-sub">Thousands of readers trust this page to compare accurate McDonald&rsquo;s menu prices, calories, and value deals before they order.</p>
 			[mcprices_hero_search]
 			<div class="hero-btns">
 				<a href="#full-menu" class="btn-primary">&#127828; View Full Menu</a>
@@ -584,7 +644,7 @@ ob_start();
 					<div class="featured-item">
 						<div class="item-emoji"><?php echo $item['emoji']; ?></div>
 						<div class="item-info">
-							<div class="item-name"><?php echo esc_html( $item['name'] ); ?></div>
+							<div class="item-name"><a href="<?php echo esc_url( $get_item_page_url( $item['category'], $item['name'] ) ); ?>"><?php echo esc_html( $item['name'] ); ?></a></div>
 							<div class="item-cal"><?php echo esc_html( $item['cal'] ); ?></div>
 						</div>
 						<div class="item-price"><?php echo esc_html( $item['price'] ); ?></div>
@@ -594,13 +654,6 @@ ob_start();
 		</div>
 	</div>
 </section>
-
-<div class="container">
-	<div class="ad-banner">
-		<span class="ad-banner-label">Advertisement</span>
-		728&#215;90 Ad Placement &#8212; Google AdSense / Mediavine
-	</div>
-</div>
 
 <div class="breadcrumbs">
 	<div class="container">
@@ -621,8 +674,14 @@ ob_start();
 		</div>
 		<div class="cat-grid">
 			<?php foreach ( $category_cards as $card ) : ?>
-				<a href="#<?php echo esc_attr( $card['id'] ); ?>" class="cat-card<?php echo $card['class'] ? ' ' . esc_attr( $card['class'] ) : ''; ?>">
-					<span class="cat-emoji"><?php echo $card['emoji']; ?></span>
+				<a href="<?php echo esc_url( $card['url'] ); ?>" class="cat-card<?php echo $card['class'] ? ' ' . esc_attr( $card['class'] ) : ''; ?>" data-category-id="<?php echo esc_attr( $card['id'] ); ?>">
+					<span class="cat-emoji">
+						<?php if ( ! empty( $card['image'] ) ) : ?>
+							<img class="mcprices-media-icon mcprices-media-icon--category" src="<?php echo esc_url( $card['image'] ); ?>" alt="<?php echo esc_attr( 'McDonald\'s ' . $card['name'] . ' menu USA' ); ?>" loading="lazy" decoding="async">
+						<?php else : ?>
+							<?php echo $card['emoji']; ?>
+						<?php endif; ?>
+					</span>
 					<div class="cat-name"><?php echo $card['name']; ?></div>
 					<div class="cat-count"><?php echo esc_html( $card['count'] ); ?></div>
 					<div class="cat-arrow">&rarr;</div>
@@ -640,18 +699,18 @@ ob_start();
 			<p class="section-sub">Current limited-time and featured items showing up across the attached USA menu snapshot.</p>
 		</div>
 		<div class="mcprices-whats-new-intro">
-			<p class="mcprices-whats-new-intro-text">The current US snapshot highlights <strong class="mcprices-whats-new-date">The BIG ARCH</strong>, <strong>The HUNTRIX Meal</strong>, <strong>The Saja Boys Breakfast Meal</strong>, and <strong>Ramyeon McShaker Fries</strong>, all pulled directly from the attached limited-time USA menu data.</p>
+			<p class="mcprices-whats-new-intro-text">The current US snapshot highlights <strong class="mcprices-whats-new-date">The BIG ARCH</strong>, a limited-time burger stacked with two quarter-pound beef patties and special sauce, <strong>The HUNTRIX Meal</strong>, which bundles 10-piece McNuggets with fries and a drink, and <strong>Ramyeon McShaker Fries</strong>, a limited-time seasoned fries variation not found on the standard sides lineup.</p>
 		</div>
 		<div class="new-items-grid">
 			<?php foreach ( $whats_new_items as $item ) : ?>
 				<?php $status_class = false !== stripos( $item['status'], 'new' ) ? 'avail-new' : 'avail-limited'; ?>
-				<div class="new-item-card">
+				<a href="<?php echo esc_url( $get_item_page_url( $item['category'], $item['name'] ) ); ?>" class="new-item-card">
 					<div class="new-item-tag avail-badge <?php echo esc_attr( $status_class ); ?>"><?php echo esc_html( $item['status'] ); ?></div>
 					<div class="new-item-emoji"><?php echo $item['emoji']; ?></div>
 					<div class="new-item-name"><?php echo esc_html( $item['name'] ); ?></div>
 					<div class="new-item-cal"><?php echo esc_html( $item['cal'] ); ?></div>
 					<div class="new-item-price"><?php echo esc_html( $item['price'] ); ?></div>
-				</div>
+				</a>
 			<?php endforeach; ?>
 		</div>
 	</div>
@@ -683,6 +742,9 @@ ob_start();
 							<div class="card-detail-pill"><?php echo esc_html( $card['detail_two'] ); ?></div>
 						</div>
 					</div>
+					<div class="card-footer">
+						<a class="btn-card" href="<?php echo esc_url( $get_item_page_url( $card['category'], $card['title'] ) ); ?>">Read more</a>
+					</div>
 				</div>
 			<?php endforeach; ?>
 		</div>
@@ -695,6 +757,8 @@ ob_start();
 			<div class="section-label">Every category, every price</div>
 			<h2 class="section-title">Complete McDonald's USA Menu <?php echo esc_html( $current_year ); ?></h2>
 			<p class="section-sub">This original McDonald&#8217;s Menu Prices USA build now reflects 212 current item rows across 15 US-focused sections from the attached source file, while keeping the design native to Kadence.</p>
+			<p class="section-sub">From Big Mac, Quarter Pounder, McChicken, and McNuggets prices to Egg McMuffin breakfast items, McCafe coffees, McFlurry desserts, Happy Meal options, fries, sauces, and McValue deals, this homepage keeps the core McDonald's USA menu categories, price points, and calorie references together in one place.</p>
+			<p class="section-sub">If you want McDonald's menu prices USA in dollars, McDonald's breakfast menu prices, McDonald's burger prices, McDonald's Happy Meal prices, McDonald's McCafe prices, McDonald's dessert prices, or the latest McValue menu prices, this page is built to answer those exact searches fast.</p>
 		</div>
 		<div class="size-key">
 			<strong>Format guide:</strong> Small-to-large price ranges are grouped where multiple sizes exist. All prices are shown in US dollars and can vary by location.
@@ -724,7 +788,7 @@ ob_start();
 						</tr>
 					</thead>
 					<tbody>
-						<?php $render_rows( $section['rows'] ); ?>
+						<?php $render_rows( $section['rows'], $section['id'] ); ?>
 					</tbody>
 				</table>
 			</div>
@@ -741,12 +805,12 @@ ob_start();
 		</div>
 		<div class="deals-grid">
 			<?php foreach ( $deal_cards as $card ) : ?>
-				<div class="deal-card <?php echo esc_attr( $card['class'] ); ?>">
+				<a href="<?php echo esc_url( $card['url'] ); ?>" class="deal-card <?php echo esc_attr( $card['class'] ); ?>">
 					<div class="deal-badge-top"><?php echo esc_html( $card['label'] ); ?></div>
 					<div class="deal-title"><?php echo esc_html( $card['title'] ); ?></div>
 					<div class="deal-price"><?php echo esc_html( $card['price'] ); ?></div>
 					<div class="deal-sub"><?php echo esc_html( $card['copy'] ); ?></div>
-				</div>
+				</a>
 			<?php endforeach; ?>
 		</div>
 	</div>
@@ -868,6 +932,9 @@ ob_start();
 			<p>This McDonald&#8217;s Menu Prices USA build keeps the native Kadence parent-theme integration in place while focusing the content entirely on the United States menu ecosystem. The homepage now tracks Extra Value Meals, McValue, breakfast sandwiches, burgers, chicken and fish sandwiches, McNuggets, Snack Wraps, fries and sides, Happy Meals, sweets, McCafe coffees, beverages, and sauces from the attached menu source.</p>
 			<p>US pricing can vary heavily by market. The same item can shift between locations, app offers, delivery channels, and tax settings. That is why the site emphasizes current sample pricing, price ranges, and location variability rather than pretending there is one fixed national menu board.</p>
 			<p>US value positioning is also different. Current savings revolve around McValue, buy-one-add-one offers, app-exclusive coupons, combo-style meal deals, and low-entry dessert add-ons. On this version of the site, those offers are surfaced both inside the main menu section and again in the dedicated deals block so readers can compare individual items with full combo options faster.</p>
+			<p>Most visitors land here looking for fast answers about McDonald's breakfast prices, burger prices, combo meal prices, Happy Meal costs, McCafe drink prices, dessert prices, and the latest McValue offers. Adding those details directly into the homepage helps the page act as a stronger menu hub instead of a thin overview, while still keeping the structure focused on current McDonald's USA menu prices and calories.</p>
+			<p>That means the homepage now targets direct search intent around McDonald's menu with prices, McDonald's full menu prices USA, McDonald's calories, McDonald's breakfast hours, Big Mac price, Quarter Pounder price, Egg McMuffin price, McNuggets price, fries price, McFlurry price, and McDonald's deals. Instead of relying only on tabs and cards, the page states those topics clearly in crawlable text so search engines and AI engines can understand the page as a complete McDonald's USA price guide.</p>
+			<p>It also gives stronger context around the exact commercial topics people compare before ordering: breakfast menu prices, lunch and dinner combo meal prices, McValue meal deal prices, McDelivery pricing differences, app-exclusive McDonald's deals, and location-based price variation across the United States. That extra context improves topical depth for McDonald's USA menu prices without changing the design or moving users away from the main price tables.</p>
 			<p><strong>Important:</strong> This is an independent, unofficial website. Prices may vary by franchise, city, delivery platform, app promotion and date. Always confirm your final local total in the official McDonald&rsquo;s app or on the order screen before buying.</p>
 		</div>
 		<div class="content-sidebar-panel seo-sidebar">

@@ -141,6 +141,28 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
   text-decoration: none;
 }
 
+.mcprices-page .new-item-card,
+.mcprices-page .deal-card,
+.mcprices-page .mcprices-directory-crumbs a,
+.mcprices-page .item-name a,
+.mcprices-page .card-name a,
+.mcprices-page .td-name a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.mcprices-page .new-item-card,
+.mcprices-page .deal-card {
+  display: block;
+}
+
+.mcprices-page .item-name a:hover,
+.mcprices-page .card-name a:hover,
+.mcprices-page .td-name a:hover,
+.mcprices-page .mcprices-directory-crumbs a:hover {
+  color: var(--mc-red);
+}
+
 .mcprices-page .cat-card.red {
   border-color: var(--mc-red);
 }
@@ -1021,6 +1043,142 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
   display: block;
 }
 
+.mcprices-page .mcprices-directory-page .section-header {
+  text-align: left;
+}
+
+.mcprices-page .mcprices-directory-page .section-sub {
+  max-width: 760px;
+  margin-inline: 0;
+}
+
+.mcprices-page .mcprices-directory-crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  color: var(--mc-grey-500);
+  font-size: 13px;
+}
+
+.mcprices-page .mcprices-directory-meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0 0 32px;
+}
+
+.mcprices-page .mcprices-directory-meta-card {
+  padding: 18px 20px;
+  border: 1px solid var(--mc-grey-200);
+  border-radius: 18px;
+  background: var(--mc-off-white);
+}
+
+.mcprices-page .mcprices-directory-meta-card strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--mc-black);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.mcprices-page .mcprices-directory-meta-card span {
+  color: var(--mc-grey-500);
+  font-size: 13px;
+}
+
+.mcprices-page .mcprices-directory-cards .menu-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.mcprices-page .mcprices-directory-cards .card-body {
+  flex: 1;
+}
+
+.mcprices-page .mcprices-directory-copy {
+  margin: 12px 0 0;
+  color: var(--mc-grey-500);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.mcprices-page .mcprices-item-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.mcprices-page .mcprices-item-card .card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.mcprices-page .mcprices-item-card .btn-card {
+  flex: 1 1 220px;
+}
+
+.mcprices-page .mcprices-item-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.mcprices-page .mcprices-item-fact {
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--mc-grey-100);
+}
+
+.mcprices-page .mcprices-item-fact-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--mc-grey-500);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mcprices-page .mcprices-item-fact strong {
+  color: var(--mc-black);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.mcprices-page .mcprices-item-notes-card {
+  height: 100%;
+}
+
+.mcprices-page .mcprices-item-notes-card .sidebar-widget-title {
+  margin-top: 0;
+  margin-bottom: 14px;
+}
+
+.mcprices-page .mcprices-item-notes-card p {
+  margin: 0 0 14px;
+  color: var(--mc-grey-700);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.mcprices-page .mcprices-item-notes-card p:last-child {
+  margin-bottom: 0;
+}
+
+.mcprices-page .mcprices-related-header {
+  margin-top: 56px;
+}
+
 @media (max-width: 1024px) {
   body.mcprices-theme-active {
     padding-bottom: calc(80px + env(safe-area-inset-bottom));
@@ -1363,6 +1521,15 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
   .mcprices-page .hours-tip-box {
     position: static;
   }
+
+  .mcprices-page .mcprices-directory-meta,
+  .mcprices-page .mcprices-item-facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mcprices-page .mcprices-item-layout {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1393,5 +1560,10 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
   .mcprices-page .hours-table thead th,
   .mcprices-page .hours-table tbody td {
     padding: 16px 18px;
+  }
+
+  .mcprices-page .mcprices-directory-meta,
+  .mcprices-page .mcprices-item-facts {
+    grid-template-columns: 1fr;
   }
 }

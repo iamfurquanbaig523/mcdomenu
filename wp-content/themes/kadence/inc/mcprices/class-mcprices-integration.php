@@ -83,6 +83,11 @@ class McPrices_Integration {
 	const FOOTER_WIDGET_SIGNATURE_OPTION = 'mcprices_footer_widget_signature';
 
 	/**
+	 * Option used to track the currently seeded menu directory page signature.
+	 */
+	const MENU_DIRECTORY_SIGNATURE_OPTION = 'mcprices_menu_directory_signature';
+
+	/**
 	 * Singleton instance.
 	 *
 	 * @var McPrices_Integration|null
@@ -641,6 +646,217 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Create or update one managed menu directory page.
+	 *
+	 * @param array $page_args Managed page arguments.
+	 * @return array{id:int,changed:bool}
+	 */
+	protected function upsert_menu_directory_page( array $page_args ) {
+		$defaults = array(
+			'path'        => '',
+			'title'       => '',
+			'slug'        => '',
+			'content'     => '',
+			'excerpt'     => '',
+			'post_parent' => 0,
+			'menu_order'  => 0,
+			'type'        => 'menu-page',
+			'key'         => '',
+		);
+
+		$page_args = wp_parse_args( $page_args, $defaults );
+		$page_path = trim( (string) $page_args['path'], '/' );
+
+		if ( '' === $page_path || '' === trim( (string) $page_args['title'] ) || '' === trim( (string) $page_args['slug'] ) ) {
+			return array(
+				'id'      => 0,
+				'changed' => false,
+			);
+		}
+
+		$page    = get_page_by_path( $page_path, OBJECT, 'page' );
+		$changed = false;
+
+		if ( $page instanceof \WP_Post ) {
+			$needs_update =
+				$page_args['title'] !== (string) $page->post_title ||
+				$page_args['slug'] !== (string) $page->post_name ||
+				'publish' !== (string) $page->post_status ||
+				(int) $page_args['post_parent'] !== (int) $page->post_parent ||
+				(int) $page_args['menu_order'] !== (int) $page->menu_order ||
+				trim( (string) $page_args['content'] ) !== trim( (string) $page->post_content ) ||
+				trim( (string) $page_args['excerpt'] ) !== trim( (string) $page->post_excerpt );
+
+			if ( $needs_update ) {
+				wp_update_post(
+					array(
+						'ID'           => (int) $page->ID,
+						'post_title'   => $page_args['title'],
+						'post_name'    => $page_args['slug'],
+						'post_status'  => 'publish',
+						'post_parent'  => (int) $page_args['post_parent'],
+						'menu_order'   => (int) $page_args['menu_order'],
+						'post_content' => $page_args['content'],
+						'post_excerpt' => $page_args['excerpt'],
+					)
+				);
+				$changed = true;
+				$page    = get_post( (int) $page->ID );
+			}
+		} else {
+			$page_id = wp_insert_post(
+				array(
+					'post_title'   => $page_args['title'],
+					'post_name'    => $page_args['slug'],
+					'post_type'    => 'page',
+					'post_status'  => 'publish',
+					'post_parent'  => (int) $page_args['post_parent'],
+					'menu_order'   => (int) $page_args['menu_order'],
+					'post_content' => $page_args['content'],
+					'post_excerpt' => $page_args['excerpt'],
+				),
+				true
+			);
+
+			if ( is_wp_error( $page_id ) || ! $page_id ) {
+				return array(
+					'id'      => 0,
+					'changed' => false,
+				);
+			}
+
+			$page    = get_post( (int) $page_id );
+			$changed = true;
+		}
+
+		if ( $page instanceof \WP_Post ) {
+			update_post_meta( (int) $page->ID, '_mcprices_managed_page', (string) $page_args['type'] );
+			update_post_meta( (int) $page->ID, '_mcprices_managed_key', (string) $page_args['key'] );
+		}
+
+		return array(
+			'id'      => $page instanceof \WP_Post ? (int) $page->ID : 0,
+			'changed' => $changed,
+		);
+	}
+
+	/**
+	 * Return the current signature for the generated menu directory pages.
+	 *
+	 * @return string
+	 */
+	protected function get_menu_directory_signature() {
+		return $this->get_seed_signature(
+			array(
+				'categories' => $this->get_menu_directory_categories(),
+				'root'       => $this->get_menu_directory_root_url(),
+			)
+		);
+	}
+
+	/**
+	 * Seed the native /menu/ directory, its category pages, and item pages.
+	 *
+	 * @return bool
+	 */
+	protected function maybe_seed_menu_directory_pages() {
+		$current_signature = $this->get_menu_directory_signature();
+		$stored_signature  = (string) get_option( self::MENU_DIRECTORY_SIGNATURE_OPTION, '' );
+		$root_page         = get_page_by_path( 'menu', OBJECT, 'page' );
+
+		if ( $root_page instanceof \WP_Post && $stored_signature === $current_signature ) {
+			return false;
+		}
+
+		$changed     = false;
+		$root_result = $this->upsert_menu_directory_page(
+			array(
+				'path'        => 'menu',
+				'title'       => 'Menu',
+				'slug'        => 'menu',
+				'post_parent' => 0,
+				'menu_order'  => 0,
+				'content'     => '<!-- wp:shortcode -->[mcprices_menu_directory]<!-- /wp:shortcode -->',
+				'excerpt'     => 'Browse every McDonald\'s USA menu category, then open separate item pages for prices, calories, and quick details.',
+				'type'        => 'menu-root',
+				'key'         => 'menu',
+			)
+		);
+
+		if ( $root_result['changed'] ) {
+			$changed = true;
+		}
+
+		$root_page_id = (int) $root_result['id'];
+
+		if ( ! $root_page_id ) {
+			return $changed;
+		}
+
+		$category_order = 10;
+
+		foreach ( $this->get_menu_directory_categories() as $category_id => $category ) {
+			$category_result = $this->upsert_menu_directory_page(
+				array(
+					'path'        => 'menu/' . $category['slug'],
+					'title'       => (string) $category['title'],
+					'slug'        => (string) $category['slug'],
+					'post_parent' => $root_page_id,
+					'menu_order'  => $category_order,
+					'content'     => '<!-- wp:shortcode -->[mcprices_menu_category category="' . esc_attr( $category_id ) . '"]<!-- /wp:shortcode -->',
+					'excerpt'     => (string) $category['description'],
+					'type'        => 'menu-category',
+					'key'         => (string) $category_id,
+				)
+			);
+
+			if ( $category_result['changed'] ) {
+				$changed = true;
+			}
+
+			$category_page_id = (int) $category_result['id'];
+
+			if ( ! $category_page_id ) {
+				$category_order += 10;
+				continue;
+			}
+
+			$item_order = 10;
+
+			foreach ( $category['items'] as $item ) {
+				$item_title = trim( (string) $item['name'] ) . ' Price USA';
+				$item_excerpt = trim( (string) $item['summary'] );
+
+				$item_result = $this->upsert_menu_directory_page(
+					array(
+						'path'        => 'menu/' . $category['slug'] . '/' . $item['slug'],
+						'title'       => $item_title,
+						'slug'        => (string) $item['slug'],
+						'post_parent' => $category_page_id,
+						'menu_order'  => $item_order,
+						'content'     => '<!-- wp:shortcode -->[mcprices_menu_item category="' . esc_attr( $category_id ) . '" item="' . esc_attr( $item['slug'] ) . '"]<!-- /wp:shortcode -->',
+						'excerpt'     => $item_excerpt,
+						'type'        => 'menu-item',
+						'key'         => (string) $category_id . '::' . (string) $item['slug'],
+					)
+				);
+
+				if ( $item_result['changed'] ) {
+					$changed = true;
+				}
+
+				$item_order += 10;
+			}
+
+			$category_order += 10;
+		}
+
+		update_option( self::MENU_DIRECTORY_SIGNATURE_OPTION, $current_signature, false );
+
+		return $changed;
+	}
+
+	/**
 	 * Assign the seeded privacy policy page in WordPress settings.
 	 *
 	 * @return bool
@@ -804,6 +1020,7 @@ class McPrices_Integration {
 
 		$this->maybe_seed_front_page();
 		$this->maybe_seed_blog_page();
+		$this->maybe_seed_menu_directory_pages();
 		$this->maybe_sync_front_page_pattern_content();
 		$this->maybe_seed_support_pages();
 		$this->maybe_sync_seed_menus();
@@ -884,6 +1101,9 @@ class McPrices_Integration {
 	 */
 	public function register_shortcodes() {
 		add_shortcode( 'mcprices_hero_search', array( $this, 'render_hero_search_shortcode' ) );
+		add_shortcode( 'mcprices_menu_directory', array( $this, 'render_menu_directory_shortcode' ) );
+		add_shortcode( 'mcprices_menu_category', array( $this, 'render_menu_category_shortcode' ) );
+		add_shortcode( 'mcprices_menu_item', array( $this, 'render_menu_item_shortcode' ) );
 	}
 
 	/**
@@ -898,6 +1118,976 @@ class McPrices_Integration {
 			. '<button type="submit">Search</button>'
 			. '</form>'
 			. '<div class="hero-search-feedback" data-mcprices-search-feedback aria-live="polite"></div>';
+	}
+
+	/**
+	 * Return the public root URL for the native menu directory.
+	 *
+	 * @return string
+	 */
+	public function get_menu_directory_root_url() {
+		return home_url( '/menu/' );
+	}
+
+	/**
+	 * Return the public category page URL for a menu directory category.
+	 *
+	 * @param string $category_id Category identifier.
+	 * @return string
+	 */
+	public function get_menu_category_page_url( $category_id ) {
+		$category = $this->get_menu_directory_category_data( $category_id );
+
+		if ( ! is_array( $category ) ) {
+			return $this->get_menu_directory_root_url();
+		}
+
+		return trailingslashit( untrailingslashit( $this->get_menu_directory_root_url() ) . '/' . $category['slug'] );
+	}
+
+	/**
+	 * Return the public item page URL for a menu directory item.
+	 *
+	 * @param string $category_id     Category identifier.
+	 * @param string $item_identifier Item slug, title, or raw name.
+	 * @return string
+	 */
+	public function get_menu_item_page_url( $category_id, $item_identifier ) {
+		$category = $this->get_menu_directory_category_data( $category_id );
+
+		if ( ! is_array( $category ) ) {
+			return $this->get_menu_directory_root_url();
+		}
+
+		$item = $this->get_menu_directory_item_data( $category_id, $item_identifier );
+
+		if ( ! is_array( $item ) ) {
+			return $this->get_menu_category_page_url( $category_id );
+		}
+
+		return trailingslashit( untrailingslashit( $this->get_menu_category_page_url( $category_id ) ) . '/' . $item['slug'] );
+	}
+
+	/**
+	 * Return the public category artwork URL for a menu category.
+	 *
+	 * @param string $category_id Category identifier.
+	 * @return string
+	 */
+	public function get_menu_category_media_asset_url( $category_id ) {
+		return $this->get_category_media_url( $category_id );
+	}
+
+	/**
+	 * Return the public item artwork URL for a menu item.
+	 *
+	 * @param string $item_name Item name.
+	 * @return string
+	 */
+	public function get_menu_item_media_asset_url( $item_name ) {
+		return $this->get_item_media_url( $item_name );
+	}
+
+	/**
+	 * Return the parsed USA menu source data used across the native pages.
+	 *
+	 * @return array
+	 */
+	protected function get_menu_source_data() {
+		static $menu_source = null;
+
+		if ( null !== $menu_source ) {
+			return $menu_source;
+		}
+
+		$menu_source_path = get_theme_file_path( '/assets/data/mcprices-usa-menu.json' );
+		$menu_source_json = file_exists( $menu_source_path ) ? file_get_contents( $menu_source_path ) : false;
+		$menu_source      = is_string( $menu_source_json ) ? json_decode( $menu_source_json, true ) : array();
+		$menu_source      = is_array( $menu_source ) ? $menu_source : array();
+
+		return $menu_source;
+	}
+
+	/**
+	 * Return a single source section from the menu JSON file.
+	 *
+	 * @param string $source_id Source section ID.
+	 * @return array
+	 */
+	protected function get_menu_source_section( $source_id ) {
+		foreach ( $this->get_menu_source_data() as $section ) {
+			if ( isset( $section['id'] ) && $source_id === $section['id'] ) {
+				return is_array( $section ) ? $section : array();
+			}
+		}
+
+		return array(
+			'id'    => $source_id,
+			'title' => '',
+			'icon'  => '',
+			'subs'  => array(),
+		);
+	}
+
+	/**
+	 * Return the item count for a source section.
+	 *
+	 * @param array $section Section array.
+	 * @return int
+	 */
+	protected function count_menu_source_rows( array $section ) {
+		$count = 0;
+
+		foreach ( $section['subs'] ?? array() as $sub_section ) {
+			$count += count( $sub_section['rows'] ?? array() );
+		}
+
+		return $count;
+	}
+
+	/**
+	 * Format a calorie string in a consistent display format.
+	 *
+	 * @param string $calories Raw calorie text.
+	 * @return string
+	 */
+	protected function format_menu_directory_calories( $calories ) {
+		$calories = trim( (string) $calories );
+
+		if ( '' === $calories ) {
+			return '';
+		}
+
+		if ( false !== stripos( $calories, 'kcal' ) ) {
+			return $calories;
+		}
+
+		return $calories . ' kcal';
+	}
+
+	/**
+	 * Normalize a raw menu item label for human-readable page titles.
+	 *
+	 * @param string $name Raw menu item name.
+	 * @return string
+	 */
+	protected function get_menu_directory_item_title( $name ) {
+		$title = html_entity_decode( (string) $name, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+		$title = preg_replace( '/\([^)]*\)/', '', $title );
+		$title = str_replace( array( 'TM', '®', '™' ), '', (string) $title );
+
+		return trim( preg_replace( '/\s+/', ' ', (string) $title ) );
+	}
+
+	/**
+	 * Build the status label used on menu rows and item cards.
+	 *
+	 * @param string $source_id Source section ID.
+	 * @param string $sub_label Sub-section label.
+	 * @param string $row_name  Item name.
+	 * @param string $price     Item price.
+	 * @param array  $tags      Optional row tags.
+	 * @return string
+	 */
+	protected function get_menu_directory_row_status( $source_id, $sub_label, $row_name, $price = '', array $tags = array() ) {
+		$status = 'Item';
+
+		switch ( $source_id ) {
+			case 'evm':
+				$status = false !== stripos( $sub_label, 'Breakfast' ) ? 'Breakfast meal' : 'Meal';
+				break;
+			case 'mcvalue':
+				if ( false !== stripos( $sub_label, 'Meal Deals' ) ) {
+					$status = 'Meal deal';
+				} elseif ( false !== stripos( $sub_label, 'Breakfast' ) ) {
+					$status = 'Breakfast value';
+				} elseif ( false !== stripos( $sub_label, 'Lunch' ) ) {
+					$status = 'Any-day value';
+				} elseif ( false !== stripos( $sub_label, 'Eats' ) ) {
+					$status = 'Value pick';
+				} else {
+					$status = 'McValue';
+				}
+				break;
+			case 'bfast':
+				$status = 'Breakfast';
+				break;
+			case 'burgers':
+				$status = 'Burger';
+				break;
+			case 'chicken':
+				$status = false !== stripos( $row_name, 'Fish' ) ? 'Fish' : 'Chicken';
+				break;
+			case 'nuggets':
+				if ( false !== stripos( $row_name, 'Strips' ) ) {
+					$status = in_array( 'new', $tags, true ) ? 'New' : 'Strips';
+				} elseif ( false !== stripos( $row_name, '20 pc' ) || false !== stripos( $row_name, '40 pc' ) ) {
+					$status = 'Shareable';
+				} else {
+					$status = 'Nuggets';
+				}
+				break;
+			case 'wrap':
+				$status = 'Wrap';
+				break;
+			case 'sides':
+				$status = false !== stripos( $row_name, 'Apple' ) ? 'Fruit' : 'Side';
+				break;
+			case 'happy':
+				$status = 'Kids';
+				break;
+			case 'sweets':
+				if ( in_array( 'ltd', $tags, true ) ) {
+					$status = 'Limited';
+				} elseif ( false !== stripos( $row_name, 'McFlurry' ) ) {
+					$status = 'McFlurry';
+				} elseif ( false !== stripos( $row_name, 'Shake' ) ) {
+					$status = 'Shake';
+				} elseif ( false !== stripos( $row_name, 'Pie' ) || false !== stripos( $row_name, 'Cookie' ) ) {
+					$status = 'Baked';
+				} else {
+					$status = 'Dessert';
+				}
+				break;
+			case 'coffee':
+				if ( false !== stripos( $sub_label, 'Frapp' ) ) {
+					$status = 'Frozen';
+				} elseif ( false !== stripos( $sub_label, 'Iced' ) ) {
+					$status = 'Iced';
+				} elseif ( false !== stripos( $sub_label, 'Hot Chocolate' ) ) {
+					$status = 'Hot chocolate';
+				} else {
+					$status = 'Coffee';
+				}
+				break;
+			case 'bev':
+				if ( false !== stripos( $sub_label, 'Frozen' ) ) {
+					$status = 'Frozen';
+				} elseif ( false !== stripos( $sub_label, 'Smoothies' ) ) {
+					$status = 'Smoothie';
+				} elseif ( false !== stripos( $sub_label, 'Tea' ) ) {
+					$status = 'Tea';
+				} elseif ( false !== stripos( $sub_label, 'Juice' ) ) {
+					$status = 'Juice';
+				} elseif ( false !== stripos( $sub_label, 'Water' ) ) {
+					$status = 'Water';
+				} else {
+					$status = 'Drink';
+				}
+				break;
+			case 'sauce':
+				$status = in_array( trim( (string) $price ), array( 'Incl.', 'Free' ), true ) ? 'Included' : 'Sauce';
+				break;
+			case 'kpop':
+			case 'bigarch':
+				$status = in_array( 'new', $tags, true ) ? 'New' : 'Limited Time';
+				break;
+		}
+
+		return $status;
+	}
+
+	/**
+	 * Build a short readable summary for a menu item page.
+	 *
+	 * @param string $row_name       Raw item name.
+	 * @param string $sub_label      Source sub label.
+	 * @param string $category_title Category title.
+	 * @return string
+	 */
+	protected function get_menu_directory_item_summary( $row_name, $sub_label, $category_title ) {
+		$row_name = html_entity_decode( (string) $row_name, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+
+		if ( preg_match( '/\(([^)]{4,})\)/', $row_name, $matches ) ) {
+			$summary = trim( preg_replace( '/\s+/', ' ', (string) $matches[1] ) );
+
+			if ( '' !== $summary ) {
+				return ucfirst( rtrim( $summary, '.' ) ) . '.';
+			}
+		}
+
+		if ( '' !== trim( (string) $sub_label ) ) {
+			return sprintf(
+				'%1$s in the %2$s grouping on the current McDonald\'s USA menu data tracked by this site.',
+				$this->get_menu_directory_item_title( $row_name ),
+				trim( (string) $sub_label )
+			);
+		}
+
+		return sprintf(
+			'Current %1$s menu listing tracked in the %2$s section on McDonald\'s Menu Prices USA.',
+			strtolower( $this->get_menu_directory_item_title( $row_name ) ),
+			$category_title
+		);
+	}
+
+	/**
+	 * Return the configured top-level menu category blueprints.
+	 *
+	 * @return array
+	 */
+	protected function get_menu_directory_category_blueprints() {
+		return array(
+			'whats-new'  => array(
+				'id'          => 'whats-new',
+				'slug'        => 'whats-new',
+				'title'       => 'What\'s New Menu Prices USA',
+				'card_title'  => 'What\'s New',
+				'count_label' => 'limited-time items',
+				'description' => 'Current limited-time and featured items showing up across the tracked McDonald\'s USA menu snapshot.',
+				'sources'     => array( 'kpop', 'bigarch' ),
+			),
+			'meals'      => array(
+				'id'          => 'meals',
+				'slug'        => 'meals',
+				'title'       => 'Extra Value Meals Menu Prices USA',
+				'card_title'  => 'Extra Value Meals',
+				'count_label' => 'meals',
+				'description' => 'Breakfast, lunch, and dinner combo meal pricing pulled from the tracked McDonald\'s USA menu data.',
+				'sources'     => array( 'evm' ),
+			),
+			'mcvalue'    => array(
+				'id'          => 'mcvalue',
+				'slug'        => 'mcvalue',
+				'title'       => 'McValue Menu Prices USA',
+				'card_title'  => 'McValue',
+				'count_label' => 'value picks',
+				'description' => 'Current McValue picks, meal deals, buy-one-add-one offers, and lower-cost dessert and snack entries.',
+				'sources'     => array( 'mcvalue' ),
+			),
+			'breakfast'  => array(
+				'id'          => 'breakfast',
+				'slug'        => 'breakfast',
+				'title'       => 'Breakfast Menu Prices USA',
+				'card_title'  => 'Breakfast',
+				'count_label' => 'breakfast items',
+				'description' => 'Breakfast sandwiches, McMuffins, biscuits, McGriddles, bagels, platters, oatmeal, and breakfast sides.',
+				'sources'     => array( 'bfast' ),
+			),
+			'burgers'    => array(
+				'id'          => 'burgers',
+				'slug'        => 'burgers',
+				'title'       => 'Burgers Menu Prices USA',
+				'card_title'  => 'Burgers',
+				'count_label' => 'burgers',
+				'description' => 'Current burger prices for Big Mac, Quarter Pounder builds, McDouble, Daily Double, cheeseburgers, and hamburgers.',
+				'sources'     => array( 'burgers' ),
+			),
+			'chickenfish' => array(
+				'id'          => 'chickenfish',
+				'slug'        => 'chickenfish',
+				'title'       => 'Chicken & Fish Menu Prices USA',
+				'card_title'  => 'Chicken & Fish',
+				'count_label' => 'sandwiches',
+				'description' => 'Chicken and fish sandwich pricing for McCrispy builds, Filet-O-Fish, and McChicken options in the USA.',
+				'sources'     => array( 'chicken' ),
+			),
+			'nuggets'    => array(
+				'id'          => 'nuggets',
+				'slug'        => 'nuggets',
+				'title'       => 'McNuggets & Strips Prices USA',
+				'card_title'  => 'McNuggets & Strips',
+				'count_label' => 'chicken items',
+				'description' => 'Chicken McNuggets and McCrispy Strips pricing, from snack sizes up to 40-piece shareable packs.',
+				'sources'     => array( 'nuggets' ),
+			),
+			'snackwrap'  => array(
+				'id'          => 'snackwrap',
+				'slug'        => 'snackwrap',
+				'title'       => 'Snack Wrap Prices USA',
+				'card_title'  => 'Snack Wrap',
+				'count_label' => 'wraps',
+				'description' => 'Both current Snack Wrap flavors from the tracked McDonald\'s USA menu source.',
+				'sources'     => array( 'wrap' ),
+			),
+			'sides'      => array(
+				'id'          => 'sides',
+				'slug'        => 'sides',
+				'title'       => 'Fries & Sides Prices USA',
+				'card_title'  => 'Fries & Sides',
+				'count_label' => 'side items',
+				'description' => 'World Famous Fries in each listed size plus Apple Slices and other side-menu add-ons in the USA.',
+				'sources'     => array( 'sides' ),
+			),
+			'happymeal'  => array(
+				'id'          => 'happymeal',
+				'slug'        => 'happymeal',
+				'title'       => 'Happy Meal Prices USA',
+				'card_title'  => 'Happy Meal',
+				'count_label' => 'kids meals',
+				'description' => 'Current Happy Meal pricing for hamburger and McNuggets builds from the tracked USA menu file.',
+				'sources'     => array( 'happy' ),
+			),
+			'sweets'     => array(
+				'id'          => 'sweets',
+				'slug'        => 'sweets',
+				'title'       => 'Sweets & Treats Prices USA',
+				'card_title'  => 'Sweets & Treats',
+				'count_label' => 'treats',
+				'description' => 'McFlurries, cones, sundaes, shakes, pies, cookies, and other dessert pricing from the current USA sweets section.',
+				'sources'     => array( 'sweets' ),
+			),
+			'mccafe'     => array(
+				'id'          => 'mccafe',
+				'slug'        => 'mccafe',
+				'title'       => 'McCafe Coffee Prices USA',
+				'card_title'  => 'McCafe Coffees',
+				'count_label' => 'coffee drinks',
+				'description' => 'Full McCafe coffee and espresso pricing, including hot drinks, iced drinks, frappes, and hot chocolate.',
+				'sources'     => array( 'coffee' ),
+			),
+			'beverages'  => array(
+				'id'          => 'beverages',
+				'slug'        => 'beverages',
+				'title'       => 'Beverage Prices USA',
+				'card_title'  => 'Beverages',
+				'count_label' => 'drinks',
+				'description' => 'Soft drinks, frozen drinks, smoothies, lemonade, tea, juice, milk, and bottled water from the current USA beverage menu.',
+				'sources'     => array( 'bev' ),
+			),
+			'sauces'     => array(
+				'id'          => 'sauces',
+				'slug'        => 'sauces',
+				'title'       => 'Sauces & Condiments Prices USA',
+				'card_title'  => 'Sauces & Condiments',
+				'count_label' => 'sauce items',
+				'description' => 'Current dipping sauces and condiments, including included sauces and low-cost paid extras.',
+				'sources'     => array( 'sauce' ),
+			),
+			'deals'      => array(
+				'id'             => 'deals',
+				'slug'           => 'deals',
+				'title'          => 'McDonald\'s Deals Prices USA',
+				'card_title'     => 'Deals',
+				'count_label'    => 'Current McValue offers',
+				'static_count'   => 'Current McValue offers',
+				'description'    => 'Current McValue meal deals, buy-one-add-one offers, and value-led picks highlighted on McDonald\'s Menu Prices USA.',
+				'special_source' => 'deals',
+				'sources'        => array(),
+			),
+		);
+	}
+
+	/**
+	 * Return the curated homepage-style deal items used for the deals page.
+	 *
+	 * @return array
+	 */
+	protected function get_menu_directory_deal_items() {
+		$items = array(
+			array(
+				'name'        => 'McChicken Meal Deal',
+				'raw_name'    => 'McChicken Meal Deal',
+				'price'       => '$5.00',
+				'calories'    => '',
+				'status'      => '$5 Meal Deal',
+				'summary'     => 'McChicken, 4 pc McNuggets, small fries, and a small drink from the current McValue lineup.',
+				'image'       => $this->get_item_media_url( 'McChicken' ),
+				'category_id' => 'deals',
+			),
+			array(
+				'name'        => 'McDouble Meal Deal',
+				'raw_name'    => 'McDouble Meal Deal',
+				'price'       => '$5.00',
+				'calories'    => '',
+				'status'      => '$5 Meal Deal',
+				'summary'     => 'McDouble, 4 pc McNuggets, small fries, and a small drink from the same current McValue offer set.',
+				'image'       => $this->get_item_media_url( 'McDouble' ),
+				'category_id' => 'deals',
+			),
+			array(
+				'name'        => 'Daily Double Meal Deal',
+				'raw_name'    => 'Daily Double Meal Deal',
+				'price'       => '~$6.00',
+				'calories'    => '',
+				'status'      => '$6 Meal Deal',
+				'summary'     => 'The Daily Double Meal Deal appears in the current McValue data as the higher-entry limited-time meal deal option.',
+				'image'       => $this->get_item_media_url( 'Daily Double Meal Deal' ),
+				'category_id' => 'deals',
+			),
+			array(
+				'name'        => 'Breakfast Buy 1 Add 1 for $1',
+				'raw_name'    => 'Breakfast Buy 1 Add 1 for $1',
+				'price'       => '$2.99 base items',
+				'calories'    => '',
+				'status'      => 'Breakfast BOGO',
+				'summary'     => 'The breakfast offer applies to Sausage Biscuit, Sausage McMuffin, Sausage Burrito, and Hash Browns.',
+				'image'       => $this->get_category_media_url( 'deals' ),
+				'category_id' => 'deals',
+			),
+			array(
+				'name'        => 'Lunch Buy 1 Add 1 for $1',
+				'raw_name'    => 'Lunch Buy 1 Add 1 for $1',
+				'price'       => '$2.89-$4.39 items',
+				'calories'    => '',
+				'status'      => 'Lunch BOGO',
+				'summary'     => 'Current lunch and dinner McValue add-on picks include Double Cheeseburger, McChicken, 6 pc McNuggets, and Small World Famous Fries.',
+				'image'       => $this->get_category_media_url( 'deals' ),
+				'category_id' => 'deals',
+			),
+			array(
+				'name'        => 'McValue Mini McFlurry Picks',
+				'raw_name'    => 'McValue Mini McFlurry Picks',
+				'price'       => '$3.19',
+				'calories'    => '',
+				'status'      => 'Mini dessert',
+				'summary'     => 'Mini M&M\'s and OREO McFlurry cups appear in the tracked McValue Eats section as low-entry dessert options.',
+				'image'       => $this->get_item_media_url( 'OREO McFlurry' ),
+				'category_id' => 'deals',
+			),
+		);
+
+		return $this->assign_unique_menu_item_slugs( $items );
+	}
+
+	/**
+	 * Assign stable unique slugs to a list of menu directory items.
+	 *
+	 * @param array $items Item list.
+	 * @return array
+	 */
+	protected function assign_unique_menu_item_slugs( array $items ) {
+		$used_slugs = array();
+
+		foreach ( $items as $index => $item ) {
+			$base_slug = sanitize_title( $item['name'] ?? '' );
+			$base_slug = '' !== $base_slug ? $base_slug : 'menu-item';
+			$slug      = $base_slug;
+			$suffix    = 2;
+
+			while ( isset( $used_slugs[ $slug ] ) ) {
+				$slug = $base_slug . '-' . $suffix;
+				++$suffix;
+			}
+
+			$used_slugs[ $slug ] = true;
+			$items[ $index ]['slug'] = $slug;
+		}
+
+		return $items;
+	}
+
+	/**
+	 * Build the data rows for a single source section.
+	 *
+	 * @param string $source_id      Source section ID.
+	 * @param string $category_id    Directory category ID.
+	 * @param string $category_title Directory category title.
+	 * @return array
+	 */
+	protected function get_menu_directory_items_from_source( $source_id, $category_id, $category_title ) {
+		$section = $this->get_menu_source_section( $source_id );
+		$items   = array();
+
+		foreach ( $section['subs'] ?? array() as $sub_section ) {
+			$sub_label = trim( (string) ( $sub_section['sub'] ?? '' ) );
+
+			foreach ( $sub_section['rows'] ?? array() as $row ) {
+				$raw_name = trim( (string) ( $row['name'] ?? '' ) );
+
+				if ( '' === $raw_name ) {
+					continue;
+				}
+
+				$title = $this->get_menu_directory_item_title( $raw_name );
+				$tags  = isset( $row['tags'] ) && is_array( $row['tags'] ) ? $row['tags'] : array();
+
+				$items[] = array(
+					'name'        => $title,
+					'raw_name'    => $raw_name,
+					'price'       => trim( (string) ( $row['price'] ?? '' ) ),
+					'calories'    => $this->format_menu_directory_calories( $row['calories'] ?? '' ),
+					'status'      => $this->get_menu_directory_row_status( $source_id, $sub_label, $raw_name, trim( (string) ( $row['price'] ?? '' ) ), $tags ),
+					'summary'     => $this->get_menu_directory_item_summary( $raw_name, $sub_label, $category_title ),
+					'image'       => $this->get_item_media_url( $raw_name ),
+					'category_id' => $category_id,
+					'sub_label'   => $sub_label,
+				);
+			}
+		}
+
+		return $items;
+	}
+
+	/**
+	 * Return all configured menu directory categories with item data.
+	 *
+	 * @return array
+	 */
+	protected function get_menu_directory_categories() {
+		static $categories = null;
+
+		if ( null !== $categories ) {
+			return $categories;
+		}
+
+		$categories = array();
+
+		foreach ( $this->get_menu_directory_category_blueprints() as $category_id => $blueprint ) {
+			$items = array();
+
+			if ( isset( $blueprint['special_source'] ) && 'deals' === $blueprint['special_source'] ) {
+				$items = $this->get_menu_directory_deal_items();
+			} else {
+				foreach ( $blueprint['sources'] as $source_id ) {
+					$items = array_merge(
+						$items,
+						$this->get_menu_directory_items_from_source( $source_id, $category_id, $blueprint['card_title'] )
+					);
+				}
+
+				$items = $this->assign_unique_menu_item_slugs( $items );
+			}
+
+			$count_text = isset( $blueprint['static_count'] )
+				? (string) $blueprint['static_count']
+				: count( $items ) . ' ' . $blueprint['count_label'];
+
+			$categories[ $category_id ] = array_merge(
+				$blueprint,
+				array(
+					'items'      => $items,
+					'count_text' => $count_text,
+				)
+			);
+		}
+
+		return $categories;
+	}
+
+	/**
+	 * Return one menu directory category data array when available.
+	 *
+	 * @param string $category_id Category ID.
+	 * @return array|null
+	 */
+	protected function get_menu_directory_category_data( $category_id ) {
+		$categories = $this->get_menu_directory_categories();
+
+		return isset( $categories[ $category_id ] ) ? $categories[ $category_id ] : null;
+	}
+
+	/**
+	 * Return one menu directory item from a category by slug or title.
+	 *
+	 * @param string $category_id     Category ID.
+	 * @param string $item_identifier Item slug or title.
+	 * @return array|null
+	 */
+	protected function get_menu_directory_item_data( $category_id, $item_identifier ) {
+		$category = $this->get_menu_directory_category_data( $category_id );
+
+		if ( ! is_array( $category ) ) {
+			return null;
+		}
+
+		$item_identifier = trim( (string) $item_identifier );
+		$normalized_item = $this->normalize_media_key( $item_identifier );
+
+		foreach ( $category['items'] as $item ) {
+			$matches_slug  = isset( $item['slug'] ) && $item_identifier === $item['slug'];
+			$matches_name  = isset( $item['name'] ) && 0 === strcasecmp( $item_identifier, $item['name'] );
+			$matches_raw   = isset( $item['raw_name'] ) && 0 === strcasecmp( $item_identifier, $item['raw_name'] );
+			$matches_key   = isset( $item['raw_name'] ) && $normalized_item === $this->normalize_media_key( $item['raw_name'] );
+
+			if ( $matches_slug || $matches_name || $matches_raw || $matches_key ) {
+				return $item;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Return the category artwork URL when available.
+	 *
+	 * @param string $category_id Category ID.
+	 * @return string
+	 */
+	protected function get_category_media_url( $category_id ) {
+		$manifest   = $this->get_media_manifest();
+		$categories = isset( $manifest['categories'] ) && is_array( $manifest['categories'] ) ? $manifest['categories'] : array();
+		$relative   = isset( $categories[ $category_id ] ) ? (string) $categories[ $category_id ] : '';
+
+		if ( '' === $relative ) {
+			return '';
+		}
+
+		return trailingslashit( get_theme_file_uri( '/assets/images/mcprices/official' ) ) . ltrim( $relative, '/' );
+	}
+
+	/**
+	 * Return the artwork that should appear for a specific item card.
+	 *
+	 * @param array $item Item data.
+	 * @return string
+	 */
+	protected function get_menu_directory_item_image( array $item ) {
+		if ( ! empty( $item['image'] ) ) {
+			return (string) $item['image'];
+		}
+
+		return $this->get_category_media_url( $item['category_id'] ?? '' );
+	}
+
+	/**
+	 * Render the managed root menu directory page.
+	 *
+	 * @return string
+	 */
+	public function render_menu_directory_shortcode() {
+		$categories = $this->get_menu_directory_categories();
+
+		ob_start();
+		?>
+		<div class="mcprices-page mcprices-directory-page mcprices-directory-index">
+			<section class="categories mcprices-directory-section">
+				<div class="container">
+					<div class="section-header">
+						<div class="section-label">Menu Directory</div>
+						<h2 class="section-title">Browse McDonald&rsquo;s USA Menu Categories</h2>
+						<p class="section-sub">Open any category page to browse every tracked item, then use the read-more links to open dedicated item pages without changing the homepage design.</p>
+					</div>
+					<div class="cat-grid">
+						<?php foreach ( $categories as $category ) : ?>
+							<a href="<?php echo esc_url( $this->get_menu_category_page_url( $category['id'] ) ); ?>" class="cat-card" data-category-id="<?php echo esc_attr( $category['id'] ); ?>">
+								<span class="cat-emoji">
+									<?php if ( $this->get_category_media_url( $category['id'] ) ) : ?>
+										<img class="mcprices-media-icon mcprices-media-icon--category" src="<?php echo esc_url( $this->get_category_media_url( $category['id'] ) ); ?>" alt="<?php echo esc_attr( 'McDonald\'s ' . $category['card_title'] . ' menu USA' ); ?>" loading="lazy" decoding="async">
+									<?php endif; ?>
+								</span>
+								<div class="cat-name"><?php echo esc_html( $category['card_title'] ); ?></div>
+								<div class="cat-count"><?php echo esc_html( $category['count_text'] ); ?></div>
+								<div class="cat-arrow">&rarr;</div>
+							</a>
+						<?php endforeach; ?>
+					</div>
+				</div>
+			</section>
+		</div>
+		<?php
+
+		return (string) ob_get_clean();
+	}
+
+	/**
+	 * Render one managed category landing page.
+	 *
+	 * @param array $atts Shortcode attributes.
+	 * @return string
+	 */
+	public function render_menu_category_shortcode( $atts ) {
+		$atts = shortcode_atts(
+			array(
+				'category' => '',
+			),
+			(array) $atts,
+			'mcprices_menu_category'
+		);
+
+		$category = $this->get_menu_directory_category_data( $atts['category'] );
+
+		if ( ! is_array( $category ) ) {
+			return '';
+		}
+
+		ob_start();
+		?>
+		<div class="mcprices-page mcprices-directory-page mcprices-category-page">
+			<section class="internal-links mcprices-directory-section">
+				<div class="container">
+					<div class="mcprices-directory-crumbs">
+						<a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a>
+						<span>&rsaquo;</span>
+						<a href="<?php echo esc_url( $this->get_menu_directory_root_url() ); ?>">Menu</a>
+						<span>&rsaquo;</span>
+						<span><?php echo esc_html( $category['card_title'] ); ?></span>
+					</div>
+					<div class="section-header section-header-left">
+						<div class="section-label">Category Page</div>
+						<h2 class="section-title"><?php echo esc_html( $category['title'] ); ?></h2>
+						<p class="section-sub"><?php echo esc_html( $category['description'] ); ?></p>
+					</div>
+					<div class="mcprices-directory-meta">
+						<div class="mcprices-directory-meta-card">
+							<strong><?php echo esc_html( (string) count( $category['items'] ) ); ?></strong>
+							<span>Tracked items</span>
+						</div>
+						<div class="mcprices-directory-meta-card">
+							<strong>USD</strong>
+							<span>Prices shown in dollars</span>
+						</div>
+						<div class="mcprices-directory-meta-card">
+							<strong>Live</strong>
+							<span>Based on current site menu data</span>
+						</div>
+					</div>
+					<div class="menu-cards-grid featured-grid mcprices-directory-cards">
+						<?php foreach ( $category['items'] as $item ) : ?>
+							<article class="menu-card mcprices-directory-card">
+								<div class="card-img">
+									<?php if ( $this->get_menu_directory_item_image( $item ) ) : ?>
+										<img class="mcprices-card-media" src="<?php echo esc_url( $this->get_menu_directory_item_image( $item ) ); ?>" alt="<?php echo esc_attr( 'McDonald\'s ' . $item['name'] . ' price USA 2026' ); ?>" loading="lazy" decoding="async">
+									<?php endif; ?>
+								</div>
+								<div class="card-body">
+									<div class="card-top">
+										<div>
+											<div class="card-name"><a href="<?php echo esc_url( $this->get_menu_item_page_url( $category['id'], $item['slug'] ) ); ?>"><?php echo esc_html( $item['name'] ); ?></a></div>
+											<div class="card-cal"><?php echo esc_html( $item['calories'] ? $item['calories'] : 'Calories vary by selection' ); ?></div>
+										</div>
+										<div class="card-price"><?php echo esc_html( $item['price'] ? $item['price'] : 'Varies' ); ?></div>
+									</div>
+									<div class="card-meta">
+										<span class="card-chip"><?php echo esc_html( $item['status'] ); ?></span>
+									</div>
+									<p class="mcprices-directory-copy"><?php echo esc_html( $item['summary'] ); ?></p>
+								</div>
+								<div class="card-footer">
+									<a class="btn-card" href="<?php echo esc_url( $this->get_menu_item_page_url( $category['id'], $item['slug'] ) ); ?>">Read more</a>
+								</div>
+							</article>
+						<?php endforeach; ?>
+					</div>
+				</div>
+			</section>
+		</div>
+		<?php
+
+		return (string) ob_get_clean();
+	}
+
+	/**
+	 * Render one managed menu item page.
+	 *
+	 * @param array $atts Shortcode attributes.
+	 * @return string
+	 */
+	public function render_menu_item_shortcode( $atts ) {
+		$atts = shortcode_atts(
+			array(
+				'category' => '',
+				'item'     => '',
+			),
+			(array) $atts,
+			'mcprices_menu_item'
+		);
+
+		$category = $this->get_menu_directory_category_data( $atts['category'] );
+		$item     = $this->get_menu_directory_item_data( $atts['category'], $atts['item'] );
+
+		if ( ! is_array( $category ) || ! is_array( $item ) ) {
+			return '';
+		}
+
+		$related_items = array_values(
+			array_filter(
+				$category['items'],
+				static function ( $candidate ) use ( $item ) {
+					return isset( $candidate['slug'], $item['slug'] ) && $candidate['slug'] !== $item['slug'];
+				}
+			)
+		);
+		$related_items = array_slice( $related_items, 0, 3 );
+
+		ob_start();
+		?>
+		<div class="mcprices-page mcprices-directory-page mcprices-item-page">
+			<section class="featured mcprices-directory-section">
+				<div class="container">
+					<div class="mcprices-directory-crumbs">
+						<a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a>
+						<span>&rsaquo;</span>
+						<a href="<?php echo esc_url( $this->get_menu_directory_root_url() ); ?>">Menu</a>
+						<span>&rsaquo;</span>
+						<a href="<?php echo esc_url( $this->get_menu_category_page_url( $category['id'] ) ); ?>"><?php echo esc_html( $category['card_title'] ); ?></a>
+						<span>&rsaquo;</span>
+						<span><?php echo esc_html( $item['name'] ); ?></span>
+					</div>
+					<div class="section-header section-header-left">
+						<div class="section-label">Item Page</div>
+						<h2 class="section-title"><?php echo esc_html( $item['name'] ); ?> Price USA</h2>
+						<p class="section-sub"><?php echo esc_html( $item['summary'] ); ?></p>
+					</div>
+					<div class="mcprices-item-layout">
+						<div class="menu-card mcprices-item-card">
+							<div class="card-img">
+								<?php if ( $this->get_menu_directory_item_image( $item ) ) : ?>
+									<img class="mcprices-card-media" src="<?php echo esc_url( $this->get_menu_directory_item_image( $item ) ); ?>" alt="<?php echo esc_attr( 'McDonald\'s ' . $item['name'] . ' price USA 2026' ); ?>" loading="lazy" decoding="async">
+								<?php endif; ?>
+							</div>
+							<div class="card-body">
+								<div class="card-top">
+									<div>
+										<div class="card-name"><?php echo esc_html( $item['name'] ); ?></div>
+										<div class="card-cal"><?php echo esc_html( $category['card_title'] ); ?></div>
+									</div>
+									<div class="card-price"><?php echo esc_html( $item['price'] ? $item['price'] : 'Varies' ); ?></div>
+								</div>
+								<div class="mcprices-item-facts">
+									<div class="mcprices-item-fact">
+										<span class="mcprices-item-fact-label">Calories</span>
+										<strong><?php echo esc_html( $item['calories'] ? $item['calories'] : 'Varies' ); ?></strong>
+									</div>
+									<div class="mcprices-item-fact">
+										<span class="mcprices-item-fact-label">Status</span>
+										<strong><?php echo esc_html( $item['status'] ); ?></strong>
+									</div>
+									<div class="mcprices-item-fact">
+										<span class="mcprices-item-fact-label">Category</span>
+										<strong><?php echo esc_html( $category['card_title'] ); ?></strong>
+									</div>
+								</div>
+								<div class="card-footer">
+									<a class="btn-card" href="<?php echo esc_url( $this->get_menu_category_page_url( $category['id'] ) ); ?>">Back to <?php echo esc_html( $category['card_title'] ); ?></a>
+									<a class="btn-card" href="<?php echo esc_url( home_url( '/#full-menu' ) ); ?>">View full menu</a>
+								</div>
+							</div>
+						</div>
+						<div class="mcprices-item-notes">
+							<div class="sidebar-widget mcprices-item-notes-card">
+								<h3 class="sidebar-widget-title">Quick Notes</h3>
+								<p>This dedicated page keeps the current price, calorie reference, and category context for <strong><?php echo esc_html( $item['name'] ); ?></strong> inside your native WordPress menu structure.</p>
+								<p>Final pricing can still vary by restaurant, location, app offer, combo selection, delivery platform, and taxes.</p>
+							</div>
+						</div>
+					</div>
+					<?php if ( ! empty( $related_items ) ) : ?>
+						<div class="section-header section-header-left mcprices-related-header">
+							<div class="section-label">Same Category</div>
+							<h3 class="section-title">Related <?php echo esc_html( $category['card_title'] ); ?> Items</h3>
+						</div>
+						<div class="menu-cards-grid featured-grid mcprices-directory-cards">
+							<?php foreach ( $related_items as $related_item ) : ?>
+								<article class="menu-card mcprices-directory-card">
+									<div class="card-img">
+										<?php if ( $this->get_menu_directory_item_image( $related_item ) ) : ?>
+											<img class="mcprices-card-media" src="<?php echo esc_url( $this->get_menu_directory_item_image( $related_item ) ); ?>" alt="<?php echo esc_attr( 'McDonald\'s ' . $related_item['name'] . ' price USA 2026' ); ?>" loading="lazy" decoding="async">
+										<?php endif; ?>
+									</div>
+									<div class="card-body">
+										<div class="card-top">
+											<div>
+												<div class="card-name"><a href="<?php echo esc_url( $this->get_menu_item_page_url( $category['id'], $related_item['slug'] ) ); ?>"><?php echo esc_html( $related_item['name'] ); ?></a></div>
+												<div class="card-cal"><?php echo esc_html( $related_item['calories'] ? $related_item['calories'] : 'Calories vary' ); ?></div>
+											</div>
+											<div class="card-price"><?php echo esc_html( $related_item['price'] ? $related_item['price'] : 'Varies' ); ?></div>
+										</div>
+										<p class="mcprices-directory-copy"><?php echo esc_html( $related_item['summary'] ); ?></p>
+									</div>
+									<div class="card-footer">
+										<a class="btn-card" href="<?php echo esc_url( $this->get_menu_item_page_url( $category['id'], $related_item['slug'] ) ); ?>">Read more</a>
+									</div>
+								</article>
+							<?php endforeach; ?>
+						</div>
+					<?php endif; ?>
+				</div>
+			</section>
+		</div>
+		<?php
+
+		return (string) ob_get_clean();
 	}
 
 	/**
@@ -2935,6 +4125,7 @@ class McPrices_Integration {
 
 		$this->maybe_seed_front_page();
 		$this->maybe_seed_blog_page();
+		$this->maybe_seed_menu_directory_pages();
 		$this->maybe_seed_nav_menus( true );
 		$this->maybe_seed_footer_widgets( true );
 		$this->maybe_seed_front_page_content( true );
