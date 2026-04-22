@@ -307,6 +307,7 @@ class McPrices_Integration {
 			'sweets-treats'        => 'sweets',
 			'sauces-condiments'    => 'sauces',
 			'mcdonalds-app-deals'  => 'deals',
+			'mcdonalds-deals-mcvalue-guide' => 'deals',
 			'rewards-guide'        => 'deals',
 			'shareables-bundles'   => 'sharers',
 		);
@@ -720,127 +721,2315 @@ class McPrices_Integration {
 	 * @return array<string, array<string, string>>
 	 */
 	protected function get_seeded_support_pages() {
+		return array_merge(
+			array(
+				'about' => array(
+					'title'   => 'About Us',
+					'content' => '<!-- wp:paragraph --><p>McDonald&#8217;s Menu Prices USA is an independent guide to McDonald&#8217;s USA menu prices, calories, deals, breakfast hours, drinks, desserts, and combo meals. We update the site regularly so readers can compare prices, understand category coverage, and check new menu rollouts without relying on scattered screenshots.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>We are not affiliated with McDonald&#8217;s. Prices can vary by location, franchise, app offer, taxes, and delivery platform.</p><!-- /wp:paragraph -->',
+				),
+				'privacy-policy' => array(
+					'title'   => 'Privacy Policy',
+					'content' => '<!-- wp:paragraph --><p>This Privacy Policy explains how McDonald&#8217;s Menu Prices USA may collect and use limited information such as analytics data, contact submissions, and advertising-related data when you use the site. We only use this information to operate, improve, and protect the website.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>If you contact us directly, we may retain the information you send so we can respond. Third-party services such as analytics, advertising, and embedded tools may also process data according to their own policies.</p><!-- /wp:paragraph -->',
+				),
+				'cookie-policy' => array(
+					'title'   => 'Cookie Policy',
+					'content' => '<!-- wp:paragraph --><p>McDonald&#8217;s Menu Prices USA may use cookies and similar technologies to remember preferences, measure traffic, and support advertising or performance tools. Some cookies are essential for the site to work properly, while others help us understand how visitors use the site.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>You can usually control cookies through your browser settings. Disabling some cookies may affect how parts of the site function.</p><!-- /wp:paragraph -->',
+				),
+				'contact' => array(
+					'title'   => 'Contact',
+					'content' => '<!-- wp:paragraph --><p>Use this page to contact McDonald&#8217;s Menu Prices USA about price corrections, menu updates, advertising questions, or general feedback. If you spot a menu price that looks outdated, include the item name, restaurant location, and latest observed price so we can review it quickly.</p><!-- /wp:paragraph -->',
+				),
+				'disclaimer' => array(
+					'title'   => 'Disclaimer',
+					'content' => '<!-- wp:paragraph --><p>McDonald&#8217;s Menu Prices USA is an independent, unofficial website and is not affiliated with, endorsed by, or connected to McDonald&#8217;s Corporation. Prices, calories, availability, and promotions may vary by location and date.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>Always confirm important details such as allergens, breakfast hours, delivery pricing, and final local totals with the official McDonald&#8217;s app, website, or restaurant before ordering.</p><!-- /wp:paragraph -->',
+				),
+				'ad-disclosure' => array(
+					'title'   => 'Ad Disclosure',
+					'content' => '<!-- wp:paragraph --><p>McDonald&#8217;s Menu Prices USA may display advertisements, sponsored placements, or monetised content to support site operations. Advertising relationships do not change our editorial approach: we still aim to provide clear, practical, and regularly updated McDonald&#8217;s USA price information.</p><!-- /wp:paragraph -->',
+				),
+				'sitemap' => array(
+					'title'   => 'Sitemap',
+					'content' => '<!-- wp:paragraph --><p>Browse the main areas of McDonald&#8217;s Menu Prices USA below, or use the XML sitemap at <a href="' . esc_url( home_url( '/sitemap.xml' ) ) . '">' . esc_html( home_url( '/sitemap.xml' ) ) . '</a> for the crawler-friendly version.</p><!-- /wp:paragraph --><!-- wp:shortcode -->[rank_math_html_sitemap]<!-- /wp:shortcode -->',
+				),
+				'big-mac-price-usa' => array(
+					'title'   => 'Big Mac Price USA',
+					'content' => $this->build_seeded_support_topic_page_content(
+						array(
+							'intro'         => array(
+								'This Big Mac Price USA guide focuses on the current Big Mac sandwich price, Big Mac meal pricing, calorie context, and the role the Big Mac plays as a flagship reference point on the McDonald&#8217;s USA burger menu.',
+								'Most readers do not look up the Big Mac in isolation. They are usually comparing it with McDouble, Quarter Pounder, or a full combo meal, which is why this page works best as a focused answer that also routes into the wider burger and value guides.',
+							),
+							'highlights'    => array(
+								'Use this page when the real decision is Big Mac sandwich versus Big Mac meal price.',
+								'Compare Big Mac pricing against the burgers pillar when you want to see the full burger value ladder.',
+								'App offers, local taxes, franchise pricing, and delivery can still change the final local total.',
+							),
+							'sections'      => array(
+								array(
+									'heading'    => 'Why the Big Mac matters as a pricing benchmark',
+									'paragraphs' => array(
+										'The Big Mac remains one of the clearest burger benchmarks on any McDonald\'s pricing site because readers use it to judge whether the wider burger menu feels expensive, average, or unusually good value in their market.',
+										'That makes the Big Mac page useful not only for one burger price check, but also as a decision point before moving into the wider burgers guide, the full menu directory, or the deals and McValue coverage.',
+									),
+								),
+							),
+							'related_links' => array(
+								array(
+									'label'       => 'Read the burgers menu prices pillar',
+									'url'         => $this->get_seeded_page_url( 'burgers-menu' ),
+									'description' => 'Compare Big Mac pricing against the wider burger ladder and meal context.',
+								),
+								array(
+									'label'       => 'Open the live burgers category page',
+									'url'         => $this->get_menu_category_page_url( 'burgers' ),
+									'description' => 'Jump into the tracked burgers category and item pages.',
+								),
+								array(
+									'label'       => 'Read the deals and McValue guide',
+									'url'         => $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ),
+									'description' => 'Use this when the real question is burger value rather than the standalone Big Mac price.',
+								),
+							),
+						)
+					),
+				),
+				'mcdonalds-app-deals' => array(
+					'title'   => 'McDonald&#8217;s App Deals',
+					'content' => $this->build_seeded_support_topic_page_content(
+						array(
+							'intro'         => array(
+								'Our McDonald&#8217;s App Deals guide tracks the most useful USA app offers, including McValue bundles, buy-one-add-one deals, meal discounts, rewards offers, and limited-time promotions that can lower the cost of popular items.',
+								'This page is especially useful for readers whose final price decision depends more on app participation than on the static board price, because app-only deals can change the real best-value choice across burgers, breakfast, fries, nuggets, and desserts.',
+							),
+							'highlights'    => array(
+								'App pricing can create a different value story from the counter price or delivery total.',
+								'Rewards and meal deals often overlap, so the best next step is usually to compare both before ordering.',
+								'Local participation can still vary, which is why the live app remains the final checkpoint.',
+							),
+							'sections'      => array(
+								array(
+									'heading'    => 'What readers usually compare on an app-deals page',
+									'paragraphs' => array(
+										'Most users on this page are not simply asking whether the app has deals. They are trying to decide whether an app coupon beats a meal deal, whether points redemption makes more sense than cash savings, and whether the cheapest local order is actually found inside McValue rather than the app banner itself.',
+									),
+								),
+							),
+							'related_links' => array(
+								array(
+									'label'       => 'Read the deals and McValue guide',
+									'url'         => $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ),
+									'description' => 'Compare app savings against the broader McDonald\'s USA value structure.',
+								),
+								array(
+									'label'       => 'Read the rewards guide',
+									'url'         => $this->get_seeded_page_url( 'rewards-guide' ),
+									'description' => 'Go deeper when the question is about points, redemptions, and repeat-use value.',
+								),
+								array(
+									'label'       => 'Open the live deals category page',
+									'url'         => $this->get_menu_category_page_url( 'deals' ),
+									'description' => 'See the current tracked deals page inside the live menu directory.',
+								),
+							),
+						)
+					),
+				),
+				'calorie-counter' => array(
+					'title'   => 'Calorie Counter',
+					'content' => $this->build_seeded_support_topic_page_content(
+						array(
+							'intro'         => array(
+								'The McDonald&#8217;s Menu Prices USA calorie counter page helps you compare menu items by calories so you can spot lighter burgers, breakfast choices, sides, drinks, and dessert options more easily.',
+								'Readers typically use this page when calories and value need to be considered together, especially for burgers, breakfast, fries, sweet drinks, and desserts where the final order total can change quickly.',
+							),
+							'highlights'    => array(
+								'Calories usually matter most when readers are comparing a full meal rather than one item in isolation.',
+								'Large fries, drink upgrades, and desserts often create the biggest jump in the order.',
+								'Ingredient and allergen decisions should still be confirmed with official McDonald\'s sources.',
+							),
+							'related_links' => array(
+								array(
+									'label'       => 'Read the nutrition, calories, and allergens guide',
+									'url'         => $this->get_seeded_page_url( 'mcdonalds-nutrition-calories-allergens' ),
+									'description' => 'Open the main nutrition pillar for broader calorie and allergen context.',
+								),
+								array(
+									'label'       => 'Read the desserts menu prices pillar',
+									'url'         => $this->get_seeded_page_url( 'sweets-treats' ),
+									'description' => 'Desserts and shakes are one of the most common calorie-comparison follow-ups.',
+								),
+								array(
+									'label'       => 'Read the drinks menu prices pillar',
+									'url'         => $this->get_seeded_page_url( 'beverage-menu' ),
+									'description' => 'Use the drinks pillar when beverage calories are driving the decision.',
+								),
+							),
+						)
+					),
+				),
+				'breakfast-hours' => array(
+					'title'   => 'Breakfast Hours',
+					'content' => $this->build_seeded_support_topic_page_content(
+						array(
+							'intro'         => array(
+								'This page explains typical McDonald&#8217;s breakfast hours in the USA, including when breakfast usually ends and which menu items are normally available in the morning window.',
+								'Breakfast timing is one of the most important practical filters on a McDonald\'s USA order because breakfast items disappear before many readers have finished comparing prices, calories, and combos.',
+							),
+							'highlights'    => array(
+								'Morning availability often matters more than the headline breakfast price.',
+								'Breakfast end times can differ by day, location, and store format.',
+								'Use this page with the breakfast menu pages when you need both timing and price context together.',
+							),
+							'related_links' => array(
+								array(
+									'label'       => 'Read the breakfast menu prices pillar',
+									'url'         => $this->get_seeded_page_url( 'breakfast-menu' ),
+									'description' => 'Combine breakfast timing with the full breakfast pricing and value guide.',
+								),
+								array(
+									'label'       => 'Open the live breakfast category page',
+									'url'         => $this->get_menu_category_page_url( 'breakfast' ),
+									'description' => 'Jump into the tracked breakfast category and item pages.',
+								),
+								array(
+									'label'       => 'Read the deals and McValue guide',
+									'url'         => $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ),
+									'description' => 'Useful when your breakfast decision depends on morning app offers and value structures.',
+								),
+							),
+						)
+					),
+				),
+				'allergen-guide' => array(
+					'title'   => 'Allergen Guide',
+					'content' => $this->build_seeded_support_topic_page_content(
+						array(
+							'intro'         => array(
+								'Our allergen guide explains how to approach McDonald&#8217;s USA menu choices more carefully, but always use the official McDonald&#8217;s allergen tool and restaurant information for final decisions.',
+								'This page supports the broader pricing and category pages by showing readers where extra verification matters most before they move from research into a final food decision.',
+							),
+							'highlights'    => array(
+								'Use unofficial menu guides for planning, comparison, and narrowing choices.',
+								'Use official McDonald\'s sources for final allergen, ingredient, and preparation checks.',
+								'Breakfast, burgers, nuggets, desserts, and drinks are the most common ingredient research paths.',
+							),
+							'related_links' => array(
+								array(
+									'label'       => 'Read the nutrition, calories, and allergens guide',
+									'url'         => $this->get_seeded_page_url( 'mcdonalds-nutrition-calories-allergens' ),
+									'description' => 'Use the main nutrition pillar for broader ingredient, calorie, and menu-comparison context.',
+								),
+								array(
+									'label'       => 'Read the breakfast menu prices pillar',
+									'url'         => $this->get_seeded_page_url( 'breakfast-menu' ),
+									'description' => 'Breakfast is one of the most common allergen and ingredient research paths.',
+								),
+								array(
+									'label'       => 'Read the burgers menu prices pillar',
+									'url'         => $this->get_seeded_page_url( 'burgers-menu' ),
+									'description' => 'Use the burgers pillar when the ingredient question is tied to a burger choice.',
+								),
+							),
+						)
+					),
+				),
+				'price-history' => array(
+					'title'   => 'Price History',
+					'content' => $this->build_seeded_support_topic_page_content(
+						array(
+							'intro'         => array(
+								'The McDonald&#8217;s Menu Prices USA price history page tracks how popular menu prices have changed over time, helping readers compare current pricing with previous months and seasonal promotions.',
+								'Readers usually land here because they want context for a price increase or because a current local total feels different from what they remember paying before.',
+							),
+							'highlights'    => array(
+								'Price-history pages work best when used alongside current menu pages, not instead of them.',
+								'Limited-time items, app deals, and regional pricing can distort year-to-year comparisons.',
+								'Flagship burgers, breakfast staples, nuggets, fries, and drinks are usually the clearest comparison anchors.',
+							),
+							'related_links' => array(
+								array(
+									'label'       => 'Read the prices by state pillar',
+									'url'         => $this->get_seeded_page_url( 'mcdonalds-prices-by-state' ),
+									'description' => 'Use the regional pillar when the real question is local variation rather than time-based change alone.',
+								),
+								array(
+									'label'       => 'Read the burgers menu prices pillar',
+									'url'         => $this->get_seeded_page_url( 'burgers-menu' ),
+									'description' => 'Big Mac and burger comparisons are one of the clearest ways to track price movement over time.',
+								),
+								array(
+									'label'       => 'Read the breakfast menu prices pillar',
+									'url'         => $this->get_seeded_page_url( 'breakfast-menu' ),
+									'description' => 'Breakfast staples also make strong history anchors because readers remember them well.',
+								),
+							),
+						)
+					),
+				),
+				'delivery-guide' => array(
+					'title'   => 'Delivery Guide',
+					'content' => $this->build_seeded_support_topic_page_content(
+						array(
+							'intro'         => array(
+								'This delivery guide explains what to expect when ordering McDonald&#8217;s USA through delivery platforms, including price differences, fees, bundle availability, and app-linked promotions.',
+								'Delivery can change the real menu-price story more than many readers expect because the delivered total is shaped by platform fees, bundled promotions, menu availability, and location-specific service coverage.',
+							),
+							'highlights'    => array(
+								'The cheapest in-store order is not always the cheapest delivered order.',
+								'Delivery menus can differ from in-store menus and app pickup menus.',
+								'Deals, McValue, and rewards pages are the best follow-up when you want to compare delivery against pickup or counter value.',
+							),
+							'related_links' => array(
+								array(
+									'label'       => 'Read the deals and McValue guide',
+									'url'         => $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ),
+									'description' => 'Compare delivery totals against the current value structure before ordering.',
+								),
+								array(
+									'label'       => 'Read the McDonald\'s app deals page',
+									'url'         => $this->get_seeded_page_url( 'mcdonalds-app-deals' ),
+									'description' => 'Use this when pickup or app-led ordering may beat delivery on final cost.',
+								),
+								array(
+									'label'       => 'Read the prices by state pillar',
+									'url'         => $this->get_seeded_page_url( 'mcdonalds-prices-by-state' ),
+									'description' => 'Regional pricing is one of the reasons delivered totals vary so much across markets.',
+								),
+							),
+						)
+					),
+				),
+				'rewards-guide' => array(
+					'title'   => 'Rewards Guide',
+					'content' => $this->build_seeded_support_topic_page_content(
+						array(
+							'intro'         => array(
+								'This guide covers how MyMcDonald&#8217;s Rewards fits into current USA pricing, including points, redemptions, app-only discounts, and how rewards interact with meal deals.',
+								'Rewards matter because many readers are not only comparing menu prices. They are also deciding whether to pay cash, redeem points, or stack a local app offer into the same order path.',
+							),
+							'highlights'    => array(
+								'Rewards change the practical value of burgers, breakfast, fries, drinks, and desserts.',
+								'The most useful comparison is often rewards versus a meal deal, not rewards in isolation.',
+								'The live app remains the final authority on what a reader can redeem locally.',
+							),
+							'related_links' => array(
+								array(
+									'label'       => 'Read the McDonald\'s app deals page',
+									'url'         => $this->get_seeded_page_url( 'mcdonalds-app-deals' ),
+									'description' => 'Open the app page when the question is about live offers and app-led savings.',
+								),
+								array(
+									'label'       => 'Read the deals and McValue guide',
+									'url'         => $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ),
+									'description' => 'Compare points value against the broader budget and meal-deal strategy.',
+								),
+								array(
+									'label'       => 'Open the live deals category page',
+									'url'         => $this->get_menu_category_page_url( 'deals' ),
+									'description' => 'See the current tracked deals page inside the live directory.',
+								),
+							),
+						)
+					),
+				),
+				'limited-time-menu' => array(
+					'title'   => 'Limited-Time Menu',
+					'content' => $this->build_seeded_support_topic_page_content(
+						array(
+							'intro'         => array(
+								'This page highlights current limited-time McDonald&#8217;s USA menu items, seasonal sandwiches, desserts, breakfast collaborations, and short-run deal bundles that may not stay on the menu for long.',
+								'Limited-time pages are valuable because they help readers separate evergreen menu pricing from short-run releases that can quickly change the burger, dessert, fries, breakfast, and deals conversation.',
+							),
+							'highlights'    => array(
+								'Limited-time menu pages are most useful when paired with the live what\'s-new category page.',
+								'Short-run items can temporarily reset normal value comparisons inside burgers, breakfast, and desserts.',
+								'Regional availability and app promotion support can still vary by restaurant.',
+							),
+							'related_links' => array(
+								array(
+									'label'       => 'Open the live what\'s-new category page',
+									'url'         => $this->get_menu_category_page_url( 'whats-new' ),
+									'description' => 'See the tracked limited-time item cards and individual item pages.',
+								),
+								array(
+									'label'       => 'Read the burgers menu prices pillar',
+									'url'         => $this->get_seeded_page_url( 'burgers-menu' ),
+									'description' => 'Use this when a limited-time burger needs wider comparison against core burgers.',
+								),
+								array(
+									'label'       => 'Read the deals and McValue guide',
+									'url'         => $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ),
+									'description' => 'Helpful when a short-run item also appears inside a bundle, app promotion, or meal-deal context.',
+								),
+							),
+						)
+					),
+				),
+				'snack-wrap' => array(
+					'title'   => 'Snack Wrap',
+					'content' => $this->build_seeded_support_topic_page_content(
+						array(
+							'intro'         => array(
+								'This guide tracks the current McDonald&#8217;s USA snack wrap lineup, including spicy and ranch builds, pricing, and calories.',
+								'Snack Wrap interest is usually tied to lighter lunch decisions, lower-entry chicken comparisons, or the question of whether a wrap order makes more sense than a sandwich or nugget meal.',
+							),
+							'highlights'    => array(
+								'Readers normally compare Snack Wrap pricing against McChicken, McCrispy, and nuggets rather than against wraps alone.',
+								'Snack Wrap pages work best when paired with the chicken-and-fish pillar and the live wrap category page.',
+								'Calories, sauce choice, and add-on sides still shape the final order value.',
+							),
+							'related_links' => array(
+								array(
+									'label'       => 'Open the live Snack Wrap category page',
+									'url'         => $this->get_menu_category_page_url( 'snackwrap' ),
+									'description' => 'See the tracked wrap cards and individual Snack Wrap item pages.',
+								),
+								array(
+									'label'       => 'Read the chicken and fish menu prices pillar',
+									'url'         => $this->get_seeded_page_url( 'chicken-fish-menu' ),
+									'description' => 'Compare Snack Wrap value against the wider chicken menu.',
+								),
+								array(
+									'label'       => 'Read the deals and McValue guide',
+									'url'         => $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ),
+									'description' => 'Use this when the Snack Wrap question is really about lower-cost order building.',
+								),
+							),
+						)
+					),
+				),
+				'dollar-menu' => array(
+					'title'   => '$1 $2 $3 Menu',
+					'content' => $this->build_seeded_support_topic_page_content(
+						array(
+							'intro'         => array(
+								'This guide covers the budget-focused McDonald&#8217;s USA value lineup, including lower-cost breakfast picks, burgers, nuggets, fries, and other entry-price items.',
+								'Readers still search for a dollar-menu-style answer even when the live savings structure is now shaped by McValue, meal deals, and app offers rather than one simple national low-price menu.',
+							),
+							'highlights'    => array(
+								'Use this page when the real question is the lowest realistic spend rather than a premium combo meal.',
+								'The best next step is usually the deals and McValue pillar because that reflects the live structure more accurately.',
+								'Breakfast, burgers, nuggets, fries, and dessert add-ons are the most common low-entry comparison paths.',
+							),
+							'related_links' => array(
+								array(
+									'label'       => 'Read the deals and McValue guide',
+									'url'         => $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ),
+									'description' => 'Open the main value pillar for the current McDonald\'s USA savings structure.',
+								),
+								array(
+									'label'       => 'Open the live McValue category page',
+									'url'         => $this->get_menu_category_page_url( 'mcvalue' ),
+									'description' => 'See the tracked current value items and their item pages.',
+								),
+								array(
+									'label'       => 'Read the extra value meals guide',
+									'url'         => $this->get_seeded_page_url( 'extra-value-meals' ),
+									'description' => 'Use this when the low-cost question turns into a full combo-meal comparison.',
+								),
+							),
+						)
+					),
+				),
+				'extra-value-meals' => array(
+					'title'   => 'Extra Value Meals',
+					'content' => $this->build_seeded_support_topic_page_content(
+						array(
+							'intro'         => array(
+								'This guide covers McDonald&#8217;s USA combo meals for breakfast, lunch, and dinner, including burger meals, chicken meals, fish meals, and wrap meal pricing.',
+								'Extra Value Meals matter because many readers do not buy a standalone sandwich. They want the real full-order comparison with fries and a drink included, which makes meal pricing more useful than the base item price alone.',
+							),
+							'highlights'    => array(
+								'Meal pricing helps users compare the true full-order cost instead of only the main item.',
+								'Breakfast, burgers, chicken, fish, nuggets, and wraps all feed into the wider meal comparison path.',
+								'App offers and McValue bundles can still compete with traditional meal pricing, so value pages matter here too.',
+							),
+							'related_links' => array(
+								array(
+									'label'       => 'Open the live extra value meals category page',
+									'url'         => $this->get_menu_category_page_url( 'meals' ),
+									'description' => 'See the tracked meal cards and item pages inside the live directory.',
+								),
+								array(
+									'label'       => 'Read the deals and McValue guide',
+									'url'         => $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ),
+									'description' => 'Compare standard meal pricing against bundle and app-led savings.',
+								),
+								array(
+									'label'       => 'Open the full menu directory',
+									'url'         => $this->get_menu_directory_root_url(),
+									'description' => 'Jump back to the full menu when you need the category-level context behind a meal.',
+								),
+							),
+						)
+					),
+				),
+				'shareables-bundles' => array(
+					'title'   => 'Shareables & Bundles',
+					'content' => $this->build_seeded_support_topic_page_content(
+						array(
+							'intro'         => array(
+								'This guide covers larger McDonald&#8217;s USA share boxes and bundles, including 40-piece McNuggets, large fries packs, cookie totes, and family-style ordering ideas.',
+								'Shareable pages help readers who are building group orders rather than solo meals. That usually changes what value means, because the best family-style total can come from nuggets, fries, desserts, drinks, or a mix of separate categories.',
+							),
+							'highlights'    => array(
+								'Group orders should be compared by total usefulness, not just by the biggest headline pack.',
+								'Shareables connect most strongly with nuggets, fries, desserts, and drinks pages.',
+								'App participation and local availability can still affect which bundles actually appear at checkout.',
+							),
+							'related_links' => array(
+								array(
+									'label'       => 'Read the nuggets and strips menu prices pillar',
+									'url'         => $this->get_seeded_page_url( 'nuggets-and-strips' ),
+									'description' => 'Nuggets are one of the strongest shareable-order anchors on the site.',
+								),
+								array(
+									'label'       => 'Read the fries and sides menu prices pillar',
+									'url'         => $this->get_seeded_page_url( 'fries-sides' ),
+									'description' => 'Fries often decide the side-order cost of a group meal.',
+								),
+								array(
+									'label'       => 'Read the drinks menu prices pillar',
+									'url'         => $this->get_seeded_page_url( 'beverage-menu' ),
+									'description' => 'Drinks often complete the group-order value comparison.',
+								),
+							),
+						)
+					),
+				),
+			),
+			$this->get_seeded_pillar_support_pages()
+		);
+	}
+
+	/**
+	 * Return the long-form pillar support pages used for topical SEO coverage.
+	 *
+	 * @return array<string, array<string, string>>
+	 */
+	protected function get_seeded_pillar_support_pages() {
 		return array(
-			'about' => array(
-				'title'   => 'About Us',
-				'content' => '<!-- wp:paragraph --><p>McDonald&#8217;s Menu Prices USA is an independent guide to McDonald&#8217;s USA menu prices, calories, deals, breakfast hours, drinks, desserts, and combo meals. We update the site regularly so readers can compare prices, understand category coverage, and check new menu rollouts without relying on scattered screenshots.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>We are not affiliated with McDonald&#8217;s. Prices can vary by location, franchise, app offer, taxes, and delivery platform.</p><!-- /wp:paragraph -->',
-			),
-			'privacy-policy' => array(
-				'title'   => 'Privacy Policy',
-				'content' => '<!-- wp:paragraph --><p>This Privacy Policy explains how McDonald&#8217;s Menu Prices USA may collect and use limited information such as analytics data, contact submissions, and advertising-related data when you use the site. We only use this information to operate, improve, and protect the website.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>If you contact us directly, we may retain the information you send so we can respond. Third-party services such as analytics, advertising, and embedded tools may also process data according to their own policies.</p><!-- /wp:paragraph -->',
-			),
-			'cookie-policy' => array(
-				'title'   => 'Cookie Policy',
-				'content' => '<!-- wp:paragraph --><p>McDonald&#8217;s Menu Prices USA may use cookies and similar technologies to remember preferences, measure traffic, and support advertising or performance tools. Some cookies are essential for the site to work properly, while others help us understand how visitors use the site.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>You can usually control cookies through your browser settings. Disabling some cookies may affect how parts of the site function.</p><!-- /wp:paragraph -->',
-			),
-			'contact' => array(
-				'title'   => 'Contact',
-				'content' => '<!-- wp:paragraph --><p>Use this page to contact McDonald&#8217;s Menu Prices USA about price corrections, menu updates, advertising questions, or general feedback. If you spot a menu price that looks outdated, include the item name, restaurant location, and latest observed price so we can review it quickly.</p><!-- /wp:paragraph -->',
-			),
-			'disclaimer' => array(
-				'title'   => 'Disclaimer',
-				'content' => '<!-- wp:paragraph --><p>McDonald&#8217;s Menu Prices USA is an independent, unofficial website and is not affiliated with, endorsed by, or connected to McDonald&#8217;s Corporation. Prices, calories, availability, and promotions may vary by location and date.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>Always confirm important details such as allergens, breakfast hours, delivery pricing, and final local totals with the official McDonald&#8217;s app, website, or restaurant before ordering.</p><!-- /wp:paragraph -->',
-			),
-			'ad-disclosure' => array(
-				'title'   => 'Ad Disclosure',
-				'content' => '<!-- wp:paragraph --><p>McDonald&#8217;s Menu Prices USA may display advertisements, sponsored placements, or monetised content to support site operations. Advertising relationships do not change our editorial approach: we still aim to provide clear, practical, and regularly updated McDonald&#8217;s USA price information.</p><!-- /wp:paragraph -->',
-			),
-			'sitemap' => array(
-				'title'   => 'Sitemap',
-				'content' => '<!-- wp:paragraph --><p>Browse the main areas of McDonald&#8217;s Menu Prices USA below, or use the XML sitemap at <a href="' . esc_url( home_url( '/sitemap.xml' ) ) . '">' . esc_html( home_url( '/sitemap.xml' ) ) . '</a> for the crawler-friendly version.</p><!-- /wp:paragraph --><!-- wp:shortcode -->[rank_math_html_sitemap]<!-- /wp:shortcode -->',
-			),
-			'big-mac-price-usa' => array(
-				'title'   => 'Big Mac Price USA',
-				'content' => '<!-- wp:paragraph --><p>This guide focuses on the current Big Mac price in the USA, including sandwich pricing, combo meal pricing, calorie information, and how the Big Mac compares with other burger choices on the McDonald&#8217;s USA menu.</p><!-- /wp:paragraph -->',
-			),
-			'mcdonalds-app-deals' => array(
-				'title'   => 'McDonald&#8217;s App Deals',
-				'content' => '<!-- wp:paragraph --><p>Our McDonald&#8217;s App Deals guide tracks the most useful USA app offers, including McValue bundles, buy-one-add-one deals, meal discounts, rewards offers, and limited-time promotions that can lower the cost of popular items.</p><!-- /wp:paragraph -->',
-			),
-			'calorie-counter' => array(
-				'title'   => 'Calorie Counter',
-				'content' => '<!-- wp:paragraph --><p>The McDonald&#8217;s Menu Prices USA calorie counter page helps you compare menu items by calories so you can spot lighter burgers, breakfast choices, sides, drinks, and dessert options more easily.</p><!-- /wp:paragraph -->',
-			),
-			'breakfast-hours' => array(
-				'title'   => 'Breakfast Hours',
-				'content' => '<!-- wp:paragraph --><p>This page explains typical McDonald&#8217;s breakfast hours in the USA, including when breakfast usually ends and which menu items are normally available in the morning window.</p><!-- /wp:paragraph -->',
-			),
-			'allergen-guide' => array(
-				'title'   => 'Allergen Guide',
-				'content' => '<!-- wp:paragraph --><p>Our allergen guide explains how to approach McDonald&#8217;s USA menu choices more carefully, but always use the official McDonald&#8217;s allergen tool and restaurant information for final decisions.</p><!-- /wp:paragraph -->',
-			),
-			'price-history' => array(
-				'title'   => 'Price History',
-				'content' => '<!-- wp:paragraph --><p>The McDonald&#8217;s Menu Prices USA price history page tracks how popular menu prices have changed over time, helping readers compare current pricing with previous months and seasonal promotions.</p><!-- /wp:paragraph -->',
-			),
-			'delivery-guide' => array(
-				'title'   => 'Delivery Guide',
-				'content' => '<!-- wp:paragraph --><p>This delivery guide explains what to expect when ordering McDonald&#8217;s USA through delivery platforms, including price differences, fees, bundle availability, and app-linked promotions.</p><!-- /wp:paragraph -->',
-			),
-			'rewards-guide' => array(
-				'title'   => 'Rewards Guide',
-				'content' => '<!-- wp:paragraph --><p>This guide covers how MyMcDonald&#8217;s Rewards fits into current USA pricing, including points, redemptions, app-only discounts, and how rewards interact with meal deals.</p><!-- /wp:paragraph -->',
-			),
-			'limited-time-menu' => array(
-				'title'   => 'Limited-Time Menu',
-				'content' => '<!-- wp:paragraph --><p>This page highlights current limited-time McDonald&#8217;s USA menu items, seasonal sandwiches, desserts, breakfast collaborations, and short-run deal bundles that may not stay on the menu for long.</p><!-- /wp:paragraph -->',
-			),
 			'breakfast-menu' => array(
-				'title'   => 'Breakfast Menu',
-				'content' => '<!-- wp:paragraph --><p>This guide covers the McDonald&#8217;s USA breakfast menu, including biscuits, McMuffins, McGriddles, bagels, hotcakes, oatmeal, hash browns, and breakfast meal pricing.</p><!-- /wp:paragraph -->',
+				'title'   => "McDonald's Breakfast Menu Prices USA",
+				'content' => $this->build_seeded_category_pillar_page_content(
+					array(
+						'category'               => 'breakfast',
+						'page_label'             => "McDonald's Breakfast Menu Prices USA",
+						'focus_label'            => "McDonald's breakfast menu",
+						'include_items'          => array( 'McMuffins', 'biscuits', 'McGriddles', 'bagels', 'hotcakes', 'oatmeal', 'Hash Browns' ),
+						'value_points'           => array(
+							'Standalone sandwiches usually make the easiest price-to-satiety comparison when you only want breakfast and coffee.',
+							'Meal pricing matters most when you also want Hash Browns and a drink, because that is where breakfast totals rise quickly.',
+							'Breakfast buy-one-add-one offers and app deals can change the real value equation versus the posted menu price.',
+						),
+						'nutrition_points'       => array(
+							'Bagels, platters, and larger breakfast sandwiches can climb faster in calories than the simplest McMuffin builds.',
+							'Hash Browns are one of the most searched breakfast add-ons because they affect both total calories and total spend.',
+							'Readers who want a lighter breakfast usually compare oatmeal, smaller sandwiches, and coffee choices before adding sides.',
+						),
+						'availability_paragraphs' => array(
+							'Breakfast is one of the most time-sensitive areas of the McDonald\'s USA menu. Many readers are not just comparing prices; they are checking whether they can still order the item before breakfast service ends at their local restaurant.',
+							'That is why this breakfast pillar works best alongside the separate breakfast-hours guide and the live breakfast category page. Use this page for the broader price and menu overview, then use the item pages for focused checks on one sandwich, one meal, or one breakfast side.',
+						),
+						'featured_items'         => array( 'Egg McMuffin', 'Sausage McMuffin with Egg', 'Sausage Biscuit', 'Hash Browns', 'Hotcakes' ),
+						'faq_items'              => array(
+							array(
+								'question' => 'What are the most searched McDonald\'s breakfast items in the USA?',
+								'answer'   => 'The most compared breakfast items on menu-price sites are usually Egg McMuffin, Sausage McMuffin with Egg, Sausage Biscuit, Hash Browns, Hotcakes, and breakfast combo meals. They cover the main price tiers readers care about: classic sandwich, heavier sandwich, side item, and full breakfast order.',
+							),
+							array(
+								'question' => 'Does the McDonald\'s breakfast menu price include a drink?',
+								'answer'   => 'Usually not. On most menu pages the sandwich price and the meal price are different numbers, so readers need to decide whether they are comparing a single breakfast item or the upgraded combo total with a drink and Hash Browns.',
+							),
+							array(
+								'question' => 'Why do breakfast prices vary from one McDonald\'s location to another?',
+								'answer'   => 'Breakfast prices can change because of franchise-level pricing, state and city operating costs, local taxes, app participation, and whether you are ordering in store, in the app, or through delivery. The site shows dollar prices for planning, but the checkout total may still move slightly.',
+							),
+							array(
+								'question' => 'What is the best way to use this breakfast guide?',
+								'answer'   => 'Use this pillar to understand the overall breakfast lineup, compare value and calories, and identify the items worth opening next. Then move into the live breakfast category page or individual item pages when you need one exact sandwich, meal, or side.',
+							),
+						),
+						'related_links'          => array(
+							array(
+								'label'       => 'Browse the live breakfast category page',
+								'url'         => $this->get_menu_category_page_url( 'breakfast' ),
+								'description' => 'Open the managed breakfast directory with all tracked breakfast items and their item pages.',
+							),
+							array(
+								'label'       => 'Check breakfast hours',
+								'url'         => $this->get_seeded_page_url( 'breakfast-hours' ),
+								'description' => 'See the timing context that matters most when breakfast availability is the real question.',
+							),
+							array(
+								'label'       => 'Open the full menu directory',
+								'url'         => $this->get_menu_directory_root_url(),
+								'description' => 'Jump back to the full menu if you also want burgers, deals, drinks, and desserts.',
+							),
+							array(
+								'label'       => 'Read the deals and McValue guide',
+								'url'         => $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ),
+								'description' => 'Compare breakfast pricing against the current savings and app-led value story.',
+							),
+						),
+					)
+				),
 			),
 			'burgers-menu' => array(
-				'title'   => 'Burgers Menu',
-				'content' => '<!-- wp:paragraph --><p>This guide covers McDonald&#8217;s USA burger prices, including Big Mac, Quarter Pounder, McDouble, Daily Double, cheeseburgers, hamburgers, and combo meal pricing.</p><!-- /wp:paragraph -->',
+				'title'   => "McDonald's Burgers Menu Prices USA",
+				'content' => $this->build_seeded_category_pillar_page_content(
+					array(
+						'category'        => 'burgers',
+						'page_label'      => "McDonald's Burgers Menu Prices USA",
+						'focus_label'     => "McDonald's burgers menu",
+						'include_items'   => array( 'Big Mac', 'Quarter Pounder builds', 'McDouble', 'Daily Double', 'cheeseburgers', 'hamburgers', 'limited-time burger releases' ),
+						'value_points'    => array(
+							'Burger buyers usually compare three tiers: signature burgers, mid-tier doubles, and the cheapest single-burger options.',
+							'Meal pricing can matter more than sandwich pricing when fries and a drink are already part of the order plan.',
+							'Limited-time burger launches such as BIG ARCH-style releases create short windows where price, hype, and curiosity all rise together.',
+						),
+						'nutrition_points' => array(
+							'Double-patty Quarter Pounder builds and limited-time larger burgers sit at a very different calorie level from simple cheeseburgers.',
+							'Burger add-ons such as bacon, extra cheese, and meal upgrades matter because they push both price and calories upward quickly.',
+							'Many readers want the burger page to answer value questions and nutrition questions at the same time, not as separate research tasks.',
+						),
+						'availability_paragraphs' => array(
+							'Burger pricing is one of the clearest signals of how McDonald\'s USA balances value and signature ordering. A burger pillar has to do more than list names: it needs to explain where Big Mac and Quarter Pounder pricing sits relative to McDouble, Hamburger, and combo meal pricing.',
+							'That is also where a category pillar helps more than a single-item post. Readers can decide whether they want the flagship burger, the best value burger, or the filling burger meal before they jump to an individual item page.',
+						),
+						'featured_items'  => array( 'Big Mac', 'Quarter Pounder with Cheese', 'Double Quarter Pounder with Cheese', 'McDouble', 'Hamburger', 'The BIG ARCH' ),
+						'faq_items'       => array(
+							array(
+								'question' => 'Which McDonald\'s burgers are compared most often?',
+								'answer'   => 'The biggest comparison cluster is Big Mac versus Quarter Pounder with Cheese versus McDouble. Those three products cover signature burger pricing, quarter-pound beef positioning, and lower-cost double-beef value in one glance.',
+							),
+							array(
+								'question' => 'Why is a burger meal usually a better comparison than the sandwich alone?',
+								'answer'   => 'Many customers do not order a burger on its own. They are deciding between complete meals, so fries, drink size, and the meal upgrade cost often matter more than a single posted sandwich price.',
+							),
+							array(
+								'question' => 'Do burger prices stay the same across the USA?',
+								'answer'   => 'No. Burger pricing changes by market, store operator, taxes, promotions, and ordering channel. A burger guide should be treated as a current planning resource rather than a promise that every location will show the same total.',
+							),
+							array(
+								'question' => 'What makes the burgers pillar different from a single Big Mac page?',
+								'answer'   => 'The pillar answers menu-level comparison questions. It helps readers understand the whole burger ladder, then move into the exact burger page once they know which item they actually want to compare in detail.',
+							),
+						),
+						'related_links'   => array(
+							array(
+								'label'       => 'Browse the live burgers category page',
+								'url'         => $this->get_menu_category_page_url( 'burgers' ),
+								'description' => 'Open the full burgers listing with tracked item cards and dedicated burger item pages.',
+							),
+							array(
+								'label'       => 'Check Big Mac pricing',
+								'url'         => $this->get_seeded_page_url( 'big-mac-price-usa' ),
+								'description' => 'Use the focused Big Mac guide if that is the one burger you need to compare first.',
+							),
+							array(
+								'label'       => 'Read the nutrition and allergens guide',
+								'url'         => $this->get_seeded_page_url( 'mcdonalds-nutrition-calories-allergens' ),
+								'description' => 'Compare burger calories, ingredients, and allergen considerations with the broader nutrition pillar.',
+							),
+							array(
+								'label'       => 'Read the deals and McValue guide',
+								'url'         => $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ),
+								'description' => 'See how burger prices line up against McValue meal deals and app-led savings.',
+							),
+						),
+					)
+				),
 			),
 			'chicken-fish-menu' => array(
-				'title'   => 'Chicken & Fish Menu',
-				'content' => '<!-- wp:paragraph --><p>This guide covers McDonald&#8217;s USA chicken and fish sandwiches, including McCrispy, McChicken, Filet-O-Fish, spicy builds, and sandwich meal pricing.</p><!-- /wp:paragraph -->',
+				'title'   => "McDonald's Chicken & Fish Menu Prices USA",
+				'content' => $this->build_seeded_category_pillar_page_content(
+					array(
+						'category'        => 'chickenfish',
+						'page_label'      => "McDonald's Chicken & Fish Menu Prices USA",
+						'focus_label'     => "McDonald's chicken and fish menu",
+						'include_items'   => array( 'McCrispy sandwiches', 'spicy builds', 'deluxe builds', 'McChicken', 'Filet-O-Fish', 'Snack Wrap crossovers' ),
+						'value_points'    => array(
+							'Chicken buyers often compare premium McCrispy sandwiches with lower-entry McChicken pricing before looking at meal totals.',
+							'Fish pricing matters differently because Filet-O-Fish readers are usually checking a specific preference item rather than an entire value tier.',
+							'Snack Wrap attention changes the category because it pulls lighter and lower-entry comparisons into the same decision path.',
+						),
+						'nutrition_points' => array(
+							'Spicy and deluxe builds can change both calories and perceived value versus a standard chicken sandwich.',
+							'The difference between a sandwich alone and a meal matters here because fries and drink upgrades can widen the final total quickly.',
+							'Readers usually want to compare texture, spice level, and calories at the same time when choosing among McCrispy variations.',
+						),
+						'availability_paragraphs' => array(
+							'This category is especially useful for readers deciding between burger alternatives, spicy chicken options, and fish sandwiches without bouncing between multiple pages. It also helps families and group orders when one person wants chicken and another wants nuggets or a wrap-style option.',
+							'That is why the chicken and fish pillar links outward to nuggets, strips, deals, and nutrition resources. The real buying decision is often broader than one sandwich, even when the search starts with one specific menu name.',
+							'Chicken and fish readers also tend to compare texture, spice, price, and meal practicality together. Some are looking for the crispier premium sandwich, some want the cheapest non-beef option, and some simply want to know whether Filet-O-Fish or a McCrispy build makes more sense for the money. That wider comparison intent is why the pillar adds real explanation instead of acting like a short ingredient list.',
+							'In practice, this means the category often works as a decision bridge between burgers on one side and nuggets or wraps on the other. The page helps readers understand where the chicken-and-fish lineup sits in the wider menu instead of forcing them to compare only one sandwich at a time.',
+						),
+						'featured_items'  => array( 'McCrispy', 'Spicy McCrispy', 'Deluxe McCrispy', 'McChicken', 'Filet-O-Fish', 'Spicy Snack Wrap' ),
+						'faq_items'       => array(
+							array(
+								'question' => 'What items are included in McDonald\'s chicken and fish pricing coverage?',
+								'answer'   => 'The category usually includes the core chicken sandwich range, spicy and deluxe variants, McChicken, Filet-O-Fish, and wrap-style products or related chicken entries when they are live in the attached menu data.',
+							),
+							array(
+								'question' => 'Why do readers compare chicken and fish together?',
+								'answer'   => 'Because they often serve the same search intent: a non-beef sandwich choice at McDonald\'s. Many people want the best alternative to a burger, so a shared category overview makes the comparison faster.',
+							),
+							array(
+								'question' => 'Do chicken sandwich meal prices matter more than the item price?',
+								'answer'   => 'Often yes. A large share of customers compare the complete order, not the sandwich alone, so fries, drink size, and any app discounts can make the meal price the more practical number.',
+							),
+							array(
+								'question' => 'What is the next step after reading this pillar?',
+								'answer'   => 'Use this guide to narrow the shortlist, then move into the live category page or a dedicated item page such as McCrispy, McChicken, or Filet-O-Fish when you need the exact current listing.',
+							),
+						),
+						'related_links'   => array(
+							array(
+								'label'       => 'Browse the live chicken and fish category page',
+								'url'         => $this->get_menu_category_page_url( 'chickenfish' ),
+								'description' => 'Open the managed chicken-and-fish directory with live item cards and direct item links.',
+							),
+							array(
+								'label'       => 'Open the nuggets and strips pillar',
+								'url'         => $this->get_seeded_page_url( 'nuggets-and-strips' ),
+								'description' => 'Compare sandwich orders against McNuggets and McCrispy Strips ordering paths.',
+							),
+							array(
+								'label'       => 'Read the deals and McValue guide',
+								'url'         => $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ),
+								'description' => 'Check where chicken meal deals and app offers affect the final value.',
+							),
+							array(
+								'label'       => 'Read the nutrition and allergens guide',
+								'url'         => $this->get_seeded_page_url( 'mcdonalds-nutrition-calories-allergens' ),
+								'description' => 'Compare chicken sandwich calories, ingredients, and allergen considerations.',
+							),
+						),
+					)
+				),
 			),
 			'nuggets-and-strips' => array(
-				'title'   => 'McNuggets & Strips',
-				'content' => '<!-- wp:paragraph --><p>This guide covers Chicken McNuggets, McCrispy Strips, share boxes, and combo options across the current McDonald&#8217;s USA menu.</p><!-- /wp:paragraph -->',
-			),
-			'snack-wrap' => array(
-				'title'   => 'Snack Wrap',
-				'content' => '<!-- wp:paragraph --><p>This guide tracks the current McDonald&#8217;s USA snack wrap lineup, including spicy and ranch builds, pricing, and calories.</p><!-- /wp:paragraph -->',
+				'title'   => "McDonald's McNuggets & Strips Menu Prices USA",
+				'content' => $this->build_seeded_category_pillar_page_content(
+					array(
+						'category'        => 'nuggets',
+						'page_label'      => "McDonald's McNuggets & Strips Menu Prices USA",
+						'focus_label'     => "McDonald's McNuggets and strips menu",
+						'include_items'   => array( '4-piece nuggets', '6-piece nuggets', '10-piece nuggets', '20-piece nuggets', '40-piece shareables', 'McCrispy Strips' ),
+						'value_points'    => array(
+							'Portion size is the first comparison point here because nugget buyers often scale their order to snack, meal, or group size.',
+							'Sauce choice can alter the perceived value of the order when extra sauces are paid add-ons rather than included dips.',
+							'Shareable boxes matter because the best value per piece is not always the same as the easiest order for one person.',
+						),
+						'nutrition_points' => array(
+							'Calories rise quickly with larger McNuggets counts and meal upgrades, even when the per-piece price looks attractive.',
+							'McCrispy Strips change the comparison because readers start judging nuggets versus strips, not just one nugget portion versus another.',
+							'Parents and family buyers often compare nugget pricing with Happy Meal pricing, which makes cross-category links especially useful.',
+						),
+						'availability_paragraphs' => array(
+							'This pillar is useful because nuggets are searched in several different ways: by piece count, by meal size, by family/share order, and by sauce pairing. A short item list does not explain those decision paths clearly enough on its own.',
+							'Use the category-level guide when you want to compare order sizes quickly, then move to the individual nugget or strips page when you need one exact portion or meal listing.',
+							'It is also one of the best menu areas for comparing convenience versus value. A small nugget order, a 10-piece meal, a shareable box, and a strips-based order can all serve completely different situations even though they live in the same category. That difference matters for both search intent and for the real-world buying decision the reader is trying to make.',
+							'Because of that flexibility, nuggets and strips also connect naturally to family ordering, app deals, sauces, and Happy Meal planning. The pillar gives readers a faster route through those connected questions than a thin price table ever could.',
+						),
+						'featured_items'  => array( '10 pc Chicken McNuggets', '20 pc Chicken McNuggets', '40 pc Chicken McNuggets', 'McCrispy Strips', '4 pc Chicken McNuggets', '6 pc Chicken McNuggets' ),
+						'faq_items'       => array(
+							array(
+								'question' => 'Why do McNuggets piece counts matter so much on a price page?',
+								'answer'   => 'Because the ordering intent changes with the count. A 4-piece or 6-piece order is usually a snack or child-focused comparison, while 10, 20, and 40 pieces move into meal, sharing, and family-value territory.',
+							),
+							array(
+								'question' => 'Should nuggets be compared to sandwiches or to Happy Meals?',
+								'answer'   => 'Both. Nuggets overlap with sandwich ordering for solo meals and with Happy Meals for family orders, so a good nuggets pillar helps readers move to the next most relevant page instead of trapping them in one narrow view.',
+							),
+							array(
+								'question' => 'Do sauce choices change the real total?',
+								'answer'   => 'Yes, especially if the restaurant charges for extra sauces beyond the included dips. That is why nuggets and strips work best when linked with the sauces page and the fries-and-sides page.',
+							),
+							array(
+								'question' => 'What is the best next click after this page?',
+								'answer'   => 'If you already know the size you want, open the exact item page. If you are still comparing a solo meal versus a family order, move next to the deals guide, sauces guide, or Happy Meal pillar.',
+							),
+						),
+						'related_links'   => array(
+							array(
+								'label'       => 'Browse the live nuggets and strips category page',
+								'url'         => $this->get_menu_category_page_url( 'nuggets' ),
+								'description' => 'Open the managed nuggets directory with every tracked portion and its dedicated item page.',
+							),
+							array(
+								'label'       => 'Open the Happy Meal pillar',
+								'url'         => $this->get_seeded_page_url( 'happy-meal-menu' ),
+								'description' => 'Compare nugget pricing against the kids-meal ordering path.',
+							),
+							array(
+								'label'       => 'Open the sauces and condiments pillar',
+								'url'         => $this->get_seeded_page_url( 'sauces-condiments' ),
+								'description' => 'See how dips and condiments affect the full nuggets order.',
+							),
+							array(
+								'label'       => 'Read the deals and McValue guide',
+								'url'         => $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ),
+								'description' => 'Compare nuggets pricing against McValue and meal-deal options.',
+							),
+						),
+					)
+				),
 			),
 			'fries-sides' => array(
-				'title'   => 'Fries & Sides',
-				'content' => '<!-- wp:paragraph --><p>This guide covers World Famous Fries in each size plus side items such as apple slices, hash browns, and other commonly available side add-ons in the USA menu.</p><!-- /wp:paragraph -->',
+				'title'   => "McDonald's Fries & Sides Prices USA",
+				'content' => $this->build_seeded_category_pillar_page_content(
+					array(
+						'category'        => 'sides',
+						'page_label'      => "McDonald's Fries & Sides Prices USA",
+						'focus_label'     => "McDonald's fries and sides menu",
+						'include_items'   => array( 'small fries', 'medium fries', 'large fries', 'Apple Slices', 'breakfast side crossovers such as Hash Browns' ),
+						'value_points'    => array(
+							'Fries size comparison is the most practical pricing task in this category because size upgrades affect almost every combo order.',
+							'Side-item pricing matters more than many readers expect because it shapes the final meal total after the main item has already been chosen.',
+							'Apple Slices and lighter side options matter when parents or calorie-conscious readers are comparing alternatives to fries.',
+						),
+						'nutrition_points' => array(
+							'Fries size changes both calories and value perception at the same time, which is why readers often search this category after already deciding on a burger or nugget order.',
+							'Some of the biggest calorie jumps on McDonald\'s orders happen when drinks and fries are upsized together rather than when the sandwich itself changes.',
+							'This category is especially helpful when you want to see whether a small side keeps the order balanced or whether a full meal upgrade is the better choice.',
+						),
+						'availability_paragraphs' => array(
+							'Fries and sides look simple, but they sit at the center of most combo decisions. The side category tells readers how much of the final total comes from the add-on portion of the order rather than the headline burger, chicken, or breakfast item.',
+							'That makes this page a useful bridge between the main entrée pages and the broader deals guide. It helps explain how a cheap item can turn into a meaningfully larger checkout total once the side strategy changes.',
+							'Readers also use the sides category to judge whether a combo is really worth taking. If the fries size increase, extra sauce, or side swap changes the total more than expected, the best value path can shift immediately. That makes this page an important comparison layer rather than a minor add-on page.',
+							'It also makes the sides pillar one of the clearest places to understand portion logic on the McDonald\'s menu. When readers know how much the side decision changes the order, they can compare burgers, nuggets, breakfast, and Happy Meals more realistically.',
+							'That same logic makes fries and sides one of the strongest support categories for SEO too. A lot of McDonald\'s searches that sound like burger or nuggets searches are really side-upgrade questions underneath, and this page helps answer that hidden intent directly.',
+						),
+						'featured_items'  => array( 'Small World Famous Fries', 'Medium World Famous Fries', 'World Famous Fries Large', 'Apple Slices' ),
+						'faq_items'       => array(
+							array(
+								'question' => 'Why is the fries size comparison so important?',
+								'answer'   => 'Because fries are one of the most common upgrades in a McDonald\'s order. Even readers who already know the sandwich they want often use a sides page to decide whether the meal upgrade really adds value.',
+							),
+							array(
+								'question' => 'Are fries and other sides part of most combo decisions?',
+								'answer'   => 'Yes. Fries sit at the center of burger, chicken, nugget, and deal comparisons, so the side page is one of the easiest places to understand how a final total is built.',
+							),
+							array(
+								'question' => 'What side alternatives matter most for families or lower-calorie orders?',
+								'answer'   => 'Apple Slices and smaller side sizes matter most when readers want to reduce spend or calories while keeping the order complete enough to feel like a real meal.',
+							),
+							array(
+								'question' => 'What should I open after this page?',
+								'answer'   => 'Use the fries and sides pillar before moving to the relevant burger, nuggets, Happy Meal, or deals page. The order makes more sense once you know whether you are building around a small side, a full combo, or a lighter alternative.',
+							),
+						),
+						'related_links'   => array(
+							array(
+								'label'       => 'Browse the live fries and sides category page',
+								'url'         => $this->get_menu_category_page_url( 'sides' ),
+								'description' => 'Open the live sides directory with current tracked fries sizes and side-item pages.',
+							),
+							array(
+								'label'       => 'Open the sauces and condiments pillar',
+								'url'         => $this->get_seeded_page_url( 'sauces-condiments' ),
+								'description' => 'Compare sides with the dips and packets most readers add next.',
+							),
+							array(
+								'label'       => 'Read the deals and McValue guide',
+								'url'         => $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ),
+								'description' => 'See how fries fit inside current meal deals and value combinations.',
+							),
+							array(
+								'label'       => 'Read the nutrition and allergens guide',
+								'url'         => $this->get_seeded_page_url( 'mcdonalds-nutrition-calories-allergens' ),
+								'description' => 'Use the nutrition pillar when calories matter as much as price.',
+							),
+						),
+					)
+				),
 			),
 			'happy-meal-menu' => array(
-				'title'   => 'Happy Meal Menu',
-				'content' => '<!-- wp:paragraph --><p>This guide covers current McDonald&#8217;s USA Happy Meal options, prices, calories, and the main kids&#8217; meal builds readers compare most often.</p><!-- /wp:paragraph -->',
+				'title'   => "McDonald's Happy Meal Prices USA",
+				'content' => $this->build_seeded_category_pillar_page_content(
+					array(
+						'category'        => 'happymeal',
+						'page_label'      => "McDonald's Happy Meal Prices USA",
+						'focus_label'     => "McDonald's Happy Meal menu",
+						'include_items'   => array( 'Hamburger Happy Meal', '4-piece McNuggets Happy Meal', '6-piece McNuggets Happy Meal', 'kid-focused side and drink choices' ),
+						'value_points'    => array(
+							'Happy Meal price comparisons are usually about the full kids-meal build rather than a single entrée item.',
+							'Parents often compare Hamburger Happy Meal pricing against nugget-based Happy Meals to judge the best family-value mix.',
+							'Happy Meal value is shaped by what is bundled, so it makes sense to compare it against nuggets, fries, and drink pricing rather than only against adult sandwiches.',
+						),
+						'nutrition_points' => array(
+							'Happy Meal calories matter because parents often compare the kid-focused total against a separate adult order plus a side.',
+							'The side and drink choice can change the overall balance of the meal, even when the headline entrée stays the same.',
+							'This category works best when paired with the fries, beverages, and nuggets pillars for a full family-order comparison.',
+						),
+						'availability_paragraphs' => array(
+							'Happy Meal searches are often less about one exact product and more about planning an entire family order. That is why this pillar focuses on the meal structure, price tiers, and cross-category decisions that affect the final checkout total.',
+							'Use this page to compare the main kids-meal options first, then move into nuggets, fries, drinks, or desserts when you want to build a broader family order around the Happy Meal choice.',
+							'Parents also use Happy Meal pages for a different kind of comparison than they use on burger or deals pages. They are not only asking what costs less; they are asking what feels easiest for a child, what looks balanced enough for the occasion, and whether the bundled meal is better than piecing together separate nuggets, fries, slices, and drinks. That makes the category unusually strong for both value and planning intent.',
+							'Because of that family-order context, Happy Meal content works best when it connects outward to nuggets, beverages, desserts, and fries instead of pretending the kids-meal decision sits on its own. The pillar helps parents understand the bundle first, then the rest of the site helps them plan the wider group order around it.',
+							'That planning role is especially useful for larger orders. Once more than one child or a mixed family meal is involved, readers need the Happy Meal page to work as a bundle guide, not just a list of kids items, so they can compare convenience, price, and add-on choices all in one place.',
+							'It also gives the site a stronger family-order layer overall. When readers can move cleanly from Happy Meals into nuggets, fries, drinks, and desserts, the whole menu becomes easier to use for group planning instead of only solo ordering.',
+							'That is why this page deserves more depth than a simple kids-menu summary. It sits at the point where bundle value, child-friendly choices, and whole-order convenience all come together in one decision.',
+							'For many families, that makes the Happy Meal page the easiest place to start the wider McDonald\'s order plan.',
+						),
+						'featured_items'  => array( 'Hamburger Happy Meal', '4 pc McNuggets Happy Meal', '6 pc McNuggets Happy Meal' ),
+						'faq_items'       => array(
+							array(
+								'question' => 'What are the main Happy Meal choices on the current USA menu?',
+								'answer'   => 'The main tracked Happy Meal options usually center on Hamburger Happy Meal plus nugget-based Happy Meals in different piece counts. Those are the options most families compare first on a price-and-calorie basis.',
+							),
+							array(
+								'question' => 'Why do families compare Happy Meals with nuggets and fries pages too?',
+								'answer'   => 'Because the real decision is often broader than one kids meal. Families want to know whether the bundled kids option is better than ordering nuggets, fries, and drinks separately around a larger group order.',
+							),
+							array(
+								'question' => 'Do Happy Meal totals vary by location?',
+								'answer'   => 'Yes. Like the rest of the menu, Happy Meal pricing can vary by market, franchise, tax, and app or delivery channel. The pillar gives a reliable planning range, but the live final total still needs a local check.',
+							),
+							array(
+								'question' => 'How should this page be used with the rest of the site?',
+								'answer'   => 'Start here for the kids-meal overview, then move to nuggets, fries, beverages, or desserts if you want to understand the bigger family-order picture around the Happy Meal choice.',
+							),
+						),
+						'related_links'   => array(
+							array(
+								'label'       => 'Browse the live Happy Meal category page',
+								'url'         => $this->get_menu_category_page_url( 'happymeal' ),
+								'description' => 'Open the managed Happy Meal directory with current tracked kids-meal items.',
+							),
+							array(
+								'label'       => 'Open the nuggets and strips pillar',
+								'url'         => $this->get_seeded_page_url( 'nuggets-and-strips' ),
+								'description' => 'Compare Happy Meal nugget builds against larger nugget portions and share boxes.',
+							),
+							array(
+								'label'       => 'Open the beverages pillar',
+								'url'         => $this->get_seeded_page_url( 'beverage-menu' ),
+								'description' => 'Check drink choices that usually matter in a family order.',
+							),
+							array(
+								'label'       => 'Open the sweets and treats pillar',
+								'url'         => $this->get_seeded_page_url( 'sweets-treats' ),
+								'description' => 'Add dessert context when the meal plan includes cones, pies, or McFlurry picks.',
+							),
+						),
+					)
+				),
 			),
 			'sweets-treats' => array(
-				'title'   => 'Sweets & Treats',
-				'content' => '<!-- wp:paragraph --><p>This guide covers McFlurry flavors, sundaes, shakes, cones, cookies, and apple pie pricing across the McDonald&#8217;s USA sweets and treats menu.</p><!-- /wp:paragraph -->',
+				'title'   => "McDonald's Desserts Menu Prices USA",
+				'content' => $this->build_seeded_category_pillar_page_content(
+					array(
+						'category'        => 'sweets',
+						'page_label'      => "McDonald's Desserts Menu Prices USA",
+						'focus_label'     => "McDonald's desserts menu",
+						'include_items'   => array( 'McFlurries', 'mini McFlurry picks', 'sundaes', 'cones', 'apple pie', 'cookies', 'shakes' ),
+						'value_points'    => array(
+							'Dessert buyers often compare premium McFlurry pricing against simple low-entry treats such as cones, cookies, or pie.',
+							'Mini McFlurry and value-led dessert options matter because they sit in a different price bracket than full-size frozen desserts.',
+							'Shakes and sundaes can look similar in the menu flow but serve different calorie and value expectations, so side-by-side context matters.',
+						),
+						'nutrition_points' => array(
+							'Dessert calories vary widely, which is why readers often want price and calories together rather than in separate guides.',
+							'Frozen desserts, shakes, and baked sweets do not serve the same purpose in an order, so a useful dessert page should explain that difference as well as the raw number.',
+							'Readers balancing a meal total often use the dessert pillar after the burger, nuggets, or Happy Meal choice is already made.',
+						),
+						'availability_paragraphs' => array(
+							'Desserts are also where limited-time flavor rotations and special promotional tie-ins show up, which makes freshness especially important. A dessert pillar has to be current enough to show readers whether the headline frozen treat is still part of the active menu mix.',
+							'That is why the desserts pillar works as both a planning page and a navigation page. It helps readers move from broad dessert comparison into one exact product page or the limited-time menu guide when a flavor is seasonal.',
+						),
+						'featured_items'  => array( 'OREO McFlurry', "McFlurry with M&M'S Candies", 'Vanilla Cone', 'Baked Apple Pie', 'Hot Fudge Sundae', 'Chocolate Shake Small' ),
+						'faq_items'       => array(
+							array(
+								'question' => 'What counts as dessert on the McDonald\'s USA menu?',
+								'answer'   => 'Dessert coverage on this site includes McFlurry flavors, mini McFlurry options where listed, shakes, sundaes, vanilla cones, cookies, pie, and other sweet items surfaced in the attached USA menu data.',
+							),
+							array(
+								'question' => 'Why do McFlurry prices matter so much in dessert comparisons?',
+								'answer'   => 'Because McFlurry products are usually the premium frozen-dessert comparison point. Readers often want to know whether a full McFlurry is worth the jump over a cone, pie, cookie, or mini dessert option.',
+							),
+							array(
+								'question' => 'Do dessert prices and availability change often?',
+								'answer'   => 'They can, especially around promotional flavors, McValue dessert picks, and limited-time product runs. That is why dessert content needs a freshness mindset instead of one static frozen menu list.',
+							),
+							array(
+								'question' => 'What should I read after the desserts pillar?',
+								'answer'   => 'If you want the broad frozen-and-sweet overview, stay with this pillar. If you want a current live listing, open the desserts category page. If your real question is value, move next to the deals and McValue guide.',
+							),
+						),
+						'related_links'   => array(
+							array(
+								'label'       => 'Browse the live desserts category page',
+								'url'         => $this->get_menu_category_page_url( 'sweets' ),
+								'description' => 'Open the full sweets-and-treats directory with current tracked dessert item pages.',
+							),
+							array(
+								'label'       => 'Read the deals and McValue guide',
+								'url'         => $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ),
+								'description' => 'Compare premium desserts against lower-entry McValue sweet picks.',
+							),
+							array(
+								'label'       => 'Open the limited-time menu guide',
+								'url'         => $this->get_seeded_page_url( 'limited-time-menu' ),
+								'description' => 'Check short-run dessert flavors and seasonal product changes.',
+							),
+							array(
+								'label'       => 'Read the nutrition and allergens guide',
+								'url'         => $this->get_seeded_page_url( 'mcdonalds-nutrition-calories-allergens' ),
+								'description' => 'Use the broader nutrition pillar when calories or allergen questions matter more than the treat itself.',
+							),
+						),
+					)
+				),
 			),
 			'mccafe-menu' => array(
-				'title'   => 'McCafe Menu',
-				'content' => '<!-- wp:paragraph --><p>This guide covers McCafe coffees, espresso drinks, iced coffees, frappes, lattes, cappuccinos, and related price ranges on the McDonald&#8217;s USA menu.</p><!-- /wp:paragraph -->',
+				'title'   => "McDonald's McCafe Menu Prices USA",
+				'content' => $this->build_seeded_category_pillar_page_content(
+					array(
+						'category'        => 'mccafe',
+						'page_label'      => "McDonald's McCafe Menu Prices USA",
+						'focus_label'     => "McDonald's McCafe menu",
+						'include_items'   => array( 'hot coffee', 'iced coffee', 'lattes', 'cappuccinos', 'macchiatos', 'frappes', 'hot chocolate' ),
+						'value_points'    => array(
+							'McCafe pricing often scales by size, so readers need more than one product name to compare properly.',
+							'Iced coffee and espresso drinks sit in different value tiers, which is why the category page needs to explain the menu structure rather than only list item names.',
+							'McCafe orders are frequently paired with breakfast, which makes this pillar especially useful when readers are comparing the total cost of a morning order.',
+						),
+						'nutrition_points' => array(
+							'Sugar, syrup flavor, whipped toppings, and size changes can affect both calories and the practical value of the drink.',
+							'Readers often compare McCafe not just against other McDonald\'s beverages but against outside coffee-shop pricing, which raises the importance of size-specific context.',
+							'This category overlaps with desserts because frappe-style drinks and sweet coffee builds behave differently from simple coffee orders in both price and calories.',
+						),
+						'availability_paragraphs' => array(
+							'A coffee pillar needs to work for two different search styles: the reader who wants a simple hot coffee price and the reader who wants to compare several espresso-based drinks before ordering. That is why the McCafe page needs structure, not just one long undifferentiated list.',
+							'Use the pillar to understand the larger coffee menu first, then move into the live McCafe category page or an individual drink page when you want one exact size and one exact flavor build.',
+						),
+						'featured_items'  => array( 'Premium Roast Coffee', 'McCafe Iced Coffee Large', 'McCafe Latte Medium', 'McCafe Caramel Frappe Medium', 'McCafe Hot Chocolate Small' ),
+						'faq_items'       => array(
+							array(
+								'question' => 'What is included in the McCafe menu on this site?',
+								'answer'   => 'The McCafe pillar covers hot coffee, iced coffee, espresso drinks, lattes, cappuccinos, macchiatos, frappes, and hot chocolate as surfaced across the current tracked USA coffee data.',
+							),
+							array(
+								'question' => 'Why is size so important on McCafe pages?',
+								'answer'   => 'Because McCafe pricing is often built around small, medium, and large drink differences. A useful guide has to show how the menu scales, not just repeat one drink name without context.',
+							),
+							array(
+								'question' => 'Should McCafe be compared with the general beverages page?',
+								'answer'   => 'Yes. McCafe handles the coffee and espresso side of the menu, while the beverages pillar covers sodas, tea, juice, smoothies, water, and other non-coffee drinks. Together they show the full drinks picture.',
+							),
+							array(
+								'question' => 'What is the best next click after this page?',
+								'answer'   => 'If you already know the exact drink, open its item page. If you are deciding between coffee and non-coffee options, move next to the beverages pillar or the breakfast menu pillar.',
+							),
+						),
+						'related_links'   => array(
+							array(
+								'label'       => 'Browse the live McCafe category page',
+								'url'         => $this->get_menu_category_page_url( 'mccafe' ),
+								'description' => 'Open the current coffee directory with tracked sizes, flavors, and drink item pages.',
+							),
+							array(
+								'label'       => 'Open the beverages pillar',
+								'url'         => $this->get_seeded_page_url( 'beverage-menu' ),
+								'description' => 'Compare McCafe coffee pricing against soft drinks, tea, juice, smoothies, and frozen drinks.',
+							),
+							array(
+								'label'       => 'Open the breakfast pillar',
+								'url'         => $this->get_seeded_page_url( 'breakfast-menu' ),
+								'description' => 'See how coffee fits into the wider breakfast order and meal-planning context.',
+							),
+							array(
+								'label'       => 'Read the nutrition and allergens guide',
+								'url'         => $this->get_seeded_page_url( 'mcdonalds-nutrition-calories-allergens' ),
+								'description' => 'Use the nutrition pillar when the main question is calories, sugar, or ingredient checks.',
+							),
+						),
+					)
+				),
 			),
 			'beverage-menu' => array(
-				'title'   => 'Beverage Menu',
-				'content' => '<!-- wp:paragraph --><p>This guide covers soft drinks, smoothies, frozen drinks, lemonade, tea, orange juice, water, and other McDonald&#8217;s USA beverages with current pricing and calorie ranges.</p><!-- /wp:paragraph -->',
-			),
-			'dollar-menu' => array(
-				'title'   => '$1 $2 $3 Menu',
-				'content' => '<!-- wp:paragraph --><p>This guide covers the budget-focused McDonald&#8217;s USA value lineup, including lower-cost breakfast picks, burgers, nuggets, fries, and other entry-price items.</p><!-- /wp:paragraph -->',
-			),
-			'extra-value-meals' => array(
-				'title'   => 'Extra Value Meals',
-				'content' => '<!-- wp:paragraph --><p>This guide covers McDonald&#8217;s USA combo meals for breakfast, lunch, and dinner, including burger meals, chicken meals, fish meals, and wrap meal pricing.</p><!-- /wp:paragraph -->',
-			),
-			'shareables-bundles' => array(
-				'title'   => 'Shareables & Bundles',
-				'content' => '<!-- wp:paragraph --><p>This guide covers larger McDonald&#8217;s USA share boxes and bundles, including 40-piece McNuggets, large fries packs, cookie totes, and family-style ordering ideas.</p><!-- /wp:paragraph -->',
+				'title'   => "McDonald's Drinks Menu Prices USA",
+				'content' => $this->build_seeded_category_pillar_page_content(
+					array(
+						'category'        => 'beverages',
+						'page_label'      => "McDonald's Drinks Menu Prices USA",
+						'focus_label'     => "McDonald's drinks menu",
+						'include_items'   => array( 'soft drinks', 'sweet tea', 'unsweetened tea', 'lemonade', 'juice', 'smoothies', 'frozen drinks', 'water' ),
+						'value_points'    => array(
+							'Drink size is one of the most common ways an order total changes, especially inside meals and combo upgrades.',
+							'Readers often compare the beverage page against McCafe because they want the cheapest drink that still fits the meal they are building.',
+							'Frozen drinks, smoothies, and bottled options matter because they do not sit in the same price band as standard fountain drinks.',
+						),
+						'nutrition_points' => array(
+							'Sugar and calories vary sharply across soft drinks, lemonade, smoothies, and sweet tea, so this page helps readers compare beyond the name alone.',
+							'Many low-friction ordering choices happen here: water versus soda, tea versus lemonade, or a small fountain drink versus a more expensive premium beverage.',
+							'The drinks page is often the last comparison point before checkout because beverage upgrades can change both calories and total spend in a single tap.',
+						),
+						'availability_paragraphs' => array(
+							'The beverage pillar works best as a decision page for readers who already know the food item but have not finalized the drink. That is why the content here focuses on size tiers, category differences, and practical order-building rather than a thin list of drink names.',
+							'Use this page to compare general beverage pricing, then move to the McCafe pillar if the real comparison is coffee and espresso, or move back to the burger, chicken, or breakfast pillar if the drink is only one part of the wider order.',
+						),
+						'featured_items'  => array( 'Soft Drink Small', 'Sweet Tea Small', 'Lemonade Small', 'Minute Maid Premium Orange Juice Small', 'DASANI Water', 'Frozen Coca-Cola Classic Small' ),
+						'faq_items'       => array(
+							array(
+								'question' => 'What is covered on the McDonald\'s drinks menu page?',
+								'answer'   => 'The drinks pillar covers fountain drinks, tea, lemonade, juice, smoothies, frozen drinks, bottled water, and other non-coffee beverages that appear in the tracked USA menu data.',
+							),
+							array(
+								'question' => 'Why should drinks be compared separately from McCafe?',
+								'answer'   => 'Because the ordering intent is different. McCafe is mainly about coffee and espresso, while the drinks pillar answers the broader meal-building question around soda, tea, juice, smoothies, frozen drinks, and water.',
+							),
+							array(
+								'question' => 'Do drink sizes change value significantly?',
+								'answer'   => 'Yes. Drink upgrades are one of the easiest ways a combo total grows, so comparing small, medium, and large beverage pricing matters more than many readers expect.',
+							),
+							array(
+								'question' => 'What page should I read after this drinks guide?',
+								'answer'   => 'If you need coffee or frappe detail, open the McCafe pillar. If the drink is part of a meal comparison, move back to burgers, chicken, nuggets, breakfast, or the deals guide.',
+							),
+						),
+						'related_links'   => array(
+							array(
+								'label'       => 'Browse the live beverages category page',
+								'url'         => $this->get_menu_category_page_url( 'beverages' ),
+								'description' => 'Open the managed beverages directory with current drink listings and item pages.',
+							),
+							array(
+								'label'       => 'Open the McCafe pillar',
+								'url'         => $this->get_seeded_page_url( 'mccafe-menu' ),
+								'description' => 'Separate coffee and espresso comparisons from the broader drinks menu.',
+							),
+							array(
+								'label'       => 'Read the deals and McValue guide',
+								'url'         => $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ),
+								'description' => 'See how drinks fit inside meal deals and value bundles.',
+							),
+							array(
+								'label'       => 'Read the nutrition and allergens guide',
+								'url'         => $this->get_seeded_page_url( 'mcdonalds-nutrition-calories-allergens' ),
+								'description' => 'Use the broader nutrition pillar when calories and sugar are the main question.',
+							),
+						),
+					)
+				),
 			),
 			'sauces-condiments' => array(
-				'title'   => 'Sauces & Condiments',
-				'content' => '<!-- wp:paragraph --><p>This guide covers McDonald&#8217;s USA dipping sauces and condiment packets, including barbecue, ranch, honey mustard, sweet and sour, buffalo, ketchup, mustard, and mayo.</p><!-- /wp:paragraph -->',
+				'title'   => "McDonald's Sauces & Condiments Prices USA",
+				'content' => $this->build_seeded_category_pillar_page_content(
+					array(
+						'category'        => 'sauces',
+						'page_label'      => "McDonald's Sauces & Condiments Prices USA",
+						'focus_label'     => "McDonald's sauces and condiments menu",
+						'include_items'   => array( 'barbecue sauce', 'ranch', 'honey mustard', 'sweet and sour', 'buffalo-style options', 'ketchup', 'mustard', 'mayo packets' ),
+						'value_points'    => array(
+							'Sauces matter because they are often treated as small extras, but paid dips and extra packets can still move the final order total.',
+							'Nuggets, fries, strips, and wraps all pull this page into the wider meal comparison path, which makes sauces a practical add-on category rather than a trivial one.',
+							'Readers often want to know which sauces are included and which extras may carry a small charge at their restaurant.',
+						),
+						'nutrition_points' => array(
+							'Even when the price difference is small, sauces can still matter for calories, sugar, and ingredient questions.',
+							'This page is especially useful for readers comparing nuggets, strips, and fries because the dip choice changes the order beyond the headline entrée price.',
+							'Condiments also matter for customization because packets and add-ons can shift the taste profile of lower-cost items without changing the main item itself.',
+						),
+						'availability_paragraphs' => array(
+							'Most menu guides underplay sauces, but they are one of the clearest examples of how a simple add-on can change both spending and satisfaction. A proper sauces pillar helps readers understand the add-on layer that sits under nuggets, fries, and shareable chicken orders.',
+							'Use this page when you want to compare dipping options before you finalize a nuggets, strips, fries, or snack-wrap order. Then move into the live sauces category page or the linked meal pillars to understand the full order context.',
+						),
+						'featured_items'  => array( 'Tangy Barbecue Sauce', 'Spicy Buffalo Sauce', 'Creamy Ranch Sauce', 'Honey Mustard Sauce', "Sweet 'N Sour Sauce", 'Ketchup Packet' ),
+						'faq_items'       => array(
+							array(
+								'question' => 'Why do sauces deserve their own McDonald\'s price guide?',
+								'answer'   => 'Because sauces affect more than flavor. They can influence the final order total, calorie load, and the overall value of nuggets, fries, and strips orders. Readers often need that add-on context before they feel the order is fully planned.',
+							),
+							array(
+								'question' => 'Are all McDonald\'s sauces free?',
+								'answer'   => 'Not always. Some sauces or extra quantities may be included with certain items, while others may be paid extras depending on the restaurant and order type. That is why the sauces pillar is helpful in a price-focused menu site.',
+							),
+							array(
+								'question' => 'What menu areas use the sauces page the most?',
+								'answer'   => 'McNuggets, McCrispy Strips, fries, and some wrap or chicken orders are the most common drivers. Those categories are where extra dip choices are most likely to matter in real ordering behavior.',
+							),
+							array(
+								'question' => 'What should I open next after this page?',
+								'answer'   => 'If you are building a chicken order, move next to nuggets or chicken-and-fish. If you are balancing a meal total, open fries-and-sides or the deals guide to understand how the add-on layer fits the overall order.',
+							),
+						),
+						'related_links'   => array(
+							array(
+								'label'       => 'Browse the live sauces category page',
+								'url'         => $this->get_menu_category_page_url( 'sauces' ),
+								'description' => 'Open the current sauces and condiments directory with tracked sauce listings.',
+							),
+							array(
+								'label'       => 'Open the nuggets and strips pillar',
+								'url'         => $this->get_seeded_page_url( 'nuggets-and-strips' ),
+								'description' => 'Compare sauces against the chicken items that use them most often.',
+							),
+							array(
+								'label'       => 'Open the fries and sides pillar',
+								'url'         => $this->get_seeded_page_url( 'fries-sides' ),
+								'description' => 'Use the sides pillar to see how dips fit with fries and other side orders.',
+							),
+							array(
+								'label'       => 'Read the nutrition and allergens guide',
+								'url'         => $this->get_seeded_page_url( 'mcdonalds-nutrition-calories-allergens' ),
+								'description' => 'Move to the nutrition pillar when calories, sugar, or ingredient checks matter more than the add-on price alone.',
+							),
+						),
+					)
+				),
 			),
+			'mcdonalds-deals-mcvalue-guide' => array(
+				'title'   => "McDonald's Deals & McValue Guide USA",
+				'content' => $this->build_seeded_long_form_page_content(
+					array(
+						'intro'       => array(
+							'This McDonald&#8217;s Deals &amp; McValue Guide USA page is the main value pillar for readers who care about the cheapest useful order, the best app-led savings, and the gap between menu price and real checkout total. A good deals page has to explain more than one headline discount because McDonald&#8217;s USA value now comes from several moving parts at once: meal deals, buy-one-add-one offers, app exclusives, rewards, dessert picks, and low-entry add-ons.',
+							'That is why this pillar combines the live deals category with the live McValue category. Together they show how the current savings story actually works across burgers, chicken, breakfast, fries, desserts, and app behavior instead of pretending there is one simple universal &#8220;dollar menu&#8221; that answers every value question.',
+							'Use this page when price is the main decision factor, when you are comparing a la carte ordering against a meal deal, or when you want to understand how app participation can make the same McDonald&#8217;s order feel either average or unusually good value.',
+							'It is also one of the best pages for understanding the difference between cheap and efficient. The absolute lowest spend is not always the best practical value, and a slightly higher bundle can sometimes beat a scattered order once fries, drinks, and desserts are factored in. That broader value logic is what this pillar is built to explain.',
+						),
+						'snapshots'    => array(
+							array(
+								'heading' => 'Current meal deals snapshot',
+								'items'   => $this->get_category_seed_snapshot_items(
+									array( 'deals' ),
+									6,
+									array( 'McChicken Meal Deal', 'McDouble Meal Deal', 'Daily Double Meal Deal', 'Breakfast Buy 1 Add 1 for $1', 'Lunch Buy 1 Add 1 for $1' )
+								),
+							),
+							array(
+								'heading' => 'Current McValue snapshot',
+								'items'   => $this->get_category_seed_snapshot_items(
+									array( 'mcvalue' ),
+									8,
+									array( 'McValue Mini McFlurry Picks', 'McDouble', 'McChicken', '6 pc Chicken McNuggets', 'Small World Famous Fries', 'Hash Browns' )
+								),
+							),
+						),
+						'sections'    => array(
+							array(
+								'heading'    => 'How McDonald\'s value works in the USA right now',
+								'paragraphs' => array(
+									'The value story is no longer one flat cheap menu. McDonald&#8217;s USA uses different savings layers for different customers: low-entry add-ons, meal bundles, breakfast-specific offers, app-driven discounting, and rewards logic. A strong value guide has to show how those layers overlap so readers can tell whether a posted meal deal is better than building a lower-cost custom order from separate menu items.',
+									'That matters because some readers want the cheapest possible full meal, while others want the best value within a certain appetite level. Those are not always the same thing. A bundle can look attractive, but a McValue path with one burger, one side, and one drink can sometimes fit the budget more cleanly depending on what the customer actually wants to eat.',
+								),
+								'list'       => array(
+									'$5-style meal deals matter when you want a complete order with the fewest moving parts.',
+									'Buy-one-add-one offers matter when you are flexible about which breakfast or lunch items you pair together.',
+									'McValue dessert and snack picks matter when the goal is a smaller spend rather than a full meal.',
+								),
+							),
+							array(
+								'heading'    => 'Meal deal buyers versus low-entry value buyers',
+								'paragraphs' => array(
+									'There are usually two main ways readers use a McDonald&#8217;s value guide. The first group wants the cleanest complete meal at a fixed price point. The second group wants the lowest realistic spend while still leaving satisfied. Those users often compare McChicken, McDouble, nugget counts, fries, hash browns, and dessert picks rather than jumping straight to the meal-deal headline.',
+									'That is why this pillar links value to the wider menu structure. A deal page becomes much more helpful when it also shows where burgers, chicken, fries, breakfast, and dessert pages connect to the savings story.',
+								),
+								'list'       => array(
+									'Meal-deal shoppers should compare the full bundle, not just the main sandwich name.',
+									'Low-entry shoppers should compare the cheapest satisfying order, not just the cheapest single item.',
+									'App users should always consider whether rewards or local app offers beat the static menu price path.',
+								),
+							),
+							array(
+								'heading'    => 'App offers, rewards, and why the final total can still move',
+								'paragraphs' => array(
+									'Deals and McValue pages also need an EEAT-style note about real-world variability. The best local price can come from a standard counter order, from an app-only coupon, or from a rewards redemption. That means a value guide should be transparent about what it is showing: the tracked current menu data and public offer structure, not a guarantee that every restaurant will show the same live checkout.',
+									'Local taxes, delivery fees, store participation, and the timing of rotating app offers can all change the final total. The pillar helps you understand the structure of the value system first, then the live app or restaurant confirms the last step.',
+								),
+							),
+							array(
+								'heading'    => 'Best next steps after the value pillar',
+								'paragraphs' => array(
+									'Once you know whether you are chasing a full meal deal, a McValue-style snack order, or the best category-specific bargain, the next click becomes obvious. Move to burgers if the real question is McDouble versus Big Mac value. Move to breakfast if you are planning a morning order. Move to fries, nuggets, desserts, or beverages if those add-ons are what truly change the order economics.',
+									'That is the job of this pillar: not to replace the rest of the site, but to route value-focused readers into the most useful next comparison page without losing the broader savings context.',
+									'In that sense, the deals pillar works like a decision hub. It translates broad budget intent into the right menu branch, helping readers decide whether they should chase a bundle, a low-entry custom build, or a category-specific offer path before the final order is placed.',
+								),
+							),
+						),
+						'faq_items'   => array(
+							array(
+								'question' => 'What is the difference between McValue and a meal deal?',
+								'answer'   => 'McValue is the broader value platform, while meal deals are one part of that ecosystem. McValue can include low-entry add-ons, dessert picks, breakfast offers, and app-led savings, whereas a meal deal is usually a more fixed bundle with a clearer complete-order structure.',
+							),
+							array(
+								'question' => 'Why is an app disclaimer important on a deals page?',
+								'answer'   => 'Because the final best price often depends on app participation, store location, local promotions, and rewards availability. A reliable value guide should make that clear instead of pretending one posted number works identically everywhere.',
+							),
+							array(
+								'question' => 'What is the smartest way to use this page?',
+								'answer'   => 'Use the value pillar first to decide whether you want a full deal, a low-entry custom order, or an app-led strategy. Then move into the specific food category that matters most for the actual order you plan to place.',
+							),
+							array(
+								'question' => 'Which readers benefit most from the deals and McValue guide?',
+								'answer'   => 'Budget-focused solo diners, families, students, and app users benefit the most because they are usually the readers most sensitive to meal structure, add-ons, and rotating promotions.',
+							),
+						),
+						'related_links' => array(
+							array(
+								'label'       => 'Open the live deals category page',
+								'url'         => $this->get_menu_category_page_url( 'deals' ),
+								'description' => 'See the current tracked meal deals and related price pages.',
+							),
+							array(
+								'label'       => 'Open the live McValue category page',
+								'url'         => $this->get_menu_category_page_url( 'mcvalue' ),
+								'description' => 'Compare the lower-entry value layer separately from headline meal deals.',
+							),
+							array(
+								'label'       => 'Read the McDonald\'s app deals guide',
+								'url'         => $this->get_seeded_page_url( 'mcdonalds-app-deals' ),
+								'description' => 'Use the focused app page when the value question is mainly about app behavior and rewards.',
+							),
+							array(
+								'label'       => 'Read the breakfast pillar',
+								'url'         => $this->get_seeded_page_url( 'breakfast-menu' ),
+								'description' => 'Compare breakfast pricing against the current morning-value angle.',
+							),
+							array(
+								'label'       => 'Read the burgers pillar',
+								'url'         => $this->get_seeded_page_url( 'burgers-menu' ),
+								'description' => 'Use the burgers page when the value comparison is really about choosing the right burger tier.',
+							),
+						),
+						'shortcodes'   => array(
+							'[mcprices_menu_category category="deals"]',
+							'[mcprices_menu_category category="mcvalue"]',
+						),
+					)
+				),
+			),
+			'mcdonalds-nutrition-calories-allergens' => array(
+				'title'   => "McDonald's Nutrition, Calories & Allergens Guide",
+				'content' => $this->build_seeded_long_form_page_content(
+					array(
+						'intro'       => array(
+							'This McDonald&#8217;s Nutrition, Calories &amp; Allergens Guide is the main information pillar for readers who care about more than the posted dollar price. On a real food-search journey, people often want to know whether a burger is filling but not excessive, whether a breakfast meal is worth the calories, how fries change the total, and which menu areas deserve a second allergen check before ordering.',
+							'That is why the nutrition pillar sits alongside the price pillars rather than outside them. A strong McDonald&#8217;s USA menu site should help readers compare price, calories, ingredients, and allergens together, because that is how menu choices are made in real life.',
+							'This guide is also where transparency matters most. Menu data helps with planning, but allergen, ingredient, and final nutrition decisions should always be confirmed in the official McDonald&#8217;s app, on the official website, or with the restaurant when the order is actually being placed.',
+						),
+						'snapshots'    => array(
+							array(
+								'heading' => 'Sample calories and price snapshot across major menu areas',
+								'items'   => $this->get_category_seed_snapshot_items(
+									array( 'burgers', 'breakfast', 'nuggets', 'sides', 'sweets', 'beverages' ),
+									8,
+									array( 'Big Mac', 'Egg McMuffin', '10 pc Chicken McNuggets', 'World Famous Fries Large', 'OREO McFlurry', 'Soft Drink Small', 'McChicken', 'Hash Browns' )
+								),
+							),
+						),
+						'sections'    => array(
+							array(
+								'heading'    => 'How to use calories on a menu-price site',
+								'paragraphs' => array(
+									'Calories are most useful when they help answer a concrete ordering question. Readers usually want to know which entrée is heavier, how much a meal upgrade changes the total, or whether a side or dessert pushes the order past a personal limit. That is why the calorie context on this site is designed to support ordering decisions, not to replace the official nutrition database.',
+									'In practice, calorie comparisons usually happen inside one of four paths: burger versus burger, breakfast versus breakfast, side-size comparison, or dessert comparison. Grouping calories inside those real buying paths is more helpful than dropping one isolated number without menu context.',
+								),
+								'list'       => array(
+									'Use category pillars when you want the bigger nutritional pattern within burgers, breakfast, drinks, or desserts.',
+									'Use item pages when you already know the exact product and want the current tracked price plus a quick calorie reference.',
+									'Use the official McDonald\'s tools when the decision depends on a strict ingredient or allergen requirement.',
+								),
+							),
+							array(
+								'heading'    => 'Where calories climb fastest on the McDonald\'s menu',
+								'paragraphs' => array(
+									'The biggest calorie jumps often come from stacking categories together rather than from the main sandwich alone. A double-beef burger, large fries, a sweetened drink, and a dessert can move far faster than readers expect when they only look at the headline burger price first.',
+									'Breakfast can surprise people in the same way. Larger breakfast sandwiches, bagels, platters, and added sides can create totals that feel very different from a simpler McMuffin-and-coffee order. The nutrition pillar helps readers spot those patterns before the final checkout.',
+								),
+								'list'       => array(
+									'Large fries and upsized drinks often change total calories more than a small sandwich switch.',
+									'Premium desserts and sweet coffee drinks can turn a moderate meal into a much heavier total.',
+									'Breakfast sides and combo builds matter because a simple morning order can become much denser very quickly.',
+								),
+							),
+							array(
+								'heading'    => 'Allergens, ingredients, and what must be verified officially',
+								'paragraphs' => array(
+									'Allergen and ingredient information should be treated differently from price information. Prices and calorie references are useful planning data, but allergen and ingredient decisions can involve far more risk if a restaurant changes supply, preparation, or customization details. That is why this page keeps a strong verification note at the center of the guidance.',
+									'Use this pillar to understand which parts of the menu deserve a second look, then use the official allergen tools and the restaurant itself when you need final certainty. That approach is both more accurate and more trustworthy than pretending one unofficial summary can replace the official source in a high-stakes situation.',
+								),
+							),
+							array(
+								'heading'    => 'Building a lighter or better-balanced McDonald\'s order',
+								'paragraphs' => array(
+									'A nutrition guide should not only warn readers away from heavy combinations. It should also help them see the better-balanced order paths inside the real menu. Smaller burgers, simpler breakfast sandwiches, water or tea instead of a sweet drink, and lighter dessert choices are all practical examples of how readers use this information.',
+									'The goal is not to moralize food choices. The goal is to help readers compare clearly, spend intentionally, and understand what changes the order the most before they tap checkout.',
+								),
+							),
+							array(
+								'heading'    => 'How readers use nutrition data in real McDonald\'s menu decisions',
+								'paragraphs' => array(
+									'Most nutrition-focused readers are not looking for abstract numbers. They are trying to solve a live ordering problem. That may mean finding the burger that feels most filling for a reasonable calorie total, choosing a breakfast option that is satisfying without becoming too heavy, or spotting whether fries and dessert are what really push the total over the edge. Framing nutrition around those real menu moments makes the guide far more useful than a disconnected list of calorie figures.',
+									'This is also why category context matters so much. A calorie number becomes more helpful when it sits next to an item description, a price reference, and a likely order pattern. Readers do not usually eat menu items as isolated data points; they eat them as part of meals, bundles, and add-on combinations. The guide is built to reflect that reality instead of flattening the menu into one undifferentiated nutrition table.',
+								),
+								'list'       => array(
+									'Use burgers, breakfast, and chicken pages when you need the main-item calorie pattern inside one category.',
+									'Use fries, beverages, and desserts pages when the real calorie jump comes from the add-on side of the order.',
+									'Use official McDonald\'s ingredient and allergen tools whenever the decision is medically or personally sensitive.',
+								),
+							),
+							array(
+								'heading'    => 'Where a nutrition guide adds the most value for SEO and EEAT',
+								'paragraphs' => array(
+									'Nutrition content earns trust when it explains the difference between broad planning and final verification. This page is useful for identifying heavy menu patterns, lighter alternatives, and the categories where calories tend to rise fastest. But it also makes clear that official McDonald\'s sources remain the final checkpoint for ingredients, preparation changes, and live allergen information. That transparent boundary is part of what makes the guide more credible.',
+									'From a search perspective, the nutrition pillar also strengthens topical authority across the site because it connects burgers, breakfast, nuggets, fries, beverages, and desserts into one shared comparison framework. Search engines and AI systems can use that wider contextual coverage to understand that the site is not only a price list, but a broader decision-support resource for McDonald\'s USA menu research.',
+								),
+							),
+							array(
+								'heading'    => 'How to compare calories without losing sight of value',
+								'paragraphs' => array(
+									'One reason nutrition pages perform well is that readers rarely want calorie information in isolation. They are usually trying to balance cost, fullness, convenience, and category preference at the same time. A burger that looks cheap may not feel like the best value if a slightly different burger keeps the reader satisfied longer. A breakfast order may look light until Hash Browns and a sweet drink are added. The best nutrition guide helps readers keep those trade-offs visible instead of splitting price and calorie thinking into two separate research tasks.',
+									'That broader comparison approach is also what makes this page more helpful than a static nutrition chart. It speaks to real menu decisions: which meal combination feels heavier than expected, which category usually hides the biggest calorie jump, and which add-ons matter most when the goal is a more balanced total. For both search visibility and user experience, those layered explanations are more useful than isolated numbers alone.',
+								),
+								'list'       => array(
+									'Compare the main item first, then check whether fries, drinks, and desserts are what really change the total.',
+									'Look at category patterns rather than one calorie number when you are deciding between breakfast, burgers, nuggets, and sweets.',
+									'Use item pages for quick price-plus-calorie checks and the official tools for final allergen or ingredient verification.',
+								),
+							),
+							array(
+								'heading'    => 'Why a menu guide should separate planning from verification',
+								'paragraphs' => array(
+									'Readers trust nutrition content more when the page is honest about what it can and cannot do. This site can help with category-level comparison, tracked calorie context, and clearer ordering decisions. But it should never blur the line between planning support and final medical or dietary verification. That is why the guide repeatedly points readers back to official McDonald\'s resources when allergens, ingredients, or location-specific preparation details are the deciding factor.',
+									'That separation is not a weakness. It is part of what makes the page more authoritative. Search engines, AI systems, and human readers all respond better to content that explains its scope clearly, supports the decision responsibly, and avoids pretending that one unofficial page can replace the official source in every situation.',
+								),
+							),
+							array(
+								'heading'    => 'How this nutrition pillar supports the rest of the site',
+								'paragraphs' => array(
+									'The nutrition guide is also a connective page. It helps readers move from broad calorie and allergen questions into the exact category page or item page where the decision becomes concrete. That makes it valuable not only as a standalone guide, but also as a supporting authority page for burgers, breakfast, nuggets, fries, desserts, drinks, and family-order planning.',
+									'In topical SEO terms, this page gives the site a stronger explanatory layer. Instead of only saying what an item costs, the site can now explain how heavier and lighter order patterns work across the menu, where calorie surprises usually appear, and why official allergen checks remain essential before the final purchase.',
+									'That wider support role is important because readers often discover their real question only after they begin comparing. A burger query can become a fries query, a breakfast query can become an allergen question, and a dessert query can become a total-calorie question. The nutrition pillar helps connect those paths so the whole site behaves more like a decision system than a disconnected set of price pages.',
+									'That is exactly why this page matters for topical authority: it helps unify the rest of the menu coverage into one clearer nutrition-aware decision framework.',
+									'For readers, that means fewer isolated fact checks and a much clearer path from menu curiosity to a more informed final order.',
+									'That clarity is valuable on every major menu branch.',
+								),
+							),
+						),
+						'faq_items'   => array(
+							array(
+								'question' => 'Should I rely on this page for official allergen decisions?',
+								'answer'   => 'No. Use this guide for planning and comparison, then confirm any allergen-sensitive or ingredient-sensitive decision through the official McDonald\'s app, website, or restaurant. That is the safest and most accurate workflow.',
+							),
+							array(
+								'question' => 'Why are calories useful on a price site?',
+								'answer'   => 'Because readers rarely make menu decisions based on price alone. They usually compare value, calories, fullness, and add-on choices at the same time, especially for burgers, breakfast, fries, desserts, and drinks.',
+							),
+							array(
+								'question' => 'What menu areas should I compare first if I want a lighter order?',
+								'answer'   => 'Start with breakfast, burgers, fries and sides, beverages, and desserts. Those areas usually drive the clearest calorie differences in a typical McDonald\'s order.',
+							),
+							array(
+								'question' => 'What is the best next step after reading this guide?',
+								'answer'   => 'Move into the relevant category pillar or item page once you know which section of the menu matters most. Use the broader nutrition guide to frame the comparison, then use the focused page to make the actual order decision.',
+							),
+						),
+						'related_links' => array(
+							array(
+								'label'       => 'Open the calorie counter page',
+								'url'         => $this->get_seeded_page_url( 'calorie-counter' ),
+								'description' => 'Use the focused calorie page when you want a simpler comparison entry point.',
+							),
+							array(
+								'label'       => 'Open the allergen guide',
+								'url'         => $this->get_seeded_page_url( 'allergen-guide' ),
+								'description' => 'Read the separate allergen page for a more direct verification reminder and context.',
+							),
+							array(
+								'label'       => 'Read the burgers pillar',
+								'url'         => $this->get_seeded_page_url( 'burgers-menu' ),
+								'description' => 'Burger comparisons are one of the most common calorie-plus-price use cases.',
+							),
+							array(
+								'label'       => 'Read the breakfast pillar',
+								'url'         => $this->get_seeded_page_url( 'breakfast-menu' ),
+								'description' => 'Breakfast is one of the easiest menu areas to underestimate on calories.',
+							),
+							array(
+								'label'       => 'Read the desserts pillar',
+								'url'         => $this->get_seeded_page_url( 'sweets-treats' ),
+								'description' => 'Desserts and shakes often decide whether the total order stays moderate or becomes heavy.',
+							),
+						),
+					)
+				),
+			),
+			'mcdonalds-prices-by-state' => array(
+				'title'   => "McDonald's Prices by State",
+				'content' => $this->build_seeded_long_form_page_content(
+					array(
+						'intro'       => array(
+							'This McDonald&#8217;s Prices by State page is the regional pillar for readers who know that menu pricing is not identical across the United States. A Big Mac, breakfast meal, fries upgrade, or McValue offer can feel very different depending on labor costs, rent, franchise strategy, taxes, and whether you are ordering inside a high-cost city or a lower-cost market.',
+							'That is why a serious price guide cannot pretend one national number explains everything. National menu pricing is useful for planning, but local price variation is one of the biggest reasons people search for fast-food prices with state names, city names, and near-me intent attached.',
+							'Use this page as the regional framework for understanding why prices move, how to compare one state against another, and which menu areas tend to show the clearest local variation. Then use the main category and item pages to compare the specific food choices that matter most to your order.',
+						),
+						'snapshots'    => array(
+							array(
+								'heading' => 'Popular items readers compare when checking local price variation',
+								'items'   => $this->get_category_seed_snapshot_items(
+									array( 'burgers', 'breakfast', 'nuggets', 'sides', 'beverages' ),
+									8,
+									array( 'Big Mac', 'McDouble', 'Egg McMuffin', '10 pc Chicken McNuggets', 'World Famous Fries Large', 'Soft Drink Small', 'Hash Browns' )
+								),
+							),
+						),
+						'sections'    => array(
+							array(
+								'heading'    => 'Why McDonald\'s prices change by state and city',
+								'paragraphs' => array(
+									'Regional pricing is shaped by several layers at once: labor and wage structure, real-estate costs, supply-chain differences, local competition, delivery economics, franchise strategy, and tax environments. That means two restaurants under the same brand can still feel materially different at checkout even when the core menu looks familiar.',
+									'City-level variation can sometimes matter as much as state-level variation, especially in dense metro areas and travel-heavy markets. That is why the best regional guide explains the pricing logic first instead of pretending every local change can be summarized with one neat national table.',
+								),
+								'list'       => array(
+									'High-cost urban markets often show the clearest price pressure on combo meals and premium sandwiches.',
+									'Lower-cost markets can still differ if app participation, local promotions, or franchise strategies are different.',
+									'Delivery prices and fees may create a bigger practical gap than the board price alone.',
+								),
+							),
+							array(
+								'heading'    => 'Which menu areas usually show the clearest regional differences',
+								'paragraphs' => array(
+									'Signature burgers, breakfast combos, nugget meals, fries upgrades, and drinks are some of the most useful comparison points because they are widely recognized and ordered often. They make it easier for readers to judge whether one market feels only slightly higher or meaningfully more expensive overall.',
+									'Value and deal pricing also matters because a restaurant may participate differently in offers, app bundles, or local savings structures. A state-aware price guide therefore has to connect regional variation with the deals pillar rather than treat them as separate worlds.',
+								),
+							),
+							array(
+								'heading'    => 'Regional menu entities worth tracking',
+								'paragraphs' => array(
+									'For SEO and topical completeness, a strong McDonald\'s USA site should speak the language of states and major cities directly. That does not mean inventing false precision. It means recognizing the places readers naturally search when they want local price context.',
+									'The most useful way to structure that coverage is by region first, then by state, and then by major metro comparisons where relevant.',
+								),
+								'list'       => array(
+									'<strong>Northeast:</strong> Connecticut, Maine, Massachusetts, New Hampshire, Rhode Island, Vermont, New Jersey, New York, Pennsylvania, Delaware, Maryland, and the District of Columbia.',
+									'<strong>South:</strong> Alabama, Arkansas, Florida, Georgia, Kentucky, Louisiana, Mississippi, North Carolina, South Carolina, Tennessee, Virginia, West Virginia, Texas, Oklahoma, and surrounding Southern markets.',
+									'<strong>Midwest:</strong> Illinois, Indiana, Iowa, Kansas, Michigan, Minnesota, Missouri, Nebraska, North Dakota, Ohio, South Dakota, Wisconsin, and nearby Plains/Midwest markets.',
+									'<strong>West:</strong> Alaska, Arizona, California, Colorado, Hawaii, Idaho, Montana, Nevada, New Mexico, Oregon, Utah, Washington, Wyoming, and neighboring Western markets.',
+								),
+							),
+							array(
+								'heading'    => 'How to use this regional pillar with the rest of the site',
+								'paragraphs' => array(
+									'Start here when your real question is local price movement rather than one exact product. Once you know that regional variation is the core issue, the next step is to move into the category or item page that represents the order you are pricing. For one reader that is Big Mac. For another it is breakfast, McValue, or the cheapest family-friendly combination.',
+									'That workflow is more honest and more useful than pretending the regional page can replace the menu pillars. The regional pillar gives you the local lens. The category and item pillars give you the actual food comparison.',
+								),
+							),
+							array(
+								'heading'    => 'How state-by-state pricing helps readers plan more realistically',
+								'paragraphs' => array(
+									'Readers often search with a state modifier because they have already noticed that one McDonald\'s order does not feel the same everywhere. Travelers, people moving between markets, and app users comparing nearby stores all run into this problem. A regional pillar helps those users understand that the difference is structural, not random: it comes from market conditions, operating costs, franchise strategy, and the way local promotions are implemented.',
+									'That makes the page valuable even before every regional child page is opened. It gives readers the mental model they need to interpret why prices vary and which menu categories are most worth checking first in their own market. In other words, it turns scattered local observations into a clear regional comparison framework.',
+								),
+								'list'       => array(
+									'Use burgers and breakfast as the cleanest first comparison points when you want to feel the price difference between markets quickly.',
+									'Use deals and McValue pages when your local market question is really about app participation or bundle economics.',
+									'Use city and state pages as localized support, then return to the category and item pillars for the actual product comparison.',
+								),
+							),
+							array(
+								'heading'    => 'Why regional pages strengthen topical authority',
+								'paragraphs' => array(
+									'A national menu site becomes stronger when it can explain both the broad menu structure and the local variation layered on top of it. That is one of the biggest gaps many generic menu sites leave open. They may list products well enough, but they often do not explain how prices behave across different U.S. markets or why readers keep searching with city and state modifiers attached.',
+									'Regional coverage closes that gap by giving search engines and users a clearer map of the whole subject. The prices-by-state pillar supports local intent, reinforces the credibility of the national menu pages, and creates natural internal links into burgers, breakfast, deals, fries, nuggets, and beverage coverage whenever readers want to compare one specific order inside their own market.',
+								),
+							),
+							array(
+								'heading'    => 'What to compare first when checking a new state or city',
+								'paragraphs' => array(
+									'When readers are new to a market, they do not need every product at once. They need a few dependable comparison anchors. That is why well-known burgers, breakfast sandwiches, nugget counts, fries, and common drinks are so useful. Those items make it easier to feel whether the local menu is only slightly different or meaningfully more expensive than another state or city.',
+									'Once that first comparison is clear, the rest of the menu becomes easier to interpret. The reader can then move from the regional pillar into the exact category or item page that best matches the order they care about most. This step-by-step method is more useful than dropping readers into dozens of local pages without a framework for comparison.',
+								),
+								'list'       => array(
+									'Start with a flagship burger, a breakfast staple, a nugget count, fries, and a standard drink.',
+									'Check deal participation separately because app-led offers can reshape the local value story.',
+									'Use category pillars after the first comparison anchor is clear so the regional question turns into a real ordering decision.',
+								),
+							),
+							array(
+								'heading'    => 'How delivery apps, taxes, and store participation complicate local prices',
+								'paragraphs' => array(
+									'State-by-state pricing is only part of the picture because many readers now order through multiple channels. In-store, app pickup, delivery, and third-party marketplaces can all make the same menu item feel like a different purchase. Taxes, fees, and app participation may create a larger practical gap than the base board price alone, especially in busy metro areas.',
+									'That is why this pillar helps readers think in layers. First, understand the regional market. Second, understand the category or item you actually want. Third, remember that ordering channel can still alter the final number. That layered framework is more realistic for modern McDonald\'s ordering than any one-price-fits-all assumption.',
+								),
+							),
+							array(
+								'heading'    => 'How this regional guide prepares readers for deeper state coverage',
+								'paragraphs' => array(
+									'The prices-by-state pillar also works as the foundation for future state and city pages. Before readers drill down into one location-specific page, they need to understand the wider regional logic that makes those local differences meaningful. This guide gives them that context first, which makes the localized pages easier to interpret later.',
+									'That structure is useful for SEO as well because it mirrors how the topic naturally expands: national menu understanding first, then regional variation, then the exact state or city layer, and finally the category or item page that answers the product-level question. The pillar is what ties those layers together into one coherent topical map.',
+									'It also improves usability for readers who are comparing more than one location. Instead of bouncing between isolated city pages without context, they can start here, understand the broad pricing pattern, and then move into the local pages or category pages that answer their exact market question more efficiently.',
+									'That first-step clarity matters because state pricing research is usually part of a bigger journey, not the final stop on its own.',
+									'In other words, the regional pillar turns scattered local price checks into a more navigable and trustworthy comparison process.',
+								),
+							),
+							array(
+								'heading'    => 'Why readers search regional pricing before choosing an exact menu item',
+								'paragraphs' => array(
+									'Many readers use a state or city price page before they know which exact product they will order. They want to understand whether the local market feels generally expensive, whether value deals still look competitive, and whether a familiar order will likely cost more than expected. Once they have that regional sense, they can move into burgers, breakfast, nuggets, fries, drinks, or deals with much better context.',
+									'That ordering journey is why the prices-by-state pillar deserves depth of its own. It does not just support local SEO; it also supports better menu decisions by helping readers interpret the national menu through a real local-price lens before they commit to one exact item comparison.',
+								),
+							),
+						),
+						'faq_items'   => array(
+							array(
+								'question' => 'Do McDonald\'s prices really change by state?',
+								'answer'   => 'Yes. They can vary because of labor costs, rent, franchise strategy, taxes, local promotions, and ordering channel differences. In some situations the city and delivery platform matter almost as much as the state itself.',
+							),
+							array(
+								'question' => 'What is the best menu item to compare across states?',
+								'answer'   => 'A well-known burger such as Big Mac, a clear breakfast item such as Egg McMuffin, a common nugget count, fries, and a standard drink are usually the easiest starting points for regional comparisons because they are widely recognized and widely ordered.',
+							),
+							array(
+								'question' => 'Should I treat national menu prices as exact local totals?',
+								'answer'   => 'No. National menu guides are useful for planning and comparison, but the official app or the local restaurant should always confirm the final total when state or city pricing is the main concern.',
+							),
+							array(
+								'question' => 'What page should I read after the prices-by-state guide?',
+								'answer'   => 'Open the category or item page that matches the order you are trying to price: burgers, breakfast, nuggets, fries, drinks, or the deals guide. The regional page tells you why the local price may move; the next page tells you what item to compare.',
+							),
+						),
+						'related_links' => array(
+							array(
+								'label'       => 'Open the full menu directory',
+								'url'         => $this->get_menu_directory_root_url(),
+								'description' => 'Move from local pricing context back into the full menu structure.',
+							),
+							array(
+								'label'       => 'Read the burgers pillar',
+								'url'         => $this->get_seeded_page_url( 'burgers-menu' ),
+								'description' => 'Use burger pricing as a common regional comparison point.',
+							),
+							array(
+								'label'       => 'Read the breakfast pillar',
+								'url'         => $this->get_seeded_page_url( 'breakfast-menu' ),
+								'description' => 'Use breakfast pricing when your local market question starts in the morning menu.',
+							),
+							array(
+								'label'       => 'Read the deals and McValue guide',
+								'url'         => $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ),
+								'description' => 'See how local market variation interacts with value and app-led savings.',
+							),
+						),
+					)
+				),
+			),
+		);
+	}
+
+	/**
+	 * Return a seeded site URL for a managed page slug.
+	 *
+	 * @param string $slug Page slug.
+	 * @return string
+	 */
+	protected function get_seeded_page_url( $slug ) {
+		return home_url( '/' . ltrim( trim( (string) $slug ), '/' ) . '/' );
+	}
+
+	/**
+	 * Return the primary long-form guide mapped to each menu category.
+	 *
+	 * @return array<string, array<string, string>>
+	 */
+	protected function get_menu_category_primary_guide_map() {
+		return array(
+			'whats-new'   => array(
+				'slug'  => 'limited-time-menu',
+				'title' => 'Limited-Time Menu',
+			),
+			'meals'       => array(
+				'slug'  => 'extra-value-meals',
+				'title' => 'Extra Value Meals',
+			),
+			'mcvalue'     => array(
+				'slug'  => 'mcdonalds-deals-mcvalue-guide',
+				'title' => "McDonald's Deals & McValue Guide USA",
+			),
+			'deals'       => array(
+				'slug'  => 'mcdonalds-deals-mcvalue-guide',
+				'title' => "McDonald's Deals & McValue Guide USA",
+			),
+			'breakfast'   => array(
+				'slug'  => 'breakfast-menu',
+				'title' => "McDonald's Breakfast Menu Prices USA",
+			),
+			'burgers'     => array(
+				'slug'  => 'burgers-menu',
+				'title' => "McDonald's Burgers Menu Prices USA",
+			),
+			'chickenfish' => array(
+				'slug'  => 'chicken-fish-menu',
+				'title' => "McDonald's Chicken & Fish Menu Prices USA",
+			),
+			'nuggets'     => array(
+				'slug'  => 'nuggets-and-strips',
+				'title' => "McDonald's McNuggets & Strips Prices USA",
+			),
+			'snackwrap'   => array(
+				'slug'  => 'snack-wrap',
+				'title' => 'Snack Wrap',
+			),
+			'sides'       => array(
+				'slug'  => 'fries-sides',
+				'title' => "McDonald's Fries & Sides Prices USA",
+			),
+			'happymeal'   => array(
+				'slug'  => 'happy-meal-menu',
+				'title' => "McDonald's Happy Meal Prices USA",
+			),
+			'sweets'      => array(
+				'slug'  => 'sweets-treats',
+				'title' => "McDonald's Desserts Menu Prices USA",
+			),
+			'mccafe'      => array(
+				'slug'  => 'mccafe-menu',
+				'title' => "McDonald's McCafe Menu Prices USA",
+			),
+			'beverages'   => array(
+				'slug'  => 'beverage-menu',
+				'title' => "McDonald's Drinks Menu Prices USA",
+			),
+			'sauces'      => array(
+				'slug'  => 'sauces-condiments',
+				'title' => "McDonald's Sauces & Condiments Prices USA",
+			),
+			'sharers'     => array(
+				'slug'  => 'shareables-bundles',
+				'title' => 'Shareables & Bundles',
+			),
+		);
+	}
+
+	/**
+	 * Return the primary guide URL for a menu category.
+	 *
+	 * @param string $category_id Category identifier.
+	 * @return string
+	 */
+	protected function get_menu_category_primary_guide_url( $category_id ) {
+		$map = $this->get_menu_category_primary_guide_map();
+
+		if ( empty( $map[ $category_id ]['slug'] ) ) {
+			return '';
+		}
+
+		return $this->get_seeded_page_url( $map[ $category_id ]['slug'] );
+	}
+
+	/**
+	 * Return the primary guide label for a menu category.
+	 *
+	 * @param string $category_id Category identifier.
+	 * @return string
+	 */
+	protected function get_menu_category_primary_guide_title( $category_id ) {
+		$map = $this->get_menu_category_primary_guide_map();
+
+		return isset( $map[ $category_id ]['title'] ) ? (string) $map[ $category_id ]['title'] : '';
+	}
+
+	/**
+	 * Wrap a heading in Gutenberg comment markup.
+	 *
+	 * @param string $text  Heading text.
+	 * @param int    $level Heading level.
+	 * @return string
+	 */
+	protected function build_seed_block_heading( $text, $level = 2 ) {
+		$level = max( 2, min( 4, (int) $level ) );
+
+		return sprintf(
+			'<!-- wp:heading {"level":%1$d} --><h%1$d>%2$s</h%1$d><!-- /wp:heading -->',
+			$level,
+			esc_html( (string) $text )
+		);
+	}
+
+	/**
+	 * Wrap trusted HTML in a paragraph block.
+	 *
+	 * @param string $html Paragraph HTML.
+	 * @return string
+	 */
+	protected function build_seed_block_paragraph( $html ) {
+		return '<!-- wp:paragraph --><p>' . wp_kses_post( (string) $html ) . '</p><!-- /wp:paragraph -->';
+	}
+
+	/**
+	 * Wrap list items in a Gutenberg list block.
+	 *
+	 * @param string[] $items List item HTML strings.
+	 * @return string
+	 */
+	protected function build_seed_block_list( array $items ) {
+		$list_items = '';
+
+		foreach ( $items as $item ) {
+			$item = trim( (string) $item );
+
+			if ( '' === $item ) {
+				continue;
+			}
+
+			$list_items .= '<li>' . wp_kses_post( $item ) . '</li>';
+		}
+
+		if ( '' === $list_items ) {
+			return '';
+		}
+
+		return '<!-- wp:list --><ul>' . $list_items . '</ul><!-- /wp:list -->';
+	}
+
+	/**
+	 * Wrap trusted HTML in a core/html block.
+	 *
+	 * @param string $html HTML fragment.
+	 * @return string
+	 */
+	protected function build_seed_block_html( $html ) {
+		return '<!-- wp:html -->' . (string) $html . '<!-- /wp:html -->';
+	}
+
+	/**
+	 * Wrap a shortcode in a Gutenberg shortcode block.
+	 *
+	 * @param string $shortcode Shortcode text.
+	 * @return string
+	 */
+	protected function build_seed_block_shortcode( $shortcode ) {
+		return '<!-- wp:shortcode -->' . trim( (string) $shortcode ) . '<!-- /wp:shortcode -->';
+	}
+
+	/**
+	 * Return a separator block.
+	 *
+	 * @return string
+	 */
+	protected function build_seed_block_separator() {
+		return '<!-- wp:separator --><hr class="wp-block-separator has-alpha-channel-opacity"/><!-- /wp:separator -->';
+	}
+
+	/**
+	 * Build a human-readable list from an array.
+	 *
+	 * @param string[] $items Items to join.
+	 * @return string
+	 */
+	protected function build_seed_human_list( array $items ) {
+		$items = array_values(
+			array_filter(
+				array_map(
+					static function ( $item ) {
+						return trim( (string) $item );
+					},
+					$items
+				)
+			)
+		);
+
+		$count = count( $items );
+
+		if ( 0 === $count ) {
+			return '';
+		}
+
+		if ( 1 === $count ) {
+			return $items[0];
+		}
+
+		if ( 2 === $count ) {
+			return $items[0] . ' and ' . $items[1];
+		}
+
+		$last = array_pop( $items );
+
+		return implode( ', ', $items ) . ', and ' . $last;
+	}
+
+	/**
+	 * Return selected category items, prioritizing requested names first.
+	 *
+	 * @param string[] $category_ids    Category IDs.
+	 * @param int      $limit           Maximum number of items.
+	 * @param string[] $preferred_names Preferred item names.
+	 * @return array<int, array<string, mixed>>
+	 */
+	protected function get_category_seed_snapshot_items( array $category_ids, $limit = 8, array $preferred_names = array() ) {
+		$limit    = max( 1, (int) $limit );
+		$selected = array();
+		$seen     = array();
+
+		foreach ( $preferred_names as $preferred_name ) {
+			foreach ( $category_ids as $category_id ) {
+				$item = $this->get_menu_directory_item_data( $category_id, $preferred_name );
+
+				if ( ! is_array( $item ) || empty( $item['name'] ) ) {
+					continue;
+				}
+
+				$key = $this->normalize_media_key( (string) $item['name'] );
+
+				if ( isset( $seen[ $key ] ) ) {
+					continue;
+				}
+
+				$selected[]   = $item;
+				$seen[ $key ] = true;
+				break;
+			}
+
+			if ( count( $selected ) >= $limit ) {
+				return array_slice( $selected, 0, $limit );
+			}
+		}
+
+		foreach ( $category_ids as $category_id ) {
+			$category = $this->get_menu_directory_category_data( $category_id );
+
+			if ( ! is_array( $category ) || empty( $category['items'] ) || ! is_array( $category['items'] ) ) {
+				continue;
+			}
+
+			foreach ( $category['items'] as $item ) {
+				if ( empty( $item['name'] ) ) {
+					continue;
+				}
+
+				$key = $this->normalize_media_key( (string) $item['name'] );
+
+				if ( isset( $seen[ $key ] ) ) {
+					continue;
+				}
+
+				$selected[]   = $item;
+				$seen[ $key ] = true;
+
+				if ( count( $selected ) >= $limit ) {
+					return array_slice( $selected, 0, $limit );
+				}
+			}
+		}
+
+		return array_slice( $selected, 0, $limit );
+	}
+
+	/**
+	 * Build a simple snapshot table block for item comparisons.
+	 *
+	 * @param string $heading Table heading.
+	 * @param array  $items   Item data.
+	 * @return string
+	 */
+	protected function build_seeded_item_snapshot_table( $heading, array $items ) {
+		if ( empty( $items ) ) {
+			return '';
+		}
+
+		$rows = '';
+
+		foreach ( $items as $item ) {
+			$name     = isset( $item['name'] ) ? (string) $item['name'] : '';
+			$price    = isset( $item['price'] ) && '' !== trim( (string) $item['price'] ) ? (string) $item['price'] : 'Varies';
+			$calories = isset( $item['calories'] ) && '' !== trim( (string) $item['calories'] ) ? (string) $item['calories'] : 'Calories vary';
+			$summary  = isset( $item['summary'] ) ? (string) $item['summary'] : '';
+
+			if ( '' === $name ) {
+				continue;
+			}
+
+			$rows .= sprintf(
+				'<tr><td>%1$s</td><td>%2$s</td><td>%3$s</td><td>%4$s</td></tr>',
+				esc_html( $name ),
+				esc_html( $price ),
+				esc_html( $calories ),
+				esc_html( $summary )
+			);
+		}
+
+		if ( '' === $rows ) {
+			return '';
+		}
+
+		$table_html  = '<div class="mcprices-seed-table"><table><thead><tr><th>Item</th><th>Price</th><th>Calories</th><th>Quick take</th></tr></thead><tbody>';
+		$table_html .= $rows;
+		$table_html .= '</tbody></table></div>';
+
+		return $this->build_seed_block_heading( $heading, 2 ) . $this->build_seed_block_html( $table_html );
+	}
+
+	/**
+	 * Build FAQ-style blocks from an item list.
+	 *
+	 * @param array<int, array<string, string>> $faq_items FAQ items.
+	 * @return string
+	 */
+	protected function build_seeded_faq_blocks( array $faq_items ) {
+		if ( empty( $faq_items ) ) {
+			return '';
+		}
+
+		$content = $this->build_seed_block_heading( 'Common questions readers ask before ordering', 2 );
+
+		foreach ( $faq_items as $faq_item ) {
+			$question = trim( (string) ( $faq_item['question'] ?? '' ) );
+			$answer   = trim( (string) ( $faq_item['answer'] ?? '' ) );
+
+			if ( '' === $question || '' === $answer ) {
+				continue;
+			}
+
+			$content .= $this->build_seed_block_heading( $question, 3 );
+			$content .= $this->build_seed_block_paragraph( $answer );
+		}
+
+		return $content;
+	}
+
+	/**
+	 * Build a related-links block for internal linking.
+	 *
+	 * @param array<int, array<string, string>> $links Related link data.
+	 * @return string
+	 */
+	protected function build_seeded_related_links_block( array $links ) {
+		$list_items = array();
+
+		foreach ( $links as $link ) {
+			$label       = trim( (string) ( $link['label'] ?? '' ) );
+			$url         = trim( (string) ( $link['url'] ?? '' ) );
+			$description = trim( (string) ( $link['description'] ?? '' ) );
+
+			if ( '' === $label || '' === $url ) {
+				continue;
+			}
+
+			$item_html = '<a href="' . esc_url( $url ) . '">' . esc_html( $label ) . '</a>';
+
+			if ( '' !== $description ) {
+				$item_html .= ' &mdash; ' . esc_html( $description );
+			}
+
+			$list_items[] = $item_html;
+		}
+
+		if ( empty( $list_items ) ) {
+			return '';
+		}
+
+		return $this->build_seed_block_heading( 'Related guides and live menu pages', 2 ) . $this->build_seed_block_list( $list_items );
+	}
+
+	/**
+	 * Build a shorter support page with richer internal linking.
+	 *
+	 * @param array<string, mixed> $args Page arguments.
+	 * @return string
+	 */
+	protected function build_seeded_support_topic_page_content( array $args ) {
+		$args = wp_parse_args(
+			$args,
+			array(
+				'intro'         => array(),
+				'highlights'    => array(),
+				'sections'      => array(),
+				'related_links' => array(),
+			)
+		);
+
+		$content = '';
+
+		foreach ( $args['intro'] as $paragraph ) {
+			$content .= $this->build_seed_block_paragraph( $paragraph );
+		}
+
+		if ( ! empty( $args['highlights'] ) && is_array( $args['highlights'] ) ) {
+			$content .= $this->build_seed_block_heading( 'Key takeaways', 2 );
+			$content .= $this->build_seed_block_list( $args['highlights'] );
+		}
+
+		foreach ( $args['sections'] as $section ) {
+			$heading = trim( (string) ( $section['heading'] ?? '' ) );
+
+			if ( '' !== $heading ) {
+				$content .= $this->build_seed_block_heading( $heading, 2 );
+			}
+
+			if ( ! empty( $section['paragraphs'] ) && is_array( $section['paragraphs'] ) ) {
+				foreach ( $section['paragraphs'] as $paragraph ) {
+					$content .= $this->build_seed_block_paragraph( $paragraph );
+				}
+			}
+
+			if ( ! empty( $section['list'] ) && is_array( $section['list'] ) ) {
+				$content .= $this->build_seed_block_list( $section['list'] );
+			}
+		}
+
+		$content .= $this->build_seed_block_heading( 'How to use this page on McDonald\'s Menu Prices USA', 2 );
+		$content .= $this->build_seed_block_paragraph( 'Use this focused guide when you already know the topic you want to compare, then move into the linked pillar pages, category pages, and item pages when you need broader context, deeper price comparisons, or a more exact menu path before ordering.' );
+
+		$content .= $this->build_seeded_related_links_block( is_array( $args['related_links'] ) ? $args['related_links'] : array() );
+
+		return $content;
+	}
+
+	/**
+	 * Return the shared methodology paragraphs used on seeded SEO pages.
+	 *
+	 * @return string[]
+	 */
+	protected function get_seeded_methodology_paragraphs() {
+		return array(
+			'This page is built from the current tracked McDonald&#8217;s USA menu data used across the site, combined with category-level explanation designed to make comparison easier for readers. It is written as a planning guide, not as a replacement for the final live checkout in the McDonald&#8217;s app or restaurant.',
+			'Prices can vary by location, franchise, tax, delivery fee structure, app participation, and timing of promotions. For allergens, ingredients, and final live availability, always confirm details with official McDonald&#8217;s sources before ordering.',
+		);
+	}
+
+	/**
+	 * Build a complete long-form content body from reusable sections.
+	 *
+	 * @param array<string, mixed> $args Content arguments.
+	 * @return string
+	 */
+	protected function build_seeded_long_form_page_content( array $args ) {
+		$args = wp_parse_args(
+			$args,
+			array(
+				'intro'        => array(),
+				'snapshots'    => array(),
+				'sections'     => array(),
+				'faq_items'    => array(),
+				'related_links' => array(),
+				'shortcodes'   => array(),
+				'methodology'  => array(),
+			)
+		);
+
+		$content = '';
+
+		foreach ( $args['intro'] as $paragraph ) {
+			$content .= $this->build_seed_block_paragraph( $paragraph );
+		}
+
+		foreach ( $args['snapshots'] as $snapshot ) {
+			$content .= $this->build_seeded_item_snapshot_table(
+				(string) ( $snapshot['heading'] ?? 'Quick price snapshot' ),
+				isset( $snapshot['items'] ) && is_array( $snapshot['items'] ) ? $snapshot['items'] : array()
+			);
+		}
+
+		foreach ( $args['sections'] as $section ) {
+			$heading = trim( (string) ( $section['heading'] ?? '' ) );
+
+			if ( '' !== $heading ) {
+				$content .= $this->build_seed_block_heading( $heading, 2 );
+			}
+
+			if ( ! empty( $section['paragraphs'] ) && is_array( $section['paragraphs'] ) ) {
+				foreach ( $section['paragraphs'] as $paragraph ) {
+					$content .= $this->build_seed_block_paragraph( $paragraph );
+				}
+			}
+
+			if ( ! empty( $section['list'] ) && is_array( $section['list'] ) ) {
+				$content .= $this->build_seed_block_list( $section['list'] );
+			}
+		}
+
+		$content .= $this->build_seed_block_heading( 'How to use this guide with the live menu pages', 2 );
+		$content .= $this->build_seed_block_paragraph( 'A long-form McDonald&#8217;s USA guide works best when it does two jobs at the same time. First, it should answer the broad search intent behind the query so readers understand the menu area, price behavior, and likely next decision. Second, it should route readers toward the live category pages and item pages when they are ready for one exact product, one meal, or one more precise comparison. That combination is what turns a thin reference page into a useful planning resource.' );
+		$content .= $this->build_seed_block_paragraph( 'Many visitors do not arrive knowing exactly which page they need. They may start with a menu question, then realize they really need a deal page, an allergen check, a category comparison, or a more local pricing explanation. That is why each pillar on this site is written to help readers move from broad intent to specific action without losing the context that makes the final order decision easier.' );
+		$content .= $this->build_seed_block_heading( 'What usually changes the final price or decision', 2 );
+		$content .= $this->build_seed_block_paragraph( 'The posted menu price is only one part of the real answer for most readers. Final value is shaped by combo structure, add-ons, local pricing, taxes, app participation, delivery fees, and limited-time offers. In practice, that means a guide should help readers understand why the final total can move instead of pretending one number explains every location and every ordering method perfectly.' );
+		$content .= $this->build_seed_block_paragraph( 'This is also where EEAT-style transparency matters. A trustworthy menu guide explains what it can confidently help with, such as category comparison and current tracked prices, and what should still be verified at the official source, such as high-stakes allergen questions, live app-only deals, or one exact local checkout total. That balance makes the content more useful for search engines, AI retrieval systems, and real users alike.' );
+		$content .= $this->build_seed_block_list(
+			array(
+				'Location and franchise pricing can shift the final total even when the headline menu structure looks familiar.',
+				'Meal upgrades, drink sizes, fries sizes, and desserts often change the real order cost more than readers expect.',
+				'App-exclusive offers, rewards points, and delivery pricing can create a different value story from the in-store board price.',
+				'Ingredient, allergen, and availability checks should always be confirmed with official McDonald&#8217;s sources before ordering.',
+			)
+		);
+
+		$content .= $this->build_seeded_faq_blocks( is_array( $args['faq_items'] ) ? $args['faq_items'] : array() );
+
+		$methodology = is_array( $args['methodology'] ) && ! empty( $args['methodology'] )
+			? $args['methodology']
+			: $this->get_seeded_methodology_paragraphs();
+
+		$content .= $this->build_seed_block_heading( 'How we use and verify menu data', 2 );
+		foreach ( $methodology as $paragraph ) {
+			$content .= $this->build_seed_block_paragraph( $paragraph );
+		}
+
+		$content .= $this->build_seeded_related_links_block( is_array( $args['related_links'] ) ? $args['related_links'] : array() );
+
+		foreach ( $args['shortcodes'] as $shortcode ) {
+			$shortcode = trim( (string) $shortcode );
+
+			if ( '' === $shortcode ) {
+				continue;
+			}
+
+			$content .= $this->build_seed_block_separator();
+			$content .= $this->build_seed_block_shortcode( $shortcode );
+		}
+
+		return $content;
+	}
+
+	/**
+	 * Build a long-form pillar page body for one tracked menu category.
+	 *
+	 * @param array<string, mixed> $config Category content config.
+	 * @return string
+	 */
+	protected function build_seeded_category_pillar_page_content( array $config ) {
+		$config = wp_parse_args(
+			$config,
+			array(
+				'category'                => '',
+				'page_label'              => '',
+				'focus_label'             => '',
+				'include_items'           => array(),
+				'value_points'            => array(),
+				'nutrition_points'        => array(),
+				'availability_paragraphs' => array(),
+				'featured_items'          => array(),
+				'faq_items'               => array(),
+				'related_links'           => array(),
+			)
+		);
+
+		$category = $this->get_menu_directory_category_data( $config['category'] );
+
+		if ( ! is_array( $category ) ) {
+			return '';
+		}
+
+		$page_label   = '' !== trim( (string) $config['page_label'] ) ? (string) $config['page_label'] : (string) $category['title'];
+		$focus_label  = '' !== trim( (string) $config['focus_label'] ) ? (string) $config['focus_label'] : (string) $category['card_title'];
+		$item_count   = isset( $category['items'] ) && is_array( $category['items'] ) ? count( $category['items'] ) : 0;
+		$include_copy = $this->build_seed_human_list( is_array( $config['include_items'] ) ? $config['include_items'] : array() );
+		$category_url = $this->get_menu_category_page_url( $config['category'] );
+		$snapshot     = $this->get_category_seed_snapshot_items(
+			array( (string) $config['category'] ),
+			8,
+			is_array( $config['featured_items'] ) ? $config['featured_items'] : array()
+		);
+
+		$availability_paragraphs = is_array( $config['availability_paragraphs'] ) && ! empty( $config['availability_paragraphs'] )
+			? $config['availability_paragraphs']
+			: array(
+				'This pillar is meant to help readers understand the category before they commit to one exact item page. It connects general category decisions with the live tracked menu cards and the dedicated item pages that sit underneath them.',
+				'Use the pillar for the broad comparison, then use the live category page or a specific item page when the question narrows to one product, one meal, or one exact menu price.',
+			);
+
+		$related_links = is_array( $config['related_links'] ) ? $config['related_links'] : array();
+		$faq_items      = is_array( $config['faq_items'] ) ? $config['faq_items'] : array();
+
+		array_unshift(
+			$related_links,
+			array(
+				'label'       => 'Open the live category page',
+				'url'         => $category_url,
+				'description' => 'See the current tracked ' . strtolower( (string) $category['card_title'] ) . ' items and their individual price pages.',
+			)
+		);
+
+		$faq_items[] = array(
+			'question' => 'Do prices in this McDonald\'s USA category stay the same everywhere?',
+			'answer'   => 'No. Prices in this category can still change by state, city, franchise operator, taxes, app participation, delivery fees, and limited-time promotions. The guide is built for comparison and planning, while the official McDonald\'s ordering flow should confirm the final local total.',
+		);
+		$faq_items[] = array(
+			'question' => 'Should I use this pillar first or go straight to an item page?',
+			'answer'   => 'Use the pillar first when you are still comparing options inside the category or trying to understand the value ladder. Go straight to the item page when you already know the exact product you want and only need the focused price, calories, and related menu context.',
+		);
+
+		return $this->build_seeded_long_form_page_content(
+			array(
+				'intro'     => array(
+					'This ' . esc_html( $page_label ) . ' page helps readers compare current McDonald&#8217;s USA prices in dollars, quick calorie references, and direct item-page links without bouncing between multiple menu screens. Instead of treating the category as a short list of names, it explains how the section works, what the price tiers look like, and how to move from category browsing into exact item decisions.',
+					'The live ' . esc_html( strtolower( $focus_label ) ) . ' coverage on this site currently tracks ' . esc_html( (string) $item_count ) . ' items. That means readers can move from the big-picture guide into the current category data for ' . esc_html( $include_copy ) . ' without leaving the native WordPress page structure.',
+					'Prices on this site are shown in dollars for planning and comparison, but the final checkout can still vary by state, city, franchise, app participation, tax, delivery fees, and limited-time promotions. The goal of this pillar is to make the decision clearer before you open the final order screen.',
+				),
+				'snapshots' => array(
+					array(
+						'heading' => 'Quick price snapshot for this category',
+						'items'   => $snapshot,
+					),
+				),
+				'sections'  => array(
+					array(
+						'heading'    => 'What is on the ' . $focus_label . '?',
+						'paragraphs' => array(
+							'At a practical level, this category exists to answer the biggest menu-navigation question readers have before ordering: what exactly belongs in this part of the menu, and which items deserve a closer look first? For most readers, that is more useful than a thin unordered list because the decision normally starts with category comparison before it narrows into a single product.',
+							'That is why this page is written as both a topical guide and a menu-routing page. It helps readers understand where the category fits inside the wider McDonald&#8217;s USA menu, what the likely price ladder looks like, and which items are usually the best starting points for comparison.',
+						),
+						'list'       => is_array( $config['include_items'] ) ? $config['include_items'] : array(),
+					),
+					array(
+						'heading'    => $category['card_title'] . ' prices, value, and popular order patterns',
+						'paragraphs' => array(
+							'Category-level value is rarely just one number. Readers compare standalone item pricing, meal or add-on pricing, size changes, and the difference between a quick low-entry order and a more complete order that feels like a real meal. That is why value needs to be explained as a pattern rather than one flat claim.',
+							'The live category page and its item pages handle the exact listings. This pillar handles the broader comparison logic so readers can understand which branch of the menu tree is actually relevant before they click deeper.',
+						),
+						'list'       => is_array( $config['value_points'] ) ? $config['value_points'] : array(),
+					),
+					array(
+						'heading'    => 'Calories, customization, and what to double-check',
+						'paragraphs' => array(
+							'Price and calories are often researched together. Readers want to know not just what something costs, but how filling it is, how heavy it feels in the wider order, and whether an add-on or size change makes the category less practical than it first appeared.',
+							'That is why this pillar keeps nutrition context visible while still pointing readers toward the separate nutrition and allergen resources when the decision becomes more sensitive or ingredient-specific.',
+						),
+						'list'       => is_array( $config['nutrition_points'] ) ? $config['nutrition_points'] : array(),
+					),
+					array(
+						'heading'    => 'Availability, ordering strategy, and useful next steps',
+						'paragraphs' => $availability_paragraphs,
+					),
+					array(
+						'heading'    => 'How readers compare this category with the rest of the menu',
+						'paragraphs' => array(
+							'Most people do not compare this category in isolation. They are deciding whether it beats the closest alternative somewhere else on the McDonald&#8217;s USA menu. That may mean breakfast versus burgers, nuggets versus sandwiches, fries versus another side, or a dessert versus a drink-led treat order. A good pillar needs to explain that cross-category reality because it mirrors how actual search behavior works.',
+							'The strongest comparison pages are the ones that help readers decide what type of order they are building before they obsess over one exact item. Once that higher-level decision is made, the item-page comparison becomes faster and cleaner because the reader already understands the category context, price ladder, and likely add-on path.',
+							'This is also one of the reasons search engines reward broader topical coverage. A category page that understands adjacent menu entities is more useful than a thin page that repeats only one item name. It signals that the site can answer the wider decision set around value, calories, timing, and add-ons rather than treating every menu query as an isolated fact lookup.',
+						),
+					),
+					array(
+						'heading'    => 'What usually changes the final total in this category',
+						'paragraphs' => array(
+							'Readers often search for one posted item price, but the real order total in this category is usually shaped by what happens next. A meal upgrade, larger drink, extra sauce, dessert add-on, or premium customization can move the total far more than the first price on the menu board suggests. That is why this pillar emphasizes ordering patterns rather than only one number.',
+							'For some categories, the hidden swing comes from portion size. For others, it comes from combo structure, side choices, or premium limited-time items. Either way, the important SEO and user-experience job of the pillar is to explain where the price pressure usually appears so readers do not misread a low-entry item as the final likely spend.',
+							'This category context is also helpful for AI search visibility because it makes the page retrieval-ready for more than one query style. Someone searching for price, value, calories, best order, or cheapest build can all land on the same page and still find an explanation that matches their real intent.',
+						),
+						'list'       => array(
+							'Standalone item pricing and full meal pricing can tell very different value stories.',
+							'Add-ons such as fries, drinks, sauces, desserts, or premium customizations often create the biggest hidden jump.',
+							'Local pricing and app participation may change the practical best-value choice inside the same category.',
+							'Limited-time items can temporarily reset the normal category price ladder and draw clicks away from evergreen favorites.',
+						),
+					),
+					array(
+						'heading'    => 'Who this category usually serves best',
+						'paragraphs' => array(
+							'Every major McDonald&#8217;s USA category solves a slightly different ordering problem. Some categories are strongest for quick solo orders, some for heavier meal seekers, some for families, some for snack-style add-ons, and some for readers who are balancing taste, cost, and convenience at the same time. A category pillar becomes more useful when it acknowledges those audience differences directly.',
+							'That audience framing is part of EEAT as well. Helpful content is not only factually organized; it is written in a way that shows the writer understands how real customers use the menu in practice. Readers searching these pages are often trying to spend wisely, compare fairly, and avoid surprise calories or surprise total costs. The content should respect that practical intent.',
+							'Once the likely use case is clear, the best next step is usually straightforward: open the live category page, jump to the most relevant item page, or move sideways into deals, nutrition, breakfast hours, or regional pricing depending on what is blocking the final decision.',
+						),
+					),
+				),
+				'faq_items' => $faq_items,
+				'related_links' => $related_links,
+				'shortcodes' => array(
+					'[mcprices_menu_category category="' . esc_attr( (string) $config['category'] ) . '"]',
+				),
+			)
 		);
 	}
 
@@ -2271,6 +4460,9 @@ class McPrices_Integration {
 			return '';
 		}
 
+		$guide_url   = $this->get_menu_category_primary_guide_url( $category['id'] );
+		$guide_title = $this->get_menu_category_primary_guide_title( $category['id'] );
+
 		ob_start();
 		?>
 		<div class="mcprices-page mcprices-directory-page mcprices-category-page">
@@ -2287,6 +4479,9 @@ class McPrices_Integration {
 						<div class="section-label">Category Page</div>
 						<h2 class="section-title"><?php echo esc_html( $category['title'] ); ?></h2>
 						<p class="section-sub"><?php echo esc_html( $category['description'] ); ?></p>
+						<?php if ( $guide_url && $guide_title ) : ?>
+							<p class="section-sub">Need the broader category context first? Read the <a href="<?php echo esc_url( $guide_url ); ?>"><?php echo esc_html( $guide_title ); ?></a> guide, or return to the <a href="<?php echo esc_url( $this->get_menu_directory_root_url() ); ?>">full menu directory</a>.</p>
+						<?php endif; ?>
 					</div>
 					<div class="mcprices-directory-meta">
 						<div class="mcprices-directory-meta-card">
@@ -2360,6 +4555,9 @@ class McPrices_Integration {
 			return '';
 		}
 
+		$guide_url   = $this->get_menu_category_primary_guide_url( $category['id'] );
+		$guide_title = $this->get_menu_category_primary_guide_title( $category['id'] );
+
 		$related_items = array_values(
 			array_filter(
 				$category['items'],
@@ -2429,6 +4627,9 @@ class McPrices_Integration {
 								<h3 class="sidebar-widget-title">Quick Notes</h3>
 								<p>This dedicated page keeps the current price, calorie reference, and category context for <strong><?php echo esc_html( $item['name'] ); ?></strong> inside your native WordPress menu structure.</p>
 								<p>Final pricing can still vary by restaurant, location, app offer, combo selection, delivery platform, and taxes.</p>
+								<?php if ( $guide_url && $guide_title ) : ?>
+									<p>For broader comparison, read the <a href="<?php echo esc_url( $guide_url ); ?>"><?php echo esc_html( $guide_title ); ?></a> page before returning to this item.</p>
+								<?php endif; ?>
 							</div>
 						</div>
 					</div>
@@ -2599,20 +4800,20 @@ class McPrices_Integration {
 			),
 			'footer2' => sprintf(
 				'<!-- wp:html --><div class="footer-col-title">Menu Categories</div><ul class="footer-links"><li><a href="%1$s">What&#8217;s New</a></li><li><a href="%2$s">McValue</a></li><li><a href="%3$s">Breakfast</a></li><li><a href="%4$s">Burgers</a></li><li><a href="%5$s">Chicken &amp; Fish</a></li><li><a href="%6$s">McNuggets &amp; Strips</a></li><li><a href="%7$s">Snack Wrap</a></li><li><a href="%8$s">Fries &amp; Sides</a></li><li><a href="%9$s">Happy Meal</a></li><li><a href="%10$s">Sweets &amp; Treats</a></li><li><a href="%11$s">McCafe</a></li><li><a href="%12$s">Beverages</a></li><li><a href="%13$s">Extra Value Meals</a></li><li><a href="%14$s">Sauces &amp; Condiments</a></li></ul><!-- /wp:html -->',
-				esc_url( $this->get_section_url( 'whats-new' ) ),
-				esc_url( $this->get_section_url( 'mcvalue' ) ),
-				esc_url( $this->get_section_url( 'breakfast' ) ),
-				esc_url( $this->get_section_url( 'burgers' ) ),
-				esc_url( $this->get_section_url( 'chickenfish' ) ),
-				esc_url( $this->get_section_url( 'nuggets' ) ),
-				esc_url( $this->get_section_url( 'snackwrap' ) ),
-				esc_url( $this->get_section_url( 'sides' ) ),
-				esc_url( $this->get_section_url( 'happymeal' ) ),
-				esc_url( $this->get_section_url( 'sweets' ) ),
-				esc_url( $this->get_section_url( 'mccafe' ) ),
-				esc_url( $this->get_section_url( 'beverages' ) ),
-				esc_url( $this->get_section_url( 'meals' ) ),
-				esc_url( $this->get_section_url( 'sauces' ) ),
+				esc_url( $this->get_menu_category_page_url( 'whats-new' ) ),
+				esc_url( $this->get_menu_category_page_url( 'mcvalue' ) ),
+				esc_url( $this->get_menu_category_page_url( 'breakfast' ) ),
+				esc_url( $this->get_menu_category_page_url( 'burgers' ) ),
+				esc_url( $this->get_menu_category_page_url( 'chickenfish' ) ),
+				esc_url( $this->get_menu_category_page_url( 'nuggets' ) ),
+				esc_url( $this->get_menu_category_page_url( 'snackwrap' ) ),
+				esc_url( $this->get_menu_category_page_url( 'sides' ) ),
+				esc_url( $this->get_menu_category_page_url( 'happymeal' ) ),
+				esc_url( $this->get_menu_category_page_url( 'sweets' ) ),
+				esc_url( $this->get_menu_category_page_url( 'mccafe' ) ),
+				esc_url( $this->get_menu_category_page_url( 'beverages' ) ),
+				esc_url( $this->get_menu_category_page_url( 'meals' ) ),
+				esc_url( $this->get_menu_category_page_url( 'sauces' ) ),
 			),
 			'footer3' => sprintf(
 				'<!-- wp:html --><div class="footer-col-title">Information</div><ul class="footer-links"><li><a href="%1$s">About Us</a></li><li><a href="%2$s">Privacy Policy</a></li><li><a href="%3$s">Cookie Policy</a></li><li><a href="%4$s">Ad Disclosure</a></li><li><a href="%5$s">Disclaimer</a></li><li><a href="%6$s">Contact</a></li><li><a href="%7$s">Sitemap</a></li></ul><!-- /wp:html -->',
@@ -2625,18 +4826,19 @@ class McPrices_Integration {
 				esc_url( home_url( '/sitemap/' ) )
 			),
 			'footer4' => sprintf(
-				'<!-- wp:html --><div class="footer-col-title">Popular Guides</div><ul class="footer-links"><li><a href="%1$s">Big Mac Price USA</a></li><li><a href="%2$s">McDonald&#8217;s App Deals</a></li><li><a href="%3$s">Calorie Counter</a></li><li><a href="%4$s">Breakfast Hours</a></li><li><a href="%5$s">Allergen Guide</a></li><li><a href="%6$s">Price History</a></li><li><a href="%7$s">Rewards Guide</a></li><li><a href="%8$s">Limited-Time Menu</a></li><li><a href="%9$s">Delivery Guide</a></li><li><a href="%10$s">Breakfast Menu</a></li><li><a href="%11$s">Burgers Menu</a></li></ul><!-- /wp:html -->',
+				'<!-- wp:html --><div class="footer-col-title">Popular Guides</div><ul class="footer-links"><li><a href="%1$s">Big Mac Price USA</a></li><li><a href="%2$s">McDonald&#8217;s App Deals</a></li><li><a href="%3$s">Nutrition &amp; Allergens Guide</a></li><li><a href="%4$s">Breakfast Hours</a></li><li><a href="%5$s">Prices by State</a></li><li><a href="%6$s">Rewards Guide</a></li><li><a href="%7$s">Limited-Time Menu</a></li><li><a href="%8$s">Delivery Guide</a></li><li><a href="%9$s">Breakfast Menu</a></li><li><a href="%10$s">Burgers Menu</a></li><li><a href="%11$s">Drinks Menu</a></li><li><a href="%12$s">Deals &amp; McValue Guide</a></li></ul><!-- /wp:html -->',
 				esc_url( home_url( '/big-mac-price-usa/' ) ),
 				esc_url( home_url( '/mcdonalds-app-deals/' ) ),
-				esc_url( home_url( '/calorie-counter/' ) ),
+				esc_url( home_url( '/mcdonalds-nutrition-calories-allergens/' ) ),
 				esc_url( home_url( '/breakfast-hours/' ) ),
-				esc_url( home_url( '/allergen-guide/' ) ),
-				esc_url( home_url( '/price-history/' ) ),
+				esc_url( home_url( '/mcdonalds-prices-by-state/' ) ),
 				esc_url( home_url( '/rewards-guide/' ) ),
 				esc_url( home_url( '/limited-time-menu/' ) ),
 				esc_url( home_url( '/delivery-guide/' ) ),
 				esc_url( home_url( '/breakfast-menu/' ) ),
-				esc_url( home_url( '/burgers-menu/' ) )
+				esc_url( home_url( '/burgers-menu/' ) ),
+				esc_url( home_url( '/beverage-menu/' ) ),
+				esc_url( home_url( '/mcdonalds-deals-mcvalue-guide/' ) )
 			),
 		);
 	}

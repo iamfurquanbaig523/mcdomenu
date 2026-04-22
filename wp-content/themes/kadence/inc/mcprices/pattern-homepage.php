@@ -509,19 +509,20 @@ $deal_cards = array(
 );
 
 $guide_cards = array(
-	array( 'href' => $get_category_page_url( 'whats-new' ), 'title' => 'Limited-Time Menu', 'text' => 'Current HUNTRIX, Saja Boys, Ramyeon fries, and BIG ARCH items from the latest USA menu file.' ),
-	array( 'href' => $get_category_page_url( 'meals' ), 'title' => 'Extra Value Meals', 'text' => 'Breakfast and lunch combo meal pricing, including burger meals, McCrispy meals, wrap meals, and nugget meals.' ),
-	array( 'href' => $get_category_page_url( 'mcvalue' ), 'title' => 'McValue Deals', 'text' => 'The attached McValue data, including $5 meal deals, BOGO offers, and low-entry snack and dessert picks.' ),
-	array( 'href' => $get_category_page_url( 'breakfast' ), 'title' => 'Breakfast Menu', 'text' => 'Biscuits, McMuffins, McGriddles, bagels, platters, oatmeal, and breakfast sides in one section.' ),
-	array( 'href' => $get_category_page_url( 'burgers' ), 'title' => 'Burger Prices USA', 'text' => 'Big Mac, Quarter Pounder, McDouble, Daily Double, cheeseburgers, and hamburgers from the attached USA burger data.' ),
-	array( 'href' => $get_category_page_url( 'chickenfish' ), 'title' => 'Chicken & Fish', 'text' => 'McCrispy, spicy builds, Filet-O-Fish, and McChicken prices from the latest USA sandwich section.' ),
-	array( 'href' => $get_category_page_url( 'nuggets' ), 'title' => 'McNuggets & Strips', 'text' => '4 pc through 40 pc McNuggets plus McCrispy Strips from the attached chicken data.' ),
-	array( 'href' => $get_category_page_url( 'snackwrap' ), 'title' => 'Snack Wrap Prices', 'text' => 'Both current Snack Wrap flavors and their latest listed prices.' ),
-	array( 'href' => $get_category_page_url( 'happymeal' ), 'title' => 'Happy Meal Prices', 'text' => 'Current hamburger and McNuggets Happy Meal pricing from the attached USA source.' ),
-	array( 'href' => $get_category_page_url( 'sweets' ), 'title' => 'McFlurry & Treats', 'text' => 'Regular McFlurries, mini McFlurries, shakes, sundaes, cones, pies, and cookies in one section.' ),
-	array( 'href' => $get_category_page_url( 'mccafe' ), 'title' => 'McCafe Coffees', 'text' => 'Hot coffee, iced coffee, espresso drinks, frappes, and hot chocolate with the latest listed prices.' ),
-	array( 'href' => $get_category_page_url( 'beverages' ), 'title' => 'Drinks & Smoothies', 'text' => 'Soft drinks, frozen drinks, tea, lemonade, juice, milk, smoothies, and water from the USA beverage file.' ),
-	array( 'href' => $get_category_page_url( 'sauces' ), 'title' => 'Sauces & Condiments', 'text' => 'Included sauces, paid dips, and packet condiments with current prices and calories.' ),
+	array( 'href' => $page_url( 'menu' ), 'title' => 'Full Menu USA', 'text' => 'The main McDonald\'s USA menu pillar for comparing categories, prices, calories, deals, and the best next guide to open.' ),
+	array( 'href' => $page_url( 'breakfast-menu' ), 'title' => 'Breakfast Menu Prices USA', 'text' => 'A deeper breakfast guide covering McMuffins, biscuits, McGriddles, hotcakes, Hash Browns, and breakfast value comparisons.' ),
+	array( 'href' => $page_url( 'burgers-menu' ), 'title' => 'Burgers Menu Prices USA', 'text' => 'Compare Big Mac, Quarter Pounder builds, McDouble, cheeseburgers, hamburgers, and burger price ladders in one guide.' ),
+	array( 'href' => $page_url( 'chicken-fish-menu' ), 'title' => 'Chicken & Fish Menu Prices USA', 'text' => 'McCrispy, spicy builds, McChicken, Filet-O-Fish, and chicken-versus-fish value comparisons for USA ordering.' ),
+	array( 'href' => $page_url( 'nuggets-and-strips' ), 'title' => 'McNuggets & Strips Prices USA', 'text' => 'Piece counts, share boxes, McCrispy Strips, sauces, and family-order value context from the current USA menu.' ),
+	array( 'href' => $page_url( 'fries-sides' ), 'title' => 'Fries & Sides Prices USA', 'text' => 'See how fries sizes, Apple Slices, and side-upgrade choices change the final McDonald\'s USA total.' ),
+	array( 'href' => $page_url( 'happy-meal-menu' ), 'title' => 'Happy Meal Prices USA', 'text' => 'A family-order guide to Hamburger and McNuggets Happy Meals, kids-meal pricing, and related add-on choices.' ),
+	array( 'href' => $page_url( 'sweets-treats' ), 'title' => 'Desserts Menu Prices USA', 'text' => 'McFlurries, mini treats, cones, sundaes, shakes, pies, and dessert value comparisons in one sweets guide.' ),
+	array( 'href' => $page_url( 'mccafe-menu' ), 'title' => 'McCafe Menu Prices USA', 'text' => 'Hot coffee, iced coffee, espresso drinks, frappes, and McCafe size-led pricing comparisons for the USA menu.' ),
+	array( 'href' => $page_url( 'beverage-menu' ), 'title' => 'Drinks Menu Prices USA', 'text' => 'Soft drinks, tea, lemonade, juice, smoothies, frozen drinks, and beverage pricing across the USA menu.' ),
+	array( 'href' => $page_url( 'sauces-condiments' ), 'title' => 'Sauces & Condiments Prices USA', 'text' => 'Included dips, paid sauces, packet condiments, and the add-on choices that change nuggets, fries, and shareable orders.' ),
+	array( 'href' => $page_url( 'mcdonalds-deals-mcvalue-guide' ), 'title' => 'Deals & McValue Guide USA', 'text' => 'The main value pillar for $5-style meals, McValue ordering, app-led savings, and low-entry menu strategies.' ),
+	array( 'href' => $page_url( 'mcdonalds-nutrition-calories-allergens' ), 'title' => 'Nutrition, Calories & Allergens Guide', 'text' => 'A broader McDonald\'s USA guide for calories, ingredients, allergen checks, and lighter-versus-heavier menu decisions.' ),
+	array( 'href' => $page_url( 'mcdonalds-prices-by-state' ), 'title' => 'McDonald\'s Prices by State', 'text' => 'The regional pricing pillar for comparing state and city variation, local value differences, and market-level menu shifts.' ),
 );
 
 $faq_items = array(
@@ -1050,7 +1051,7 @@ ob_start();
 		<div class="section-header center">
 			<div class="section-label">Deep-dive guides</div>
 			<h2 class="section-title">In-Depth Price Guides</h2>
-			<p class="section-sub">Anchor-based guides for the key US menu sections and value areas that readers compare most often.</p>
+			<p class="section-sub">Direct links to the main USA price guides readers use most often for menu planning, value comparisons, nutrition checks, and regional price research.</p>
 		</div>
 		<div class="link-grid links-grid">
 			<?php foreach ( $guide_cards as $card ) : ?>
