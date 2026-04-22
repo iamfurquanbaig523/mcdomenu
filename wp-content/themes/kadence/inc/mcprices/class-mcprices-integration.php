@@ -13,6 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+require_once __DIR__ . '/seed-menu-root.php';
+
 /**
  * Adds a native Kadence integration layer for the attached McPrices design.
  */
@@ -88,6 +90,11 @@ class McPrices_Integration {
 	const MENU_DIRECTORY_SIGNATURE_OPTION = 'mcprices_menu_directory_signature';
 
 	/**
+	 * Option used to track the current page-category admin seeding signature.
+	 */
+	const PAGE_CATEGORY_SIGNATURE_OPTION = 'mcprices_page_category_signature';
+
+	/**
 	 * Singleton instance.
 	 *
 	 * @var McPrices_Integration|null
@@ -130,6 +137,8 @@ class McPrices_Integration {
 		add_action( 'after_setup_theme', array( $this, 'maybe_sync_managed_site_content' ), 40 );
 		add_action( 'customize_register', array( $this, 'register_customizer' ), 100 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ), 30 );
+		add_action( 'init', array( $this, 'register_page_category_support' ), 12 );
+		add_action( 'init', array( $this, 'maybe_seed_page_categories' ), 26 );
 		add_action( 'init', array( $this, 'maybe_flush_pending_rewrite_rules' ), 99 );
 		add_action( 'wp_head', array( $this, 'render_homepage_meta_tags' ), 2 );
 		add_action( 'wp_head', array( $this, 'render_homepage_schema' ), 30 );
@@ -141,6 +150,11 @@ class McPrices_Integration {
 		add_action( 'init', array( $this, 'register_patterns' ), 20 );
 		add_action( 'wp_footer', array( $this, 'render_mobile_search_panel' ), 15 );
 		add_action( 'wp_footer', array( $this, 'render_mobile_quick_nav' ), 20 );
+		add_action( 'admin_menu', array( $this, 'register_page_categories_submenu' ), 20 );
+		add_action( 'restrict_manage_posts', array( $this, 'render_page_category_filter' ) );
+		add_action( 'pre_get_posts', array( $this, 'filter_page_admin_query_by_category' ) );
+		add_filter( 'manage_pages_columns', array( $this, 'filter_page_admin_columns' ) );
+		add_action( 'manage_pages_custom_column', array( $this, 'render_page_admin_column' ), 10, 2 );
 	}
 
 	/**
@@ -173,6 +187,371 @@ class McPrices_Integration {
 		$path = '/' . ltrim( $path, '/' );
 
 		return untrailingslashit( $path ) . '/';
+	}
+
+	/**
+	 * Make the built-in category taxonomy available on pages so menu items and
+	 * category landing pages can be managed from normal WordPress admin screens.
+	 *
+	 * @return void
+	 */
+	public function register_page_category_support() {
+		register_taxonomy_for_object_type( 'category', 'page' );
+	}
+
+	/**
+	 * Add a convenient categories submenu under Pages in wp-admin.
+	 *
+	 * @return void
+	 */
+	public function register_page_categories_submenu() {
+		add_submenu_page(
+			'edit.php?post_type=page',
+			__( 'Page Categories', 'kadence' ),
+			__( 'Page Categories', 'kadence' ),
+			'manage_categories',
+			'edit-tags.php?taxonomy=category&post_type=page'
+		);
+	}
+
+	/**
+	 * Seed real WordPress categories for the managed menu pages and assign them
+	 * to the seeded page tree so editing can happen from wp-admin.
+	 *
+	 * @return void
+	 */
+	public function maybe_seed_page_categories() {
+		if ( ! $this->design_enabled() ) {
+			return;
+		}
+
+		$signature = md5(
+			wp_json_encode(
+				array(
+					'terms'    => $this->get_page_category_seed_terms(),
+					'supports' => $this->get_page_category_support_page_map(),
+				)
+			)
+		);
+
+		if ( $signature === (string) get_option( self::PAGE_CATEGORY_SIGNATURE_OPTION, '' ) ) {
+			return;
+		}
+
+		$term_ids = array();
+
+		foreach ( $this->get_page_category_seed_terms() as $category_key => $term_data ) {
+			$term_id = $this->upsert_page_category_term( $term_data );
+
+			if ( $term_id ) {
+				$term_ids[ $category_key ] = $term_id;
+			}
+		}
+
+		if ( empty( $term_ids ) ) {
+			return;
+		}
+
+		$this->assign_seeded_terms_to_managed_pages( $term_ids );
+		$this->assign_seeded_terms_to_support_pages( $term_ids );
+
+		update_option( self::PAGE_CATEGORY_SIGNATURE_OPTION, $signature, false );
+	}
+
+	/**
+	 * Return the menu category terms that should exist in WordPress admin.
+	 *
+	 * @return array<string, array<string, string>>
+	 */
+	protected function get_page_category_seed_terms() {
+		$terms = array();
+
+		foreach ( $this->get_menu_directory_category_blueprints() as $category_key => $blueprint ) {
+			$terms[ $category_key ] = array(
+				'name'        => (string) $blueprint['card_title'],
+				'slug'        => sanitize_title( (string) $blueprint['slug'] ),
+				'description' => (string) $blueprint['description'],
+			);
+		}
+
+		$terms['sharers'] = array(
+			'name'        => 'Shareables & Bundles',
+			'slug'        => 'shareables-bundles',
+			'description' => 'Sharers, bundles, and group-friendly McDonald\'s USA menu pages.',
+		);
+
+		return $terms;
+	}
+
+	/**
+	 * Return support-page slugs that should also receive seeded categories.
+	 *
+	 * @return array<string, string>
+	 */
+	protected function get_page_category_support_page_map() {
+		return array(
+			'dollar-menu'          => 'mcvalue',
+			'extra-value-meals'    => 'meals',
+			'limited-time-menu'    => 'whats-new',
+			'breakfast-menu'       => 'breakfast',
+			'breakfast-hours'      => 'breakfast',
+			'breakfast-times'      => 'breakfast',
+			'burgers-menu'         => 'burgers',
+			'big-mac-price-usa'    => 'burgers',
+			'chicken-fish-menu'    => 'chickenfish',
+			'fries-sides'          => 'sides',
+			'happy-meal-menu'      => 'happymeal',
+			'mccafe-menu'          => 'mccafe',
+			'beverage-menu'        => 'beverages',
+			'snack-wrap'           => 'snackwrap',
+			'sweets-treats'        => 'sweets',
+			'sauces-condiments'    => 'sauces',
+			'mcdonalds-app-deals'  => 'deals',
+			'rewards-guide'        => 'deals',
+			'shareables-bundles'   => 'sharers',
+		);
+	}
+
+	/**
+	 * Create or update one seeded page category term.
+	 *
+	 * @param array<string, string> $term_data Term definition.
+	 * @return int
+	 */
+	protected function upsert_page_category_term( array $term_data ) {
+		$slug        = sanitize_title( (string) ( $term_data['slug'] ?? '' ) );
+		$name        = trim( (string) ( $term_data['name'] ?? '' ) );
+		$description = trim( (string) ( $term_data['description'] ?? '' ) );
+
+		if ( '' === $slug || '' === $name ) {
+			return 0;
+		}
+
+		$term = get_term_by( 'slug', $slug, 'category' );
+
+		if ( ! $term instanceof \WP_Term ) {
+			$created = wp_insert_term(
+				$name,
+				'category',
+				array(
+					'slug'        => $slug,
+					'description' => $description,
+				)
+			);
+
+			if ( is_wp_error( $created ) ) {
+				return 0;
+			}
+
+			return (int) $created['term_id'];
+		}
+
+		wp_update_term(
+			(int) $term->term_id,
+			'category',
+			array(
+				'name'        => $name,
+				'description' => $description,
+				'slug'        => $slug,
+			)
+		);
+
+		return (int) $term->term_id;
+	}
+
+	/**
+	 * Assign the seeded category terms to the managed menu page tree.
+	 *
+	 * @param array<string, int> $term_ids Seeded term IDs by category key.
+	 * @return void
+	 */
+	protected function assign_seeded_terms_to_managed_pages( array $term_ids ) {
+		$pages = get_posts(
+			array(
+				'post_type'      => 'page',
+				'post_status'    => array( 'publish', 'draft', 'pending', 'private' ),
+				'posts_per_page' => -1,
+				'meta_query'     => array(
+					array(
+						'key'     => '_mcprices_managed_key',
+						'compare' => 'EXISTS',
+					),
+				),
+			)
+		);
+
+		foreach ( $pages as $page ) {
+			$managed_key = trim( (string) get_post_meta( $page->ID, '_mcprices_managed_key', true ) );
+			$category_key = $managed_key;
+
+			if ( false !== strpos( $managed_key, '::' ) ) {
+				list( $category_key ) = explode( '::', $managed_key, 2 );
+			}
+
+			if ( 'menu' === $category_key || ! isset( $term_ids[ $category_key ] ) ) {
+				continue;
+			}
+
+			$this->assign_page_category_term( (int) $page->ID, (int) $term_ids[ $category_key ] );
+		}
+	}
+
+	/**
+	 * Assign the seeded category terms to support pages that act as guides.
+	 *
+	 * @param array<string, int> $term_ids Seeded term IDs by category key.
+	 * @return void
+	 */
+	protected function assign_seeded_terms_to_support_pages( array $term_ids ) {
+		foreach ( $this->get_page_category_support_page_map() as $page_slug => $category_key ) {
+			if ( ! isset( $term_ids[ $category_key ] ) ) {
+				continue;
+			}
+
+			$page = get_page_by_path( $page_slug, OBJECT, 'page' );
+
+			if ( ! $page instanceof \WP_Post ) {
+				continue;
+			}
+
+			$this->assign_page_category_term( (int) $page->ID, (int) $term_ids[ $category_key ] );
+		}
+	}
+
+	/**
+	 * Attach one category term to a page while stripping only the default
+	 * uncategorized assignment.
+	 *
+	 * @param int $page_id Page ID.
+	 * @param int $term_id Category term ID.
+	 * @return void
+	 */
+	protected function assign_page_category_term( $page_id, $term_id ) {
+		$existing_ids = wp_get_object_terms(
+			$page_id,
+			'category',
+			array(
+				'fields' => 'ids',
+			)
+		);
+
+		if ( is_wp_error( $existing_ids ) ) {
+			$existing_ids = array();
+		}
+
+		$default_category = (int) get_option( 'default_category' );
+		$existing_ids     = array_map( 'intval', (array) $existing_ids );
+
+		if ( $default_category ) {
+			$existing_ids = array_values( array_diff( $existing_ids, array( $default_category ) ) );
+		}
+
+		$term_ids = array_values( array_unique( array_merge( $existing_ids, array( (int) $term_id ) ) ) );
+
+		wp_set_post_terms( (int) $page_id, $term_ids, 'category', false );
+	}
+
+	/**
+	 * Add a category filter to the Pages admin list table.
+	 *
+	 * @param string $post_type Current post type slug.
+	 * @return void
+	 */
+	public function render_page_category_filter( $post_type ) {
+		if ( 'page' !== $post_type ) {
+			return;
+		}
+
+		$selected = isset( $_GET['mcprices_page_category'] ) ? sanitize_title( wp_unslash( $_GET['mcprices_page_category'] ) ) : '';
+
+		wp_dropdown_categories(
+			array(
+				'show_option_all' => __( 'All page categories', 'kadence' ),
+				'taxonomy'        => 'category',
+				'name'            => 'mcprices_page_category',
+				'orderby'         => 'name',
+				'selected'        => $selected,
+				'hide_empty'      => false,
+				'value_field'     => 'slug',
+			)
+		);
+	}
+
+	/**
+	 * Apply the selected category filter to the Pages admin query.
+	 *
+	 * @param \WP_Query $query Main admin query.
+	 * @return void
+	 */
+	public function filter_page_admin_query_by_category( $query ) {
+		global $pagenow;
+
+		if ( ! is_admin() || ! $query->is_main_query() || 'edit.php' !== $pagenow ) {
+			return;
+		}
+
+		if ( 'page' !== $query->get( 'post_type' ) ) {
+			return;
+		}
+
+		$selected = isset( $_GET['mcprices_page_category'] ) ? sanitize_title( wp_unslash( $_GET['mcprices_page_category'] ) ) : '';
+
+		if ( '' === $selected ) {
+			return;
+		}
+
+		$query->set(
+			'tax_query',
+			array(
+				array(
+					'taxonomy' => 'category',
+					'field'    => 'slug',
+					'terms'    => $selected,
+				),
+			)
+		);
+	}
+
+	/**
+	 * Show a page-category column in the Pages admin list table.
+	 *
+	 * @param array<string, string> $columns Existing columns.
+	 * @return array<string, string>
+	 */
+	public function filter_page_admin_columns( $columns ) {
+		$updated_columns = array();
+
+		foreach ( $columns as $key => $label ) {
+			$updated_columns[ $key ] = $label;
+
+			if ( 'title' === $key ) {
+				$updated_columns['mcprices_page_categories'] = __( 'Categories', 'kadence' );
+			}
+		}
+
+		return $updated_columns;
+	}
+
+	/**
+	 * Render the page-category column in wp-admin.
+	 *
+	 * @param string $column_name Column name.
+	 * @param int    $post_id     Page ID.
+	 * @return void
+	 */
+	public function render_page_admin_column( $column_name, $post_id ) {
+		if ( 'mcprices_page_categories' !== $column_name ) {
+			return;
+		}
+
+		$terms = get_the_terms( $post_id, 'category' );
+
+		if ( empty( $terms ) || is_wp_error( $terms ) ) {
+			echo '&mdash;';
+			return;
+		}
+
+		echo esc_html( implode( ', ', wp_list_pluck( $terms, 'name' ) ) );
 	}
 
 	/**
@@ -1021,6 +1400,7 @@ class McPrices_Integration {
 		$this->maybe_seed_front_page();
 		$this->maybe_seed_blog_page();
 		$this->maybe_seed_menu_directory_pages();
+		McPrices_Menu_Root_Seed::maybe_seed();
 		$this->maybe_sync_front_page_pattern_content();
 		$this->maybe_seed_support_pages();
 		$this->maybe_sync_seed_menus();
@@ -4132,6 +4512,9 @@ class McPrices_Integration {
 		$this->maybe_disable_legacy_custom_css();
 
 		set_theme_mod( self::SEED_VERSION_SETTING, self::SEED_VERSION );
+
+		// Seed the /menu/ root page content.
+		McPrices_Menu_Root_Seed::maybe_seed();
 	}
 
 	/**

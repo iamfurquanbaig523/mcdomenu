@@ -78,6 +78,17 @@ $table_prefix = 'wp_';
 define( 'WP_HOME', 'http://localhost/wordpress' );
 define( 'WP_SITEURL', 'http://localhost/wordpress' );
 
+$mcprices_local_host = 'localhost';
+
+if ( ! empty( $_SERVER['HTTP_HOST'] ) ) {
+	$mcprices_local_host = strtolower( preg_replace( '/:\d+$/', '', (string) $_SERVER['HTTP_HOST'] ) );
+}
+
+if ( in_array( $mcprices_local_host, array( 'localhost', '127.0.0.1', '::1' ), true ) ) {
+	define( 'WP_ENVIRONMENT_TYPE', 'local' );
+	define( 'DISABLE_WP_CRON', true );
+}
+
 
 
 /**
