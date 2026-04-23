@@ -11,6 +11,31 @@ body.mcprices-theme-active #mobile-header .site-branding .brand {
   gap: 14px;
 }
 
+body.mcprices-theme-active #masthead .site-branding .logo-icon,
+body.mcprices-theme-active #mobile-header .site-branding .logo-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  flex: 0 0 56px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #ffd24a 0%, #ffbc1f 100%);
+  box-shadow: 0 12px 30px rgba(255, 188, 31, 0.34);
+}
+
+body.mcprices-theme-active #masthead .site-branding .logo-m,
+body.mcprices-theme-active #mobile-header .site-branding .logo-m {
+  display: inline-block;
+  color: #c8102e;
+  font-family: "Poppins", sans-serif;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  transform: translateY(-1px);
+}
+
 body.mcprices-theme-active #masthead .site-branding .site-title,
 body.mcprices-theme-active #mobile-header .site-branding .site-title {
   margin: 0;

@@ -373,6 +373,36 @@ function kadence_mcprices_get_default_social_image_url() {
 }
 
 /**
+ * Return the default favicon URL for the McPrices native theme layer.
+ *
+ * @return string
+ */
+function kadence_mcprices_get_default_favicon_url() {
+	return esc_url_raw( get_template_directory_uri() . '/assets/images/mcprices/mcprices-logo-schema.svg' );
+}
+
+/**
+ * Output a favicon fallback when the WordPress Site Icon is not configured.
+ *
+ * @return void
+ */
+function kadence_mcprices_output_favicon_fallback() {
+	if ( function_exists( 'has_site_icon' ) && has_site_icon() ) {
+		return;
+	}
+
+	$favicon_url = kadence_mcprices_get_default_favicon_url();
+
+	if ( '' === $favicon_url ) {
+		return;
+	}
+	?>
+	<link rel="icon" href="<?php echo esc_url( $favicon_url ); ?>" type="image/svg+xml" />
+	<link rel="shortcut icon" href="<?php echo esc_url( $favicon_url ); ?>" type="image/svg+xml" />
+	<?php
+}
+
+/**
  * Provide a default Open Graph image for Rank Math when none is set.
  *
  * @param string $image Open Graph image URL.
@@ -408,3 +438,6 @@ function kadence_mcprices_register_dynamic_meta_hooks() {
 	add_filter( 'rank_math/opengraph/facebook/image', 'kadence_mcprices_filter_rank_math_facebook_image' );
 }
 add_action( 'after_setup_theme', 'kadence_mcprices_register_dynamic_meta_hooks', 60 );
+add_action( 'wp_head', 'kadence_mcprices_output_favicon_fallback', 1 );
+add_action( 'login_head', 'kadence_mcprices_output_favicon_fallback', 1 );
+add_action( 'admin_head', 'kadence_mcprices_output_favicon_fallback', 1 );
