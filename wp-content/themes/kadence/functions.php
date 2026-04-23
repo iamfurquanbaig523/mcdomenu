@@ -116,6 +116,23 @@ function kadence_mcprices_get_dynamic_meta_title() {
 function kadence_mcprices_get_dynamic_meta_description() {
 	$current_date = kadence_mcprices_get_current_site_date();
 	$current_year = kadence_mcprices_get_current_site_year();
+	$queried_object = get_queried_object();
+
+	if ( $queried_object instanceof \WP_Post ) {
+		$rank_math_description = trim( (string) get_post_meta( (int) $queried_object->ID, 'rank_math_description', true ) );
+
+		if ( '' !== $rank_math_description ) {
+			return trim( preg_replace( '/\s+/u', ' ', wp_strip_all_tags( $rank_math_description ) ) );
+		}
+	}
+
+	if ( $queried_object instanceof \WP_Term ) {
+		$rank_math_description = trim( (string) get_term_meta( (int) $queried_object->term_id, 'rank_math_description', true ) );
+
+		if ( '' !== $rank_math_description ) {
+			return trim( preg_replace( '/\s+/u', ' ', wp_strip_all_tags( $rank_math_description ) ) );
+		}
+	}
 
 	if ( is_front_page() && ! is_home() ) {
 		return "Complete McDonald's USA menu prices updated {$current_date}. Find prices for burgers, breakfast, McCafe, drinks, McValue deals, McNuggets, Happy Meals, desserts, and combo meals in dollars.";

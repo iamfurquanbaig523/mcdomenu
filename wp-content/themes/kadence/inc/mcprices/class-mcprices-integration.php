@@ -35,6 +35,11 @@ class McPrices_Integration {
 	const DISCLAIMER_TEXT_SETTING = 'mcprices_footer_disclaimer_text';
 
 	/**
+	 * Theme mod used to store the seeded mobile quick-nav icon map.
+	 */
+	const MOBILE_QUICK_NAV_ICONS_SETTING = 'mcprices_mobile_quick_nav_icons';
+
+	/**
 	 * Theme mod used to track the one-time native Kadence seeding pass.
 	 */
 	const SEED_VERSION_SETTING = 'mcprices_native_seed_version';
@@ -42,7 +47,7 @@ class McPrices_Integration {
 	/**
 	 * Current seeding version for the native design integration.
 	 */
-	const SEED_VERSION = '2.0.1';
+	const SEED_VERSION = '2.0.3';
 
 	/**
 	 * Option used to track Rank Math SEO seeding for portable databases.
@@ -52,7 +57,7 @@ class McPrices_Integration {
 	/**
 	 * Current Rank Math seed version.
 	 */
-	const RANK_MATH_SEED_VERSION = '2.0.1';
+	const RANK_MATH_SEED_VERSION = '2.0.2';
 
 	/**
 	 * Option used to track portable DB-backed setup seeding.
@@ -93,6 +98,16 @@ class McPrices_Integration {
 	 * Option used to track the current page-category admin seeding signature.
 	 */
 	const PAGE_CATEGORY_SIGNATURE_OPTION = 'mcprices_page_category_signature';
+
+	/**
+	 * Option used to track seeded Rank Math page and category SEO metadata.
+	 */
+	const SEO_ENTITY_SEED_VERSION_OPTION = 'mcprices_rank_math_entity_seed_version';
+
+	/**
+	 * Current Rank Math page/category SEO metadata seed version.
+	 */
+	const SEO_ENTITY_SEED_VERSION = '1.0.4';
 
 	/**
 	 * Singleton instance.
@@ -139,11 +154,14 @@ class McPrices_Integration {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ), 30 );
 		add_action( 'init', array( $this, 'register_page_category_support' ), 12 );
 		add_action( 'init', array( $this, 'maybe_seed_page_categories' ), 26 );
+		add_action( 'init', array( $this, 'maybe_schedule_managed_bootstrap' ), 40 );
+		add_action( 'init', array( $this, 'maybe_seed_rank_math_entity_meta' ), 50 );
 		add_action( 'init', array( $this, 'maybe_flush_pending_rewrite_rules' ), 99 );
+		add_action( 'mcprices_run_managed_bootstrap', array( $this, 'run_managed_bootstrap' ) );
 		add_action( 'wp_head', array( $this, 'render_homepage_meta_tags' ), 2 );
 		add_action( 'wp_head', array( $this, 'render_homepage_schema' ), 30 );
-		add_action( 'template_redirect', array( $this, 'maybe_render_sitemap' ), 0 );
-		add_action( 'template_redirect', array( $this, 'maybe_render_robots' ), 0 );
+		add_action( 'template_redirect', array( $this, 'maybe_render_sitemap' ), -10 );
+		add_action( 'template_redirect', array( $this, 'maybe_render_robots' ), -10 );
 		add_action( 'kadence_before_footer', array( $this, 'render_footer_disclaimer' ), 5 );
 		add_action( 'kadence_render_mobile_header_column', array( $this, 'render_mobile_header_search_toggle' ), 20, 2 );
 		add_action( 'init', array( $this, 'register_shortcodes' ), 15 );
@@ -164,6 +182,120 @@ class McPrices_Integration {
 	 */
 	protected function design_enabled() {
 		return (bool) get_theme_mod( self::ENABLE_SETTING, true );
+	}
+
+	/**
+	 * Return whether the current request can safely run heavy database-backed
+	 * seeding and sync routines without blocking public page loads.
+	 *
+	 * @return bool
+	 */
+	protected function can_run_managed_bootstrap() {
+		if ( defined( 'MCPRICES_ALLOW_MANAGED_BOOTSTRAP' ) && MCPRICES_ALLOW_MANAGED_BOOTSTRAP ) {
+			return true;
+		}
+
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			return true;
+		}
+
+		if ( function_exists( 'wp_doing_cron' ) && wp_doing_cron() ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Return the current page-category seed signature.
+	 *
+	 * @return string
+	 */
+	protected function get_page_category_signature() {
+		return md5(
+			wp_json_encode(
+				array(
+					'terms'    => $this->get_page_category_seed_terms(),
+					'supports' => $this->get_page_category_support_page_map(),
+				)
+			)
+		);
+	}
+
+	/**
+	 * Return whether DB-backed managed content needs a background refresh.
+	 *
+	 * @return bool
+	 */
+	protected function managed_bootstrap_needs_refresh() {
+		if ( self::SEED_VERSION !== get_theme_mod( self::SEED_VERSION_SETTING, '' ) ) {
+			return true;
+		}
+
+		if ( self::PORTABLE_DB_SEED_VERSION !== (string) get_option( self::PORTABLE_DB_SEED_VERSION_OPTION, '' ) ) {
+			return true;
+		}
+
+		if ( self::RANK_MATH_SEED_VERSION !== (string) get_option( self::RANK_MATH_SEED_VERSION_OPTION, '' ) ) {
+			return true;
+		}
+
+		if ( $this->get_menu_directory_signature() !== (string) get_option( self::MENU_DIRECTORY_SIGNATURE_OPTION, '' ) ) {
+			return true;
+		}
+
+		if ( $this->get_page_category_signature() !== (string) get_option( self::PAGE_CATEGORY_SIGNATURE_OPTION, '' ) ) {
+			return true;
+		}
+
+		if ( self::SEO_ENTITY_SEED_VERSION !== (string) get_option( self::SEO_ENTITY_SEED_VERSION_OPTION, '' ) ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Schedule a lightweight WP-Cron seed after file upload, so public requests
+	 * stay fast while fresh databases still converge to the managed design.
+	 *
+	 * @return void
+	 */
+	public function maybe_schedule_managed_bootstrap() {
+		if ( ( function_exists( 'wp_doing_cron' ) && wp_doing_cron() ) || ! $this->design_enabled() ) {
+			return;
+		}
+
+		if ( ! $this->managed_bootstrap_needs_refresh() ) {
+			return;
+		}
+
+		if ( false !== get_transient( 'mcprices_managed_bootstrap_scheduled' ) ) {
+			return;
+		}
+
+		set_transient( 'mcprices_managed_bootstrap_scheduled', '1', 10 * MINUTE_IN_SECONDS );
+
+		if ( ! wp_next_scheduled( 'mcprices_run_managed_bootstrap' ) ) {
+			wp_schedule_single_event( time() + 5, 'mcprices_run_managed_bootstrap' );
+		}
+	}
+
+	/**
+	 * Run the managed DB seed from WP-Cron.
+	 *
+	 * @return void
+	 */
+	public function run_managed_bootstrap() {
+		$this->maybe_seed_native_design();
+		$this->maybe_seed_portable_database_settings();
+		$this->maybe_seed_rank_math_settings();
+		$this->maybe_sync_managed_site_content();
+		$this->maybe_seed_page_categories();
+		$this->maybe_seed_rank_math_entity_meta();
+		$this->maybe_flush_pending_rewrite_rules();
+
+		delete_transient( 'mcprices_managed_bootstrap_scheduled' );
 	}
 
 	/**
@@ -221,18 +353,15 @@ class McPrices_Integration {
 	 * @return void
 	 */
 	public function maybe_seed_page_categories() {
+		if ( ! $this->can_run_managed_bootstrap() ) {
+			return;
+		}
+
 		if ( ! $this->design_enabled() ) {
 			return;
 		}
 
-		$signature = md5(
-			wp_json_encode(
-				array(
-					'terms'    => $this->get_page_category_seed_terms(),
-					'supports' => $this->get_page_category_support_page_map(),
-				)
-			)
-		);
+		$signature = $this->get_page_category_signature();
 
 		if ( $signature === (string) get_option( self::PAGE_CATEGORY_SIGNATURE_OPTION, '' ) ) {
 			return;
@@ -254,6 +383,7 @@ class McPrices_Integration {
 
 		$this->assign_seeded_terms_to_managed_pages( $term_ids );
 		$this->assign_seeded_terms_to_support_pages( $term_ids );
+		$this->cleanup_stale_page_category_terms( $term_ids );
 
 		update_option( self::PAGE_CATEGORY_SIGNATURE_OPTION, $signature, false );
 	}
@@ -314,6 +444,47 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Return old managed category slugs that should be migrated away.
+	 *
+	 * @return array<int, string>
+	 */
+	protected function get_legacy_page_category_slugs() {
+		return array(
+			'beverages',
+			'breakfast',
+			'burgers',
+			'chickenfish',
+			'deals',
+			'happymeal',
+			'mccafe',
+			'mcvalue',
+			'meals',
+			'nuggets',
+			'sauces',
+			'sides',
+			'snackwrap',
+			'sweets',
+		);
+	}
+
+	/**
+	 * Return all slugs managed by the seeded page-category system.
+	 *
+	 * @return array<int, string>
+	 */
+	protected function get_managed_page_category_slugs() {
+		$slugs = array();
+
+		foreach ( $this->get_page_category_seed_terms() as $term_data ) {
+			if ( ! empty( $term_data['slug'] ) ) {
+				$slugs[] = sanitize_title( (string) $term_data['slug'] );
+			}
+		}
+
+		return array_values( array_unique( array_merge( $slugs, $this->get_legacy_page_category_slugs() ) ) );
+	}
+
+	/**
 	 * Create or update one seeded page category term.
 	 *
 	 * @param array<string, string> $term_data Term definition.
@@ -329,6 +500,10 @@ class McPrices_Integration {
 		}
 
 		$term = get_term_by( 'slug', $slug, 'category' );
+
+		if ( ! $term instanceof \WP_Term ) {
+			$term = get_term_by( 'name', $name, 'category' );
+		}
 
 		if ( ! $term instanceof \WP_Term ) {
 			$created = wp_insert_term(
@@ -358,6 +533,42 @@ class McPrices_Integration {
 		);
 
 		return (int) $term->term_id;
+	}
+
+	/**
+	 * Remove old managed category terms after their pages are reassigned.
+	 *
+	 * @param array<string, int> $term_ids Current managed term IDs.
+	 * @return void
+	 */
+	protected function cleanup_stale_page_category_terms( array $term_ids ) {
+		$expected_ids     = array_map( 'intval', array_values( $term_ids ) );
+		$default_category = (int) get_option( 'default_category' );
+		$managed_slugs    = $this->get_managed_page_category_slugs();
+
+		$terms = get_terms(
+			array(
+				'taxonomy'   => 'category',
+				'hide_empty' => false,
+				'slug'       => $managed_slugs,
+			)
+		);
+
+		if ( is_wp_error( $terms ) ) {
+			return;
+		}
+
+		foreach ( $terms as $term ) {
+			if ( ! $term instanceof \WP_Term || (int) $term->term_id === $default_category ) {
+				continue;
+			}
+
+			if ( in_array( (int) $term->term_id, $expected_ids, true ) ) {
+				continue;
+			}
+
+			wp_delete_term( (int) $term->term_id, 'category' );
+		}
 	}
 
 	/**
@@ -445,6 +656,25 @@ class McPrices_Integration {
 
 		if ( $default_category ) {
 			$existing_ids = array_values( array_diff( $existing_ids, array( $default_category ) ) );
+		}
+
+		if ( ! empty( $existing_ids ) ) {
+			$managed_slugs = $this->get_managed_page_category_slugs();
+			$existing_terms = get_terms(
+				array(
+					'taxonomy'   => 'category',
+					'hide_empty' => false,
+					'include'    => $existing_ids,
+				)
+			);
+
+			if ( ! is_wp_error( $existing_terms ) ) {
+				foreach ( $existing_terms as $term ) {
+					if ( $term instanceof \WP_Term && (int) $term->term_id !== (int) $term_id && in_array( $term->slug, $managed_slugs, true ) ) {
+						$existing_ids = array_values( array_diff( $existing_ids, array( (int) $term->term_id ) ) );
+					}
+				}
+			}
 		}
 
 		$term_ids = array_values( array_unique( array_merge( $existing_ids, array( (int) $term_id ) ) ) );
@@ -679,6 +909,7 @@ class McPrices_Integration {
 		return array(
 			'setup_mode'                  => 'advanced',
 			'attachment_redirect_default' => home_url( '/' ),
+			'strip_category_base'         => 'off',
 		);
 	}
 
@@ -695,7 +926,7 @@ class McPrices_Integration {
 			'html_sitemap_display' => 'shortcode',
 			'pt_post_sitemap'    => 'on',
 			'pt_page_sitemap'    => 'on',
-			'tax_category_sitemap' => 'on',
+			'tax_category_sitemap' => 'off',
 		);
 	}
 
@@ -3166,12 +3397,14 @@ class McPrices_Integration {
 	 * @return bool
 	 */
 	protected function maybe_seed_support_pages() {
-		$changed = false;
+		$changed       = false;
+		$canonical_ids = array();
 
 		foreach ( $this->get_seeded_support_pages() as $slug => $page_data ) {
 			$page = get_page_by_path( $slug );
 
 			if ( $page instanceof \WP_Post ) {
+				$canonical_ids[ $slug ] = (int) $page->ID;
 				$needs_update =
 					$page_data['title'] !== (string) $page->post_title ||
 					$slug !== (string) $page->post_name ||
@@ -3191,6 +3424,8 @@ class McPrices_Integration {
 					$changed = true;
 				}
 
+				update_post_meta( (int) $page->ID, '_mcprices_support_page', (string) $slug );
+
 				continue;
 			}
 
@@ -3206,6 +3441,63 @@ class McPrices_Integration {
 			);
 
 			if ( ! is_wp_error( $page_id ) && $page_id ) {
+				$canonical_ids[ $slug ] = (int) $page_id;
+				update_post_meta( (int) $page_id, '_mcprices_support_page', (string) $slug );
+				$changed = true;
+			}
+		}
+
+		if ( $this->cleanup_duplicate_support_pages( $canonical_ids ) ) {
+			$changed = true;
+		}
+
+		return $changed;
+	}
+
+	/**
+	 * Trash duplicate seeded support pages created by previous slug collisions.
+	 *
+	 * @param array<string, int> $canonical_ids Canonical support page IDs by slug.
+	 * @return bool
+	 */
+	protected function cleanup_duplicate_support_pages( array $canonical_ids ) {
+		$changed       = false;
+		$support_pages = $this->get_seeded_support_pages();
+		$pages         = get_posts(
+			array(
+				'post_type'              => 'page',
+				'post_status'            => array( 'publish', 'draft', 'pending', 'private' ),
+				'posts_per_page'         => -1,
+				'post_parent'            => 0,
+				'orderby'                => 'ID',
+				'order'                  => 'ASC',
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+			)
+		);
+
+		foreach ( $support_pages as $slug => $page_data ) {
+			$canonical_id = isset( $canonical_ids[ $slug ] ) ? (int) $canonical_ids[ $slug ] : 0;
+			$title        = trim( wp_strip_all_tags( wp_specialchars_decode( (string) $page_data['title'], ENT_QUOTES ) ) );
+			$content      = trim( (string) $page_data['content'] );
+
+			foreach ( $pages as $page ) {
+				if ( ! $page instanceof \WP_Post || (int) $page->ID === $canonical_id ) {
+					continue;
+				}
+
+				$page_title = trim( wp_strip_all_tags( wp_specialchars_decode( (string) $page->post_title, ENT_QUOTES ) ) );
+
+				if ( 0 !== strpos( (string) $page->post_name, $slug . '-' ) ) {
+					continue;
+				}
+
+				if ( $title !== $page_title || trim( (string) $page->post_content ) !== $content ) {
+					continue;
+				}
+
+				wp_trash_post( (int) $page->ID );
 				$changed = true;
 			}
 		}
@@ -3244,6 +3536,28 @@ class McPrices_Integration {
 
 		$page    = get_page_by_path( $page_path, OBJECT, 'page' );
 		$changed = false;
+
+		if ( ! $page instanceof \WP_Post && '' !== trim( (string) $page_args['key'] ) ) {
+			$existing_page_ids = get_posts(
+				array(
+					'post_type'              => 'page',
+					'post_status'            => array( 'publish', 'draft', 'pending', 'private' ),
+					'posts_per_page'         => 1,
+					'fields'                 => 'ids',
+					'meta_key'               => '_mcprices_managed_key',
+					'meta_value'             => (string) $page_args['key'],
+					'orderby'                => 'ID',
+					'order'                  => 'ASC',
+					'no_found_rows'          => true,
+					'update_post_meta_cache' => false,
+					'update_post_term_cache' => false,
+				)
+			);
+
+			if ( ! empty( $existing_page_ids[0] ) ) {
+				$page = get_post( (int) $existing_page_ids[0] );
+			}
+		}
 
 		if ( $page instanceof \WP_Post ) {
 			$needs_update =
@@ -3336,7 +3650,8 @@ class McPrices_Integration {
 			return false;
 		}
 
-		$changed     = false;
+		$changed       = false;
+		$expected_keys = array( 'menu' => true );
 		$root_result = $this->upsert_menu_directory_page(
 			array(
 				'path'        => 'menu',
@@ -3364,6 +3679,8 @@ class McPrices_Integration {
 		$category_order = 10;
 
 		foreach ( $this->get_menu_directory_categories() as $category_id => $category ) {
+			$expected_keys[ (string) $category_id ] = true;
+
 			$category_result = $this->upsert_menu_directory_page(
 				array(
 					'path'        => 'menu/' . $category['slug'],
@@ -3394,6 +3711,8 @@ class McPrices_Integration {
 			foreach ( $category['items'] as $item ) {
 				$item_title = trim( (string) $item['name'] ) . ' Price USA';
 				$item_excerpt = trim( (string) $item['summary'] );
+				$item_key = (string) $category_id . '::' . (string) $item['slug'];
+				$expected_keys[ $item_key ] = true;
 
 				$item_result = $this->upsert_menu_directory_page(
 					array(
@@ -3405,7 +3724,7 @@ class McPrices_Integration {
 						'content'     => '<!-- wp:shortcode -->[mcprices_menu_item category="' . esc_attr( $category_id ) . '" item="' . esc_attr( $item['slug'] ) . '"]<!-- /wp:shortcode -->',
 						'excerpt'     => $item_excerpt,
 						'type'        => 'menu-item',
-						'key'         => (string) $category_id . '::' . (string) $item['slug'],
+						'key'         => $item_key,
 					)
 				);
 
@@ -3419,7 +3738,58 @@ class McPrices_Integration {
 			$category_order += 10;
 		}
 
+		if ( $this->cleanup_stale_menu_directory_pages( array_keys( $expected_keys ) ) ) {
+			$changed = true;
+		}
+
 		update_option( self::MENU_DIRECTORY_SIGNATURE_OPTION, $current_signature, false );
+
+		return $changed;
+	}
+
+	/**
+	 * Trash stale managed menu directory pages that no longer match the seed.
+	 *
+	 * @param array<int, string> $expected_keys Active managed page keys.
+	 * @return bool
+	 */
+	protected function cleanup_stale_menu_directory_pages( array $expected_keys ) {
+		$changed      = false;
+		$expected_map = array_fill_keys( array_map( 'strval', $expected_keys ), true );
+		$pages        = get_posts(
+			array(
+				'post_type'              => 'page',
+				'post_status'            => array( 'publish', 'draft', 'pending', 'private' ),
+				'posts_per_page'         => -1,
+				'meta_key'               => '_mcprices_managed_key',
+				'orderby'                => 'ID',
+				'order'                  => 'ASC',
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+			)
+		);
+
+		foreach ( $pages as $page ) {
+			if ( ! $page instanceof \WP_Post ) {
+				continue;
+			}
+
+			$managed_type = (string) get_post_meta( (int) $page->ID, '_mcprices_managed_page', true );
+
+			if ( ! in_array( $managed_type, array( 'menu-root', 'menu-category', 'menu-item' ), true ) ) {
+				continue;
+			}
+
+			$managed_key = (string) get_post_meta( (int) $page->ID, '_mcprices_managed_key', true );
+
+			if ( isset( $expected_map[ $managed_key ] ) ) {
+				continue;
+			}
+
+			wp_trash_post( (int) $page->ID );
+			$changed = true;
+		}
 
 		return $changed;
 	}
@@ -3460,6 +3830,10 @@ class McPrices_Integration {
 	 * @return void
 	 */
 	public function maybe_flush_pending_rewrite_rules() {
+		if ( ! $this->can_run_managed_bootstrap() ) {
+			return;
+		}
+
 		if ( '1' !== (string) get_option( self::REWRITE_FLUSH_OPTION, '' ) ) {
 			return;
 		}
@@ -3474,6 +3848,10 @@ class McPrices_Integration {
 	 * @return void
 	 */
 	public function maybe_seed_portable_database_settings() {
+		if ( ! $this->can_run_managed_bootstrap() ) {
+			return;
+		}
+
 		if ( $this->portable_db_seed_is_current() ) {
 			return;
 		}
@@ -3555,6 +3933,10 @@ class McPrices_Integration {
 	 * @return void
 	 */
 	public function maybe_seed_rank_math_settings() {
+		if ( ! $this->can_run_managed_bootstrap() ) {
+			return;
+		}
+
 		if ( $this->rank_math_seed_is_current() ) {
 			return;
 		}
@@ -3576,12 +3958,303 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Seed Rank Math metadata for existing managed pages and admin categories.
+	 *
+	 * This does not rename pages, categories, or menu items. It only adds SEO
+	 * fields and confirms clean permalink settings for portable deployments.
+	 *
+	 * @return void
+	 */
+	public function maybe_seed_rank_math_entity_meta() {
+		if ( ! $this->can_run_managed_bootstrap() ) {
+			return;
+		}
+
+		if ( ! $this->design_enabled() ) {
+			return;
+		}
+
+		if ( self::SEO_ENTITY_SEED_VERSION === (string) get_option( self::SEO_ENTITY_SEED_VERSION_OPTION, '' ) ) {
+			return;
+		}
+
+		if ( $this->maybe_seed_permalink_structure() ) {
+			$this->mark_rewrite_flush_pending();
+		}
+
+		$this->seed_rank_math_post_entity_meta();
+		$this->seed_rank_math_category_entity_meta();
+
+		update_option( self::SEO_ENTITY_SEED_VERSION_OPTION, self::SEO_ENTITY_SEED_VERSION, false );
+	}
+
+	/**
+	 * Seed SEO metadata on published pages and posts without changing titles.
+	 *
+	 * @return void
+	 */
+	protected function seed_rank_math_post_entity_meta() {
+		$posts = get_posts(
+			array(
+				'post_type'              => array( 'page', 'post' ),
+				'post_status'            => 'publish',
+				'posts_per_page'         => -1,
+				'orderby'                => 'ID',
+				'order'                  => 'ASC',
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+			)
+		);
+
+		foreach ( $posts as $post ) {
+			if ( ! $post instanceof \WP_Post || $this->sitemap_post_is_excluded( $post ) ) {
+				continue;
+			}
+
+			$seo_title       = $this->get_rank_math_post_title( $post );
+			$seo_description = $this->get_rank_math_post_description( $post );
+			$focus_keyword   = $this->get_rank_math_post_focus_keyword( $post );
+
+			update_post_meta( (int) $post->ID, 'rank_math_title', $seo_title );
+			update_post_meta( (int) $post->ID, 'rank_math_description', $seo_description );
+			update_post_meta( (int) $post->ID, 'rank_math_focus_keyword', $focus_keyword );
+			update_post_meta( (int) $post->ID, 'rank_math_robots', array( 'index' ) );
+		}
+	}
+
+	/**
+	 * Seed SEO metadata on page categories without changing category names.
+	 *
+	 * @return void
+	 */
+	protected function seed_rank_math_category_entity_meta() {
+		$current_year = $this->get_current_site_year();
+
+		foreach ( $this->get_page_category_seed_terms() as $term_data ) {
+			$slug = sanitize_title( (string) ( $term_data['slug'] ?? '' ) );
+			$name = trim( (string) ( $term_data['name'] ?? '' ) );
+
+			if ( '' === $slug || '' === $name ) {
+				continue;
+			}
+
+			$term = get_term_by( 'slug', $slug, 'category' );
+
+			if ( ! $term instanceof \WP_Term ) {
+				continue;
+			}
+
+			$description = $this->limit_text_to_words(
+				sprintf(
+					'%1$s is an admin category used to organize McDonald\'s USA menu price pages on this site. It connects related landing pages, individual item pages, current dollar prices, calories, deals, breakfast details, McValue comparisons, drinks, desserts, sauces, and supporting guides. The goal is a clean human-readable URL structure and sitemap path for readers, Google, and Rank Math without changing the public category name or editor workflow inside WordPress admin or the visible website design.',
+					$name
+				),
+				75
+			);
+
+			update_term_meta( (int) $term->term_id, 'rank_math_title', $name . ' Prices USA ' . $current_year . ' | McDonald\'s Menu Prices USA' );
+			update_term_meta( (int) $term->term_id, 'rank_math_description', $description );
+			update_term_meta( (int) $term->term_id, 'rank_math_focus_keyword', strtolower( $name ) . ' prices USA' );
+			update_term_meta( (int) $term->term_id, 'rank_math_robots', array( 'index' ) );
+		}
+	}
+
+	/**
+	 * Return a Rank Math SEO title for a post without changing its visible title.
+	 *
+	 * @param \WP_Post $post Post object.
+	 * @return string
+	 */
+	protected function get_rank_math_post_title( \WP_Post $post ) {
+		if ( (int) get_option( 'page_on_front' ) === (int) $post->ID ) {
+			return $this->get_homepage_meta_title();
+		}
+
+		$managed_type = (string) get_post_meta( (int) $post->ID, '_mcprices_managed_page', true );
+		$title        = trim( wp_strip_all_tags( (string) get_the_title( $post ) ) );
+
+		if ( 'menu-root' === $managed_type ) {
+			return 'McDonald\'s Full Menu USA | Prices, Calories & Deals';
+		}
+
+		if ( 'menu-category' === $managed_type ) {
+			return $title . ' | McDonald\'s Menu Prices USA';
+		}
+
+		if ( 'menu-item' === $managed_type ) {
+			return $title . ' | Calories & Menu Guide';
+		}
+
+		return $title . ' | McDonald\'s Menu Prices USA';
+	}
+
+	/**
+	 * Return a Rank Math focus keyword for a post.
+	 *
+	 * @param \WP_Post $post Post object.
+	 * @return string
+	 */
+	protected function get_rank_math_post_focus_keyword( \WP_Post $post ) {
+		if ( (int) get_option( 'page_on_front' ) === (int) $post->ID ) {
+			return $this->get_homepage_primary_keyword();
+		}
+
+		$title = trim( wp_strip_all_tags( (string) get_the_title( $post ) ) );
+		$title = preg_replace( '/\s+/', ' ', $title );
+		$title = preg_replace( '/\s+usa\b/i', '', (string) $title );
+
+		return strtolower( $title . ' USA' );
+	}
+
+	/**
+	 * Return a Rank Math-style description, around the requested 75 words.
+	 *
+	 * @param \WP_Post $post Post object.
+	 * @return string
+	 */
+	protected function get_rank_math_post_description( \WP_Post $post ) {
+		if ( (int) get_option( 'page_on_front' ) === (int) $post->ID ) {
+			return $this->limit_text_to_words(
+				'Complete McDonald\'s USA menu prices updated ' . $this->get_current_site_date() . '. Compare burgers, breakfast, McCafe drinks, McValue deals, McNuggets, Happy Meals, fries, desserts, sauces, beverages, combo meals, limited-time items, calories, and ordering context in dollars. This homepage is organized with clean internal links, readable URLs, Rank Math metadata, and a sitemap-friendly structure so readers and search engines can quickly reach every important price page without confusion or duplicate paths.',
+				75
+			);
+		}
+
+		$managed_type = (string) get_post_meta( (int) $post->ID, '_mcprices_managed_page', true );
+		$managed_key  = (string) get_post_meta( (int) $post->ID, '_mcprices_managed_key', true );
+		$title        = trim( wp_strip_all_tags( (string) get_the_title( $post ) ) );
+		$excerpt      = trim( wp_strip_all_tags( (string) $post->post_excerpt ) );
+
+		if ( 'menu-root' === $managed_type ) {
+			return $this->limit_text_to_words(
+				'Browse the full McDonald\'s USA menu with clean category links, individual item pages, current dollar prices, calorie notes, combo meal context, breakfast items, McValue picks, drinks, desserts, sauces, and limited-time updates. This hub gives readers a simple path through every major section while helping search engines understand the site architecture, internal links, canonical price pages, sitemap relationships, category coverage, and page hierarchy clearly.',
+				75
+			);
+		}
+
+		if ( 'menu-category' === $managed_type ) {
+			$category = $this->get_menu_directory_category_by_key( $managed_key );
+
+			if ( ! empty( $category ) ) {
+				return $this->limit_text_to_words(
+					sprintf(
+						'Explore %1$s with clean links to every related McDonald\'s USA item page. This category groups current dollar prices, calorie details, value notes, meal context, app-deal relevance, and menu comparisons in one human-readable URL structure. It helps readers compare options faster and gives Rank Math, Google, and sitemap crawlers a focused section path for better discovery, internal navigation, and topical authority.',
+						(string) $category['title']
+					),
+					75
+				);
+			}
+		}
+
+		if ( 'menu-item' === $managed_type ) {
+			$item_context = $this->get_menu_directory_item_context_by_key( $managed_key );
+
+			if ( ! empty( $item_context['item'] ) && ! empty( $item_context['category'] ) ) {
+				$item     = $item_context['item'];
+				$category = $item_context['category'];
+
+				return $this->limit_text_to_words(
+					sprintf(
+						'%1$s covers the current McDonald\'s USA price, calorie details, menu category, and ordering context for this item. Use this page when comparing %2$s choices, checking value against combo meals, McValue picks, fries, drinks, sauces, and app deals, or confirming the item through a clean readable URL before ordering from a local restaurant, kiosk, drive-thru, delivery service, or app.',
+						(string) $item['name'],
+						(string) $category['card_title']
+					),
+					75
+				);
+			}
+		}
+
+		if ( '' !== $excerpt ) {
+			return $this->limit_text_to_words( $excerpt . ' Use this McDonald\'s Menu Prices USA guide for clear pricing context, calorie notes, internal links, current menu details, value comparisons, and a clean SEO-friendly page structure that supports readable URLs, Rank Math metadata, and sitemap discovery.', 75 );
+		}
+
+		return $this->limit_text_to_words(
+			sprintf(
+				'%1$s is part of McDonald\'s Menu Prices USA, an independent menu price guide built around readable URLs, current dollar prices, calorie details, McValue deals, breakfast information, drinks, desserts, and supporting internal links that help readers compare McDonald\'s menu options quickly.',
+				$title
+			),
+			75
+		);
+	}
+
+	/**
+	 * Return one menu directory category by managed key.
+	 *
+	 * @param string $category_key Category key.
+	 * @return array
+	 */
+	protected function get_menu_directory_category_by_key( $category_key ) {
+		$categories = $this->get_menu_directory_categories();
+
+		return isset( $categories[ $category_key ] ) && is_array( $categories[ $category_key ] ) ? $categories[ $category_key ] : array();
+	}
+
+	/**
+	 * Return item and category data from a managed item key.
+	 *
+	 * @param string $managed_key Managed key in category::item-slug format.
+	 * @return array<string, array>
+	 */
+	protected function get_menu_directory_item_context_by_key( $managed_key ) {
+		if ( false === strpos( (string) $managed_key, '::' ) ) {
+			return array();
+		}
+
+		list( $category_key, $item_slug ) = explode( '::', (string) $managed_key, 2 );
+		$category = $this->get_menu_directory_category_by_key( $category_key );
+
+		if ( empty( $category['items'] ) || ! is_array( $category['items'] ) ) {
+			return array();
+		}
+
+		foreach ( $category['items'] as $item ) {
+			if ( isset( $item['slug'] ) && (string) $item['slug'] === (string) $item_slug ) {
+				return array(
+					'category' => $category,
+					'item'     => $item,
+				);
+			}
+		}
+
+		return array();
+	}
+
+	/**
+	 * Limit plain text to a readable word count for SEO descriptions.
+	 *
+	 * @param string $text      Raw text.
+	 * @param int    $max_words Maximum word count.
+	 * @return string
+	 */
+	protected function limit_text_to_words( $text, $max_words = 75 ) {
+		$text = html_entity_decode( wp_strip_all_tags( (string) $text ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+		$text = trim( preg_replace( '/\s+/', ' ', $text ) );
+
+		if ( '' === $text ) {
+			return '';
+		}
+
+		$words = preg_split( '/\s+/', $text );
+
+		if ( ! is_array( $words ) || count( $words ) <= $max_words ) {
+			return $text;
+		}
+
+		return rtrim( implode( ' ', array_slice( $words, 0, $max_words ) ), '.,;:-' ) . '.';
+	}
+
+	/**
 	 * Keep the managed homepage, menus and footer widgets in sync with the theme
 	 * files so uploading newer files updates older databases automatically.
 	 *
 	 * @return void
 	 */
 	public function maybe_sync_managed_site_content() {
+		if ( ! $this->can_run_managed_bootstrap() ) {
+			return;
+		}
+
 		if ( ! $this->design_enabled() ) {
 			return;
 		}
@@ -3849,6 +4522,55 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Build a short, human-readable slug for a menu page.
+	 *
+	 * @param string $value      Source label.
+	 * @param string $fallback   Fallback slug stem.
+	 * @param int    $max_length Maximum slug length.
+	 * @return string
+	 */
+	protected function build_menu_directory_slug( $value, $fallback = 'menu-item', $max_length = 75 ) {
+		$value = preg_replace( '/\(\s*1\s*\)/', ' single ', (string) $value );
+		$value = preg_replace( '/\(\s*2\s*\)/', ' 2-pack ', (string) $value );
+
+		$slug = sanitize_title(
+			wp_strip_all_tags(
+				html_entity_decode( (string) $value, ENT_QUOTES | ENT_HTML5, 'UTF-8' )
+			)
+		);
+
+		if ( '' === $slug ) {
+			$slug = sanitize_title( (string) $fallback );
+		}
+
+		if ( '' === $slug ) {
+			$slug = 'menu-item';
+		}
+
+		if ( strlen( $slug ) <= (int) $max_length ) {
+			return $slug;
+		}
+
+		$trimmed_slug = '';
+
+		foreach ( array_filter( explode( '-', $slug ) ) as $segment ) {
+			$candidate = '' === $trimmed_slug ? $segment : $trimmed_slug . '-' . $segment;
+
+			if ( strlen( $candidate ) > (int) $max_length ) {
+				break;
+			}
+
+			$trimmed_slug = $candidate;
+		}
+
+		if ( '' === $trimmed_slug ) {
+			$trimmed_slug = substr( $slug, 0, (int) $max_length );
+		}
+
+		return trim( $trimmed_slug, '-' );
+	}
+
+	/**
 	 * Build the status label used on menu rows and item cards.
 	 *
 	 * @param string $source_id Source section ID.
@@ -4008,7 +4730,7 @@ class McPrices_Integration {
 			),
 			'meals'      => array(
 				'id'          => 'meals',
-				'slug'        => 'meals',
+				'slug'        => 'extra-value-meals',
 				'title'       => 'Extra Value Meals Menu Prices USA',
 				'card_title'  => 'Extra Value Meals',
 				'count_label' => 'meals',
@@ -4017,7 +4739,7 @@ class McPrices_Integration {
 			),
 			'mcvalue'    => array(
 				'id'          => 'mcvalue',
-				'slug'        => 'mcvalue',
+				'slug'        => 'mcvalue-menu',
 				'title'       => 'McValue Menu Prices USA',
 				'card_title'  => 'McValue',
 				'count_label' => 'value picks',
@@ -4026,7 +4748,7 @@ class McPrices_Integration {
 			),
 			'breakfast'  => array(
 				'id'          => 'breakfast',
-				'slug'        => 'breakfast',
+				'slug'        => 'breakfast-menu',
 				'title'       => 'Breakfast Menu Prices USA',
 				'card_title'  => 'Breakfast',
 				'count_label' => 'breakfast items',
@@ -4035,7 +4757,7 @@ class McPrices_Integration {
 			),
 			'burgers'    => array(
 				'id'          => 'burgers',
-				'slug'        => 'burgers',
+				'slug'        => 'burgers-menu',
 				'title'       => 'Burgers Menu Prices USA',
 				'card_title'  => 'Burgers',
 				'count_label' => 'burgers',
@@ -4044,7 +4766,7 @@ class McPrices_Integration {
 			),
 			'chickenfish' => array(
 				'id'          => 'chickenfish',
-				'slug'        => 'chickenfish',
+				'slug'        => 'chicken-fish',
 				'title'       => 'Chicken & Fish Menu Prices USA',
 				'card_title'  => 'Chicken & Fish',
 				'count_label' => 'sandwiches',
@@ -4053,7 +4775,7 @@ class McPrices_Integration {
 			),
 			'nuggets'    => array(
 				'id'          => 'nuggets',
-				'slug'        => 'nuggets',
+				'slug'        => 'mcnuggets-strips',
 				'title'       => 'McNuggets & Strips Prices USA',
 				'card_title'  => 'McNuggets & Strips',
 				'count_label' => 'chicken items',
@@ -4062,7 +4784,7 @@ class McPrices_Integration {
 			),
 			'snackwrap'  => array(
 				'id'          => 'snackwrap',
-				'slug'        => 'snackwrap',
+				'slug'        => 'snack-wrap',
 				'title'       => 'Snack Wrap Prices USA',
 				'card_title'  => 'Snack Wrap',
 				'count_label' => 'wraps',
@@ -4071,7 +4793,7 @@ class McPrices_Integration {
 			),
 			'sides'      => array(
 				'id'          => 'sides',
-				'slug'        => 'sides',
+				'slug'        => 'fries-sides',
 				'title'       => 'Fries & Sides Prices USA',
 				'card_title'  => 'Fries & Sides',
 				'count_label' => 'side items',
@@ -4080,7 +4802,7 @@ class McPrices_Integration {
 			),
 			'happymeal'  => array(
 				'id'          => 'happymeal',
-				'slug'        => 'happymeal',
+				'slug'        => 'happy-meal',
 				'title'       => 'Happy Meal Prices USA',
 				'card_title'  => 'Happy Meal',
 				'count_label' => 'kids meals',
@@ -4089,7 +4811,7 @@ class McPrices_Integration {
 			),
 			'sweets'     => array(
 				'id'          => 'sweets',
-				'slug'        => 'sweets',
+				'slug'        => 'sweets-treats',
 				'title'       => 'Sweets & Treats Prices USA',
 				'card_title'  => 'Sweets & Treats',
 				'count_label' => 'treats',
@@ -4098,7 +4820,7 @@ class McPrices_Integration {
 			),
 			'mccafe'     => array(
 				'id'          => 'mccafe',
-				'slug'        => 'mccafe',
+				'slug'        => 'mccafe-coffees',
 				'title'       => 'McCafe Coffee Prices USA',
 				'card_title'  => 'McCafe Coffees',
 				'count_label' => 'coffee drinks',
@@ -4107,7 +4829,7 @@ class McPrices_Integration {
 			),
 			'beverages'  => array(
 				'id'          => 'beverages',
-				'slug'        => 'beverages',
+				'slug'        => 'beverages-drinks',
 				'title'       => 'Beverage Prices USA',
 				'card_title'  => 'Beverages',
 				'count_label' => 'drinks',
@@ -4116,7 +4838,7 @@ class McPrices_Integration {
 			),
 			'sauces'     => array(
 				'id'          => 'sauces',
-				'slug'        => 'sauces',
+				'slug'        => 'sauces-condiments',
 				'title'       => 'Sauces & Condiments Prices USA',
 				'card_title'  => 'Sauces & Condiments',
 				'count_label' => 'sauce items',
@@ -4125,7 +4847,7 @@ class McPrices_Integration {
 			),
 			'deals'      => array(
 				'id'             => 'deals',
-				'slug'           => 'deals',
+				'slug'           => 'deals-and-offers',
 				'title'          => 'McDonald\'s Deals Prices USA',
 				'card_title'     => 'Deals',
 				'count_label'    => 'Current McValue offers',
@@ -4219,13 +4941,34 @@ class McPrices_Integration {
 		$used_slugs = array();
 
 		foreach ( $items as $index => $item ) {
-			$base_slug = sanitize_title( $item['name'] ?? '' );
-			$base_slug = '' !== $base_slug ? $base_slug : 'menu-item';
+			$base_slug = $this->build_menu_directory_slug(
+				(string) ( $item['raw_name'] ?? ( $item['name'] ?? '' ) ),
+				'menu-item'
+			);
 			$slug      = $base_slug;
 			$suffix    = 2;
 
+			if ( isset( $used_slugs[ $slug ] ) && ! empty( $item['sub_label'] ) ) {
+				$slug = $this->build_menu_directory_slug(
+					(string) ( $item['raw_name'] ?? ( $item['name'] ?? '' ) ) . ' ' . (string) $item['sub_label'],
+					$base_slug
+				);
+			}
+
+			if ( isset( $used_slugs[ $slug ] ) && ! empty( $item['category_id'] ) ) {
+				$slug = $this->build_menu_directory_slug(
+					(string) ( $item['raw_name'] ?? ( $item['name'] ?? '' ) ) . ' ' . (string) $item['category_id'],
+					$base_slug
+				);
+			}
+
 			while ( isset( $used_slugs[ $slug ] ) ) {
-				$slug = $base_slug . '-' . $suffix;
+				$suffix_token = '-' . $suffix;
+				$slug         = $this->build_menu_directory_slug(
+					$base_slug,
+					'menu-item',
+					75 - strlen( $suffix_token )
+				) . $suffix_token;
 				++$suffix;
 			}
 
@@ -4994,28 +5737,56 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Return the seeded mobile quick-nav icon map.
+	 *
+	 * @return array<string, string>
+	 */
+	protected function get_default_mobile_quick_nav_icons() {
+		return array(
+			'home'      => 'home',
+			'menu'      => 'menu',
+			'deals'     => 'deals',
+			'whats-new' => 'whats-new',
+			'guides'    => 'guides',
+			'sharers'   => 'sharers',
+			'default'   => 'default',
+		);
+	}
+
+	/**
+	 * Return the reusable mobile quick-nav icon SVG library.
+	 *
+	 * @return array<string, string>
+	 */
+	protected function get_mobile_quick_nav_icon_library() {
+		return array(
+			'home'      => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.4L3.8 10v10.1c0 .6.5 1.1 1.1 1.1h5.4v-6.1h3.4v6.1h5.4c.6 0 1.1-.5 1.1-1.1V10L12 3.4z"/></svg>',
+			'menu'      => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5.2h12a1.2 1.2 0 010 2.4H6a1.2 1.2 0 010-2.4zm0 5.3h12a1.2 1.2 0 010 2.4H6a1.2 1.2 0 010-2.4zm0 5.3h8.2a1.2 1.2 0 010 2.4H6a1.2 1.2 0 010-2.4z"/></svg>',
+			'deals'     => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.3 10.1l-6.4-6.4a1.7 1.7 0 00-1.2-.5H6.2c-.9 0-1.7.8-1.7 1.7v6.5c0 .5.2.9.5 1.2l6.4 6.4c.7.7 1.7.7 2.4 0l6.5-6.5c.7-.7.7-1.8 0-2.4zM8.2 9.3a1.6 1.6 0 110-3.2 1.6 1.6 0 010 3.2z"/></svg>',
+			'whats-new' => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.7 2.9l1.9 4.1 4.5.6c.9.1 1.3 1.2.7 1.8l-3.3 3.2.8 4.5c.2.9-.8 1.6-1.6 1.2L12 16.1l-4 2.2c-.8.4-1.8-.3-1.6-1.2l.8-4.5-3.3-3.2c-.6-.6-.3-1.7.7-1.8l4.5-.6 1.9-4.1c.4-.8 1.5-.8 1.9 0z"/></svg>',
+			'guides'    => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.4 4h8.8c1.6 0 2.8 1.3 2.8 2.8V20l-5.2-2.4L7.6 20V6.8C7.6 5.3 8.8 4 10.4 4H6.4z"/></svg>',
+			'sharers'   => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.1 11.2a3.1 3.1 0 100-6.2 3.1 3.1 0 000 6.2zm7.8 0a3.1 3.1 0 100-6.2 3.1 3.1 0 000 6.2zm-7.8 1.6c-2.8 0-5.1 1.7-5.1 3.8V19h10.2v-2.4c0-2.1-2.3-3.8-5.1-3.8zm7.8.3c-.5 0-1 .1-1.5.2 1.1.9 1.8 2 1.8 3.3V19H21v-1.5c0-2.4-2.3-4.4-5.1-4.4z"/></svg>',
+			'default'   => '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.6a8.4 8.4 0 108.4 8.4A8.4 8.4 0 0012 3.6zm0 13.7a5.3 5.3 0 115.3-5.3 5.3 5.3 0 01-5.3 5.3zm0-8.4a3.1 3.1 0 103.1 3.1A3.1 3.1 0 0012 8.9z"/></svg>',
+		);
+	}
+
+	/**
 	 * Return the inline SVG icon for a mobile quick-nav item.
 	 *
 	 * @param string $context Menu context key.
 	 * @return string
 	 */
 	protected function get_mobile_quick_nav_icon( $context ) {
-		switch ( $context ) {
-			case 'home':
-				return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.4L3.8 10v10.1c0 .6.5 1.1 1.1 1.1h5.4v-6.1h3.4v6.1h5.4c.6 0 1.1-.5 1.1-1.1V10L12 3.4z"/></svg>';
-			case 'menu':
-				return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5.2h12a1.2 1.2 0 010 2.4H6a1.2 1.2 0 010-2.4zm0 5.3h12a1.2 1.2 0 010 2.4H6a1.2 1.2 0 010-2.4zm0 5.3h8.2a1.2 1.2 0 010 2.4H6a1.2 1.2 0 010-2.4z"/></svg>';
-			case 'deals':
-				return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.3 10.1l-6.4-6.4a1.7 1.7 0 00-1.2-.5H6.2c-.9 0-1.7.8-1.7 1.7v6.5c0 .5.2.9.5 1.2l6.4 6.4c.7.7 1.7.7 2.4 0l6.5-6.5c.7-.7.7-1.8 0-2.4zM8.2 9.3a1.6 1.6 0 110-3.2 1.6 1.6 0 010 3.2z"/></svg>';
-			case 'whats-new':
-				return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.7 2.9l1.9 4.1 4.5.6c.9.1 1.3 1.2.7 1.8l-3.3 3.2.8 4.5c.2.9-.8 1.6-1.6 1.2L12 16.1l-4 2.2c-.8.4-1.8-.3-1.6-1.2l.8-4.5-3.3-3.2c-.6-.6-.3-1.7.7-1.8l4.5-.6 1.9-4.1c.4-.8 1.5-.8 1.9 0z"/></svg>';
-			case 'guides':
-				return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.4 4h8.8c1.6 0 2.8 1.3 2.8 2.8V20l-5.2-2.4L7.6 20V6.8C7.6 5.3 8.8 4 10.4 4H6.4z"/></svg>';
-			case 'sharers':
-				return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.1 11.2a3.1 3.1 0 100-6.2 3.1 3.1 0 000 6.2zm7.8 0a3.1 3.1 0 100-6.2 3.1 3.1 0 000 6.2zm-7.8 1.6c-2.8 0-5.1 1.7-5.1 3.8V19h10.2v-2.4c0-2.1-2.3-3.8-5.1-3.8zm7.8.3c-.5 0-1 .1-1.5.2 1.1.9 1.8 2 1.8 3.3V19H21v-1.5c0-2.4-2.3-4.4-5.1-4.4z"/></svg>';
-			default:
-				return '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.6a8.4 8.4 0 108.4 8.4A8.4 8.4 0 0012 3.6zm0 13.7a5.3 5.3 0 115.3-5.3 5.3 5.3 0 01-5.3 5.3zm0-8.4a3.1 3.1 0 103.1 3.1A3.1 3.1 0 0012 8.9z"/></svg>';
+		$icon_map  = get_theme_mod( self::MOBILE_QUICK_NAV_ICONS_SETTING, array() );
+		$icon_map  = is_array( $icon_map ) ? $icon_map : array();
+		$library   = $this->get_mobile_quick_nav_icon_library();
+		$icon_name = sanitize_key( (string) ( $icon_map[ $context ] ?? $context ) );
+
+		if ( empty( $icon_name ) || ! isset( $library[ $icon_name ] ) ) {
+			$icon_name = isset( $library[ $context ] ) ? $context : 'default';
 		}
+
+		return $library[ $icon_name ];
 	}
 
 	/**
@@ -6465,22 +7236,70 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Return whether a published post should be excluded from the custom sitemap.
+	 *
+	 * @param \WP_Post $post Post object.
+	 * @return bool
+	 */
+	protected function sitemap_post_is_excluded( \WP_Post $post ) {
+		if ( in_array( (string) $post->post_name, array( 'sample-page', 'test' ), true ) ) {
+			return true;
+		}
+
+		if ( preg_match( '/-\d+$/', (string) $post->post_name ) ) {
+			foreach ( $this->get_seeded_support_pages() as $slug => $page_data ) {
+				if ( 0 !== strpos( (string) $post->post_name, (string) $slug . '-' ) ) {
+					continue;
+				}
+
+				$title      = trim( wp_strip_all_tags( wp_specialchars_decode( (string) $page_data['title'], ENT_QUOTES ) ) );
+				$post_title = trim( wp_strip_all_tags( wp_specialchars_decode( (string) $post->post_title, ENT_QUOTES ) ) );
+
+				if ( $title === $post_title ) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Return the sitemap entries for public pages and posts.
 	 *
 	 * @return array
 	 */
 	protected function get_sitemap_entries() {
 		$entries       = array();
+		$seen_urls     = array();
 		$front_page_id = (int) get_option( 'page_on_front' );
 		$posts_page_id = (int) get_option( 'page_for_posts' );
 
-		$append_entry = static function ( &$bucket, $url, $lastmod, $changefreq, $priority ) {
+		if ( function_exists( 'kadence_mcprices_site_is_noindex' ) && kadence_mcprices_site_is_noindex() ) {
+			return $entries;
+		}
+
+		$post_is_noindex = static function ( $post ) {
+			return $post instanceof \WP_Post
+				&& function_exists( 'kadence_mcprices_post_is_noindex' )
+				&& kadence_mcprices_post_is_noindex( $post );
+		};
+
+		$append_entry = static function ( &$bucket, &$seen, $url, $lastmod, $changefreq, $priority ) {
 			if ( empty( $url ) ) {
 				return;
 			}
 
+			$normalized_url = trailingslashit( untrailingslashit( (string) $url ) );
+
+			if ( isset( $seen[ $normalized_url ] ) ) {
+				return;
+			}
+
+			$seen[ $normalized_url ] = true;
+
 			$bucket[] = array(
-				'loc'        => $url,
+				'loc'        => $normalized_url,
 				'lastmod'    => $lastmod ?: gmdate( 'c' ),
 				'changefreq' => $changefreq,
 				'priority'   => $priority,
@@ -6488,32 +7307,42 @@ class McPrices_Integration {
 		};
 
 		if ( $front_page_id ) {
-			$append_entry(
-				$entries,
-				get_permalink( $front_page_id ),
-				get_post_modified_time( 'c', true, $front_page_id ),
-				'weekly',
-				'1.0'
-			);
+			$front_page = get_post( $front_page_id );
+
+			if ( ! $post_is_noindex( $front_page ) ) {
+				$append_entry(
+					$entries,
+					$seen_urls,
+					get_permalink( $front_page_id ),
+					get_post_modified_time( 'c', true, $front_page_id ),
+					'weekly',
+					'1.0'
+				);
+			}
 		} else {
-			$append_entry( $entries, home_url( '/' ), gmdate( 'c' ), 'weekly', '1.0' );
+			$append_entry( $entries, $seen_urls, home_url( '/' ), gmdate( 'c' ), 'weekly', '1.0' );
 		}
 
 		if ( $posts_page_id && $posts_page_id !== $front_page_id ) {
-			$append_entry(
-				$entries,
-				get_permalink( $posts_page_id ),
-				get_post_modified_time( 'c', true, $posts_page_id ),
-				'daily',
-				'0.8'
-			);
+			$posts_page = get_post( $posts_page_id );
+
+			if ( ! $post_is_noindex( $posts_page ) ) {
+				$append_entry(
+					$entries,
+					$seen_urls,
+					get_permalink( $posts_page_id ),
+					get_post_modified_time( 'c', true, $posts_page_id ),
+					'daily',
+					'0.8'
+				);
+			}
 		}
 
 		$content_posts = get_posts(
 			array(
 				'post_type'              => array( 'page', 'post' ),
 				'post_status'            => 'publish',
-				'posts_per_page'         => 200,
+				'posts_per_page'         => -1,
 				'post__not_in'           => array_filter( array( $front_page_id, $posts_page_id ) ),
 				'orderby'                => 'modified',
 				'order'                  => 'DESC',
@@ -6523,8 +7352,13 @@ class McPrices_Integration {
 		);
 
 		foreach ( $content_posts as $content_post ) {
+			if ( $post_is_noindex( $content_post ) || $this->sitemap_post_is_excluded( $content_post ) ) {
+				continue;
+			}
+
 			$append_entry(
 				$entries,
+				$seen_urls,
 				get_permalink( $content_post ),
 				get_post_modified_time( 'c', true, $content_post ),
 				'weekly',
@@ -6692,6 +7526,10 @@ class McPrices_Integration {
 	 * @return void
 	 */
 	public function maybe_seed_native_design() {
+		if ( ! $this->can_run_managed_bootstrap() ) {
+			return;
+		}
+
 		if ( self::SEED_VERSION === get_theme_mod( self::SEED_VERSION_SETTING, '' ) ) {
 			return;
 		}
@@ -6703,6 +7541,7 @@ class McPrices_Integration {
 		set_theme_mod( self::ENABLE_SETTING, true );
 		set_theme_mod( self::DISCLAIMER_ENABLE_SETTING, true );
 		set_theme_mod( self::DISCLAIMER_TEXT_SETTING, $this->get_default_disclaimer_text() );
+		set_theme_mod( self::MOBILE_QUICK_NAV_ICONS_SETTING, $this->get_default_mobile_quick_nav_icons() );
 		update_option( 'kadence_global_palette', $this->filter_palette_defaults( '' ) );
 
 		$this->maybe_seed_front_page();

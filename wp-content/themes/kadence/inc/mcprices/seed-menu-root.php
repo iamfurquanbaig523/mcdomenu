@@ -624,7 +624,54 @@ class McPrices_Menu_Root_Seed {
 			return home_url( '/' );
 		}
 
+		$path = self::normalize_menu_path( $path );
+
 		return home_url( '/' . ltrim( $path, '/' ) );
+	}
+
+	/**
+	 * Return the current SEO category slug map for managed menu URLs.
+	 *
+	 * @return array<string, string>
+	 */
+	protected static function get_category_slug_map() {
+		return array(
+			'whats-new'   => 'whats-new',
+			'meals'       => 'extra-value-meals',
+			'mcvalue'     => 'mcvalue-menu',
+			'breakfast'   => 'breakfast-menu',
+			'burgers'     => 'burgers-menu',
+			'chickenfish' => 'chicken-fish',
+			'nuggets'     => 'mcnuggets-strips',
+			'snackwrap'   => 'snack-wrap',
+			'sides'       => 'fries-sides',
+			'happymeal'   => 'happy-meal',
+			'sweets'      => 'sweets-treats',
+			'mccafe'      => 'mccafe-coffees',
+			'beverages'   => 'beverages-drinks',
+			'sauces'      => 'sauces-condiments',
+			'deals'       => 'deals-and-offers',
+		);
+	}
+
+	/**
+	 * Normalize older managed menu URLs to the current SEO slug scheme.
+	 *
+	 * @param string $path Relative site path.
+	 * @return string
+	 */
+	protected static function normalize_menu_path( $path ) {
+		$path = ltrim( trim( (string) $path ), '/' );
+
+		foreach ( self::get_category_slug_map() as $old_slug => $new_slug ) {
+			$old_prefix = 'menu/' . $old_slug;
+
+			if ( $path === $old_prefix || 0 === strpos( $path, $old_prefix . '/' ) ) {
+				return 'menu/' . $new_slug . substr( $path, strlen( $old_prefix ) );
+			}
+		}
+
+		return $path;
 	}
 
 	/**
@@ -1112,6 +1159,12 @@ class McPrices_Menu_Root_Seed {
 			return sanitize_title( $item_slug );
 		}
 
+		$category_slug_map = self::get_category_slug_map();
+
+		if ( isset( $category_slug_map[ $managed_key ] ) ) {
+			return sanitize_title( $category_slug_map[ $managed_key ] );
+		}
+
 		return sanitize_title( $managed_key );
 	}
 
@@ -1130,8 +1183,7 @@ class McPrices_Menu_Root_Seed {
 		}
 
 		$post_data = array(
-			'ID'          => (int) $page->ID,
-			'post_status' => 'publish',
+			'ID' => (int) $page->ID,
 		);
 
 		if ( array_key_exists( 'post_parent', $updates ) ) {
