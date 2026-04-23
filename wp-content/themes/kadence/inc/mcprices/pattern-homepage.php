@@ -781,19 +781,21 @@ ob_start();
 					<span class="menu-section-count"><?php echo esc_html( (string) count( $section['rows'] ) ); ?> items</span>
 				</div>
 				<p class="menu-section-desc"><?php echo esc_html( html_entity_decode( $section['description'], ENT_QUOTES, 'UTF-8' ) ); ?></p>
-				<table class="menu-table">
-					<thead>
-						<tr>
-							<th>Item</th>
-							<th>Price</th>
-							<th>Calories</th>
-							<th>Status</th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php $render_rows( $section['rows'], $section['id'] ); ?>
-					</tbody>
-				</table>
+				<div class="menu-table-wrap">
+					<table class="menu-table">
+						<thead>
+							<tr>
+								<th>Item</th>
+								<th>Price</th>
+								<th>Calories</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php $render_rows( $section['rows'], $section['id'] ); ?>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		<?php endforeach; ?>
 	</div>
@@ -969,21 +971,23 @@ ob_start();
 			<div class="section-label">Typical hours</div>
 			<h2 class="section-title">McDonald's Hours (USA)</h2>
 			<p class="section-sub">Typical USA breakfast hours generally start around 4:00 AM and end just before 10:30 or 11:00 AM depending on the day, with lunch and dinner taking over after that.</p>
-			<table class="hours-table">
-				<thead>
-					<tr>
-						<th>Day</th>
-						<th>Breakfast</th>
-						<th>Lunch</th>
-						<th>Dinner</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr><td>Sunday</td><td>4:00 AM &ndash; 10:59 AM</td><td>11:00 AM &ndash; 4:59 PM</td><td>5:00 PM &ndash; 3:59 AM</td></tr>
-					<tr><td>Monday &ndash; Friday</td><td>4:00 AM &ndash; 10:29 AM</td><td>10:30 AM &ndash; 4:59 PM</td><td>5:00 PM &ndash; 3:59 AM</td></tr>
-					<tr><td>Saturday</td><td>4:00 AM &ndash; 10:59 AM</td><td>11:00 AM &ndash; 4:59 PM</td><td>5:00 PM &ndash; 3:59 AM</td></tr>
-				</tbody>
-			</table>
+			<div class="hours-table-wrap">
+				<table class="hours-table">
+					<thead>
+						<tr>
+							<th>Day</th>
+							<th>Breakfast</th>
+							<th>Lunch</th>
+							<th>Dinner</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr><td>Sunday</td><td>4:00 AM &ndash; 10:59 AM</td><td>11:00 AM &ndash; 4:59 PM</td><td>5:00 PM &ndash; 3:59 AM</td></tr>
+						<tr><td>Monday &ndash; Friday</td><td>4:00 AM &ndash; 10:29 AM</td><td>10:30 AM &ndash; 4:59 PM</td><td>5:00 PM &ndash; 3:59 AM</td></tr>
+						<tr><td>Saturday</td><td>4:00 AM &ndash; 10:59 AM</td><td>11:00 AM &ndash; 4:59 PM</td><td>5:00 PM &ndash; 3:59 AM</td></tr>
+					</tbody>
+				</table>
+			</div>
 			<p style="font-size:13px;color:var(--mc-grey-500);margin-top:14px;font-style:italic;">&#9888;&#65039; Hours can vary by franchise and 24-hour status. Always verify your exact restaurant hours in the official McDonald&rsquo;s app before ordering.</p>
 		</div>
 		<div class="hours-sidebar">
