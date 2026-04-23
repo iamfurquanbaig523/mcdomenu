@@ -171,6 +171,15 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
   transition: var(--mc-transition);
 }
 
+.mcprices-page .cat-emoji {
+  margin: 0 auto 14px;
+  transition: var(--mc-transition);
+}
+
+.mcprices-page .cat-card:hover .cat-emoji {
+  transform: scale(1.08) rotate(-3deg);
+}
+
 .mcprices-page .cat-card.red .cat-name,
 .mcprices-page .cat-card:hover .cat-name {
   color: var(--mc-red);
@@ -184,6 +193,26 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
 
 .mcprices-page .cat-card.red:hover {
   box-shadow: var(--mc-shadow-red);
+}
+
+.mcprices-page .categories .cat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.mcprices-page .categories .cat-emoji,
+.mcprices-page .categories .mcprices-media-icon--category {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.mcprices-page .categories .mcprices-media-icon--category {
+  object-position: center center;
 }
 
 .mcprices-page .btn-card {
@@ -248,7 +277,7 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
 
 .mcprices-page .whats-new {
   padding: 80px 0;
-  background: linear-gradient(160deg, #1a0508 0%, #2d0812 40%, #1a0508 100%);
+  background: linear-gradient(160deg, #1a0508 0%, #2d0812 60%, #1a0508 100%);
   position: relative;
   overflow: hidden;
 }
@@ -258,7 +287,12 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 60% 50% at 50% 100%, rgba(200, 16, 46, 0.15) 0%, transparent 70%);
+  background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(200, 16, 46, 0.2) 0%, transparent 70%);
+}
+
+.mcprices-page .whats-new .section-header {
+  position: relative;
+  z-index: 1;
 }
 
 .mcprices-page .whats-new .section-label,
@@ -292,6 +326,7 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
   color: rgba(255, 255, 255, 0.76);
   font-size: 15px;
   line-height: 1.7;
+  text-align: justify;
 }
 
 .mcprices-page .mcprices-whats-new-intro-text strong {
@@ -314,6 +349,7 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
 
 .mcprices-page .new-items-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
   position: relative;
   z-index: 1;
 }
@@ -325,6 +361,7 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
   border-radius: var(--mc-radius-lg);
   background: rgba(255, 255, 255, 0.07);
   backdrop-filter: blur(12px);
+  text-align: center;
   transition: var(--mc-transition);
 }
 
@@ -335,8 +372,10 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
 
 .mcprices-page .new-item-top {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
   padding: 20px 20px 12px;
 }
 
@@ -344,11 +383,11 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
   display: inline-flex;
   align-items: center;
   width: fit-content;
-  margin: 18px 20px 6px;
+  margin: 18px auto 6px;
 }
 
 .mcprices-page .new-item-emoji {
-  margin: 4px 20px 0;
+  margin: 0 auto;
   font-size: 56px;
   line-height: 1;
 }
@@ -379,6 +418,7 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
 
 .mcprices-page .new-item-body {
   padding: 0 20px 24px;
+  text-align: center;
 }
 
 .mcprices-page .new-item-name {
@@ -390,10 +430,22 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
   line-height: 1.25;
 }
 
+.mcprices-page .new-item-card > .new-item-name {
+  width: calc(100% - 40px);
+  margin: 0 auto 4px;
+  text-align: center;
+}
+
 .mcprices-page .new-item-cal {
   margin-bottom: 16px;
   color: rgba(255, 255, 255, 0.45);
   font-size: 13px;
+}
+
+.mcprices-page .new-item-card > .new-item-cal {
+  width: calc(100% - 40px);
+  margin: 0 auto 16px;
+  text-align: center;
 }
 
 .mcprices-page .new-item-price {
@@ -401,6 +453,226 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
   font-family: "Poppins", system-ui, sans-serif;
   font-size: 28px;
   font-weight: 900;
+}
+
+.mcprices-page .new-item-card > .new-item-price {
+  display: block;
+  width: calc(100% - 40px);
+  margin: 0 auto 24px;
+  text-align: center;
+}
+
+.mcprices-page .featured-menu {
+  padding: 80px 0;
+  background: var(--mc-off-white);
+}
+
+.mcprices-page .featured-menu .menu-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.mcprices-page .featured-menu .menu-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--mc-grey-200);
+  border-radius: var(--mc-radius-lg);
+  background: var(--mc-white);
+  box-shadow: var(--mc-shadow-sm);
+  transition: var(--mc-transition);
+}
+
+.mcprices-page .featured-menu .menu-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--mc-shadow-lg);
+}
+
+.mcprices-page .featured-menu .card-badge-top {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: var(--mc-red);
+  color: var(--mc-white);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.mcprices-page .featured-menu .menu-card:nth-child(2) .card-badge-top {
+  background: var(--mc-yellow);
+  color: var(--mc-black);
+}
+
+.mcprices-page .featured-menu .menu-card:nth-child(3) .card-badge-top {
+  background: #00a651;
+  color: var(--mc-white);
+}
+
+.mcprices-page .featured-menu .card-img {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 190px;
+  background: var(--mc-grey-100);
+  overflow: hidden;
+}
+
+.mcprices-page .featured-menu .menu-card:nth-child(2) .card-img {
+  background: #fff8e8;
+}
+
+.mcprices-page .featured-menu .menu-card:nth-child(3) .card-img {
+  background: #f5f0ff;
+}
+
+.mcprices-page .featured-menu .card-img::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(255, 199, 44, 0.12) 0%, transparent 70%);
+}
+
+.mcprices-page .featured-menu .mcprices-card-media {
+  position: relative;
+  z-index: 1;
+  max-width: 78%;
+  max-height: 150px;
+  object-fit: contain;
+}
+
+.mcprices-page .featured-menu .card-body {
+  flex: 1;
+  padding: 22px 22px 10px;
+  background: var(--mc-white);
+}
+
+.mcprices-page .featured-menu .card-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.mcprices-page .featured-menu .card-name {
+  color: var(--mc-black);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.mcprices-page .featured-menu .card-calories {
+  margin-top: 4px;
+  color: var(--mc-grey-700);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.mcprices-page .featured-menu .card-price {
+  color: var(--mc-red);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.mcprices-page .featured-menu .card-chip {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin: 0 0 14px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  background: var(--mc-red);
+  color: var(--mc-white);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.mcprices-page .featured-menu .menu-card:nth-child(2) .card-chip {
+  background: var(--mc-yellow);
+  color: var(--mc-black);
+}
+
+.mcprices-page .featured-menu .menu-card:nth-child(3) .card-chip {
+  background: #00a651;
+  color: var(--mc-white);
+}
+
+.mcprices-page .featured-menu .card-details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.mcprices-page .featured-menu .card-detail-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  background: var(--mc-red-light);
+  color: var(--mc-red);
+  font-family: "Poppins", system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.mcprices-page .featured-menu .card-footer {
+  display: flex;
+  gap: 8px;
+  padding: 0 22px 22px;
+  background: var(--mc-white);
+}
+
+.mcprices-page .featured-menu .btn-card {
+  width: 100%;
+  min-height: 42px;
+  border-radius: 8px;
+}
+
+.mcprices-page .full-menu > .container > .section-header {
+  max-width: 840px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.mcprices-page .full-menu > .container > .section-header .section-sub {
+  max-width: 760px;
+  margin-right: auto;
+  margin-bottom: 12px;
+  margin-left: auto;
+  color: var(--mc-grey-500);
+  font-size: 16px;
+  line-height: 1.78;
+  text-align: justify;
+  text-align-last: center;
+}
+
+.mcprices-page .full-menu > .container > .section-header .section-sub + .section-sub {
+  margin-top: 8px;
 }
 
 .mcprices-page .new-item-price small {

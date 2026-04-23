@@ -706,11 +706,15 @@ ob_start();
 			<?php foreach ( $whats_new_items as $item ) : ?>
 				<?php $status_class = false !== stripos( $item['status'], 'new' ) ? 'avail-new' : 'avail-limited'; ?>
 				<a href="<?php echo esc_url( $get_item_page_url( $item['category'], $item['name'] ) ); ?>" class="new-item-card">
-					<div class="new-item-tag avail-badge <?php echo esc_attr( $status_class ); ?>"><?php echo esc_html( $item['status'] ); ?></div>
-					<div class="new-item-emoji"><?php echo $item['emoji']; ?></div>
-					<div class="new-item-name"><?php echo esc_html( $item['name'] ); ?></div>
-					<div class="new-item-cal"><?php echo esc_html( $item['cal'] ); ?></div>
-					<div class="new-item-price"><?php echo esc_html( $item['price'] ); ?></div>
+					<div class="new-item-top">
+						<div class="new-item-emoji"><?php echo $item['emoji']; ?></div>
+						<span class="new-item-avail avail-badge <?php echo esc_attr( $status_class ); ?>"><?php echo esc_html( $item['status'] ); ?></span>
+					</div>
+					<div class="new-item-body">
+						<div class="new-item-name"><?php echo esc_html( $item['name'] ); ?></div>
+						<div class="new-item-cal"><?php echo esc_html( $item['cal'] ); ?></div>
+						<div class="new-item-price"><?php echo esc_html( $item['price'] ); ?></div>
+					</div>
 				</a>
 			<?php endforeach; ?>
 		</div>
