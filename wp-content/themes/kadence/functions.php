@@ -66,6 +66,26 @@ function kadence_mcprices_get_current_site_year() {
 }
 
 /**
+ * Replace hardcoded day/month date strings with the current site-local date.
+ *
+ * @param string $text Source text.
+ * @return string
+ */
+function kadence_mcprices_replace_dynamic_dates( $text ) {
+	if ( ! is_string( $text ) || '' === trim( $text ) ) {
+		return is_string( $text ) ? $text : '';
+	}
+
+	$updated = preg_replace(
+		'/\b\d{1,2}[\/-]\d{1,2}[\/-](?:19|20)?\d{2}\b/u',
+		kadence_mcprices_get_current_site_date(),
+		$text
+	);
+
+	return is_string( $updated ) ? $updated : $text;
+}
+
+/**
  * Build the dynamic meta title for the current request.
  *
  * @return string
@@ -122,7 +142,7 @@ function kadence_mcprices_get_dynamic_meta_description() {
 		$rank_math_description = trim( (string) get_post_meta( (int) $queried_object->ID, 'rank_math_description', true ) );
 
 		if ( '' !== $rank_math_description ) {
-			return trim( preg_replace( '/\s+/u', ' ', wp_strip_all_tags( $rank_math_description ) ) );
+			return kadence_mcprices_replace_dynamic_dates( trim( preg_replace( '/\s+/u', ' ', wp_strip_all_tags( $rank_math_description ) ) ) );
 		}
 	}
 
@@ -130,7 +150,7 @@ function kadence_mcprices_get_dynamic_meta_description() {
 		$rank_math_description = trim( (string) get_term_meta( (int) $queried_object->term_id, 'rank_math_description', true ) );
 
 		if ( '' !== $rank_math_description ) {
-			return trim( preg_replace( '/\s+/u', ' ', wp_strip_all_tags( $rank_math_description ) ) );
+			return kadence_mcprices_replace_dynamic_dates( trim( preg_replace( '/\s+/u', ' ', wp_strip_all_tags( $rank_math_description ) ) ) );
 		}
 	}
 
@@ -312,7 +332,7 @@ function kadence_mcprices_output_canonical_tag() {
 function kadence_mcprices_filter_rank_math_title( $title ) {
 	$dynamic_title = kadence_mcprices_get_dynamic_meta_title();
 
-	return $dynamic_title ? $dynamic_title : $title;
+	return kadence_mcprices_replace_dynamic_dates( $dynamic_title ? $dynamic_title : $title );
 }
 
 /**
@@ -324,7 +344,7 @@ function kadence_mcprices_filter_rank_math_title( $title ) {
 function kadence_mcprices_filter_rank_math_description( $description ) {
 	$dynamic_description = kadence_mcprices_get_dynamic_meta_description();
 
-	return $dynamic_description ? $dynamic_description : $description;
+	return kadence_mcprices_replace_dynamic_dates( $dynamic_description ? $dynamic_description : $description );
 }
 
 /**

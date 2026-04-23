@@ -143,6 +143,7 @@ class McPrices_Integration {
 		add_filter( 'render_block', array( $this, 'filter_dynamic_date_block_html' ), 20, 2 );
 		add_filter( 'theme_mod_header_html_content', array( $this, 'filter_dynamic_update_bar_html' ) );
 		add_filter( 'theme_mod_mobile_html_content', array( $this, 'filter_dynamic_update_bar_html' ) );
+		add_filter( 'theme_mod_logo_layout', array( $this, 'filter_logo_layout' ) );
 		add_filter( 'wp_robots', array( $this, 'filter_homepage_robots' ), 20 );
 		add_filter( 'robots_txt', array( $this, 'filter_robots_txt' ), 20, 2 );
 
@@ -182,6 +183,44 @@ class McPrices_Integration {
 	 */
 	protected function design_enabled() {
 		return (bool) get_theme_mod( self::ENABLE_SETTING, true );
+	}
+
+	/**
+	 * Ensure the native Kadence brand lockup includes the site title next to the
+	 * seeded logo icon across desktop and mobile layouts.
+	 *
+	 * @param mixed $layout Existing logo layout theme-mod value.
+	 * @return array<string, array<string, string>>
+	 */
+	public function filter_logo_layout( $layout ) {
+		if ( ! $this->design_enabled() ) {
+			return $layout;
+		}
+
+		$layout = is_array( $layout ) ? $layout : array();
+		$layout['include'] = isset( $layout['include'] ) && is_array( $layout['include'] ) ? $layout['include'] : array();
+		$layout['layout']  = isset( $layout['layout'] ) && is_array( $layout['layout'] ) ? $layout['layout'] : array();
+
+		foreach ( array( 'desktop', 'tablet', 'mobile' ) as $device ) {
+			$current_parts = isset( $layout['include'][ $device ] ) ? preg_split( '/[\s,|]+/', (string) $layout['include'][ $device ] ) : array( 'logo' );
+			$current_parts = array_values( array_unique( array_filter( array_map( 'trim', (array) $current_parts ) ) ) );
+
+			if ( ! in_array( 'logo', $current_parts, true ) ) {
+				$current_parts[] = 'logo';
+			}
+
+			if ( ! in_array( 'title', $current_parts, true ) ) {
+				$current_parts[] = 'title';
+			}
+
+			$layout['include'][ $device ] = implode( ',', $current_parts );
+
+			if ( empty( $layout['layout'][ $device ] ) ) {
+				$layout['layout'][ $device ] = 'standard';
+			}
+		}
+
+		return $layout;
 	}
 
 	/**

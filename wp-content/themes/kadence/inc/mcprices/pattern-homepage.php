@@ -761,9 +761,7 @@ ob_start();
 		<div class="section-header">
 			<div class="section-label">Every category, every price</div>
 			<h2 class="section-title">Complete McDonald's USA Menu <?php echo esc_html( $current_year ); ?></h2>
-			<p class="section-sub">This original McDonald&#8217;s Menu Prices USA build now reflects 212 current item rows across 15 US-focused sections from the attached source file, while keeping the design native to Kadence.</p>
-			<p class="section-sub">From Big Mac, Quarter Pounder, McChicken, and McNuggets prices to Egg McMuffin breakfast items, McCafe coffees, McFlurry desserts, Happy Meal options, fries, sauces, and McValue deals, this homepage keeps the core McDonald's USA menu categories, price points, and calorie references together in one place.</p>
-			<p class="section-sub">If you want McDonald's menu prices USA in dollars, McDonald's breakfast menu prices, McDonald's burger prices, McDonald's Happy Meal prices, McDonald's McCafe prices, McDonald's dessert prices, or the latest McValue menu prices, this page is built to answer those exact searches fast.</p>
+			<p class="section-sub">McDonald's Menu Prices USA, all 212 current items across 15 categories in one place. From Big Mac and Quarter Pounder burgers to Egg McMuffin breakfasts, McCafe coffees, McFlurry desserts, Happy Meals, fries, sauces, and McValue deals, with prices and calorie counts updated for 2025.</p>
 		</div>
 		<div class="size-key">
 			<strong>Format guide:</strong> Small-to-large price ranges are grouped where multiple sizes exist. All prices are shown in US dollars and can vary by location.

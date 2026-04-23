@@ -4,6 +4,43 @@ body.mcprices-theme-active #masthead .header-navigation .header-menu-container >
   text-decoration: none;
 }
 
+body.mcprices-theme-active #masthead .site-branding .brand,
+body.mcprices-theme-active #mobile-header .site-branding .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+}
+
+body.mcprices-theme-active #masthead .site-branding .site-title,
+body.mcprices-theme-active #mobile-header .site-branding .site-title {
+  margin: 0;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+body.mcprices-theme-active.transparent-header:not(.home) #masthead .site-main-header-wrap .site-header-row-container-inner {
+  background: rgba(255, 255, 255, 0.97) !important;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(16px);
+}
+
+body.mcprices-theme-active.transparent-header:not(.home) #masthead .site-main-header-wrap .site-title,
+body.mcprices-theme-active.transparent-header:not(.home) #masthead .site-main-header-wrap .site-title-wrap,
+body.mcprices-theme-active.transparent-header:not(.home) #masthead .site-main-header-wrap .site-title a,
+body.mcprices-theme-active.transparent-header:not(.home) #masthead .site-main-header-wrap .brand,
+body.mcprices-theme-active.transparent-header:not(.home) #masthead .site-main-header-wrap .header-navigation a,
+body.mcprices-theme-active.transparent-header:not(.home) #masthead .site-main-header-wrap .dropdown-nav-special-toggle {
+  color: var(--mc-grey-700) !important;
+}
+
+body.mcprices-theme-active #masthead .header-navigation .header-menu-container > ul > li > a,
+body.mcprices-theme-active #masthead .header-navigation .header-menu-container > ul > li.current-menu-item > a,
+body.mcprices-theme-active #masthead .header-navigation .header-menu-container > ul > li.current_page_item > a {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
 body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-main-header-wrap .site-header-row-container-inner {
   background: rgba(255, 255, 255, 0.97) !important;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
@@ -76,8 +113,17 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
 body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-is-stuck .header-navigation .header-menu-container > ul > li > a:hover,
 body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-is-stuck .header-navigation .header-menu-container > ul > li.current-menu-item > a,
 body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-is-stuck .header-navigation .header-menu-container > ul > li.current_page_item > a {
-  color: var(--mc-red);
-  background: rgba(200, 16, 46, 0.08);
+  color: var(--mc-grey-700);
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body.mcprices-theme-active.transparent-header:not(.home) #masthead .header-navigation .header-menu-container > ul > li > a:hover,
+body.mcprices-theme-active.transparent-header:not(.home) #masthead .header-navigation .header-menu-container > ul > li.current-menu-item > a,
+body.mcprices-theme-active.transparent-header:not(.home) #masthead .header-navigation .header-menu-container > ul > li.current_page_item > a {
+  color: var(--mc-grey-700) !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 .mcprices-page .hero-content,
@@ -357,11 +403,17 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
 .mcprices-page .new-item-card {
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-height: 248px;
+  padding: 22px 24px 24px;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--mc-radius-lg);
   background: rgba(255, 255, 255, 0.07);
   backdrop-filter: blur(12px);
-  text-align: center;
+  text-align: left;
   transition: var(--mc-transition);
 }
 
@@ -372,24 +424,43 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
 
 .mcprices-page .new-item-top {
   display: flex;
-  flex-direction: column-reverse;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 20px 20px 12px;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
+  margin-bottom: 14px;
+  padding: 0;
 }
 
 .mcprices-page .new-item-tag {
   display: inline-flex;
   align-items: center;
   width: fit-content;
-  margin: 18px auto 6px;
+  margin: 0;
 }
 
 .mcprices-page .new-item-emoji {
-  margin: 0 auto;
+  margin: 0 0 12px;
   font-size: 56px;
   line-height: 1;
+}
+
+.mcprices-page .new-item-top .new-item-emoji {
+  margin: 0;
+}
+
+.mcprices-page .whats-new .new-item-card > .new-item-tag,
+.mcprices-page .whats-new .new-item-card > .new-item-avail,
+.mcprices-page .whats-new .new-item-card > .avail-badge {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  margin: 0;
+}
+
+.mcprices-page .whats-new .new-item-top .new-item-avail,
+.mcprices-page .whats-new .new-item-top .avail-badge {
+  margin-left: auto;
 }
 
 .mcprices-page .new-item-avail,
@@ -417,8 +488,12 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
 }
 
 .mcprices-page .new-item-body {
-  padding: 0 20px 24px;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  padding: 0;
+  text-align: left;
 }
 
 .mcprices-page .new-item-name {
@@ -428,38 +503,50 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
   font-size: 18px;
   font-weight: 800;
   line-height: 1.25;
+  text-align: left;
 }
 
 .mcprices-page .new-item-card > .new-item-name {
-  width: calc(100% - 40px);
-  margin: 0 auto 4px;
-  text-align: center;
+  width: 100%;
+  margin: 0 0 4px;
+  text-align: left;
 }
 
 .mcprices-page .new-item-cal {
-  margin-bottom: 16px;
+  margin-bottom: 0;
   color: rgba(255, 255, 255, 0.45);
   font-size: 13px;
+  text-align: left;
 }
 
 .mcprices-page .new-item-card > .new-item-cal {
-  width: calc(100% - 40px);
-  margin: 0 auto 16px;
-  text-align: center;
+  width: 100%;
+  margin: 0;
+  text-align: left;
 }
 
 .mcprices-page .new-item-price {
+  margin-top: 24px;
   color: var(--mc-yellow);
   font-family: "Poppins", system-ui, sans-serif;
   font-size: 28px;
   font-weight: 900;
+  text-align: left;
 }
 
 .mcprices-page .new-item-card > .new-item-price {
   display: block;
-  width: calc(100% - 40px);
-  margin: 0 auto 24px;
-  text-align: center;
+  width: 100%;
+  margin: 24px 0 0;
+  text-align: left;
+}
+
+.mcprices-page .whats-new .new-item-card img,
+.mcprices-page .whats-new .new-item-emoji img {
+  display: block;
+  width: 84px;
+  height: 84px;
+  object-fit: contain;
 }
 
 .mcprices-page .featured-menu {
@@ -618,10 +705,7 @@ body.mcprices-theme-active #masthead .site-main-header-wrap.item-is-fixed.item-i
 }
 
 .mcprices-page .featured-menu .card-details {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 14px;
+  display: none;
 }
 
 .mcprices-page .featured-menu .card-detail-pill {
