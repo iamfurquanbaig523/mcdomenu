@@ -100,6 +100,11 @@ class McPrices_Integration {
 	const PAGE_CATEGORY_SIGNATURE_OPTION = 'mcprices_page_category_signature';
 
 	/**
+	 * Option used to track the current seeded support-page content signature.
+	 */
+	const SUPPORT_PAGE_SIGNATURE_OPTION = 'mcprices_support_page_signature';
+
+	/**
 	 * Option used to track seeded Rank Math page and category SEO metadata.
 	 */
 	const SEO_ENTITY_SEED_VERSION_OPTION = 'mcprices_rank_math_entity_seed_version';
@@ -174,6 +179,7 @@ class McPrices_Integration {
 		add_action( 'pre_get_posts', array( $this, 'filter_page_admin_query_by_category' ) );
 		add_filter( 'manage_pages_columns', array( $this, 'filter_page_admin_columns' ) );
 		add_action( 'manage_pages_custom_column', array( $this, 'render_page_admin_column' ), 10, 2 );
+		add_action( 'save_post_page', array( $this, 'maybe_mark_support_page_as_custom_content' ), 20, 3 );
 	}
 
 	/**
@@ -242,7 +248,7 @@ class McPrices_Integration {
 			return true;
 		}
 
-		return false;
+		return $this->managed_bootstrap_needs_refresh();
 	}
 
 	/**
@@ -284,6 +290,10 @@ class McPrices_Integration {
 		}
 
 		if ( $this->get_page_category_signature() !== (string) get_option( self::PAGE_CATEGORY_SIGNATURE_OPTION, '' ) ) {
+			return true;
+		}
+
+		if ( $this->get_seeded_support_pages_signature() !== (string) get_option( self::SUPPORT_PAGE_SIGNATURE_OPTION, '' ) ) {
 			return true;
 		}
 
@@ -1402,8 +1412,8 @@ class McPrices_Integration {
 					),
 				),
 				'extra-value-meals' => array(
-					'title'   => 'Extra Value Meals',
-					'content' => $this->build_seeded_support_topic_page_content(
+					'title'   => "McDonald's Extra Value Meals Prices USA",
+					'content' => $this->get_seeded_file_content( '/inc/mcprices/data/extra-value-meals-seeded-content.html' ) ?: $this->build_seeded_support_topic_page_content(
 						array(
 							'intro'         => array(
 								'This guide covers McDonald&#8217;s USA combo meals for breakfast, lunch, and dinner, including burger meals, chicken meals, fish meals, and wrap meal pricing.',
@@ -1481,7 +1491,7 @@ class McPrices_Integration {
 		return array(
 			'breakfast-menu' => array(
 				'title'   => "McDonald's Breakfast Menu Prices USA",
-				'content' => $this->build_seeded_category_pillar_page_content(
+				'content' => $this->get_seeded_file_content( '/inc/mcprices/data/breakfast-menu-seeded-content.html' ) ?: $this->build_seeded_category_pillar_page_content(
 					array(
 						'category'               => 'breakfast',
 						'page_label'             => "McDonald's Breakfast Menu Prices USA",
@@ -1613,7 +1623,7 @@ class McPrices_Integration {
 			),
 			'chicken-fish-menu' => array(
 				'title'   => "McDonald's Chicken & Fish Menu Prices USA",
-				'content' => $this->build_seeded_category_pillar_page_content(
+				'content' => $this->get_seeded_file_content( '/inc/mcprices/data/chicken-fish-menu-seeded-content.html' ) ?: $this->build_seeded_category_pillar_page_content(
 					array(
 						'category'        => 'chickenfish',
 						'page_label'      => "McDonald's Chicken & Fish Menu Prices USA",
@@ -1749,7 +1759,7 @@ class McPrices_Integration {
 			),
 			'fries-sides' => array(
 				'title'   => "McDonald's Fries & Sides Prices USA",
-				'content' => $this->build_seeded_category_pillar_page_content(
+				'content' => $this->get_seeded_file_content( '/inc/mcprices/data/fries-sides-seeded-content.html' ) ?: $this->build_seeded_category_pillar_page_content(
 					array(
 						'category'        => 'sides',
 						'page_label'      => "McDonald's Fries & Sides Prices USA",
@@ -2601,6 +2611,67 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Return seeded file content with dynamic site URL placeholders resolved.
+	 *
+	 * @param string $relative_path Relative path inside the theme.
+	 * @return string
+	 */
+	protected function get_seeded_file_content( $relative_path ) {
+		$file_path = get_theme_file_path( (string) $relative_path );
+
+		if ( ! is_string( $file_path ) || '' === trim( $file_path ) || ! file_exists( $file_path ) ) {
+			return '';
+		}
+
+		$content = file_get_contents( $file_path );
+
+		if ( ! is_string( $content ) || '' === trim( $content ) ) {
+			return '';
+		}
+
+		return str_replace( '{{HOME_URL}}', untrailingslashit( home_url() ), $content );
+	}
+
+	/**
+	 * Return whether a managed page should preserve editor-authored content.
+	 *
+	 * @param \WP_Post|null $page Page object when available.
+	 * @return bool
+	 */
+	protected function managed_page_uses_custom_content( $page ) {
+		return $page instanceof \WP_Post
+			&& '1' === (string) get_post_meta( (int) $page->ID, '_mcprices_allow_custom_content', true );
+	}
+
+	/**
+	 * Preserve editor-authored support-page content after admin updates.
+	 *
+	 * @param int      $post_id Post ID.
+	 * @param \WP_Post $post    Post object.
+	 * @param bool     $update  Whether the post is being updated.
+	 * @return void
+	 */
+	public function maybe_mark_support_page_as_custom_content( $post_id, $post, $update ) {
+		if ( ! is_admin() || ! $update || wp_is_post_revision( $post_id ) || wp_is_post_autosave( $post_id ) ) {
+			return;
+		}
+
+		if ( ! $post instanceof \WP_Post || 'page' !== $post->post_type ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'edit_page', $post_id ) ) {
+			return;
+		}
+
+		if ( '' === (string) get_post_meta( $post_id, '_mcprices_support_page', true ) ) {
+			return;
+		}
+
+		update_post_meta( $post_id, '_mcprices_allow_custom_content', '1' );
+	}
+
+	/**
 	 * Return the primary long-form guide mapped to each menu category.
 	 *
 	 * @return array<string, array<string, string>>
@@ -2613,7 +2684,7 @@ class McPrices_Integration {
 			),
 			'meals'       => array(
 				'slug'  => 'extra-value-meals',
-				'title' => 'Extra Value Meals',
+				'title' => "McDonald's Extra Value Meals Prices USA",
 			),
 			'mcvalue'     => array(
 				'slug'  => 'mcdonalds-deals-mcvalue-guide',
@@ -2700,6 +2771,89 @@ class McPrices_Integration {
 		$map = $this->get_menu_category_primary_guide_map();
 
 		return isset( $map[ $category_id ]['title'] ) ? (string) $map[ $category_id ]['title'] : '';
+	}
+
+	/**
+	 * Return the primary guide page object for a category when available.
+	 *
+	 * @param string $category_id Category identifier.
+	 * @return \WP_Post|null
+	 */
+	protected function get_menu_category_primary_guide_post( $category_id ) {
+		$map = $this->get_menu_category_primary_guide_map();
+
+		if ( empty( $map[ $category_id ]['slug'] ) ) {
+			return null;
+		}
+
+		$guide_page = get_page_by_path( (string) $map[ $category_id ]['slug'], OBJECT, 'page' );
+
+		return $guide_page instanceof \WP_Post ? $guide_page : null;
+	}
+
+	/**
+	 * Return rendered primary guide content for a category.
+	 *
+	 * @param string $category_id Category identifier.
+	 * @return string
+	 */
+	protected function get_menu_category_primary_guide_content( $category_id ) {
+		$guide_page = $this->get_menu_category_primary_guide_post( $category_id );
+
+		if ( ! $guide_page instanceof \WP_Post ) {
+			return '';
+		}
+
+		$guide_content = trim( (string) $guide_page->post_content );
+
+		if ( '' === $guide_content ) {
+			return '';
+		}
+
+		$guide_content = (string) preg_replace(
+			'/<!-- wp:shortcode -->\s*\[mcprices_menu_category[^\]]*\]\s*<!-- \/wp:shortcode -->/i',
+			'',
+			$guide_content
+		);
+		$guide_content = (string) preg_replace(
+			'/\[mcprices_menu_category[^\]]*\]/i',
+			'',
+			$guide_content
+		);
+
+		return trim( (string) apply_filters( 'the_content', $guide_content ) );
+	}
+
+	/**
+	 * Return a category-page teaser that links to the long-form guide.
+	 *
+	 * @param string $category_id Category identifier.
+	 * @param int    $item_count  Number of tracked items in the live grid.
+	 * @return string
+	 */
+	protected function get_menu_category_primary_guide_teaser( $category_id, $item_count = 0 ) {
+		$guide_url   = $this->get_menu_category_primary_guide_url( $category_id );
+		$guide_title = $this->get_menu_category_primary_guide_title( $category_id );
+
+		if ( '' === $guide_url || '' === $guide_title ) {
+			return '';
+		}
+
+		$summary = sprintf(
+			/* translators: 1: guide title, 2: number of tracked items */
+			__( 'The full %1$s page holds the long-form article with prices, calories, FAQs, and deal context. This category page stays focused on %2$d live item cards and direct menu links.', 'mcprices' ),
+			wp_strip_all_tags( wp_specialchars_decode( $guide_title, ENT_QUOTES ) ),
+			max( 1, (int) $item_count )
+		);
+
+		return sprintf(
+			'<div class="mcprices-guide-callout"><p class="mcprices-guide-callout__eyebrow">%1$s</p><h3 class="mcprices-guide-callout__title">%2$s</h3><p class="mcprices-guide-callout__copy">%3$s</p><div class="mcprices-guide-callout__actions"><a class="btn-card" href="%4$s">%5$s</a></div></div>',
+			esc_html__( 'Full Guide', 'mcprices' ),
+			esc_html( wp_strip_all_tags( wp_specialchars_decode( $guide_title, ENT_QUOTES ) ) ),
+			esc_html( $summary ),
+			esc_url( $guide_url ),
+			esc_html__( 'Read the Full Guide', 'mcprices' )
+		);
 	}
 
 	/**
@@ -3438,17 +3592,22 @@ class McPrices_Integration {
 	protected function maybe_seed_support_pages() {
 		$changed       = false;
 		$canonical_ids = array();
+		$signature     = $this->get_seeded_support_pages_signature();
 
 		foreach ( $this->get_seeded_support_pages() as $slug => $page_data ) {
 			$page = get_page_by_path( $slug );
 
 			if ( $page instanceof \WP_Post ) {
 				$canonical_ids[ $slug ] = (int) $page->ID;
+				$preserve_custom_content = $this->managed_page_uses_custom_content( $page );
 				$needs_update =
 					$page_data['title'] !== (string) $page->post_title ||
 					$slug !== (string) $page->post_name ||
 					'publish' !== (string) $page->post_status ||
-					trim( (string) $page->post_content ) !== trim( (string) $page_data['content'] );
+					(
+						! $preserve_custom_content &&
+						trim( (string) $page->post_content ) !== trim( (string) $page_data['content'] )
+					);
 
 				if ( $needs_update ) {
 					wp_update_post(
@@ -3457,7 +3616,7 @@ class McPrices_Integration {
 							'post_title'   => $page_data['title'],
 							'post_name'    => $slug,
 							'post_status'  => 'publish',
-							'post_content' => $page_data['content'],
+							'post_content' => $preserve_custom_content ? $page->post_content : $page_data['content'],
 						)
 					);
 					$changed = true;
@@ -3489,6 +3648,8 @@ class McPrices_Integration {
 		if ( $this->cleanup_duplicate_support_pages( $canonical_ids ) ) {
 			$changed = true;
 		}
+
+		update_option( self::SUPPORT_PAGE_SIGNATURE_OPTION, $signature, false );
 
 		return $changed;
 	}
@@ -3599,14 +3760,21 @@ class McPrices_Integration {
 		}
 
 		if ( $page instanceof \WP_Post ) {
+			$preserve_custom_content = $this->managed_page_uses_custom_content( $page );
 			$needs_update =
 				$page_args['title'] !== (string) $page->post_title ||
 				$page_args['slug'] !== (string) $page->post_name ||
 				'publish' !== (string) $page->post_status ||
 				(int) $page_args['post_parent'] !== (int) $page->post_parent ||
 				(int) $page_args['menu_order'] !== (int) $page->menu_order ||
-				trim( (string) $page_args['content'] ) !== trim( (string) $page->post_content ) ||
-				trim( (string) $page_args['excerpt'] ) !== trim( (string) $page->post_excerpt );
+				(
+					! $preserve_custom_content &&
+					trim( (string) $page_args['content'] ) !== trim( (string) $page->post_content )
+				) ||
+				(
+					! $preserve_custom_content &&
+					trim( (string) $page_args['excerpt'] ) !== trim( (string) $page->post_excerpt )
+				);
 
 			if ( $needs_update ) {
 				wp_update_post(
@@ -3617,8 +3785,8 @@ class McPrices_Integration {
 						'post_status'  => 'publish',
 						'post_parent'  => (int) $page_args['post_parent'],
 						'menu_order'   => (int) $page_args['menu_order'],
-						'post_content' => $page_args['content'],
-						'post_excerpt' => $page_args['excerpt'],
+						'post_content' => $preserve_custom_content ? $page->post_content : $page_args['content'],
+						'post_excerpt' => $preserve_custom_content ? $page->post_excerpt : $page_args['excerpt'],
 					)
 				);
 				$changed = true;
@@ -4350,6 +4518,15 @@ class McPrices_Integration {
 		}
 
 		return hash( 'sha256', wp_json_encode( $value ) );
+	}
+
+	/**
+	 * Return the current signature for seeded support pages.
+	 *
+	 * @return string
+	 */
+	protected function get_seeded_support_pages_signature() {
+		return $this->get_seed_signature( $this->get_seeded_support_pages() );
 	}
 
 	/**
@@ -5242,8 +5419,9 @@ class McPrices_Integration {
 			return '';
 		}
 
-		$guide_url   = $this->get_menu_category_primary_guide_url( $category['id'] );
-		$guide_title = $this->get_menu_category_primary_guide_title( $category['id'] );
+		$guide_url    = $this->get_menu_category_primary_guide_url( $category['id'] );
+		$guide_title  = $this->get_menu_category_primary_guide_title( $category['id'] );
+		$guide_teaser = $this->get_menu_category_primary_guide_teaser( $category['id'], count( $category['items'] ) );
 
 		ob_start();
 		?>
@@ -5261,7 +5439,7 @@ class McPrices_Integration {
 						<div class="section-label">Category Page</div>
 						<h2 class="section-title"><?php echo esc_html( $category['title'] ); ?></h2>
 						<p class="section-sub"><?php echo esc_html( $category['description'] ); ?></p>
-						<?php if ( $guide_url && $guide_title ) : ?>
+						<?php if ( $guide_url && $guide_title && ! $guide_teaser ) : ?>
 							<p class="section-sub">Need the broader category context first? Read the <a href="<?php echo esc_url( $guide_url ); ?>"><?php echo esc_html( $guide_title ); ?></a> guide, or return to the <a href="<?php echo esc_url( $this->get_menu_directory_root_url() ); ?>">full menu directory</a>.</p>
 						<?php endif; ?>
 					</div>
@@ -5279,6 +5457,11 @@ class McPrices_Integration {
 							<span>Based on current site menu data</span>
 						</div>
 					</div>
+					<?php if ( $guide_teaser ) : ?>
+						<div class="mcprices-directory-guide">
+							<?php echo $guide_teaser; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						</div>
+					<?php endif; ?>
 					<div class="menu-cards-grid featured-grid mcprices-directory-cards">
 						<?php foreach ( $category['items'] as $item ) : ?>
 							<article class="menu-card mcprices-directory-card">
