@@ -1828,7 +1828,7 @@ class McPrices_Integration {
 			),
 			'happy-meal-menu' => array(
 				'title'   => "McDonald's Happy Meal Prices USA",
-				'content' => $this->build_seeded_category_pillar_page_content(
+				'content' => $this->get_seeded_file_content( '/inc/mcprices/data/happy-meal-menu-seeded-content.html' ) ?: $this->build_seeded_category_pillar_page_content(
 					array(
 						'category'        => 'happymeal',
 						'page_label'      => "McDonald's Happy Meal Prices USA",
