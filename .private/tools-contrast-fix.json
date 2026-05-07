@@ -1,0 +1,22 @@
+{
+  "quickTools": {
+    "color": "rgb(183, 132, 0)",
+    "backgroundColor": "rgba(255, 247, 232, 0.94)",
+    "borderColor": "rgba(255, 199, 44, 0.34)",
+    "boxShadow": "rgba(0, 0, 0, 0.12) 0px 12px 24px 0px"
+  },
+  "emptyState": {
+    "color": "rgb(92, 75, 65)",
+    "backgroundColor": "rgba(255, 255, 255, 0.9)",
+    "borderColor": "rgba(255, 255, 255, 0.18)",
+    "boxShadow": "rgba(255, 255, 255, 0.28) 0px 1px 0px 0px inset"
+  },
+  "clearButton": {
+    "color": "rgba(255, 244, 214, 0.94)",
+    "backgroundColor": "rgba(255, 255, 255, 0.08)",
+    "borderColor": "rgba(255, 214, 95, 0.24)",
+    "boxShadow": "rgba(255, 255, 255, 0.08) 0px 1px 0px 0px inset"
+  },
+  "clearButtonText": "Clear all",
+  "emptyStateText": "No items selected yet. Add items from the list to build your meal."
+}

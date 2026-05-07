@@ -6941,6 +6941,154 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Return the full designed homepage source used by dynamic homepage sections.
+	 *
+	 * @return string
+	 */
+	protected function get_homepage_source_markup() {
+		$homepage_source = require get_theme_file_path( '/inc/mcprices/pattern-homepage-source.php' );
+
+		return is_string( $homepage_source ) ? $homepage_source : '';
+	}
+
+	/**
+	 * Render a reusable homepage section from the native source layout.
+	 *
+	 * @param array|string $atts Shortcode attributes.
+	 * @return string
+	 */
+	public function render_homepage_section_shortcode( $atts ) {
+		$atts = shortcode_atts(
+			array(
+				'section' => '',
+			),
+			(array) $atts,
+			'mcprices_home_section'
+		);
+
+		return $this->get_homepage_section_markup( sanitize_key( (string) $atts['section'] ) );
+	}
+
+	/**
+	 * Return a homepage section fragment.
+	 *
+	 * @param string $section Section identifier.
+	 * @return string
+	 */
+	protected function get_homepage_section_markup( $section ) {
+		$section  = sanitize_key( (string) $section );
+		$sections = $this->build_homepage_section_fragment_cache();
+
+		if ( ! isset( $sections[ $section ] ) ) {
+			return '';
+		}
+
+		return $this->normalize_homepage_runtime_urls( $sections[ $section ] );
+	}
+
+	/**
+	 * Build section fragments from the full homepage source.
+	 *
+	 * @return array<string,string>
+	 */
+	protected function build_homepage_section_fragment_cache() {
+		static $sections = null;
+
+		if ( null !== $sections ) {
+			return $sections;
+		}
+
+		$sections = array();
+
+		if ( ! class_exists( '\DOMDocument' ) || ! class_exists( '\DOMXPath' ) ) {
+			return $sections;
+		}
+
+		$source = preg_replace( '/<!--\s*\/?wp:[\s\S]*?-->/', '', $this->get_homepage_source_markup() );
+
+		if ( ! is_string( $source ) || '' === trim( $source ) ) {
+			return $sections;
+		}
+
+		$document = new \DOMDocument( '1.0', 'UTF-8' );
+		$wrapped  = '<!DOCTYPE html><html><body><div id="mcprices-home-source-root">' . $source . '</div></body></html>';
+		$previous = libxml_use_internal_errors( true );
+
+		$document->loadHTML( '<?xml encoding="utf-8" ?>' . $wrapped );
+		libxml_clear_errors();
+		libxml_use_internal_errors( $previous );
+
+		$xpath = new \DOMXPath( $document );
+		$class = static function ( $class_name ) {
+			return 'contains(concat(" ", normalize-space(@class), " "), " ' . $class_name . ' ")';
+		};
+
+		$queries = array(
+			'hero-right'        => '//*[@id="mcprices-home-source-root"]//*[' . $class( 'hero-right' ) . '][1]',
+			'breadcrumbs'       => '//*[@id="mcprices-home-source-root"]//*[' . $class( 'breadcrumbs' ) . '][1]',
+			'full-menu'         => '//*[@id="full-menu"][1]',
+			'categories'        => '//*[@id="mcprices-home-source-root"]//section[' . $class( 'categories' ) . '][1]',
+			'whats-new'         => '//*[@id="whats-new"][1]',
+			'interactive-tools' => '//*[@id="interactive-tools"][1]',
+			'featured-menu'     => '//*[@id="mcprices-home-source-root"]//section[' . $class( 'featured-menu' ) . '][1]',
+			'deals'             => '//*[@id="deals"][1]',
+			'ordering'          => '//*[@id="mcprices-home-source-root"]//section[' . $class( 'ordering-section' ) . '][1]',
+			'delivery'          => '//*[@id="mcprices-home-source-root"]//section[' . $class( 'delivery-section' ) . '][1]',
+			'calories'          => '//*[@id="calories"][1]',
+			'seo'               => '//*[@id="mcprices-home-source-root"]//section[' . $class( 'seo-section' ) . '][1]',
+			'hours'             => '//*[@id="mcprices-home-source-root"]//section[' . $class( 'hours-section' ) . '][1]',
+			'quality'           => '//*[@id="mcprices-home-source-root"]//section[' . $class( 'quality-section' ) . '][1]',
+			'history'           => '//*[@id="mcprices-home-source-root"]//section[' . $class( 'history-section' ) . '][1]',
+			'guides'            => '//*[@id="guides"][1]',
+			'faq'               => '//*[@id="faq"][1]',
+			'footer-note'       => '(//*[@id="mcprices-home-source-root"]//div[' . $class( 'container' ) . '][p[contains(., "Disclaimer:")]])[last()]',
+		);
+
+		foreach ( $queries as $section => $query ) {
+			$nodes = $xpath->query( $query );
+			$node  = $nodes instanceof \DOMNodeList ? $nodes->item( 0 ) : null;
+
+			if ( $node instanceof \DOMNode ) {
+				$sections[ $section ] = (string) $document->saveHTML( $node );
+			}
+		}
+
+		return $sections;
+	}
+
+	/**
+	 * Rewrite old hard-coded internal homepage URLs to the current site URL.
+	 *
+	 * @param string $content Homepage content.
+	 * @return string
+	 */
+	protected function normalize_homepage_runtime_urls( $content ) {
+		if ( '' === trim( (string) $content ) ) {
+			return (string) $content;
+		}
+
+		$current_home = untrailingslashit( home_url() );
+
+		return str_replace(
+			array(
+				'{{MCPRICES_HOME_URL}}',
+				'http://localhost/wordpress',
+				'http://127.0.0.1/wordpress',
+				'https://mcdomenuusa.com',
+				'https://www.mcdomenuusa.com',
+			),
+			array(
+				$current_home,
+				$current_home,
+				$current_home,
+				$current_home,
+				$current_home,
+			),
+			(string) $content
+		);
+	}
+
+	/**
 	 * Return a stable signature for managed seeded content.
 	 *
 	 * @param mixed $value Source value.
@@ -6993,6 +7141,7 @@ class McPrices_Integration {
 	 */
 	public function register_shortcodes() {
 		add_shortcode( 'mcprices_hero_search', array( $this, 'render_hero_search_shortcode' ) );
+		add_shortcode( 'mcprices_home_section', array( $this, 'render_homepage_section_shortcode' ) );
 		add_shortcode( 'mcprices_menu_directory', array( $this, 'render_menu_directory_shortcode' ) );
 		add_shortcode( 'mcprices_menu_category', array( $this, 'render_menu_category_shortcode' ) );
 		add_shortcode( 'mcprices_menu_item', array( $this, 'render_menu_item_shortcode' ) );
@@ -8409,6 +8558,10 @@ class McPrices_Integration {
 
 		$content = $this->replace_dynamic_date_strings( $content );
 
+		if ( is_front_page() ) {
+			$content = $this->normalize_homepage_runtime_urls( $content );
+		}
+
 		if ( is_front_page() && false !== strpos( (string) $content, 'data-mcprices-hero-search-placeholder="1"' ) ) {
 			$content = preg_replace(
 				'/<div class="mcprices-hero-search-placeholder" data-mcprices-hero-search-placeholder="1"><\/div>/',
@@ -9331,6 +9484,8 @@ class McPrices_Integration {
 		if ( false !== strpos( $html, '[mcprices_' ) ) {
 			$html = do_shortcode( $html );
 		}
+
+		$html = $this->normalize_homepage_runtime_urls( $html );
 
 		return (string) $html;
 	}
