@@ -626,7 +626,7 @@ class McPrices_Menu_Root_Seed {
 
 		$path = self::normalize_menu_path( $path );
 
-		return home_url( '/' . ltrim( $path, '/' ) );
+		return trailingslashit( home_url( '/' . trim( $path, '/' ) ) );
 	}
 
 	/**
@@ -667,8 +667,43 @@ class McPrices_Menu_Root_Seed {
 			$old_prefix = 'menu/' . $old_slug;
 
 			if ( $path === $old_prefix || 0 === strpos( $path, $old_prefix . '/' ) ) {
-				return 'menu/' . $new_slug . substr( $path, strlen( $old_prefix ) );
+				$path = 'menu/' . $new_slug . substr( $path, strlen( $old_prefix ) );
+				break;
 			}
+		}
+
+		$legacy_item_paths = array(
+			'menu/whats-new/the-big-arch'                 => 'menu/whats-new/the-big-archtm-two-1-4-lb-beef-patties-special-sauce-lettuce-cheese-pickles',
+			'menu/whats-new/ramyeon-mcshaker-fries'       => 'menu/whats-new/ramyeon-mcshakertm-fries-medium',
+			'menu/whats-new/the-saja-boys-breakfast-meal' => 'menu/whats-new/the-saja-boys-breakfast-meal-spicy-mcmuffin-hashbrown-drink',
+			'menu/mcnuggets-strips/mccrispy-strips'       => 'menu/mcnuggets-strips/mccrispy-strips-3-pc',
+			'menu/mccafe-coffees/premium-roast-coffee'    => 'menu/mccafe-coffees/premium-roast-coffee-any-size',
+			'menu/mcvalue-menu/the-mcdouble-meal-deal'    => 'menu/burgers-menu/mcdouble',
+			'menu/mcvalue-menu/mcchicken'                 => 'menu/chicken-fish/mcchicken',
+			'menu/mcvalue-menu/cheeseburger'              => 'menu/burgers-menu/cheeseburger',
+			'menu/mcvalue-menu/double-cheeseburger'       => 'menu/burgers-menu/double-cheeseburger',
+			'menu/mcvalue-menu/hash-browns'               => 'menu/breakfast-menu/hash-browns',
+			'menu/mcvalue-menu/sausage-biscuit'           => 'menu/breakfast-menu/sausage-biscuit',
+			'menu/mcvalue-menu/sausage-burrito'           => 'menu/breakfast-menu/sausage-burrito',
+			'menu/mcvalue-menu/sausage-mcmuffin'          => 'menu/breakfast-menu/sausage-mcmuffin',
+			'menu/mcvalue-menu/4-pc-chicken-mcnuggets'    => 'menu/mcnuggets-strips/4-pc-chicken-mcnuggets',
+			'menu/mcvalue-menu/6-pc-chicken-mcnuggets'    => 'menu/mcnuggets-strips/6-pc-chicken-mcnuggets',
+			'menu/mcvalue-menu/small-world-famous-fries'  => 'menu/fries-sides/world-famous-fries-small',
+			'menu/sweets-treats/chocolate-chip-cookie'    => 'menu/sweets-treats/chocolate-chip-cookie-single',
+			'menu/sweets-treats/oreo-mcflurry'            => 'menu/sweets-treats/oreo-mcflurry-regular',
+			'menu/sweets-treats/mms-mcflurry'             => 'menu/sweets-treats/mms-mcflurry-regular',
+			'menu/happy-meal/hamburger-happy-meal'        => 'menu/happy-meal/hamburger-happy-meal-w-apple-slices-or-sm-fries-drink-toy',
+			'menu/happy-meal/4-pc-mcnuggets-happy-meal'   => 'menu/happy-meal/4-pc-mcnuggets-happy-meal-w-apple-slices-or-sm-fries-drink-toy',
+			'menu/happy-meal/6-pc-mcnuggets-happy-meal'   => 'menu/happy-meal/6-pc-mcnuggets-happy-meal-w-apple-slices-or-sm-fries-drink-toy',
+			'menu/sauces-condiments/hunter-sauce'         => 'menu/sauces-condiments/hunter-sauce-kpop-demon-hunters-ltd',
+			'menu/sauces-condiments/demon-sauce'          => 'menu/sauces-condiments/demon-sauce-kpop-demon-hunters-ltd',
+			'menu/extra-value-meals/10-pc-chicken-mcnuggets-meal' => 'menu/extra-value-meals/10-pc-chicken-mcnuggets-meal-med',
+		);
+
+		$normalized_path = trim( $path, '/' );
+
+		if ( isset( $legacy_item_paths[ $normalized_path ] ) ) {
+			return $legacy_item_paths[ $normalized_path ];
 		}
 
 		return $path;

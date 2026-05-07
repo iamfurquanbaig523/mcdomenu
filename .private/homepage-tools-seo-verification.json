@@ -1,0 +1,41 @@
+{
+  "homepageUi": {
+    "headerMenuTexts": [
+      "Home",
+      "What’s New",
+      "Menu",
+      "Interactive Tools",
+      "Deals",
+      "Breakfast",
+      "Guides",
+      "Blogs"
+    ],
+    "hasInteractiveToolsMenuItem": true,
+    "toolTabWidths": [
+      334,
+      334,
+      334
+    ],
+    "toolTabWidthDelta": 0,
+    "tabsEqualWidth": true,
+    "collapsedAfterClose": true
+  },
+  "mobile": {
+    "overflowDetected": false
+  },
+  "seo": {
+    "homepageStatus": 200,
+    "menuHubStatus": 200,
+    "sitemapStatus": 200,
+    "robotsStatus": 200,
+    "homepageTitle": "McDonald&#039;s Menu Prices USA 2026 | Full Price List &amp; Calories",
+    "homepageMetaDescriptionLength": 151,
+    "homepageCanonical": "http://localhost/wordpress/",
+    "homepageHasJsonLd": true,
+    "menuHubHasCanonical": true,
+    "sitemapHasSamplePage": false,
+    "sitemapHasDash2Duplicate": false,
+    "robotsHasSitemap": true,
+    "blogRobotsMeta": "noindex, follow"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "checked_at": "2026-05-06",
+  "verdict": "ready_after_live_deploy",
+  "local_checks": {
+    "blog_public": true,
+    "pretty_permalinks": true,
+    "robots_txt_ok": true,
+    "sitemap_ok": true,
+    "sitemap_excludes_sample_blog_and_duplicates": true,
+    "menu_category_pages_under_400": 0,
+    "menu_item_pages_under_400": 0,
+    "managed_menu_shortcode_only_pages": 0,
+    "homepage_shortcode_removed": true,
+    "representative_pages_have_title_meta_canonical_robots_jsonld": true,
+    "known_duplicate_urls_redirect_or_noindex": true,
+    "blog_noindex": true,
+    "menu_hub_sample_internal_links_bad": 0
+  },
+  "note": "Live submission should happen only after copying the current theme changes and database content to the live domain."
+}

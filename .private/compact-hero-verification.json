@@ -1,0 +1,14 @@
+{
+  "desktop": {
+    "heroHeight": 1000,
+    "heroContentHeight": 724,
+    "hasHeroStats": false,
+    "heroBtnsTop": 743,
+    "toolStripTop": 804
+  },
+  "mobile": {
+    "heroHeight": 1395,
+    "hasHeroStats": false,
+    "overflowDetected": false
+  }
+}

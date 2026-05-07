@@ -1,0 +1,123 @@
+{
+  "generatedAt": "2026-05-06T00:34:49.977Z",
+  "pageMeta": [
+    {
+      "name": "home",
+      "path": "/",
+      "title": "McDonald's Menu Prices USA 2026 | Full Price List & Calories",
+      "metaDescription": "Complete McDonald's USA menu prices updated 06-05-2026. Find prices for burgers, breakfast, McCafe, drinks, McValue deals, McNuggets, Happy Meals.",
+      "metaDescriptionLength": 146,
+      "robots": "index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "editorialNoteVisible": false
+    },
+    {
+      "name": "menu_root",
+      "path": "/menu/",
+      "title": "McDonald's Full Menu USA | Prices, Calories & Deals",
+      "metaDescription": "Browse the full McDonald's USA menu by category. Compare prices, calories, deals, and links to breakfast, burgers, McCafe, drinks, desserts, and more.",
+      "metaDescriptionLength": 150,
+      "robots": "index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "editorialNoteVisible": true
+    },
+    {
+      "name": "category",
+      "path": "/menu/burgers-menu/",
+      "title": "Burgers Menu Prices USA | McDonald's Menu",
+      "metaDescription": "Explore Burgers prices, calories, and item links on McDonald's Menu Prices USA. Compare live options and open each item page from this category hub.",
+      "metaDescriptionLength": 148,
+      "robots": "index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "editorialNoteVisible": true
+    },
+    {
+      "name": "item",
+      "path": "/menu/burgers-menu/big-mac/",
+      "title": "Big Mac Price USA | Burgers Menu & Calories",
+      "metaDescription": "Big Mac price, calories, and Burgers menu context on McDonald's Menu Prices USA. Compare this item with related menu options before you order.",
+      "metaDescriptionLength": 142,
+      "robots": "index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "editorialNoteVisible": false
+    },
+    {
+      "name": "guide",
+      "path": "/breakfast-menu/",
+      "title": "McDonald’s Breakfast Menu Prices USA | McDonald's Menu Prices USA",
+      "metaDescription": "McDonald’s Breakfast Menu Prices USA is part of McDonald's Menu Prices USA, an independent guide covering menu prices, calories, deals, breakfast, drinks.",
+      "metaDescriptionLength": 154,
+      "robots": "index, follow, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+      "editorialNoteVisible": true
+    },
+    {
+      "name": "blog",
+      "path": "/blog/",
+      "title": "Blog | McDonald's Menu Prices USA",
+      "metaDescription": "Blog is part of McDonald's Menu Prices USA, an independent guide covering menu prices, calories, deals, breakfast, drinks, desserts, and related pages.",
+      "metaDescriptionLength": 151,
+      "robots": "noindex, follow",
+      "editorialNoteVisible": false
+    }
+  ],
+  "homepageTrust": {
+    "methodologyLinkVisible": true,
+    "aboutVisible": true,
+    "contactVisible": true,
+    "disclosureVisible": true,
+    "disclaimerVisible": true
+  },
+  "menuRootInternalLinks": {
+    "count": 151,
+    "brokenCount": 0,
+    "redirectingCount": 0
+  },
+  "redirects": [
+    {
+      "path": "/sample-page/",
+      "status": 301,
+      "location": "http://localhost/wordpress/"
+    },
+    {
+      "path": "/mcdonalds-deals-mcvalue-guide-2/",
+      "status": 301,
+      "location": "http://localhost/wordpress/mcdonalds-deals-mcvalue-guide/"
+    },
+    {
+      "path": "/mcdonalds-nutrition-calories-allergens-2/",
+      "status": 301,
+      "location": "http://localhost/wordpress/mcdonalds-nutrition-calories-allergens/"
+    },
+    {
+      "path": "/mcdonalds-prices-by-state-2/",
+      "status": 301,
+      "location": "http://localhost/wordpress/mcdonalds-prices-by-state/"
+    },
+    {
+      "path": "/menu/beverages-drinks/mango-pineapple-smoothie-large-2/",
+      "status": 301,
+      "location": "http://localhost/wordpress/menu/beverages-drinks/mango-pineapple-smoothie-large/"
+    },
+    {
+      "path": "/menu/mcvalue-menu/mcchicken/",
+      "status": 301,
+      "location": "http://localhost/wordpress/menu/chicken-fish/mcchicken/"
+    },
+    {
+      "path": "/menu/mccafe/premium-roast-coffee/",
+      "status": 301,
+      "location": "http://localhost/wordpress/menu/mccafe-coffees/premium-roast-coffee-any-size/"
+    },
+    {
+      "path": "/menu/sweets/oreo-mcflurry/",
+      "status": 301,
+      "location": "http://localhost/wordpress/menu/sweets-treats/oreo-mcflurry-regular/"
+    }
+  ],
+  "sitemapChecks": {
+    "status": 200,
+    "hasSamplePage": false,
+    "hasBlog": false,
+    "hasDealsGuide2": false,
+    "hasNutritionGuide2": false,
+    "hasStateGuide2": false,
+    "hasSmoothie2": false,
+    "hasCanonicalSmoothie": true
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "desktop": {
+    "collapsedByDefault": true,
+    "defaultVisiblePanels": 0,
+    "collapsedHeight": 617,
+    "budgetVisibleAfterOpen": true,
+    "expandedAfterOpen": true,
+    "collapsedAfterClose": true,
+    "visiblePanelsAfterClose": 0,
+    "compareVisibleAfterShortcut": true,
+    "heroInteractiveButtonVisible": true
+  },
+  "mobile": {
+    "overflowDetected": false,
+    "budgetVisibleAfterOpen": true,
+    "expandedAfterOpen": true,
+    "collapsedAfterClose": true
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "summary": {
+    "uniqueInternalLinks": 289,
+    "badCount": 15
+  },
+  "bad": [
+    {
+      "url": "http://localhost/wordpress/menu/whats-new/the-big-arch/",
+      "status": 404,
+      "from": [
+        "http://localhost/wordpress/menu/",
+        "http://localhost/wordpress/menu/"
+      ]
+    },
+    {
+      "url": "http://localhost/wordpress/menu/mcnuggets-strips/mccrispy-strips/",
+      "status": 404,
+      "from": [
+        "http://localhost/wordpress/menu/"
+      ]
+    },
+    {
+      "url": "http://localhost/wordpress/menu/mccafe-coffees/premium-roast-coffee/",
+      "status": 404,
+      "from": [
+        "http://localhost/wordpress/menu/"
+      ]
+    },
+    {
+      "url": "http://localhost/wordpress/menu/mcvalue-menu/the-mcdouble-meal-deal/",
+      "status": 404,
+      "from": [
+        "http://localhost/wordpress/menu/"
+      ]
+    },
+    {
+      "url": "http://localhost/wordpress/menu/sweets-treats/chocolate-chip-cookie/",
+      "status": 404,
+      "from": [
+        "http://localhost/wordpress/menu/"
+      ]
+    },
+    {
+      "url": "http://localhost/wordpress/menu/sweets-treats/oreo-mcflurry/",
+      "status": 404,
+      "from": [
+        "http://localhost/wordpress/menu/"
+      ]
+    },
+    {
+      "url": "http://localhost/wordpress/menu/sweets-treats/mms-mcflurry/",
+      "status": 404,
+      "from": [
+        "http://localhost/wordpress/menu/"
+      ]
+    },
+    {
+      "url": "http://localhost/wordpress/menu/happy-meal/hamburger-happy-meal/",
+      "status": 404,
+      "from": [
+        "http://localhost/wordpress/menu/"
+      ]
+    },
+    {
+      "url": "http://localhost/wordpress/menu/happy-meal/4-pc-mcnuggets-happy-meal/",
+      "status": 404,
+      "from": [
+        "http://localhost/wordpress/menu/"
+      ]
+    },
+    {
+      "url": "http://localhost/wordpress/menu/happy-meal/6-pc-mcnuggets-happy-meal/",
+      "status": 404,
+      "from": [
+        "http://localhost/wordpress/menu/"
+      ]
+    },
+    {
+      "url": "http://localhost/wordpress/menu/sauces-condiments/hunter-sauce/",
+      "status": 404,
+      "from": [
+        "http://localhost/wordpress/menu/"
+      ]
+    },
+    {
+      "url": "http://localhost/wordpress/menu/sauces-condiments/demon-sauce/",
+      "status": 404,
+      "from": [
+        "http://localhost/wordpress/menu/"
+      ]
+    },
+    {
+      "url": "http://localhost/wordpress/menu/extra-value-meals/10-pc-chicken-mcnuggets-meal/",
+      "status": 404,
+      "from": [
+        "http://localhost/wordpress/menu/"
+      ]
+    },
+    {
+      "url": "http://localhost/wordpress/menu/whats-new/ramyeon-mcshaker-fries/",
+      "status": 404,
+      "from": [
+        "http://localhost/wordpress/menu/"
+      ]
+    },
+    {
+      "url": "http://localhost/wordpress/menu/whats-new/the-saja-boys-breakfast-meal/",
+      "status": 404,
+      "from": [
+        "http://localhost/wordpress/menu/"
+      ]
+    }
+  ]
+}

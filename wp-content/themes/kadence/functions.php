@@ -92,9 +92,26 @@ function kadence_mcprices_replace_dynamic_dates( $text ) {
  */
 function kadence_mcprices_get_dynamic_meta_title() {
 	$current_year = kadence_mcprices_get_current_site_year();
+	$queried_object = get_queried_object();
 
 	if ( is_front_page() && ! is_home() ) {
 		return "McDonald's Menu Prices USA {$current_year} | Full Price List & Calories";
+	}
+
+	if ( $queried_object instanceof \WP_Post ) {
+		$rank_math_title = trim( (string) get_post_meta( (int) $queried_object->ID, 'rank_math_title', true ) );
+
+		if ( '' !== $rank_math_title ) {
+			return kadence_mcprices_replace_dynamic_dates( trim( preg_replace( '/\s+/u', ' ', wp_strip_all_tags( $rank_math_title ) ) ) );
+		}
+	}
+
+	if ( $queried_object instanceof \WP_Term ) {
+		$rank_math_title = trim( (string) get_term_meta( (int) $queried_object->term_id, 'rank_math_title', true ) );
+
+		if ( '' !== $rank_math_title ) {
+			return kadence_mcprices_replace_dynamic_dates( trim( preg_replace( '/\s+/u', ' ', wp_strip_all_tags( $rank_math_title ) ) ) );
+		}
 	}
 
 	if ( is_singular( 'post' ) ) {

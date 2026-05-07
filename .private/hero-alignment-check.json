@@ -1,0 +1,36 @@
+{
+  "top": [
+    {
+      "text": "View Full Menu",
+      "width": 216,
+      "left": 64
+    },
+    {
+      "text": "Value Deals",
+      "width": 216,
+      "left": 292
+    },
+    {
+      "text": "Interactive Tools",
+      "width": 216,
+      "left": 520
+    }
+  ],
+  "bottom": [
+    {
+      "text": "Budget Finder",
+      "width": 216,
+      "left": 64
+    },
+    {
+      "text": "Calorie Builder",
+      "width": 216,
+      "left": 292
+    },
+    {
+      "text": "Compare Items",
+      "width": 216,
+      "left": 520
+    }
+  ]
+}

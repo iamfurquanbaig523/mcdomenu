@@ -1,0 +1,13 @@
+{
+  "desktop": {
+    "activeMenuTab": "Breakfast",
+    "visibleMenuSections": 1,
+    "categoryGridColumns": "220.797px 220.797px 220.797px 220.797px 220.812px",
+    "fullMenuBackground": "rgba(255, 255, 255, 0.9)"
+  },
+  "mobile": {
+    "overflowDetected": false,
+    "categoryGridColumns": "342px",
+    "activeMenuTab": "Breakfast"
+  }
+}

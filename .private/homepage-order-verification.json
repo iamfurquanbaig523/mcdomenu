@@ -1,0 +1,14 @@
+{
+  "desktop": {
+    "heroTop": 0,
+    "fullMenuTop": 1646,
+    "categoriesTop": 15434,
+    "whatsNewTop": 16873,
+    "interactiveToolsTop": 17996
+  },
+  "mobile": {
+    "overflowDetected": false,
+    "fullMenuTop": 1466.5,
+    "categoriesTop": 22585.34375
+  }
+}

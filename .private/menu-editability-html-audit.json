@@ -1,0 +1,37 @@
+[
+    {
+        "url":  "http://localhost/wordpress/menu/",
+        "hasShortcodeText":  false,
+        "hasGuideCallout":  false,
+        "hasDirectoryCards":  true,
+        "hasOrderingContext":  true
+    },
+    {
+        "url":  "http://localhost/wordpress/menu/extra-value-meals/",
+        "hasShortcodeText":  false,
+        "hasGuideCallout":  true,
+        "hasDirectoryCards":  true,
+        "hasOrderingContext":  true
+    },
+    {
+        "url":  "http://localhost/wordpress/menu/extra-value-meals/mccrispy-meal/",
+        "hasShortcodeText":  false,
+        "hasGuideCallout":  true,
+        "hasDirectoryCards":  true,
+        "hasOrderingContext":  true
+    },
+    {
+        "url":  "http://localhost/wordpress/menu/breakfast-menu/",
+        "hasShortcodeText":  false,
+        "hasGuideCallout":  true,
+        "hasDirectoryCards":  true,
+        "hasOrderingContext":  true
+    },
+    {
+        "url":  "http://localhost/wordpress/menu/breakfast-menu/bacon-egg-cheese-biscuit/",
+        "hasShortcodeText":  false,
+        "hasGuideCallout":  true,
+        "hasDirectoryCards":  true,
+        "hasOrderingContext":  true
+    }
+]

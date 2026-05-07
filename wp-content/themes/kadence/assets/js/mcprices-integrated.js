@@ -2,18 +2,9 @@
   function initMcPricesInteractions() {
     var root = document.querySelector(".mcprices-page");
     var pageBody = document.body;
-
-    if (!root) {
-      return;
-    }
-
-    var tabs = Array.prototype.slice.call(
-      root.querySelectorAll(".menu-tab[data-menu-filter]")
-    );
-    var menuSections = Array.prototype.slice.call(
-      root.querySelectorAll(".menu-section[data-menu-category]")
-    );
-    var whatsNewSection = root.querySelector(".whats-new[data-menu-category]");
+    var tabs;
+    var menuSections;
+    var whatsNewSection;
     var searchForms = Array.prototype.slice.call(
       document.querySelectorAll("[data-mcprices-search]")
     );
@@ -50,6 +41,719 @@
     var mediaItems = mediaManifest.items || {};
     var mediaCategories = mediaManifest.categories || {};
     var mediaBaseUrl = window.mcpricesMediaBaseUrl || "";
+    var toolCatalog = Array.isArray(window.mcpricesToolCatalog)
+      ? window.mcpricesToolCatalog.slice()
+      : [];
+
+    function formatCurrency(value) {
+      var numericValue = Number(value || 0);
+
+      return "$" + numericValue.toFixed(2);
+    }
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function getToolValueScore(item) {
+      if (!item || !item.price) {
+        return 0;
+      }
+
+      return Math.round((Number(item.calories || 0) / Number(item.price)) * 10) / 10;
+    }
+
+    function getToolCatalogItem(itemId) {
+      for (var index = 0; index < toolCatalog.length; index += 1) {
+        if (toolCatalog[index].id === itemId) {
+          return toolCatalog[index];
+        }
+      }
+
+      return null;
+    }
+
+    function isBudgetMealCandidate(item) {
+      var allowedCategories = {
+        "whats-new": true,
+        meals: true,
+        mcvalue: true,
+        breakfast: true,
+        burgers: true,
+        chickenfish: true,
+        nuggets: true,
+        happymeal: true,
+        snackwrap: true,
+      };
+
+      return (
+        !!item &&
+        !!allowedCategories[item.categoryId] &&
+        Number(item.calories || 0) >= 250
+      );
+    }
+
+    function getToolCategories(items) {
+      var seen = {};
+      var categories = [];
+
+      (items || []).forEach(function (item) {
+        if (!item || !item.categoryId || seen[item.categoryId]) {
+          return;
+        }
+
+        seen[item.categoryId] = true;
+        categories.push({
+          id: item.categoryId,
+          label: item.category || item.categoryId,
+        });
+      });
+
+      categories.sort(function (left, right) {
+        return left.label.localeCompare(right.label);
+      });
+
+      return categories;
+    }
+
+    function renderToolEmpty(message) {
+      return (
+        '<div class="mcprices-tool-empty">' + escapeHtml(message || "") + "</div>"
+      );
+    }
+
+    function buildToolOptionMarkup(selectedValue) {
+      var grouped = {};
+      var categories = getToolCategories(toolCatalog);
+      var markup = '<option value="">Select an item</option>';
+
+      toolCatalog.forEach(function (item) {
+        if (!grouped[item.categoryId]) {
+          grouped[item.categoryId] = [];
+        }
+
+        grouped[item.categoryId].push(item);
+      });
+
+      categories.forEach(function (category) {
+        var items = grouped[category.id] || [];
+
+        items.sort(function (left, right) {
+          return left.name.localeCompare(right.name);
+        });
+
+        markup += '<optgroup label="' + escapeHtml(category.label) + '">';
+        items.forEach(function (item) {
+          markup +=
+            '<option value="' +
+            escapeHtml(item.id) +
+            '"' +
+            (selectedValue === item.id ? ' selected="selected"' : "") +
+            ">" +
+            escapeHtml(item.name) +
+            "</option>";
+        });
+        markup += "</optgroup>";
+      });
+
+      return markup;
+    }
+
+    function initBudgetFinder(toolRoot) {
+      var buttons = Array.prototype.slice.call(
+        toolRoot.querySelectorAll("[data-budget-option]")
+      );
+      var feedbackNode = toolRoot.querySelector("[data-budget-feedback]");
+      var resultsNode = toolRoot.querySelector("[data-budget-results]");
+
+      function renderBudget(maxBudget) {
+        var filtered = toolCatalog
+          .filter(function (item) {
+            return isBudgetMealCandidate(item) && Number(item.price || 0) <= maxBudget;
+          })
+          .sort(function (left, right) {
+            var scoreDifference = getToolValueScore(right) - getToolValueScore(left);
+
+            if (scoreDifference !== 0) {
+              return scoreDifference;
+            }
+
+            if (left.price !== right.price) {
+              return left.price - right.price;
+            }
+
+            return right.calories - left.calories;
+          })
+          .slice(0, 8);
+
+        buttons.forEach(function (button) {
+          var isActive = Number(button.getAttribute("data-budget-option")) === maxBudget;
+          button.classList.toggle("is-active", isActive);
+          button.setAttribute("aria-pressed", isActive ? "true" : "false");
+        });
+
+        if (!filtered.length) {
+          feedbackNode.textContent = "No tracked items fit that spend cap right now.";
+          resultsNode.innerHTML = renderToolEmpty(
+            "No current tracked menu items were found under that spend target."
+          );
+          return;
+        }
+
+        feedbackNode.textContent =
+          "Showing " +
+          filtered.length +
+          " current picks under $" +
+          maxBudget +
+          " ranked by calories-per-dollar value.";
+
+        resultsNode.innerHTML = filtered
+          .map(function (item) {
+            return (
+              '<article class="mcprices-budget-card">' +
+              '<div class="mcprices-budget-card__top">' +
+              "<div>" +
+              '<h3 class="mcprices-budget-card__name">' +
+              escapeHtml(item.name) +
+              "</h3>" +
+              '<p class="mcprices-budget-card__category">' +
+              escapeHtml(item.category) +
+              "</p>" +
+              "</div>" +
+              '<div class="mcprices-budget-card__price">' +
+              formatCurrency(item.price) +
+              "</div>" +
+              "</div>" +
+              '<div class="mcprices-budget-card__meta">' +
+              '<div class="mcprices-budget-card__meta-item"><span class="mcprices-budget-card__meta-label">Calories</span><span class="mcprices-budget-card__meta-value">' +
+              escapeHtml(item.calories) +
+              " kcal</span></div>" +
+              '<div class="mcprices-budget-card__meta-item"><span class="mcprices-budget-card__meta-label">Value score</span><span class="mcprices-budget-card__meta-value">' +
+              escapeHtml(getToolValueScore(item)) +
+              " cal/$</span></div>" +
+              "</div>" +
+              '<div class="mcprices-budget-card__actions"><a class="mcprices-tool-link" href="' +
+              escapeHtml(item.url) +
+              '">View item</a></div>' +
+              "</article>"
+            );
+          })
+          .join("");
+      }
+
+      buttons.forEach(function (button) {
+        button.addEventListener("click", function () {
+          renderBudget(Number(button.getAttribute("data-budget-option") || 0));
+        });
+      });
+
+      renderBudget(8);
+    }
+
+    function initCalorieCalculator(toolRoot) {
+      var searchInput = toolRoot.querySelector("[data-calorie-search]");
+      var filtersNode = toolRoot.querySelector("[data-calorie-filters]");
+      var listNode = toolRoot.querySelector("[data-calorie-list]");
+      var totalCaloriesNode = toolRoot.querySelector("[data-calorie-total]");
+      var totalPriceNode = toolRoot.querySelector("[data-price-total]");
+      var totalItemsNode = toolRoot.querySelector("[data-item-total]");
+      var selectionNode = toolRoot.querySelector("[data-calorie-selection]");
+      var clearButton = toolRoot.querySelector("[data-calorie-clear]");
+      var selectedIds = {};
+      var activeCategory = "all";
+
+      function getFilteredItems() {
+        var searchTerm = (searchInput.value || "").toLowerCase().trim();
+
+        return toolCatalog.filter(function (item) {
+          var matchesCategory =
+            activeCategory === "all" || item.categoryId === activeCategory;
+          var matchesSearch =
+            !searchTerm ||
+            item.name.toLowerCase().indexOf(searchTerm) !== -1 ||
+            item.category.toLowerCase().indexOf(searchTerm) !== -1 ||
+            String(item.subLabel || "").toLowerCase().indexOf(searchTerm) !== -1;
+
+          return matchesCategory && matchesSearch;
+        });
+      }
+
+      function getSelectedItems() {
+        return toolCatalog.filter(function (item) {
+          return !!selectedIds[item.id];
+        });
+      }
+
+      function renderFilters() {
+        var categories = getToolCategories(toolCatalog);
+        var markup =
+          '<button class="mcprices-tool-pill' +
+          (activeCategory === "all" ? " is-active" : "") +
+          '" type="button" data-calorie-filter="all">All categories</button>';
+
+        categories.forEach(function (category) {
+          markup +=
+            '<button class="mcprices-tool-pill' +
+            (activeCategory === category.id ? " is-active" : "") +
+            '" type="button" data-calorie-filter="' +
+            escapeHtml(category.id) +
+            '">' +
+            escapeHtml(category.label) +
+            "</button>";
+        });
+
+        filtersNode.innerHTML = markup;
+      }
+
+      function renderSummary() {
+        var items = getSelectedItems();
+        var totalCalories = 0;
+        var totalPrice = 0;
+
+        items.forEach(function (item) {
+          totalCalories += Number(item.calories || 0);
+          totalPrice += Number(item.price || 0);
+        });
+
+        totalCaloriesNode.innerHTML = totalCalories + " <span>kcal</span>";
+        totalPriceNode.textContent = formatCurrency(totalPrice);
+        totalItemsNode.textContent = String(items.length);
+
+        if (!items.length) {
+          selectionNode.innerHTML = renderToolEmpty(
+            "No items selected yet. Add items from the list to build your meal."
+          );
+          return;
+        }
+
+        selectionNode.innerHTML = items
+          .map(function (item) {
+            return (
+              '<div class="mcprices-calculator-selection__item"><span>' +
+              escapeHtml(item.name) +
+              "</span><strong>" +
+              escapeHtml(item.calories) +
+              " kcal</strong></div>"
+            );
+          })
+          .join("");
+      }
+
+      function renderList() {
+        var items = getFilteredItems();
+
+        if (!items.length) {
+          listNode.innerHTML = renderToolEmpty(
+            "No tracked items match that category and search filter."
+          );
+          return;
+        }
+
+        listNode.innerHTML = items
+          .map(function (item) {
+            var isSelected = !!selectedIds[item.id];
+
+            return (
+              '<div class="mcprices-calculator-row' +
+              (isSelected ? " is-selected" : "") +
+              '" data-calorie-row="' +
+              escapeHtml(item.id) +
+              '">' +
+              '<input class="mcprices-calculator-row__check" type="checkbox"' +
+              (isSelected ? ' checked="checked"' : "") +
+              ' tabindex="-1" aria-hidden="true">' +
+              '<div class="mcprices-calculator-row__main"><p class="mcprices-calculator-row__name">' +
+              escapeHtml(item.name) +
+              '</p><p class="mcprices-calculator-row__meta">' +
+              escapeHtml(item.category) +
+              "</p></div>" +
+              '<div class="mcprices-calculator-row__side"><span class="mcprices-calculator-row__price">' +
+              formatCurrency(item.price) +
+              '</span><span class="mcprices-calculator-row__calories">' +
+              escapeHtml(item.calories) +
+              " kcal</span></div>" +
+              "</div>"
+            );
+          })
+          .join("");
+      }
+
+      filtersNode.addEventListener("click", function (event) {
+        var button = event.target.closest("[data-calorie-filter]");
+
+        if (!button) {
+          return;
+        }
+
+        activeCategory = button.getAttribute("data-calorie-filter") || "all";
+        renderFilters();
+        renderList();
+      });
+
+      listNode.addEventListener("click", function (event) {
+        var row = event.target.closest("[data-calorie-row]");
+        var itemId;
+
+        if (!row) {
+          return;
+        }
+
+        itemId = row.getAttribute("data-calorie-row");
+
+        if (!itemId) {
+          return;
+        }
+
+        if (selectedIds[itemId]) {
+          delete selectedIds[itemId];
+        } else {
+          selectedIds[itemId] = true;
+        }
+
+        renderList();
+        renderSummary();
+      });
+
+      searchInput.addEventListener("input", renderList);
+      clearButton.addEventListener("click", function () {
+        selectedIds = {};
+        renderList();
+        renderSummary();
+      });
+
+      renderFilters();
+      renderList();
+      renderSummary();
+    }
+
+    function initCompareItems(toolRoot) {
+      var selects = Array.prototype.slice.call(
+        toolRoot.querySelectorAll("[data-compare-select]")
+      );
+      var compareButton = toolRoot.querySelector("[data-compare-run]");
+      var feedbackNode = toolRoot.querySelector("[data-compare-feedback]");
+      var gridNode = toolRoot.querySelector("[data-compare-grid]");
+      var defaultNames = [
+        "Big Mac",
+        "Quarter Pounder with Cheese",
+        "McChicken",
+        "Egg McMuffin",
+      ];
+
+      function setDefaultSelections() {
+        selects.forEach(function (selectNode, index) {
+          var matchingItem = null;
+          var catalogIndex;
+
+          selectNode.innerHTML = buildToolOptionMarkup("");
+
+          for (catalogIndex = 0; catalogIndex < toolCatalog.length; catalogIndex += 1) {
+            if (toolCatalog[catalogIndex].name === defaultNames[index]) {
+              matchingItem = toolCatalog[catalogIndex];
+              break;
+            }
+          }
+
+          if (matchingItem) {
+            selectNode.value = matchingItem.id;
+          }
+        });
+      }
+
+      function renderCompare() {
+        var pickedIds = [];
+        var items;
+        var lowestPrice;
+        var lowestCalories;
+        var strongestValue;
+
+        selects.forEach(function (selectNode) {
+          var value = selectNode.value;
+
+          if (value && pickedIds.indexOf(value) === -1) {
+            pickedIds.push(value);
+          }
+        });
+
+        items = pickedIds
+          .map(function (itemId) {
+            return getToolCatalogItem(itemId);
+          })
+          .filter(Boolean);
+
+        if (items.length < 2) {
+          feedbackNode.textContent =
+            "Select at least two items to see a meaningful comparison.";
+          gridNode.innerHTML = renderToolEmpty(
+            "Choose two to four tracked menu items to compare price, calories, and value."
+          );
+          return;
+        }
+
+        lowestPrice = Math.min.apply(
+          null,
+          items.map(function (item) {
+            return Number(item.price || 0);
+          })
+        );
+        lowestCalories = Math.min.apply(
+          null,
+          items.map(function (item) {
+            return Number(item.calories || 0);
+          })
+        );
+        strongestValue = Math.max.apply(
+          null,
+          items.map(function (item) {
+            return getToolValueScore(item);
+          })
+        );
+
+        feedbackNode.textContent =
+          "Comparing " + items.length + " current menu items side by side.";
+
+        gridNode.innerHTML = items
+          .map(function (item) {
+            var badges = [];
+
+            if (Number(item.price || 0) === lowestPrice) {
+              badges.push('<span class="mcprices-tool-badge">Lowest price</span>');
+            }
+
+            if (Number(item.calories || 0) === lowestCalories) {
+              badges.push('<span class="mcprices-tool-badge">Lowest calories</span>');
+            }
+
+            if (getToolValueScore(item) === strongestValue) {
+              badges.push('<span class="mcprices-tool-badge">Best value score</span>');
+            }
+
+            return (
+              '<article class="mcprices-compare-card">' +
+              '<div class="mcprices-compare-card__head">' +
+              "<div>" +
+              '<h3 class="mcprices-compare-card__title">' +
+              escapeHtml(item.name) +
+              "</h3>" +
+              '<p class="mcprices-compare-card__category">' +
+              escapeHtml(item.category) +
+              "</p>" +
+              "</div>" +
+              "</div>" +
+              '<div class="mcprices-compare-card__stats">' +
+              '<div class="mcprices-compare-card__stat"><span class="mcprices-compare-card__label">Price</span><span class="mcprices-compare-card__value mcprices-compare-card__value--price">' +
+              formatCurrency(item.price) +
+              '</span></div>' +
+              '<div class="mcprices-compare-card__stat"><span class="mcprices-compare-card__label">Calories</span><span class="mcprices-compare-card__value">' +
+              escapeHtml(item.calories) +
+              ' kcal</span></div>' +
+              '<div class="mcprices-compare-card__stat"><span class="mcprices-compare-card__label">Value score</span><span class="mcprices-compare-card__value">' +
+              escapeHtml(getToolValueScore(item)) +
+              ' cal/$</span></div>' +
+              '<div class="mcprices-compare-card__stat"><span class="mcprices-compare-card__label">Category</span><span class="mcprices-compare-card__value">' +
+              escapeHtml(item.category) +
+              "</span></div>" +
+              "</div>" +
+              '<div class="mcprices-tool-badge-row">' +
+              badges.join("") +
+              "</div>" +
+              '<div class="mcprices-compare-card__actions"><a class="mcprices-tool-link" href="' +
+              escapeHtml(item.url) +
+              '">View item</a></div>' +
+              "</article>"
+            );
+          })
+          .join("");
+      }
+
+      compareButton.addEventListener("click", renderCompare);
+      selects.forEach(function (selectNode) {
+        selectNode.addEventListener("change", renderCompare);
+      });
+
+      setDefaultSelections();
+      renderCompare();
+    }
+
+    function initInteractiveTools() {
+      var toolRoots = Array.prototype.slice.call(
+        document.querySelectorAll("[data-mcprices-tool-root]")
+      );
+
+      if (!toolRoots.length || !toolCatalog.length) {
+        return;
+      }
+
+      toolRoots.forEach(function (toolRoot) {
+        var toolType = toolRoot.getAttribute("data-mcprices-tool-root");
+
+        if ("budget-finder" === toolType) {
+          initBudgetFinder(toolRoot);
+        } else if ("calorie-calculator" === toolType) {
+          initCalorieCalculator(toolRoot);
+        } else if ("compare-items" === toolType) {
+          initCompareItems(toolRoot);
+        }
+      });
+    }
+
+    function initHomeToolPanels() {
+      var homeToolsRoot = document.querySelector("[data-home-tool-stage]");
+      var panels;
+      var activators;
+      var statefulTabs;
+      var closeButton;
+      var defaultTool;
+      var isOpen;
+
+      if (!homeToolsRoot) {
+        return;
+      }
+
+      panels = Array.prototype.slice.call(
+        homeToolsRoot.querySelectorAll("[data-home-tool-panel]")
+      );
+      activators = Array.prototype.slice.call(
+        document.querySelectorAll("[data-home-tool-trigger]")
+      );
+      statefulTabs = Array.prototype.slice.call(
+        document.querySelectorAll("[data-home-tool-tab]")
+      );
+      closeButton = homeToolsRoot.querySelector("[data-home-tool-close]");
+      defaultTool =
+        homeToolsRoot.getAttribute("data-home-tool-default") ||
+        (panels[0] && panels[0].getAttribute("data-home-tool-panel")) ||
+        "";
+      isOpen = homeToolsRoot.getAttribute("data-home-tool-open") === "1";
+
+      if (!panels.length || !activators.length || !defaultTool) {
+        return;
+      }
+
+      function syncCollapsedState() {
+        homeToolsRoot.classList.toggle("is-collapsed", !isOpen);
+        homeToolsRoot.setAttribute("data-home-tool-open", isOpen ? "1" : "0");
+      }
+
+      function closeToolPanels() {
+        isOpen = false;
+        panels.forEach(function (panelNode) {
+          panelNode.classList.remove("is-active");
+          panelNode.hidden = true;
+        });
+
+        statefulTabs.forEach(function (tabNode) {
+          tabNode.classList.remove("is-active");
+
+          if ("BUTTON" === tabNode.tagName) {
+            tabNode.setAttribute("aria-pressed", "false");
+          } else {
+            tabNode.removeAttribute("aria-current");
+          }
+        });
+
+        syncCollapsedState();
+      }
+
+      function activateTool(toolSlug, shouldScroll) {
+        var targetSlug = toolSlug || defaultTool;
+        var hasTargetPanel = panels.some(function (panelNode) {
+          return panelNode.getAttribute("data-home-tool-panel") === targetSlug;
+        });
+        var currentPanel = panels.find(function (panelNode) {
+          return panelNode.classList.contains("is-active");
+        });
+        var currentSlug = currentPanel
+          ? currentPanel.getAttribute("data-home-tool-panel")
+          : "";
+
+        if (!hasTargetPanel) {
+          targetSlug = defaultTool;
+        }
+
+        if (isOpen && currentSlug === targetSlug) {
+          closeToolPanels();
+
+          if (shouldScroll) {
+            scrollToNode(homeToolsRoot);
+          }
+
+          return;
+        }
+
+        isOpen = true;
+        syncCollapsedState();
+
+        panels.forEach(function (panelNode) {
+          var isActive =
+            panelNode.getAttribute("data-home-tool-panel") === targetSlug;
+
+          panelNode.classList.toggle("is-active", isActive);
+          panelNode.hidden = !isActive;
+        });
+
+        statefulTabs.forEach(function (tabNode) {
+          var isActive = tabNode.getAttribute("data-home-tool-tab") === targetSlug;
+
+          tabNode.classList.toggle("is-active", isActive);
+
+          if ("BUTTON" === tabNode.tagName) {
+            tabNode.setAttribute("aria-pressed", isActive ? "true" : "false");
+          } else if (isActive) {
+            tabNode.setAttribute("aria-current", "true");
+          } else {
+            tabNode.removeAttribute("aria-current");
+          }
+        });
+
+        if (shouldScroll) {
+          scrollToNode(homeToolsRoot);
+        }
+      }
+
+      activators.forEach(function (triggerNode) {
+        triggerNode.addEventListener("click", function (event) {
+          var targetSlug = triggerNode.getAttribute("data-home-tool-trigger");
+          var shouldScroll = triggerNode.hasAttribute("data-home-tool-scroll");
+
+          if ("A" === triggerNode.tagName) {
+            event.preventDefault();
+          }
+
+          activateTool(targetSlug, shouldScroll);
+        });
+      });
+
+      if (closeButton) {
+        closeButton.addEventListener("click", function () {
+          closeToolPanels();
+        });
+      }
+
+      if (isOpen) {
+        activateTool(defaultTool, false);
+      } else {
+        closeToolPanels();
+      }
+    }
+
+    initInteractiveTools();
+    initHomeToolPanels();
+
+    if (!root) {
+      return;
+    }
+
+    tabs = Array.prototype.slice.call(root.querySelectorAll(".menu-tab[data-menu-filter]"));
+    menuSections = Array.prototype.slice.call(
+      root.querySelectorAll(".menu-section[data-menu-category]")
+    );
+    whatsNewSection = root.querySelector(".whats-new[data-menu-category]");
 
     function getSearchInput(form) {
       if (!form) {
@@ -640,6 +1344,7 @@
       var hash = window.location.hash.replace(/^#/, "");
 
       if (!hash) {
+        activateFilter("breakfast", { scroll: false });
         return;
       }
 

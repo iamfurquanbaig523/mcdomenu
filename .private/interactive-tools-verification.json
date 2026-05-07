@@ -1,0 +1,56 @@
+{
+  "desktop": {
+    "home": {
+      "toolsSectionPresent": true,
+      "cardCount": 3,
+      "cards": [
+        {
+          "title": "Budget Meal Finder",
+          "href": "http://localhost/wordpress/budget-finder/"
+        },
+        {
+          "title": "Meal Calorie Builder",
+          "href": "http://localhost/wordpress/calorie-calculator/"
+        },
+        {
+          "title": "Compare Menu Items",
+          "href": "http://localhost/wordpress/compare-items/"
+        }
+      ]
+    },
+    "budgetBefore": {
+      "count": 8,
+      "feedback": "Showing 8 current picks under $8 ranked by calories-per-dollar value."
+    },
+    "budgetAfter": {
+      "count": 8,
+      "feedback": "Showing 8 current picks under $5 ranked by calories-per-dollar value.",
+      "firstHref": "http://localhost/wordpress/menu/mcvalue-menu/the-mcdouble-meal-deal-mcdouble-4-pc-nuggets-sm-fries-sm-drink/"
+    },
+    "calorie": {
+      "selectedCount": "2",
+      "totalCalories": "360 kcal",
+      "totalPrice": "$5.38",
+      "visibleRows": 195
+    },
+    "compare": {
+      "cardCount": 4,
+      "feedback": "Comparing 4 current menu items side by side.",
+      "hasBadge": true
+    }
+  },
+  "mobile": {
+    "home": {
+      "cardCount": 3,
+      "uniqueColumnStarts": 1,
+      "noHorizontalOverflow": true
+    },
+    "calorie": {
+      "noHorizontalOverflow": true,
+      "summaryVisible": true,
+      "rowCount": 195
+    }
+  },
+  "consoleErrors": [],
+  "pageErrors": []
+}

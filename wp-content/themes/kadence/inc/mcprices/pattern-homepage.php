@@ -45,6 +45,36 @@ $get_item_media_url = static function ( $item_name ) use ( $mcprices_integration
 	return '';
 };
 
+$interactive_tools = array(
+	array(
+		'slug'        => 'budget-finder',
+		'icon'        => '&#128176;',
+		'title'       => 'Budget Meal Finder',
+		'short_title' => 'Budget Finder',
+		'desc'        => 'Find the best meal under $5, $8, or $10',
+		'url'         => $page_url( 'budget-finder' ),
+		'cta'         => 'Try it here',
+	),
+	array(
+		'slug'        => 'calorie-calculator',
+		'icon'        => '&#128290;',
+		'title'       => 'Meal Calorie Builder',
+		'short_title' => 'Calorie Builder',
+		'desc'        => 'Add items and track total calories + cost',
+		'url'         => $page_url( 'calorie-calculator' ),
+		'cta'         => 'Build a meal',
+	),
+	array(
+		'slug'        => 'compare-items',
+		'icon'        => '&#9878;',
+		'title'       => 'Compare Menu Items',
+		'short_title' => 'Compare Items',
+		'desc'        => 'Side-by-side price, calorie &amp; value comparison',
+		'url'         => $page_url( 'compare-items' ),
+		'cta'         => 'Compare here',
+	),
+);
+
 $menu_source_path = get_theme_file_path( 'assets/data/mcprices-usa-menu.json' );
 $menu_source_json = file_exists( $menu_source_path ) ? file_get_contents( $menu_source_path ) : false;
 $menu_source      = is_string( $menu_source_json ) ? json_decode( $menu_source_json, true ) : array();
@@ -457,6 +487,12 @@ foreach ( $menu_section_blueprints as $section_blueprint ) {
 	);
 }
 
+$menu_item_total = 0;
+
+foreach ( $menu_sections as $menu_section ) {
+	$menu_item_total += count( $menu_section['rows'] );
+}
+
 $deal_cards = array(
 	array(
 		'class' => 'deal-red',
@@ -597,7 +633,7 @@ $render_rows = static function ( array $rows, $category_id ) use ( $get_item_pag
 ob_start();
 ?>
 <!-- wp:group {"className":"mcprices-page mcprices-managed-homepage","layout":{"type":"default"}} -->
-<div class="wp-block-group mcprices-page mcprices-managed-homepage" data-mcprices-pattern-version="3.2.1">
+<div class="wp-block-group mcprices-page mcprices-managed-homepage" data-mcprices-pattern-version="3.3.0">
 <!-- wp:html -->
 <section class="hero">
 	<div class="hero-bg"></div>
@@ -611,28 +647,25 @@ ob_start();
 			</h1>
 			<p class="hero-sub">The most complete and up-to-date McDonald's USA price list. Compare current dollar prices, calories, combo meals, McValue savings, breakfast picks, McCafe drinks, sauces, desserts, and limited-time menu items in one place.</p>
 			<p class="hero-sub">Thousands of readers trust this page to compare accurate McDonald&rsquo;s menu prices, calories, and value deals before they order.</p>
-			[mcprices_hero_search]
+			<div class="mcprices-hero-search-placeholder" data-mcprices-hero-search-placeholder="1"></div>
 			<div class="hero-btns">
 				<a href="#full-menu" class="btn-primary">&#127828; View Full Menu</a>
 				<a href="#deals" class="btn-outline">&#127991;&#65039; Value Deals</a>
+				<a href="<?php echo esc_url( $page_url( 'budget-finder' ) ); ?>" class="btn-outline" data-home-tool-trigger="budget-finder" data-home-tool-scroll="1">&#128736;&#65039; Interactive Tools</a>
 			</div>
-			<div class="hero-stats">
-				<div class="stat-item">
-					<div class="stat-num">212+</div>
-					<div class="stat-label">Menu Items</div>
-				</div>
-				<div class="stat-item">
-					<div class="stat-num">15</div>
-					<div class="stat-label">Categories</div>
-				</div>
-				<div class="stat-item">
-					<div class="stat-num">April</div>
-					<div class="stat-label">Last Updated</div>
-				</div>
-				<div class="stat-item">
-					<div class="stat-num">13,500+</div>
-					<div class="stat-label">US Locations</div>
-				</div>
+			<div class="mcprices-hero-tool-strip" aria-label="Homepage interactive tools">
+				<?php foreach ( $interactive_tools as $index => $tool ) : ?>
+					<a
+						class="mcprices-hero-tool-strip__link<?php echo 0 === $index ? ' is-active' : ''; ?>"
+						href="<?php echo esc_url( $tool['url'] ); ?>"
+						data-home-tool-trigger="<?php echo esc_attr( $tool['slug'] ); ?>"
+						data-home-tool-tab="<?php echo esc_attr( $tool['slug'] ); ?>"
+						data-home-tool-scroll="1"
+					>
+						<span class="mcprices-hero-tool-strip__icon" aria-hidden="true"><?php echo $tool['icon']; ?></span>
+						<span><?php echo esc_html( $tool['short_title'] ); ?></span>
+					</a>
+				<?php endforeach; ?>
 			</div>
 		</div>
 		<div class="hero-right animate-fadeup delay-2">
@@ -665,6 +698,52 @@ ob_start();
 		</div>
 	</div>
 </div>
+
+<section class="full-menu" id="full-menu">
+	<div class="container">
+		<div class="section-header">
+			<div class="section-label">Every category, every price</div>
+			<h2 class="section-title">Complete McDonald's USA Menu <?php echo esc_html( $current_year ); ?></h2>
+			<p class="section-sub">McDonald's Menu Prices USA, all <?php echo esc_html( (string) $menu_item_total ); ?> current items across 15 categories in one place. From Big Mac and Quarter Pounder burgers to Egg McMuffin breakfasts, McCafe coffees, McFlurry desserts, Happy Meals, fries, sauces, and McValue deals, with prices and calorie counts updated for <?php echo esc_html( $current_year ); ?>.</p>
+			<p class="section-sub section-sub--links">Popular category links: <a href="<?php echo esc_url( $get_category_page_url( 'breakfast' ) ); ?>">Breakfast Menu</a>, <a href="<?php echo esc_url( $get_category_page_url( 'burgers' ) ); ?>">Burgers Menu</a>, <a href="<?php echo esc_url( $get_category_page_url( 'mccafe' ) ); ?>">McCafe Coffees</a>, <a href="<?php echo esc_url( $get_category_page_url( 'beverages' ) ); ?>">Beverages Menu</a>, <a href="<?php echo esc_url( $get_category_page_url( 'happymeal' ) ); ?>">Happy Meal</a>, <a href="<?php echo esc_url( $get_category_page_url( 'deals' ) ); ?>">Deals</a>, and <a href="<?php echo esc_url( $page_url( 'menu' ) ); ?>">the full menu hub</a>.</p>
+		</div>
+		<div class="size-key">
+			<strong>Format guide:</strong> Small-to-large price ranges are grouped where multiple sizes exist. All prices are shown in US dollars and can vary by location.
+		</div>
+		<div class="menu-tabs">
+			<button class="menu-tab" type="button" data-menu-filter="all" aria-pressed="false">&#9776; All</button>
+			<button class="menu-tab" type="button" data-menu-filter="whats-new" aria-pressed="false">&#127381; What's New</button>
+			<?php foreach ( $menu_sections as $section ) : ?>
+				<button class="menu-tab<?php echo 'breakfast' === $section['id'] ? ' active' : ''; ?>" type="button" data-menu-filter="<?php echo esc_attr( $section['id'] ); ?>" aria-pressed="<?php echo 'breakfast' === $section['id'] ? 'true' : 'false'; ?>"><?php echo $section['icon']; ?> <?php echo esc_html( wp_strip_all_tags( $section['title'] ) ); ?></button>
+			<?php endforeach; ?>
+		</div>
+		<?php foreach ( $menu_sections as $section ) : ?>
+			<div class="menu-section" id="<?php echo esc_attr( $section['id'] ); ?>" data-menu-category="<?php echo esc_attr( $section['id'] ); ?>">
+				<div class="menu-section-head">
+					<span class="menu-section-icon"><?php echo $section['icon']; ?></span>
+					<span class="menu-section-title"><?php echo $section['title']; ?></span>
+					<span class="menu-section-count"><?php echo esc_html( (string) count( $section['rows'] ) ); ?> items</span>
+				</div>
+				<p class="menu-section-desc"><?php echo esc_html( html_entity_decode( $section['description'], ENT_QUOTES, 'UTF-8' ) ); ?></p>
+				<div class="menu-table-wrap">
+					<table class="menu-table">
+						<thead>
+							<tr>
+								<th>Item</th>
+								<th>Price</th>
+								<th>Calories</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php $render_rows( $section['rows'], $section['id'] ); ?>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		<?php endforeach; ?>
+	</div>
+</section>
 
 <section class="categories">
 	<div class="container">
@@ -721,6 +800,64 @@ ob_start();
 	</div>
 </section>
 
+<section class="interactive-tools-home" id="interactive-tools">
+	<div class="container">
+		<div class="section-header center">
+			<div class="section-label">Quick Tools</div>
+			<h2 class="section-title">Interactive planning tools for price, calories, and value</h2>
+			<p class="section-sub">Open a tool only when you need it, use it on the homepage, then close it and keep browsing the live menu.</p>
+		</div>
+		<div class="mcprices-tool-hub-grid">
+			<?php foreach ( $interactive_tools as $index => $tool ) : ?>
+				<div class="mcprices-tool-hub-card">
+					<div class="mcprices-tool-hub-card__icon" aria-hidden="true"><?php echo $tool['icon']; ?></div>
+					<h3 class="mcprices-tool-hub-card__title"><?php echo esc_html( $tool['title'] ); ?></h3>
+					<p class="mcprices-tool-hub-card__desc"><?php echo wp_kses_post( $tool['desc'] ); ?></p>
+					<a
+						class="btn-card mcprices-tool-hub-card__button"
+						href="<?php echo esc_url( $tool['url'] ); ?>"
+						data-home-tool-trigger="<?php echo esc_attr( $tool['slug'] ); ?>"
+						data-home-tool-scroll="1"
+					><?php echo esc_html( $tool['cta'] ); ?></a>
+				</div>
+			<?php endforeach; ?>
+		</div>
+		<div class="mcprices-home-tool-stage is-collapsed" id="interactive-tools-panel" data-home-tool-stage data-home-tool-default="budget-finder" data-home-tool-open="0">
+			<div class="mcprices-home-tool-stage__header">
+				<div class="mcprices-home-tool-stage__tabs" role="tablist" aria-label="Choose an interactive tool">
+					<?php foreach ( $interactive_tools as $index => $tool ) : ?>
+						<button
+							class="mcprices-home-tool-stage__tab"
+							type="button"
+							data-home-tool-trigger="<?php echo esc_attr( $tool['slug'] ); ?>"
+							data-home-tool-tab="<?php echo esc_attr( $tool['slug'] ); ?>"
+							aria-pressed="false"
+						>
+							<span class="mcprices-home-tool-stage__tab-icon" aria-hidden="true"><?php echo $tool['icon']; ?></span>
+							<span><?php echo esc_html( $tool['title'] ); ?></span>
+						</button>
+					<?php endforeach; ?>
+				</div>
+				<button class="mcprices-home-tool-stage__close" type="button" data-home-tool-close aria-label="Close interactive tool">
+					<span aria-hidden="true">&times;</span>
+					<span>Close tool</span>
+				</button>
+			</div>
+			<div class="mcprices-home-tool-stage__panels">
+				<?php foreach ( $interactive_tools as $tool ) : ?>
+					<div
+						class="mcprices-home-tool-panel"
+						data-home-tool-panel="<?php echo esc_attr( $tool['slug'] ); ?>"
+						hidden
+					>
+						<div class="mcprices-tool-placeholder" data-mcprices-tool-placeholder="<?php echo esc_attr( $tool['slug'] ); ?>"></div>
+					</div>
+				<?php endforeach; ?>
+			</div>
+		</div>
+	</div>
+</section>
+
 <section class="featured-menu">
 	<div class="container">
 		<div class="section-header center">
@@ -753,51 +890,6 @@ ob_start();
 				</div>
 			<?php endforeach; ?>
 		</div>
-	</div>
-</section>
-
-<section class="full-menu" id="full-menu">
-	<div class="container">
-		<div class="section-header">
-			<div class="section-label">Every category, every price</div>
-			<h2 class="section-title">Complete McDonald's USA Menu <?php echo esc_html( $current_year ); ?></h2>
-			<p class="section-sub">McDonald's Menu Prices USA, all 212 current items across 15 categories in one place. From Big Mac and Quarter Pounder burgers to Egg McMuffin breakfasts, McCafe coffees, McFlurry desserts, Happy Meals, fries, sauces, and McValue deals, with prices and calorie counts updated for 2025.</p>
-		</div>
-		<div class="size-key">
-			<strong>Format guide:</strong> Small-to-large price ranges are grouped where multiple sizes exist. All prices are shown in US dollars and can vary by location.
-		</div>
-		<div class="menu-tabs">
-			<button class="menu-tab active" type="button" data-menu-filter="all" aria-pressed="true">&#9776; All</button>
-			<button class="menu-tab" type="button" data-menu-filter="whats-new">&#127381; What's New</button>
-			<?php foreach ( $menu_sections as $section ) : ?>
-				<button class="menu-tab" type="button" data-menu-filter="<?php echo esc_attr( $section['id'] ); ?>"><?php echo $section['icon']; ?> <?php echo esc_html( wp_strip_all_tags( $section['title'] ) ); ?></button>
-			<?php endforeach; ?>
-		</div>
-		<?php foreach ( $menu_sections as $section ) : ?>
-			<div class="menu-section" id="<?php echo esc_attr( $section['id'] ); ?>" data-menu-category="<?php echo esc_attr( $section['id'] ); ?>">
-				<div class="menu-section-head">
-					<span class="menu-section-icon"><?php echo $section['icon']; ?></span>
-					<span class="menu-section-title"><?php echo $section['title']; ?></span>
-					<span class="menu-section-count"><?php echo esc_html( (string) count( $section['rows'] ) ); ?> items</span>
-				</div>
-				<p class="menu-section-desc"><?php echo esc_html( html_entity_decode( $section['description'], ENT_QUOTES, 'UTF-8' ) ); ?></p>
-				<div class="menu-table-wrap">
-					<table class="menu-table">
-						<thead>
-							<tr>
-								<th>Item</th>
-								<th>Price</th>
-								<th>Calories</th>
-								<th>Status</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php $render_rows( $section['rows'], $section['id'] ); ?>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		<?php endforeach; ?>
 	</div>
 </section>
 
@@ -884,6 +976,18 @@ ob_start();
 					</div>
 				</div>
 			</div>
+			<div class="delivery-card">
+				<div class="delivery-card-icon">&#128279;</div>
+				<div class="delivery-card-content">
+					<div class="delivery-card-title">Official McDonald's Resources</div>
+					<div class="delivery-card-text">Use these official McDonald&rsquo;s links when you want the branded delivery FAQ, the official receipt survey, or the main app download page before you compare prices and deals on this site.</div>
+					<div class="delivery-card-chips">
+						<a class="platform-chip" href="https://www.mcdonalds.com/us/en-us/faq/mcdelivery.html" target="_blank" rel="noopener noreferrer">Official McDelivery FAQ</a>
+						<a class="platform-chip" href="https://www.mcdvoice.com/" target="_blank" rel="noopener noreferrer">Official McDVoice Survey</a>
+						<a class="platform-chip" href="https://www.mcdonalds.com/us/en-us/download-app.html" target="_blank" rel="noopener noreferrer">Official McDonald's App</a>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </section>
@@ -959,6 +1063,16 @@ ob_start();
 					<a href="#mccafe" class="sidebar-link">&#9749; McCafe Coffees</a>
 					<a href="#beverages" class="sidebar-link">&#127865; Beverage Prices</a>
 					<a href="#sauces" class="sidebar-link">&#129514; Sauces &amp; Condiments</a>
+				</div>
+			</div>
+			<div class="sidebar-card">
+				<div class="sidebar-card-title">Editorial &amp; Trust</div>
+				<div class="sidebar-links">
+					<a href="<?php echo esc_url( home_url( '/pricing-methodology/' ) ); ?>" class="sidebar-link">&#128221; How We Track Prices</a>
+					<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="sidebar-link">&#8505; About Us</a>
+					<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="sidebar-link">&#9993; Contact</a>
+					<a href="<?php echo esc_url( home_url( '/ad-disclosure/' ) ); ?>" class="sidebar-link">&#128204; Ad Disclosure</a>
+					<a href="<?php echo esc_url( home_url( '/disclaimer/' ) ); ?>" class="sidebar-link">&#9888; Disclaimer</a>
 				</div>
 			</div>
 		</div>

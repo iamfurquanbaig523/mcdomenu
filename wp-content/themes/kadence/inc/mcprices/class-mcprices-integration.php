@@ -112,7 +112,7 @@ class McPrices_Integration {
 	/**
 	 * Current Rank Math page/category SEO metadata seed version.
 	 */
-	const SEO_ENTITY_SEED_VERSION = '1.0.4';
+	const SEO_ENTITY_SEED_VERSION = '1.0.5';
 
 	/**
 	 * Singleton instance.
@@ -166,6 +166,8 @@ class McPrices_Integration {
 		add_action( 'mcprices_run_managed_bootstrap', array( $this, 'run_managed_bootstrap' ) );
 		add_action( 'wp_head', array( $this, 'render_homepage_meta_tags' ), 2 );
 		add_action( 'wp_head', array( $this, 'render_homepage_schema' ), 30 );
+		add_action( 'wp_head', array( $this, 'render_managed_page_schema' ), 31 );
+		add_action( 'template_redirect', array( $this, 'maybe_redirect_noncanonical_request' ), -20 );
 		add_action( 'template_redirect', array( $this, 'maybe_render_sitemap' ), -10 );
 		add_action( 'template_redirect', array( $this, 'maybe_render_robots' ), -10 );
 		add_action( 'kadence_before_footer', array( $this, 'render_footer_disclaimer' ), 5 );
@@ -472,11 +474,15 @@ class McPrices_Integration {
 			'dollar-menu'          => 'mcvalue',
 			'extra-value-meals'    => 'meals',
 			'limited-time-menu'    => 'whats-new',
+			'budget-finder'        => 'mcvalue',
+			'calorie-calculator'   => 'meals',
+			'compare-items'        => 'burgers',
 			'breakfast-menu'       => 'breakfast',
 			'breakfast-hours'      => 'breakfast',
 			'breakfast-times'      => 'breakfast',
 			'burgers-menu'         => 'burgers',
 			'big-mac-price-usa'    => 'burgers',
+			'big-mac-price-uk'     => 'burgers',
 			'chicken-fish-menu'    => 'chickenfish',
 			'fries-sides'          => 'sides',
 			'happy-meal-menu'      => 'happymeal',
@@ -1005,55 +1011,182 @@ class McPrices_Integration {
 			array(
 				'about' => array(
 					'title'   => 'About Us',
-					'content' => '<!-- wp:paragraph --><p>McDonald&#8217;s Menu Prices USA is an independent guide to McDonald&#8217;s USA menu prices, calories, deals, breakfast hours, drinks, desserts, and combo meals. We update the site regularly so readers can compare prices, understand category coverage, and check new menu rollouts without relying on scattered screenshots.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>We are not affiliated with McDonald&#8217;s. Prices can vary by location, franchise, app offer, taxes, and delivery platform.</p><!-- /wp:paragraph -->',
+					'content' => '<!-- wp:paragraph --><p>McDonald&#8217;s Menu Prices USA is an independent guide to McDonald&#8217;s USA menu prices, calories, deals, breakfast hours, drinks, desserts, and combo meals. We update the site regularly so readers can compare prices, understand category coverage, and check new menu rollouts without relying on scattered screenshots.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>We are not affiliated with McDonald&#8217;s. Prices can vary by location, franchise, app offer, taxes, and delivery platform.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>The goal of this website is practical clarity. Readers usually land here because they want one place to compare breakfast items, burgers, McCafe drinks, McValue deals, Happy Meals, fries, sauces, and current limited-time menu changes without opening multiple apps or scattered social-media posts first. That means we focus on clean internal linking, readable page structure, and direct access to the exact item or category page that answers the next question.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>We also treat menu planning as more than a single number. A price can change because of location, app participation, delivery markup, combo configuration, or local taxes, so our broader content explains context instead of pretending one national number always tells the full story. When a reader needs a final operational answer, we encourage them to confirm the order through the official McDonald&#8217;s app or restaurant before checkout.</p><!-- /wp:paragraph -->',
 				),
 				'privacy-policy' => array(
 					'title'   => 'Privacy Policy',
-					'content' => '<!-- wp:paragraph --><p>This Privacy Policy explains how McDonald&#8217;s Menu Prices USA may collect and use limited information such as analytics data, contact submissions, and advertising-related data when you use the site. We only use this information to operate, improve, and protect the website.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>If you contact us directly, we may retain the information you send so we can respond. Third-party services such as analytics, advertising, and embedded tools may also process data according to their own policies.</p><!-- /wp:paragraph -->',
+					'content' => '<!-- wp:paragraph --><p>This Privacy Policy explains how McDonald&#8217;s Menu Prices USA may collect and use limited information such as analytics data, contact submissions, and advertising-related data when you use the site. We only use this information to operate, improve, and protect the website.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>If you contact us directly, we may retain the information you send so we can respond. Third-party services such as analytics, advertising, and embedded tools may also process data according to their own policies.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>In normal use, the site may record broad technical details such as browser type, approximate region, referring page, device characteristics, and page-level engagement metrics. We use this information to understand which menu pages help readers most, which sections need clearer internal links, and which parts of the site should be updated more often. We do not treat that information as a shortcut to identify visitors personally unless you choose to submit contact details directly.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>Because this website discusses menu prices, calories, deals, delivery behavior, and restaurant availability, some external tools may also receive data needed to load embedded assets, analytics reports, or ad-related functions. Those third-party services operate under their own privacy terms. If you want the most direct control, avoid submitting personal information through forms, review your browser privacy settings, and consult the official policies for any third-party service you use alongside this site.</p><!-- /wp:paragraph -->',
 				),
 				'cookie-policy' => array(
 					'title'   => 'Cookie Policy',
-					'content' => '<!-- wp:paragraph --><p>McDonald&#8217;s Menu Prices USA may use cookies and similar technologies to remember preferences, measure traffic, and support advertising or performance tools. Some cookies are essential for the site to work properly, while others help us understand how visitors use the site.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>You can usually control cookies through your browser settings. Disabling some cookies may affect how parts of the site function.</p><!-- /wp:paragraph -->',
+					'content' => '<!-- wp:paragraph --><p>McDonald&#8217;s Menu Prices USA may use cookies and similar technologies to remember preferences, measure traffic, and support advertising or performance tools. Some cookies are essential for the site to work properly, while others help us understand how visitors use the site.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>You can usually control cookies through your browser settings. Disabling some cookies may affect how parts of the site function.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>Cookies on a content site like this can support several ordinary tasks: keeping basic interface choices consistent, measuring which menu pages are opened most often, understanding whether readers move from broad guide pages into exact item pages, and helping site operators see whether updates to navigation or internal linking improved usability. These technologies do not change menu prices themselves, but they can influence how quickly pages load and how accurately site performance is measured.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>If you prefer a lower-cookie browsing experience, most modern browsers let you block or clear cookies, limit cross-site tracking, or restrict storage for individual domains. Keep in mind that strict blocking can affect search, menu filtering, or other convenience features. When in doubt, use your browser privacy controls together with any consent or advertising settings available on the services you use.</p><!-- /wp:paragraph -->',
 				),
 				'contact' => array(
 					'title'   => 'Contact',
-					'content' => '<!-- wp:paragraph --><p>Use this page to contact McDonald&#8217;s Menu Prices USA about price corrections, menu updates, advertising questions, or general feedback. If you spot a menu price that looks outdated, include the item name, restaurant location, and latest observed price so we can review it quickly.</p><!-- /wp:paragraph -->',
+					'content' => '<!-- wp:paragraph --><p>Use this page to contact McDonald&#8217;s Menu Prices USA about price corrections, menu updates, advertising questions, or general feedback. If you spot a menu price that looks outdated, include the item name, restaurant location, and latest observed price so we can review it quickly.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>The most helpful messages are specific. If your note is about a breakfast item, burger, drink, fries, Happy Meal, or deal, mention the exact item name, the page URL you were reading, and whether the issue relates to price, calories, availability, or internal linking. That makes it much easier to compare the reported issue against the tracked menu source and decide whether a category page, item page, or long-form guide needs to be updated.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>You can also use this page for broader suggestions about the site structure. Readers often tell us when a comparison page should link more clearly to a category page, when a guide needs a better path back to the live menu hub, or when an item page should mention a closely related alternative. Those usability suggestions are valuable because they improve the site for both readers and search engines without turning the content into forced keyword stuffing.</p><!-- /wp:paragraph -->',
 				),
 				'disclaimer' => array(
 					'title'   => 'Disclaimer',
-					'content' => '<!-- wp:paragraph --><p>McDonald&#8217;s Menu Prices USA is an independent, unofficial website and is not affiliated with, endorsed by, or connected to McDonald&#8217;s Corporation. Prices, calories, availability, and promotions may vary by location and date.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>Always confirm important details such as allergens, breakfast hours, delivery pricing, and final local totals with the official McDonald&#8217;s app, website, or restaurant before ordering.</p><!-- /wp:paragraph -->',
+					'content' => '<!-- wp:paragraph --><p>McDonald&#8217;s Menu Prices USA is an independent, unofficial website and is not affiliated with, endorsed by, or connected to McDonald&#8217;s Corporation. Prices, calories, availability, and promotions may vary by location and date.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>Always confirm important details such as allergens, breakfast hours, delivery pricing, and final local totals with the official McDonald&#8217;s app, website, or restaurant before ordering.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>This site is designed as a planning and comparison resource, not as a substitute for the official ordering environment. A listed sandwich, meal, drink, dessert, or sauce may appear with a different final total once local taxes, delivery charges, in-app offers, or store-level variations are applied. The same principle also applies to calorie totals, breakfast cut-off timing, and ingredient-related questions, all of which can shift when a menu item is customized or offered in a specific market.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>Nothing on this site should be interpreted as legal, medical, nutritional, or brand-authorized advice. The content is published to help readers compare menu entities, understand pricing context, and move efficiently between category pages, item pages, and support guides. When the decision has health, allergy, or final-purchase importance, the official McDonald&#8217;s channels should be treated as the controlling source.</p><!-- /wp:paragraph -->',
 				),
 				'ad-disclosure' => array(
 					'title'   => 'Ad Disclosure',
-					'content' => '<!-- wp:paragraph --><p>McDonald&#8217;s Menu Prices USA may display advertisements, sponsored placements, or monetised content to support site operations. Advertising relationships do not change our editorial approach: we still aim to provide clear, practical, and regularly updated McDonald&#8217;s USA price information.</p><!-- /wp:paragraph -->',
+					'content' => '<!-- wp:paragraph --><p>McDonald&#8217;s Menu Prices USA may display advertisements, sponsored placements, or monetised content to support site operations. Advertising relationships do not change our editorial approach: we still aim to provide clear, practical, and regularly updated McDonald&#8217;s USA price information.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>In practice, that means editorial decisions are guided by usefulness first. We choose to build long-form guides, category pages, menu item pages, and supporting resources around search demand and reader needs, not around whichever section could carry the highest ad yield. A burger page still needs burger comparisons, a breakfast page still needs breakfast timing and value context, and an item page still needs a clear route back to its category and the main menu hub regardless of any advertising layout around it.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>Sponsored or monetised elements may help fund hosting, design work, content maintenance, and menu-data updates, but they should not be read as endorsements of any product, service, or brand claim beyond the actual wording shown on the page. If that balance ever changes, the page should disclose it clearly. The intent of this disclosure is to keep the site transparent while preserving a readable, trust-focused experience.</p><!-- /wp:paragraph -->',
+				),
+				'pricing-methodology' => array(
+					'title'   => 'How We Track Prices & Update Pages',
+					'content' => $this->build_seeded_support_topic_page_content(
+						array(
+							'intro'          => array(
+								'This page explains how McDonald&#8217;s Menu Prices USA tracks menu prices, updates guide pages, and decides when one URL should act as the main answer for a topic. It exists to make the editorial process visible instead of expecting readers to assume how the site works.',
+								'The goal is practical transparency. Readers use this site to compare breakfast prices, burger prices, McCafe drink prices, Happy Meal costs, fries, deals, and other McDonald&#8217;s USA menu questions before they place an order. That means the process behind the numbers matters just as much as the numbers themselves.',
+							),
+							'highlights'     => array(
+								'We use the tracked site menu data as the baseline for current menu pages, then update long-form guides around real comparison intent.',
+								'Prices are treated as planning references, not guaranteed local checkout totals, because franchises, app offers, taxes, and delivery fees can change the final total.',
+								'When two URLs answer the same core item intent, we consolidate toward one primary canonical page instead of letting duplicate pages compete.',
+							),
+							'sections'       => array(
+								array(
+									'heading'    => 'How price data is handled on this site',
+									'paragraphs' => array(
+										'The site uses the current tracked McDonald&#8217;s USA menu dataset as its working source for menu entities, item names, listed prices, calorie figures, and category relationships. Those values are then surfaced through the main menu hub, category pages, item pages, and broader guides.',
+										'That source is useful because it keeps the site internally consistent, but it is not treated as a promise that every restaurant in the United States will match one number exactly. Local franchise decisions, state-level costs, app deals, delivery markups, and taxes can all change the final total a customer sees at checkout.',
+									),
+								),
+								array(
+									'heading'    => 'How pages are updated and reviewed',
+									'paragraphs' => array(
+										'Major guide pages are reviewed when the tracked menu changes, when a category shifts meaningfully, or when the internal-link structure needs to be cleaned up. A guide is not considered complete just because it includes a keyword. It also needs a clear route into the live category and item pages so readers can move from broad research to one exact menu decision.',
+										'We also look for structural issues that can hurt trust or SEO, such as duplicate URLs, pages that are too thin to be useful, outdated deal references, or weak metadata that reads like a pasted paragraph instead of a clean search snippet. Fixing those issues is part of the editorial process, not a separate afterthought.',
+									),
+								),
+								array(
+									'heading'    => 'How we handle official sources',
+									'paragraphs' => array(
+										'Official McDonald&#8217;s resources are used where they matter most: final menu availability, app behavior, nutrition questions, delivery FAQs, and brand-controlled guidance. This site is designed to help readers compare and plan, but it should not pretend to outrank the official source on high-stakes verification.',
+										'That is why you will see official links on the homepage, on support pages, and inside the main guides when the next best action is to confirm a detail directly with McDonald&#8217;s. The editorial aim is to reduce confusion, not to blur the line between an independent guide and the brand itself.',
+									),
+								),
+								array(
+									'heading'    => 'Why canonical pages matter here',
+									'paragraphs' => array(
+										'Some menu items can appear in more than one context, especially around value menus and category hubs. When that happens, the site should not publish multiple pages that compete for the same primary intent without a good reason. Instead, one URL should act as the main canonical destination, while supporting pages link to it naturally.',
+										'This helps readers avoid confusion and helps search engines understand which page is meant to answer the query directly. It also keeps internal linking cleaner, which is especially important on a site with many item pages and category combinations.',
+									),
+								),
+							),
+							'faq_items'      => array(
+								array(
+									'question' => 'Are the prices on this site guaranteed to match my local McDonald\'s? ',
+									'answer'   => 'No. The prices are planning references built from the tracked menu source and updated editorially, but final totals can change by location, taxes, app offers, and delivery fees. The official McDonald\'s app or local checkout remains the final source.',
+								),
+								array(
+									'question' => 'Why do some guides link to official McDonald\'s pages?',
+									'answer'   => 'Because some questions should be verified at the official source. Delivery FAQs, nutrition details, ingredient checks, app behavior, and final live availability all benefit from an official confirmation step even when this site provides the broader comparison context first.',
+								),
+								array(
+									'question' => 'What should I do if I find a page that looks outdated or confusing?',
+									'answer'   => 'Use the contact page and send the page URL, the item or category involved, and the issue you found. Specific notes about prices, calories, internal links, or duplicate paths are the most helpful for review.',
+								),
+							),
+							'related_links'  => array(
+								array(
+									'label'       => 'About Us',
+									'url'         => home_url( '/about/' ),
+									'description' => 'See the broader purpose of the site and how it is positioned as an independent guide.',
+								),
+								array(
+									'label'       => 'Contact',
+									'url'         => home_url( '/contact/' ),
+									'description' => 'Report outdated prices, confusing links, or page issues that need review.',
+								),
+								array(
+									'label'       => 'Disclaimer',
+									'url'         => home_url( '/disclaimer/' ),
+									'description' => 'Read the scope limits for pricing, health, and brand-authority questions.',
+								),
+								array(
+									'label'       => 'Ad Disclosure',
+									'url'         => home_url( '/ad-disclosure/' ),
+									'description' => 'Understand how ads and monetisation are separated from editorial decisions.',
+								),
+							),
+							'external_links' => array(
+								array(
+									'label'       => 'Official McDonald\'s full menu',
+									'url'         => $this->get_official_reference_url( 'full_menu' ),
+									'description' => 'Use the official menu for final live availability and ordering context.',
+								),
+								array(
+									'label'       => 'Official McDonald\'s nutrition calculator',
+									'url'         => $this->get_official_reference_url( 'nutrition' ),
+									'description' => 'Best for final ingredient and allergen verification.',
+								),
+								array(
+									'label'       => 'Official McDonald\'s app page',
+									'url'         => $this->get_official_reference_url( 'app' ),
+									'description' => 'Useful when price variation depends on app deals, local store selection, or rewards.',
+								),
+							),
+						)
+					),
 				),
 				'sitemap' => array(
 					'title'   => 'Sitemap',
-					'content' => '<!-- wp:paragraph --><p>Browse the main areas of McDonald&#8217;s Menu Prices USA below, or use the XML sitemap at <a href="' . esc_url( home_url( '/sitemap.xml' ) ) . '">' . esc_html( home_url( '/sitemap.xml' ) ) . '</a> for the crawler-friendly version.</p><!-- /wp:paragraph --><!-- wp:shortcode -->[rank_math_html_sitemap]<!-- /wp:shortcode -->',
+					'content' => '<!-- wp:paragraph --><p>Browse the main areas of McDonald&#8217;s Menu Prices USA below, or use the XML sitemap at <a href="' . esc_url( home_url( '/sitemap.xml' ) ) . '">' . esc_html( home_url( '/sitemap.xml' ) ) . '</a> for the crawler-friendly version.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>This HTML sitemap is meant to help both readers and crawlers understand the site hierarchy. The structure starts with the homepage and the main menu hub, then branches into category pages such as breakfast, burgers, chicken and fish, McCafe coffees, beverages, fries and sides, Happy Meal, deals, and sauces. From there, readers can move into exact item pages or sideways into broader support guides such as breakfast hours, calorie information, allergen guidance, delivery questions, and app-deal coverage.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>A clear sitemap matters because this site is intentionally built around semantic routing instead of one long unstructured article. Category pages act as pillar pages, item pages cover exact entity intent, and the long-form guides explain broader comparisons and FAQs. Keeping those layers visible in one place improves usability and helps search engines understand which URL should answer which type of query.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>If you are browsing manually, the sitemap can also act as a shortcut map for internal linking. It helps you jump from a broad menu cluster into the exact burger, breakfast, drink, dessert, fries, sauce, or deal page you actually need without guessing which route is shortest.</p><!-- /wp:paragraph --><!-- wp:shortcode -->[rank_math_html_sitemap]<!-- /wp:shortcode -->',
 				),
 				'big-mac-price-usa' => array(
 					'title'   => 'Big Mac Price USA',
 					'content' => $this->build_seeded_support_topic_page_content(
 						array(
-							'intro'         => array(
-								'This Big Mac Price USA guide focuses on the current Big Mac sandwich price, Big Mac meal pricing, calorie context, and the role the Big Mac plays as a flagship reference point on the McDonald&#8217;s USA burger menu.',
-								'Most readers do not look up the Big Mac in isolation. They are usually comparing it with McDouble, Quarter Pounder, or a full combo meal, which is why this page works best as a focused answer that also routes into the wider burger and value guides.',
+							'intro'          => array(
+								'This Big Mac Price USA guide is built for readers searching the current Big Mac price, Big Mac meal price, and the reasons the final total can change from one U.S. location to another.',
+								'The Big Mac is more than one burger listing. It is the benchmark many readers use to judge the entire McDonald&#8217;s burger ladder, compare Big Mac value against Quarter Pounder or McDouble options, and decide whether the sandwich alone or the full meal makes more sense.',
 							),
-							'highlights'    => array(
-								'Use this page when the real decision is Big Mac sandwich versus Big Mac meal price.',
-								'Compare Big Mac pricing against the burgers pillar when you want to see the full burger value ladder.',
-								'App offers, local taxes, franchise pricing, and delivery can still change the final local total.',
+							'highlights'     => array(
+								'Big Mac price searches usually mean sandwich price, meal price, or local price variation, not just one national number.',
+								'The most useful comparison is often Big Mac versus Quarter Pounder with Cheese or McDouble, especially when value matters as much as size.',
+								'App offers, delivery markups, taxes, and franchise pricing can all change the real total you pay.',
 							),
-							'sections'      => array(
+							'sections'       => array(
 								array(
-									'heading'    => 'Why the Big Mac matters as a pricing benchmark',
+									'heading'    => 'What Big Mac price searches usually mean',
 									'paragraphs' => array(
-										'The Big Mac remains one of the clearest burger benchmarks on any McDonald\'s pricing site because readers use it to judge whether the wider burger menu feels expensive, average, or unusually good value in their market.',
-										'That makes the Big Mac page useful not only for one burger price check, but also as a decision point before moving into the wider burgers guide, the full menu directory, or the deals and McValue coverage.',
+										'When someone searches Big Mac price USA, how much is a Big Mac, or Big Mac meal price, they are usually trying to answer one of three questions. They may want the current sandwich price, they may want the full combo cost with fries and a drink, or they may be checking whether their local store is charging more than expected.',
+										'That is why a useful Big Mac page needs to cover more than one number. The sandwich price helps with quick burger comparison, but the meal price is often the better decision metric because many customers are really choosing between complete lunch or dinner orders.',
+									),
+								),
+								array(
+									'heading'    => 'Why Big Mac prices vary across the USA',
+									'paragraphs' => array(
+										'Big Mac prices are not identical nationwide. Urban locations, airport stores, and higher-cost states often run above lower-cost suburban or rural restaurants. Delivery platforms can add another layer of markup on top of the core menu price, which is why the same burger may feel noticeably more expensive depending on where and how you order.',
+										'Readers also need to separate menu-board pricing from app-led pricing. A location running a strong deal or rewards offer can change the effective price of a Big Mac order even if the published sandwich price looks average.',
+									),
+								),
+								array(
+									'heading'    => 'Where the Big Mac sits in the burger value ladder',
+									'paragraphs' => array(
+										'The Big Mac sits above entry-level burgers like Hamburger, Cheeseburger, and McDouble, but below some heavier Quarter Pounder meal totals once upgrades are added. That is why Big Mac searches often overlap with burger-comparison intent rather than simple one-item curiosity.',
+										'If your real goal is deciding whether the Big Mac is worth it, use this page as the focused answer first, then move into the wider burger guide for context on size, calories, and better-value alternatives.',
 									),
 								),
 							),
-							'related_links' => array(
+							'faq_items'      => array(
+								array(
+									'question' => 'Does Big Mac price USA mean the sandwich price or the meal price?',
+									'answer'   => 'Searchers use the phrase both ways, which is why a good guide needs to separate the standalone sandwich price from the combo meal total. The meal comparison is often more practical because fries and a drink can change the final value decision more than the sandwich alone.',
+								),
+								array(
+									'question' => 'Why is the Big Mac price different in different states or cities?',
+									'answer'   => 'Franchise pricing, operating costs, local taxes, airport and travel-hub premiums, app participation, and delivery markups all affect the final Big Mac total. A planning guide can show the general range, but the local checkout remains the final answer.',
+								),
+								array(
+									'question' => 'What is the best next step after checking the Big Mac price?',
+									'answer'   => 'The best next step is usually comparing the Big Mac with the wider burger category or with the deals and McValue guide. That helps you decide whether you want the flagship burger, the best-value burger, or a different meal path entirely.',
+								),
+							),
+							'related_links'  => array(
 								array(
 									'label'       => 'Read the burgers menu prices pillar',
 									'url'         => $this->get_seeded_page_url( 'burgers-menu' ),
@@ -1070,6 +1203,182 @@ class McPrices_Integration {
 									'description' => 'Use this when the real question is burger value rather than the standalone Big Mac price.',
 								),
 							),
+							'external_links' => array(
+								array(
+									'label'       => 'Official McDonald\'s full menu',
+									'url'         => $this->get_official_reference_url( 'full_menu' ),
+									'description' => 'Use the official menu for final live product availability and current national menu coverage.',
+								),
+								array(
+									'label'       => 'Official McDonald\'s deals page',
+									'url'         => $this->get_official_reference_url( 'deals' ),
+									'description' => 'Check live app-led or national promotions that can change the effective Big Mac price.',
+								),
+							),
+						)
+					),
+				),
+				'big-mac-price-uk' => array(
+					'title'   => 'Big Mac Price UK',
+					'content' => $this->build_seeded_support_topic_page_content(
+						array(
+							'intro'          => array(
+								'This Big Mac Price UK guide is designed for readers who want a quick view of how the Big Mac is positioned on the McDonald&#8217;s UK menu, how meal pricing works in pounds, and how the UK burger context differs from the U.S. market.',
+								'Even on a U.S.-focused McDonald&#8217;s site, Big Mac UK searches show a clear comparison intent. Readers often want to know whether the burger feels cheaper or more expensive abroad, whether the meal structure looks different, and whether the UK menu follows the same value logic as the USA.',
+							),
+							'highlights'     => array(
+								'Big Mac UK searches usually compare sandwich price, meal price, and currency-adjusted value.',
+								'The most useful approach is to compare the UK Big Mac against the U.S. Big Mac page rather than treat both markets as interchangeable.',
+								'Final UK restaurant prices can still vary by city, transport hub, delivery, and local promotion.',
+							),
+							'sections'       => array(
+								array(
+									'heading'    => 'What this UK-focused Big Mac page should answer',
+									'paragraphs' => array(
+										'Most Big Mac UK searches are not academic currency checks. They come from travelers, comparison readers, and burger shoppers who want a quick sense of how the Big Mac is priced on the McDonald&#8217;s UK menu relative to meal upgrades and other burger choices.',
+										'That makes this page a geo-specific support page rather than a replacement for the main burger guide. Its job is to clarify UK context, then route readers toward the broader burger coverage when they want menu-level comparisons.',
+									),
+								),
+								array(
+									'heading'    => 'Big Mac sandwich versus meal pricing in the UK',
+									'paragraphs' => array(
+										'As in the U.S., the single most important distinction is sandwich price versus meal price. A reader comparing only the standalone Big Mac can miss how much fries and a drink add to the final total, which is often the real purchase decision.',
+										'Delivery and city-center pricing matter here as well. A travel hub or high-rent urban store can make the Big Mac feel more expensive than the broad market expectation, even before currency conversion enters the conversation.',
+									),
+								),
+								array(
+									'heading'    => 'Why UK Big Mac searches often lead back to wider burger research',
+									'paragraphs' => array(
+										'Many readers who search Big Mac price UK are really testing whether the flagship burger still feels like good value. Once that question appears, the natural next step is comparing it with the wider burger ladder in whichever market you are actually ordering from.',
+										'That is why this page links back to the U.S. Big Mac guide and the burger pillar. The search starts with one burger, but the decision usually expands into a larger menu comparison.',
+									),
+								),
+							),
+							'faq_items'      => array(
+								array(
+									'question' => 'Is the Big Mac UK page meant for U.S. ordering decisions?',
+									'answer'   => 'No. This page is for geo-specific comparison intent. If you are ordering in the United States, use the Big Mac Price USA guide and the burgers menu pillar instead, because U.S. pricing, promotions, and meal totals follow a different market structure.',
+								),
+								array(
+									'question' => 'Why can the Big Mac price vary within the UK?',
+									'answer'   => 'Store type, city costs, delivery channels, airport or station locations, and promotions can all move the final total. The same logic that affects U.S. fast-food pricing applies in the UK as well.',
+								),
+								array(
+									'question' => 'What is the best next page after checking Big Mac UK pricing?',
+									'answer'   => 'If you are comparing markets, move to the Big Mac Price USA page. If you are trying to understand the broader burger ladder on this site, the burgers menu pillar is the better next stop.',
+								),
+							),
+							'related_links'  => array(
+								array(
+									'label'       => 'Compare with Big Mac Price USA',
+									'url'         => $this->get_seeded_page_url( 'big-mac-price-usa' ),
+									'description' => 'Use the U.S. page when you want the domestic pricing context behind the same burger.',
+								),
+								array(
+									'label'       => 'Read the burgers menu prices pillar',
+									'url'         => $this->get_seeded_page_url( 'burgers-menu' ),
+									'description' => 'Step back into the wider burger ladder when the question grows beyond one sandwich.',
+								),
+								array(
+									'label'       => 'Read the prices by state pillar',
+									'url'         => $this->get_seeded_page_url( 'mcdonalds-prices-by-state' ),
+									'description' => 'Useful when your real interest is how local burger pricing changes by geography.',
+								),
+							),
+							'external_links' => array(
+								array(
+									'label'       => 'Official McDonald\'s UK burgers menu',
+									'url'         => $this->get_official_reference_url( 'uk_burgers' ),
+									'description' => 'Use the official UK burger section for live product availability and market-specific menu context.',
+								),
+								array(
+									'label'       => 'Official McDonald\'s UK menu hub',
+									'url'         => $this->get_official_reference_url( 'uk_menu' ),
+									'description' => 'Open the wider UK menu if you need to compare the Big Mac with other UK categories.',
+								),
+							),
+						)
+					),
+				),
+				'mcdvoice' => array(
+					'title'   => 'McDVoice Survey',
+					'content' => $this->build_seeded_support_topic_page_content(
+						array(
+							'intro'          => array(
+								'This McDVoice survey guide explains what the McDVoice receipt survey is, where the official McDonald&#8217;s customer survey lives, and what readers usually mean when they search mcdvoice.com survey, www.mcdvoice.com, or McDonald\'s survey code.',
+								'Most McDVoice visitors are not looking for menu prices at all. They want a simple path to the official survey, clarity on how receipt codes and validation codes work, and a quick explanation of what to do if a survey prompt is not behaving the way they expect.',
+							),
+							'highlights'     => array(
+								'The official survey site is McDVoice, and the safest path is always the official survey URL printed on the receipt or linked from McDonald\'s materials.',
+								'Receipt surveys, validation codes, and offer details can vary by receipt, market, and promotion window.',
+								'This page should guide the search intent clearly while still sending readers to the official survey for the actual submission step.',
+							),
+							'sections'       => array(
+								array(
+									'heading'    => 'What McDVoice is and why people search for it',
+									'paragraphs' => array(
+										'McDVoice is the McDonald&#8217;s customer feedback survey system. Readers usually search it because they have a receipt with a survey invitation, they want to know whether the survey site is legitimate, or they need a quick reminder of where the survey code and validation code fit into the process.',
+										'That means the page should answer trust and task questions first. A good McDVoice guide helps users recognize the official survey path, understand that reward language can differ from receipt to receipt, and avoid confusing third-party pages or mistyped domains with the real survey flow.',
+									),
+								),
+								array(
+									'heading'    => 'How receipt codes and validation codes usually fit together',
+									'paragraphs' => array(
+										'In most survey journeys, the receipt contains the information needed to begin the survey, and the completed survey may return a validation code or offer instruction for a future visit. The exact wording, offer type, and use window can vary, which is why the receipt itself stays more authoritative than any unofficial summary page.',
+										'Readers often search phrases like McDonald\'s survey code, mcdvoice survey with receipt, or mcdvoice.com survey with receipt code because they want to confirm they are using the correct entry point. The safest advice is to use the official survey URL and follow the receipt instructions exactly.',
+									),
+								),
+								array(
+									'heading'    => 'Common reasons a McDVoice search happens after the meal is over',
+									'paragraphs' => array(
+										'Sometimes the search happens because a customer wants to finish the survey later, check whether a code is still usable, or understand why the reward instruction looks different from what someone else received. Those are normal questions because survey offers are operational, not permanent menu products.',
+										'The role of this page is to reduce confusion, not to replace the official survey process. If anything about the receipt timing, entry details, or offer wording looks different, the official survey site and the receipt should take priority over an unofficial explanation.',
+									),
+								),
+							),
+							'faq_items'      => array(
+								array(
+									'question' => 'Do I need a receipt to use McDVoice?',
+									'answer'   => 'Usually, yes. Most McDVoice searches are tied to a receipt-based survey invitation. The receipt provides the correct entry information and any store-specific details needed to start the survey or use a follow-up validation code.',
+								),
+								array(
+									'question' => 'How long is a McDVoice survey code valid?',
+									'answer'   => 'The allowed timing can vary by receipt and promotion, so the receipt itself is the best authority. This page can explain the process, but the printed instructions should always win if there is any difference.',
+								),
+								array(
+									'question' => 'Is the reward always the same on every McDVoice receipt?',
+									'answer'   => 'No. Survey reward wording, participation rules, and redemption instructions can differ. That is why a good McDVoice page should avoid promising one fixed outcome and instead direct readers back to the receipt and the official survey flow.',
+								),
+							),
+							'related_links'  => array(
+								array(
+									'label'       => 'Read the McDonald\'s app deals page',
+									'url'         => $this->get_seeded_page_url( 'mcdonalds-app-deals' ),
+									'description' => 'Useful when your broader goal is saving money after the survey task is finished.',
+								),
+								array(
+									'label'       => 'Read the rewards guide',
+									'url'         => $this->get_seeded_page_url( 'rewards-guide' ),
+									'description' => 'Go here when the question shifts from receipt surveys to repeat-use app rewards.',
+								),
+								array(
+									'label'       => 'Open the full menu directory',
+									'url'         => $this->get_menu_directory_root_url(),
+									'description' => 'Return to the live menu when you want prices, categories, and item pages instead of survey help.',
+								),
+							),
+							'external_links' => array(
+								array(
+									'label'       => 'Official McDVoice survey site',
+									'url'         => $this->get_official_reference_url( 'mcdvoice' ),
+									'description' => 'Use the official survey site for the actual survey task and receipt-based entry.',
+								),
+								array(
+									'label'       => 'Official McDonald\'s app download page',
+									'url'         => $this->get_official_reference_url( 'app' ),
+									'description' => 'Helpful when your next step after survey support is shifting into app ordering, offers, or rewards.',
+								),
+							),
 						)
 					),
 				),
@@ -1077,24 +1386,53 @@ class McPrices_Integration {
 					'title'   => 'McDonald&#8217;s App Deals',
 					'content' => $this->build_seeded_support_topic_page_content(
 						array(
-							'intro'         => array(
-								'Our McDonald&#8217;s App Deals guide tracks the most useful USA app offers, including McValue bundles, buy-one-add-one deals, meal discounts, rewards offers, and limited-time promotions that can lower the cost of popular items.',
-								'This page is especially useful for readers whose final price decision depends more on app participation than on the static board price, because app-only deals can change the real best-value choice across burgers, breakfast, fries, nuggets, and desserts.',
+							'intro'          => array(
+								'Our McDonald&#8217;s App Deals guide tracks the part of the McDonald&#8217;s USA value story that readers care about most: live app offers, app-only savings, rotating bundle deals, and the way digital ordering can change the real price of breakfast, burgers, fries, nuggets, and desserts.',
+								'Readers usually arrive here after searching McDonald\'s app deals, McDonald\'s app rewards, or app-only McValue offers. They are not just asking whether a deal exists. They want to know whether the app beats the menu board, whether the reward path is better than the coupon path, and whether pickup or delivery changes the result.',
 							),
-							'highlights'    => array(
-								'App pricing can create a different value story from the counter price or delivery total.',
-								'Rewards and meal deals often overlap, so the best next step is usually to compare both before ordering.',
-								'Local participation can still vary, which is why the live app remains the final checkpoint.',
+							'highlights'     => array(
+								'App pricing can create a different value story from the counter price, the drive-thru board, or the delivery total.',
+								'The best comparison is usually app deal versus rewards redemption versus standard McValue pricing.',
+								'Local participation and offer rotation still matter, so the live app remains the final checkpoint.',
 							),
-							'sections'      => array(
+							'sections'       => array(
 								array(
-									'heading'    => 'What readers usually compare on an app-deals page',
+									'heading'    => 'What makes app deals different from static menu pricing',
 									'paragraphs' => array(
-										'Most users on this page are not simply asking whether the app has deals. They are trying to decide whether an app coupon beats a meal deal, whether points redemption makes more sense than cash savings, and whether the cheapest local order is actually found inside McValue rather than the app banner itself.',
+										'App deals are operational, not permanent. That means they can temporarily make a premium burger, breakfast combo, or nugget order feel cheaper than the published price structure suggests. A user who ignores the app may see one value story, while an app user may see a completely different one.',
+										'This is why app-deals content belongs near the center of the site&#8217;s value coverage. Readers who search McDonald\'s app deals are often closer to checkout than readers on a broad menu page, because they are already trying to lower the final total on a real order.',
+									),
+								),
+								array(
+									'heading'    => 'The most common comparison: app deals versus rewards',
+									'paragraphs' => array(
+										'One of the biggest customer-journey questions is whether a live coupon beats holding or spending rewards points. That is not a trivial distinction. Sometimes a points redemption is stronger for a single item, while an app deal does more work on a full order with multiple people or a larger combo.',
+										'That is why this page and the rewards guide should work together. App deals answer the short-term saving question; rewards pages answer the repeat-use value question.',
+									),
+								),
+								array(
+									'heading'    => 'What to check before assuming an app deal is the best option',
+									'paragraphs' => array(
+										'Readers should check whether the offer is pickup-only, whether it can be used with delivery, whether one location participates while another does not, and whether the discount applies to the item they actually want rather than the item they first searched for.',
+										'In practice, the strongest app-deal decision usually comes after comparing the deal to the live McValue category, the meal page, and the rewards path. That extra step is where many users save more than they expected.',
 									),
 								),
 							),
-							'related_links' => array(
+							'faq_items'      => array(
+								array(
+									'question' => 'Are McDonald\'s app deals the same at every location?',
+									'answer'   => 'Not always. Many offers are broadly available, but location participation, ordering channel, and timing can still change what appears in the app. That is why the app itself remains the final authority before you place the order.',
+								),
+								array(
+									'question' => 'Is an app deal usually better than MyMcDonald\'s Rewards?',
+									'answer'   => 'It depends on the order. A one-item purchase may favor rewards, while a larger order may favor an app coupon or a live McValue bundle. The right comparison is not app deals in isolation, but app deals versus rewards versus standard menu pricing.',
+								),
+								array(
+									'question' => 'Can app deals change the cheapest way to order McDonald\'s?',
+									'answer'   => 'Yes. App offers can temporarily undercut the normal menu board, especially for breakfast, burgers, nuggets, and combo orders. That is exactly why this support page exists alongside the broader value guides.',
+								),
+							),
+							'related_links'  => array(
 								array(
 									'label'       => 'Read the deals and McValue guide',
 									'url'         => $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ),
@@ -1111,6 +1449,23 @@ class McPrices_Integration {
 									'description' => 'See the current tracked deals page inside the live menu directory.',
 								),
 							),
+							'external_links' => array(
+								array(
+									'label'       => 'Official McDonald\'s deals page',
+									'url'         => $this->get_official_reference_url( 'deals' ),
+									'description' => 'Use the official page to confirm live digital promotions and national deal visibility.',
+								),
+								array(
+									'label'       => 'Official McDonald\'s app download page',
+									'url'         => $this->get_official_reference_url( 'app' ),
+									'description' => 'Open the app if you are ready to verify the local offer set before ordering.',
+								),
+								array(
+									'label'       => 'Official MyMcDonald\'s information',
+									'url'         => $this->get_official_reference_url( 'rewards' ),
+									'description' => 'Useful when your app-deal comparison turns into a rewards-program question.',
+								),
+							),
 						)
 					),
 				),
@@ -1118,16 +1473,53 @@ class McPrices_Integration {
 					'title'   => 'Calorie Counter',
 					'content' => $this->build_seeded_support_topic_page_content(
 						array(
-							'intro'         => array(
-								'The McDonald&#8217;s Menu Prices USA calorie counter page helps you compare menu items by calories so you can spot lighter burgers, breakfast choices, sides, drinks, and dessert options more easily.',
-								'Readers typically use this page when calories and value need to be considered together, especially for burgers, breakfast, fries, sweet drinks, and desserts where the final order total can change quickly.',
+							'intro'          => array(
+								'The McDonald&#8217;s Menu Prices USA calorie counter page is for readers who want calorie context before they build a full order. Most calorie searches on this site are not abstract. They happen right before someone adds fries, upgrades a drink, or decides whether one sandwich is worth the bigger calorie tradeoff.',
+								'Readers also arrive here after searching individual terms like Hash Brown calories, McChicken calories, Sweet Tea calories, or Big Mac meal calories. That means the page needs to explain where calories accumulate fastest across the menu rather than pretending one number in isolation is enough.',
 							),
-							'highlights'    => array(
-								'Calories usually matter most when readers are comparing a full meal rather than one item in isolation.',
-								'Large fries, drink upgrades, and desserts often create the biggest jump in the order.',
-								'Ingredient and allergen decisions should still be confirmed with official McDonald\'s sources.',
+							'highlights'     => array(
+								'Calories usually matter most when readers are comparing a complete order rather than a single item.',
+								'Fries size, sweet drinks, desserts, and combo upgrades often create the sharpest calorie jump.',
+								'Ingredient and allergen decisions still need official confirmation in the McDonald\'s nutrition tools.',
 							),
-							'related_links' => array(
+							'sections'       => array(
+								array(
+									'heading'    => 'Where McDonald\'s calories rise fastest',
+									'paragraphs' => array(
+										'The fastest calorie increase usually comes from stacking categories rather than choosing one heavy item. A burger that feels manageable on its own can become a much larger total once medium fries, a sugary drink, and a dessert are added on top.',
+										'That is why calorie-counter pages should not behave like thin reference pages. They should help readers see the full-order effect, because that is the real decision most people are making at checkout.',
+									),
+								),
+								array(
+									'heading'    => 'The most common calorie-comparison paths',
+									'paragraphs' => array(
+										'Breakfast visitors often compare Egg McMuffin, Sausage McMuffin with Egg, Hash Browns, and coffee combinations. Lunch and dinner visitors usually compare Big Mac, McChicken, fries, nuggets, and sweet drinks because those items change the total more dramatically than most readers expect.',
+										'Desserts and shakes matter here too. A reader who keeps the sandwich light can still add several hundred calories through a McFlurry, shake, or large sweet beverage if they do not look at the order as a whole.',
+									),
+								),
+								array(
+									'heading'    => 'Calories, ingredients, and allergens are not the same question',
+									'paragraphs' => array(
+										'Many users begin with calories and then realize their real concern is ingredients, macros, allergens, or caffeine. That is normal. Good nutritional content should help readers move from simple energy counts into the deeper question without losing the menu context that first brought them in.',
+										'This is why the calorie counter page should route directly into the nutrition and allergen pillar, the drinks guide, and the dessert guide. Those pages help users understand what the numbers actually mean before they order.',
+									),
+								),
+							),
+							'faq_items'      => array(
+								array(
+									'question' => 'Do combo meal calories usually include fries and a drink?',
+									'answer'   => 'A useful combo comparison should assume the fries and drink matter, because that is how most people actually order. When in doubt, check whether the calorie number refers to the main item only or the broader meal structure.',
+								),
+								array(
+									'question' => 'What are the most searched McDonald\'s calorie checks?',
+									'answer'   => 'Some of the most repeated searches involve Big Mac calories, McChicken calories, Hash Brown calories, nugget calories, and sweet drink calories. Those are the items that most often shape the final order total.',
+								),
+								array(
+									'question' => 'Where should I verify the final calorie or ingredient number?',
+									'answer'   => 'Use the official McDonald\'s nutrition calculator for the final verification step, especially when ingredients, customization, or allergens matter in addition to calories.',
+								),
+							),
+							'related_links'  => array(
 								array(
 									'label'       => 'Read the nutrition, calories, and allergens guide',
 									'url'         => $this->get_seeded_page_url( 'mcdonalds-nutrition-calories-allergens' ),
@@ -1144,6 +1536,18 @@ class McPrices_Integration {
 									'description' => 'Use the drinks pillar when beverage calories are driving the decision.',
 								),
 							),
+							'external_links' => array(
+								array(
+									'label'       => 'Official McDonald\'s nutrition calculator',
+									'url'         => $this->get_official_reference_url( 'nutrition' ),
+									'description' => 'Use the official calculator for final calorie, ingredient, and allergen verification.',
+								),
+								array(
+									'label'       => 'Official McDonald\'s about our food page',
+									'url'         => $this->get_official_reference_url( 'about_food' ),
+									'description' => 'Helpful when a calorie question turns into an ingredient or sourcing question.',
+								),
+							),
 						)
 					),
 				),
@@ -1151,30 +1555,161 @@ class McPrices_Integration {
 					'title'   => 'Breakfast Hours',
 					'content' => $this->build_seeded_support_topic_page_content(
 						array(
-							'intro'         => array(
-								'This page explains typical McDonald&#8217;s breakfast hours in the USA, including when breakfast usually ends and which menu items are normally available in the morning window.',
-								'Breakfast timing is one of the most important practical filters on a McDonald\'s USA order because breakfast items disappear before many readers have finished comparing prices, calories, and combos.',
+							'intro'          => array(
+								'This breakfast hours guide explains the typical McDonald&#8217;s breakfast hours in the USA, including when breakfast usually ends, how weekday and weekend timing often differs, and why timing matters almost as much as price on the breakfast menu.',
+								'Readers searching McDonald\'s breakfast hours are usually moments away from ordering. They are trying to answer whether breakfast is still available, whether all day breakfast still exists, and whether the app, drive-thru, or delivery route changes what they can still order.',
 							),
-							'highlights'    => array(
-								'Morning availability often matters more than the headline breakfast price.',
-								'Breakfast end times can differ by day, location, and store format.',
-								'Use this page with the breakfast menu pages when you need both timing and price context together.',
+							'highlights'     => array(
+								'Morning availability often matters more than the headline breakfast price because missing the window changes the whole menu path.',
+								'Breakfast end times can differ by day, location, store format, and local operations.',
+								'The best workflow is to use this page for planning, then confirm your exact store in the McDonald\'s app before ordering.',
 							),
-							'related_links' => array(
+							'sections'       => array(
+								array(
+									'heading'    => 'The typical U.S. breakfast cutoff pattern',
+									'paragraphs' => array(
+										'Most McDonald\'s USA locations follow a familiar breakfast rhythm: breakfast service usually ends earlier on weekdays and slightly later on weekends. That pattern is why so many searches use phrases like what time does McDonald\'s stop serving breakfast or McDonald\'s breakfast end time.',
+										'The important point is that breakfast timing is operational, not purely national. A guide can explain the common pattern, but the local store remains the final authority because restaurant format and management choices still affect the live cutoff.',
+									),
+								),
+								array(
+									'heading'    => 'Why all day breakfast questions still appear',
+									'paragraphs' => array(
+										'Many breakfast-hours searches still include all day breakfast because customers remember the earlier nationwide rollout and want to know whether it ever came back. In current U.S. practice, breakfast remains a morning-only window rather than an all-day menu segment.',
+										'That makes this page a timing filter first and a pricing support page second. If you miss the breakfast window, the menu path moves immediately into burgers, chicken, fries, drinks, and other all-day categories.',
+									),
+								),
+								array(
+									'heading'    => 'The safest way to check a local breakfast window',
+									'paragraphs' => array(
+										'For most readers, the safest approach is simple: use this page to understand the typical pattern, then confirm the local restaurant in the app before you leave or order delivery. That matters most for commuters, travelers, and weekend customers ordering close to the cutoff.',
+										'Breakfast delivery adds another layer because the restaurant must still be in breakfast mode when the order is accepted. If breakfast timing is tight, pickup is usually the safer route than waiting on delivery timing.',
+									),
+								),
+							),
+							'faq_items'      => array(
+								array(
+									'question' => 'What time does McDonald\'s usually stop serving breakfast?',
+									'answer'   => 'Most readers think in weekday and weekend cutoff windows rather than one national time. A planning page can explain the typical pattern, but the exact restaurant listing in the app is still the best final check for the location you are actually using.',
+								),
+								array(
+									'question' => 'Does McDonald\'s still have all day breakfast in the USA?',
+									'answer'   => 'No nationwide all-day breakfast program is the normal expectation now. Breakfast remains tied to the morning service window, which is why timing pages continue to matter so much for breakfast search intent.',
+								),
+								array(
+									'question' => 'Can breakfast hours differ between nearby McDonald\'s locations?',
+									'answer'   => 'Yes. Store format, local operations, and demand patterns can all shift the live cutoff, so nearby locations can behave differently even if the broader city pattern looks similar.',
+								),
+							),
+							'related_links'  => array(
 								array(
 									'label'       => 'Read the breakfast menu prices pillar',
 									'url'         => $this->get_seeded_page_url( 'breakfast-menu' ),
 									'description' => 'Combine breakfast timing with the full breakfast pricing and value guide.',
 								),
 								array(
+									'label'       => 'Read the breakfast times guide',
+									'url'         => $this->get_seeded_page_url( 'breakfast-times' ),
+									'description' => 'Use the companion page when you want start-time and day-pattern context alongside end-time questions.',
+								),
+								array(
 									'label'       => 'Open the live breakfast category page',
 									'url'         => $this->get_menu_category_page_url( 'breakfast' ),
 									'description' => 'Jump into the tracked breakfast category and item pages.',
 								),
+							),
+							'external_links' => array(
 								array(
-									'label'       => 'Read the deals and McValue guide',
-									'url'         => $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ),
-									'description' => 'Useful when your breakfast decision depends on morning app offers and value structures.',
+									'label'       => 'Official McDonald\'s breakfast menu',
+									'url'         => $this->get_official_reference_url( 'breakfast' ),
+									'description' => 'Use the official breakfast section when you need the live morning menu lineup.',
+								),
+								array(
+									'label'       => 'Official McDonald\'s app download page',
+									'url'         => $this->get_official_reference_url( 'app' ),
+									'description' => 'The app is the fastest way to confirm the breakfast window at one exact restaurant.',
+								),
+							),
+						)
+					),
+				),
+				'breakfast-times' => array(
+					'title'   => 'Breakfast Times',
+					'content' => $this->build_seeded_support_topic_page_content(
+						array(
+							'intro'          => array(
+								'This breakfast times page complements the main breakfast hours guide by focusing on the timing pattern itself: when breakfast usually starts, when it typically ends, and how weekday, weekend, travel, and delivery situations can change the practical answer.',
+								'Readers who search breakfast times usually want fast operational clarity rather than a long food discussion. They want to know when they need to leave home, whether a weekend store gives them more time, and whether breakfast will still be available by the time a delivery order actually reaches the kitchen.',
+							),
+							'highlights'     => array(
+								'Breakfast times searches usually mean start time, cutoff time, or weekday versus weekend timing differences.',
+								'This page works best as a timing companion to the broader breakfast hours and breakfast menu guides.',
+								'The app remains the final check because restaurant-level timing can still vary.',
+							),
+							'sections'       => array(
+								array(
+									'heading'    => 'The practical breakfast-times question most readers are asking',
+									'paragraphs' => array(
+										'In practice, breakfast times searches are about planning. A commuter wants to know if breakfast starts early enough before work. A late-morning customer wants to know if there is still time to get a McMuffin. A traveler wants to know whether a weekend stop buys extra minutes before lunch takes over.',
+										'That is why a separate breakfast times page can still be useful even next to a breakfast hours page. It puts the emphasis on the timing pattern and the customer journey, not just the headline cutoff.',
+									),
+								),
+								array(
+									'heading'    => 'Weekday, weekend, and close-to-cutoff ordering',
+									'paragraphs' => array(
+										'The timing difference between weekdays and weekends is often what matters most. Even a small change in the end time can decide whether a customer gets breakfast or the all-day menu instead, especially if they are ordering close to the switch.',
+										'For close-to-cutoff situations, the safe move is to check the exact location in the app rather than assume the store follows the broad national pattern. That matters even more for delivery orders, where the order has to be accepted before the breakfast window closes.',
+									),
+								),
+								array(
+									'heading'    => 'How this page fits the wider breakfast cluster',
+									'paragraphs' => array(
+										'This is a support page, not the full breakfast guide. Its job is to answer the timing intent cleanly, then route readers to the broader breakfast menu page, the breakfast hours guide, and the live breakfast category when they are ready to compare sandwiches, meals, and prices.',
+										'That structure is useful for both readers and search engines because it separates the timing question from the pricing question while still keeping both pages tightly linked.',
+									),
+								),
+							),
+							'faq_items'      => array(
+								array(
+									'question' => 'Is breakfast times the same thing as breakfast hours?',
+									'answer'   => 'They overlap, but they are not identical. Breakfast hours pages usually emphasize the operating window overall, while breakfast times pages answer the practical start-and-stop timing questions that users tend to search right before ordering.',
+								),
+								array(
+									'question' => 'Should I trust one national breakfast time for every McDonald\'s?',
+									'answer'   => 'No. National patterns are helpful for planning, but the local store still decides the live timing. The app is the safest final source when you are close to the breakfast cutoff.',
+								),
+								array(
+									'question' => 'What is the best next page after checking breakfast times?',
+									'answer'   => 'If you still need operational context, move to the breakfast hours guide. If you are ready to compare sandwiches, prices, or breakfast combos, move into the breakfast menu pillar or the live breakfast category page.',
+								),
+							),
+							'related_links'  => array(
+								array(
+									'label'       => 'Read the breakfast hours guide',
+									'url'         => $this->get_seeded_page_url( 'breakfast-hours' ),
+									'description' => 'Use the main hours page for the broader morning-service context.',
+								),
+								array(
+									'label'       => 'Read the breakfast menu prices pillar',
+									'url'         => $this->get_seeded_page_url( 'breakfast-menu' ),
+									'description' => 'Move here when the timing question turns into a menu or price comparison.',
+								),
+								array(
+									'label'       => 'Open the live breakfast category page',
+									'url'         => $this->get_menu_category_page_url( 'breakfast' ),
+									'description' => 'Browse the live breakfast items once you know you are still inside the morning window.',
+								),
+							),
+							'external_links' => array(
+								array(
+									'label'       => 'Official McDonald\'s breakfast menu',
+									'url'         => $this->get_official_reference_url( 'breakfast' ),
+									'description' => 'Open the official breakfast section if you need the live menu after checking timing.',
+								),
+								array(
+									'label'       => 'Official McDonald\'s app download page',
+									'url'         => $this->get_official_reference_url( 'app' ),
+									'description' => 'Use the app to confirm one exact location when timing is tight.',
 								),
 							),
 						)
@@ -1184,16 +1719,53 @@ class McPrices_Integration {
 					'title'   => 'Allergen Guide',
 					'content' => $this->build_seeded_support_topic_page_content(
 						array(
-							'intro'         => array(
-								'Our allergen guide explains how to approach McDonald&#8217;s USA menu choices more carefully, but always use the official McDonald&#8217;s allergen tool and restaurant information for final decisions.',
-								'This page supports the broader pricing and category pages by showing readers where extra verification matters most before they move from research into a final food decision.',
+							'intro'          => array(
+								'Our allergen guide explains how to research McDonald&#8217;s USA menu choices more carefully while keeping a clear boundary between planning content and final high-stakes verification. This page can narrow options and show which categories deserve extra caution, but the official McDonald&#8217;s nutrition and ingredient tools should always be the final authority.',
+								'Readers usually land here after searching for McDonald\'s allergens, gluten free questions, dairy questions, ingredient lists, or menu items with specific dietary concerns. That means the page needs to help them move from broad menu research into safer decision-making without pretending unofficial content is enough by itself.',
 							),
-							'highlights'    => array(
+							'highlights'     => array(
 								'Use unofficial menu guides for planning, comparison, and narrowing choices.',
 								'Use official McDonald\'s sources for final allergen, ingredient, and preparation checks.',
-								'Breakfast, burgers, nuggets, desserts, and drinks are the most common ingredient research paths.',
+								'Breakfast, burgers, nuggets, desserts, sauces, and drinks are the most common ingredient research paths.',
 							),
-							'related_links' => array(
+							'sections'       => array(
+								array(
+									'heading'    => 'What an allergen guide should and should not do',
+									'paragraphs' => array(
+										'An allergen guide should help readers understand where questions tend to appear on the menu, which product families trigger the most ingredient research, and why menu comparisons still matter before the final verification step. It should not act as a substitute for the official McDonald\'s allergen or nutrition tools when health decisions are involved.',
+										'That distinction matters because many readers first arrive through a low-stakes price or calorie search and only later realize the real question is allergen safety. The content should support that transition cleanly rather than forcing users to start over.',
+									),
+								),
+								array(
+									'heading'    => 'The most common ingredient and allergen research paths',
+									'paragraphs' => array(
+										'Breakfast sandwiches, chicken nuggets, burgers, fries, sauces, and desserts are the most common research paths because they generate repeated ingredient, dairy, gluten, egg, and oil questions. Some readers are checking a single item, while others are comparing entire categories before they choose what to verify officially.',
+										'This is why strong internal linking matters here. Ingredient questions about fries belong next to the fries guide, burger questions belong next to the burger pillar, and breakfast questions belong next to the breakfast guide so readers keep the broader menu context while they research.',
+									),
+								),
+								array(
+									'heading'    => 'Why customization and preparation still matter',
+									'paragraphs' => array(
+										'Even when a menu item looks familiar, preparation method, condiment choice, beverage add-ons, and location-specific handling can still matter. That is especially important for users dealing with serious allergen concerns rather than general ingredient curiosity.',
+										'The safest pattern is to use this page and the linked category guides to narrow your likely choices, then confirm the exact product and customization in the official McDonald\'s nutrition tools before ordering.',
+									),
+								),
+							),
+							'faq_items'      => array(
+								array(
+									'question' => 'Can this allergen guide replace the official McDonald\'s allergen tool?',
+									'answer'   => 'No. This page is for planning and narrowing choices. The official McDonald\'s nutrition and allergen resources should still be used for final verification, especially when health consequences are involved.',
+								),
+								array(
+									'question' => 'Which McDonald\'s categories trigger the most allergen questions?',
+									'answer'   => 'Breakfast sandwiches, burgers, nuggets, fries, desserts, sauces, and sweet drinks generate the most repeat ingredient and allergen searches because they combine multiple components and are often customized.',
+								),
+								array(
+									'question' => 'What is the safest next step after using this page?',
+									'answer'   => 'Move into the relevant category guide or item page to keep the broader menu comparison clear, then confirm the exact item with the official nutrition calculator or ingredient resources before ordering.',
+								),
+							),
+							'related_links'  => array(
 								array(
 									'label'       => 'Read the nutrition, calories, and allergens guide',
 									'url'         => $this->get_seeded_page_url( 'mcdonalds-nutrition-calories-allergens' ),
@@ -1210,6 +1782,100 @@ class McPrices_Integration {
 									'description' => 'Use the burgers pillar when the ingredient question is tied to a burger choice.',
 								),
 							),
+							'external_links' => array(
+								array(
+									'label'       => 'Official McDonald\'s nutrition calculator',
+									'url'         => $this->get_official_reference_url( 'nutrition' ),
+									'description' => 'Use the official tool for final allergen, ingredient, and customization verification.',
+								),
+								array(
+									'label'       => 'Official McDonald\'s about our food page',
+									'url'         => $this->get_official_reference_url( 'about_food' ),
+									'description' => 'Helpful when the question expands from allergens into ingredients and sourcing.',
+								),
+							),
+						)
+					),
+				),
+				'vegan-options' => array(
+					'title'   => 'Vegan Options',
+					'content' => $this->build_seeded_support_topic_page_content(
+						array(
+							'intro'          => array(
+								'This vegan options guide focuses on McDonald&#8217;s USA, where vegan search intent usually means one of three things: finding the safest plant-based starting points, checking whether familiar sides are actually vegan in the U.S., or confirming that no nationwide vegan burger or breakfast combo currently anchors the main menu.',
+								'Because vegan questions are ingredient-sensitive, this page should be used as a planning layer rather than a final authority. It helps readers understand where vegan-friendly possibilities and limitations usually sit on the McDonald&#8217;s USA menu, then sends them to the official ingredient tools for the final decision.',
+							),
+							'highlights'     => array(
+								'McDonald\'s USA does not currently have a nationwide fully vegan burger or breakfast main item on the standard menu.',
+								'Some simpler items and beverages may fit some plant-based routines, but ingredient details and preparation context still matter.',
+								'The official nutrition resources should always be checked before treating any item as fully vegan.',
+							),
+							'sections'       => array(
+								array(
+									'heading'    => 'What vegan searches usually mean on a McDonald\'s site',
+									'paragraphs' => array(
+										'Many vegan-option searches are not asking for a complete menu replacement. They are asking whether one side, one drink, or one modified order can fit a plant-based routine during travel or convenience ordering. That means the page needs to clarify both the limits and the realistic starting points.',
+										'The most important clarification is that McDonald\'s USA should not be treated like a dedicated vegan quick-service chain. Menu structure, frying practices, and ingredient choices mean readers need to check carefully rather than assume a familiar item works the same way it might elsewhere.',
+									),
+								),
+								array(
+									'heading'    => 'Where vegan-friendly possibilities and limits usually appear',
+									'paragraphs' => array(
+										'The simplest vegan-adjacent research paths tend to involve packaged fruit, plain beverages such as black coffee or certain fountain drinks, and a small number of menu components that may work depending on the exact ingredient list and customization. Those are usually easier starting points than sandwiches, breakfast platters, dairy desserts, or McCafe drinks that frequently include animal-derived ingredients.',
+										'Readers also need to know that some items often assumed to be vegan are not always simple in the U.S. menu context. Fries, breakfast builds, desserts, and specialty beverages are exactly the kinds of pages that deserve an ingredient check rather than a quick assumption.',
+									),
+								),
+								array(
+									'heading'    => 'Why official verification matters even more here',
+									'paragraphs' => array(
+										'Vegan searches are often zero-margin decisions: a reader wants to know whether an item fits or does not fit. That means this page should be more cautious than a broad menu page. It can narrow the field, but it should not promise certainty without the official ingredient data.',
+										'The best workflow is to use this page to understand the likely options, then move into the fries, drinks, or allergen guides for context, and finally verify the exact item in the official nutrition resources before ordering.',
+									),
+								),
+							),
+							'faq_items'      => array(
+								array(
+									'question' => 'Does McDonald\'s USA have a nationwide vegan burger?',
+									'answer'   => 'No. The current U.S. menu should not be treated as having one standard nationwide vegan burger or breakfast main item. Vegan research on this site is mostly about sides, beverages, modifications, and ingredient verification.',
+								),
+								array(
+									'question' => 'Are McDonald\'s fries vegan in the USA?',
+									'answer'   => 'Fries are one of the most important items to verify in the official ingredient resources because assumptions about them are often wrong. This page should direct readers to verification rather than treat fries as automatically vegan in the U.S. market.',
+								),
+								array(
+									'question' => 'What is the safest next step after reading the vegan options page?',
+									'answer'   => 'Use the linked sides, drinks, and allergen pages to narrow likely options, then check the official McDonald\'s nutrition and ingredient information before you order anything as fully vegan.',
+								),
+							),
+							'related_links'  => array(
+								array(
+									'label'       => 'Read the fries and sides menu prices pillar',
+									'url'         => $this->get_seeded_page_url( 'fries-sides' ),
+									'description' => 'Most vegan McDonald\'s searches quickly turn into a sides question.',
+								),
+								array(
+									'label'       => 'Read the drinks menu prices pillar',
+									'url'         => $this->get_seeded_page_url( 'beverage-menu' ),
+									'description' => 'Beverages are one of the simplest plant-based research paths on the menu.',
+								),
+								array(
+									'label'       => 'Read the allergen guide',
+									'url'         => $this->get_seeded_page_url( 'allergen-guide' ),
+									'description' => 'Use the allergen page when the vegan question becomes a broader ingredient-verification task.',
+								),
+							),
+							'external_links' => array(
+								array(
+									'label'       => 'Official McDonald\'s nutrition calculator',
+									'url'         => $this->get_official_reference_url( 'nutrition' ),
+									'description' => 'Use the official tool to verify the exact ingredient and customization details behind any vegan decision.',
+								),
+								array(
+									'label'       => 'Official McDonald\'s about our food page',
+									'url'         => $this->get_official_reference_url( 'about_food' ),
+									'description' => 'Helpful when the question expands from simple menu navigation into ingredient and sourcing detail.',
+								),
+							),
 						)
 					),
 				),
@@ -1217,16 +1883,53 @@ class McPrices_Integration {
 					'title'   => 'Price History',
 					'content' => $this->build_seeded_support_topic_page_content(
 						array(
-							'intro'         => array(
-								'The McDonald&#8217;s Menu Prices USA price history page tracks how popular menu prices have changed over time, helping readers compare current pricing with previous months and seasonal promotions.',
-								'Readers usually land here because they want context for a price increase or because a current local total feels different from what they remember paying before.',
+							'intro'          => array(
+								'The McDonald&#8217;s Menu Prices USA price history page exists for readers who want more than the current number. They want context for price increases, a sense of how flagship items move over time, and a way to compare current prices with what they remember paying before.',
+								'Price-history intent is rarely about nostalgia alone. It usually appears when a current menu total feels unexpectedly high, when a deal looks weaker than it used to, or when a reader wants to understand whether a location is expensive because of time, geography, or ordering channel.',
 							),
-							'highlights'    => array(
+							'highlights'     => array(
 								'Price-history pages work best when used alongside current menu pages, not instead of them.',
-								'Limited-time items, app deals, and regional pricing can distort year-to-year comparisons.',
-								'Flagship burgers, breakfast staples, nuggets, fries, and drinks are usually the clearest comparison anchors.',
+								'Limited-time items, app deals, and regional pricing can distort simple year-to-year comparisons.',
+								'Big Mac, breakfast staples, nuggets, fries, and drinks are the clearest recurring comparison anchors.',
 							),
-							'related_links' => array(
+							'sections'       => array(
+								array(
+									'heading'    => 'Why menu price history matters',
+									'paragraphs' => array(
+										'Price-history pages help readers answer a common real-world question: am I paying more because the whole menu changed, because my region is expensive, or because I am ordering through a different channel than before? That is a more useful question than a flat list of old numbers with no explanation.',
+										'The best price-history content therefore needs context. It should explain that location, delivery, app-led discounts, and combo behavior can all change the lived price story even when the headline item looks familiar.',
+									),
+								),
+								array(
+									'heading'    => 'The strongest menu anchors for price comparison',
+									'paragraphs' => array(
+										'Big Mac, Egg McMuffin, Chicken McNuggets, fries, and core drinks are some of the strongest anchors because readers remember them well and search them repeatedly across years. These recurring menu references make it easier to understand change than rare or limited-time products do.',
+										'Breakfast and burger anchors matter especially because they combine habit and volume. People who buy the same coffee or breakfast sandwich every week notice price movement faster than readers who order one unusual item once a year.',
+									),
+								),
+								array(
+									'heading'    => 'What can make a current price feel higher than expected',
+									'paragraphs' => array(
+										'A price-history concern is not always caused by menu inflation alone. Delivery fees, combo upgrades, larger drink sizes, and weaker app promotions can all make the final total feel like a price jump even when the base item only moved a little.',
+										'That is why this page should link directly into the state-pricing guide, the burger guide, and the breakfast guide. Those pages help readers separate time-based change from regional or category-specific differences.',
+									),
+								),
+							),
+							'faq_items'      => array(
+								array(
+									'question' => 'Which McDonald\'s items are best for tracking price history?',
+									'answer'   => 'Flagship burgers, breakfast staples, nuggets, fries, and core drinks are usually the strongest anchors because they are widely recognized and repeatedly purchased across markets.',
+								),
+								array(
+									'question' => 'Why does the current price sometimes feel higher even if the menu item did not change much?',
+									'answer'   => 'The final total can rise because of delivery fees, combo structure, drink or fries upgrades, and weaker promotions even when the core item only changed modestly. That is why menu history needs context, not just old numbers.',
+								),
+								array(
+									'question' => 'What is the best next page after reading the price-history guide?',
+									'answer'   => 'If your question is local variation, move to the prices by state guide. If your question is category-specific movement, move into the relevant burger or breakfast pillar where the comparison is easier to interpret.',
+								),
+							),
+							'related_links'  => array(
 								array(
 									'label'       => 'Read the prices by state pillar',
 									'url'         => $this->get_seeded_page_url( 'mcdonalds-prices-by-state' ),
@@ -1243,6 +1946,18 @@ class McPrices_Integration {
 									'description' => 'Breakfast staples also make strong history anchors because readers remember them well.',
 								),
 							),
+							'external_links' => array(
+								array(
+									'label'       => 'Official McDonald\'s full menu',
+									'url'         => $this->get_official_reference_url( 'full_menu' ),
+									'description' => 'Use the official menu as the live reference point when comparing current tracked prices with remembered past totals.',
+								),
+								array(
+									'label'       => 'Official McDonald\'s app download page',
+									'url'         => $this->get_official_reference_url( 'app' ),
+									'description' => 'Helpful when the price-history question is really about today\'s app-led checkout total.',
+								),
+							),
 						)
 					),
 				),
@@ -1250,16 +1965,58 @@ class McPrices_Integration {
 					'title'   => 'Delivery Guide',
 					'content' => $this->build_seeded_support_topic_page_content(
 						array(
-							'intro'         => array(
-								'This delivery guide explains what to expect when ordering McDonald&#8217;s USA through delivery platforms, including price differences, fees, bundle availability, and app-linked promotions.',
-								'Delivery can change the real menu-price story more than many readers expect because the delivered total is shaped by platform fees, bundled promotions, menu availability, and location-specific service coverage.',
+							'intro'          => array(
+								'This delivery guide explains what usually happens to McDonald&#8217;s USA orders when they move from pickup or counter ordering into delivery. That includes platform markups, fees, menu differences, bundle behavior, and the simple reality that the cheapest in-store order is not always the cheapest delivered order.',
+								'Readers searching delivery pricing are usually very close to checkout. They want to know whether delivery changes burger, breakfast, nugget, fries, or dessert value enough to choose a different order path altogether.',
 							),
-							'highlights'    => array(
+							'highlights'     => array(
 								'The cheapest in-store order is not always the cheapest delivered order.',
 								'Delivery menus can differ from in-store menus and app pickup menus.',
 								'Deals, McValue, and rewards pages are the best follow-up when you want to compare delivery against pickup or counter value.',
 							),
-							'related_links' => array(
+							'sections'       => array(
+								array(
+									'heading'    => 'Why delivery changes the menu-price story',
+									'paragraphs' => array(
+										'Delivery does more than add a fee. It can change which categories feel worth ordering, which bundle sizes make sense, and whether a deal still looks good once service charges and markups are included. That is why delivery belongs in the site architecture as its own support page rather than a footnote on every menu category.',
+										'The final delivered total is shaped by platform pricing, basket size, time of day, distance, and local availability. That means a value comparison that works perfectly at the counter can feel weak once the delivery layer is applied.',
+									),
+								),
+								array(
+									'heading'    => 'The categories most affected by delivery',
+									'paragraphs' => array(
+										'Combo meals, shareables, desserts, and drinks often change most under delivery because markups and fees spread differently depending on order size. A single burger order can feel expensive fast, while a group order may make more sense once the delivery cost is spread across multiple people.',
+										'Breakfast creates its own timing issue because availability is tied to the service window. Even if breakfast appears in the app, the order still has to reach the restaurant during breakfast hours for the request to succeed.',
+									),
+								),
+								array(
+									'heading'    => 'How to decide between delivery, pickup, and app ordering',
+									'paragraphs' => array(
+										'The most reliable comparison is not delivery in isolation. It is delivery versus pickup in the app versus the standard menu path. That comparison is where readers discover whether the convenience premium is worth it or whether a pickup order would protect more of the menu value.',
+										'This is also why delivery pages should interlink heavily with deals, rewards, McValue, and state-pricing coverage. The final answer depends on more than one fee screen.',
+									),
+								),
+							),
+							'faq_items'      => array(
+								array(
+									'question' => 'Why does McDonald\'s delivery usually cost more than pickup?',
+									'answer'   => 'The total often rises because of service fees, delivery fees, platform markups, and basket-size effects. The delivered order is a different pricing environment from the in-store board or pickup app flow.',
+								),
+								array(
+									'question' => 'Are the same menu items always available on delivery?',
+									'answer'   => 'Not always. Delivery menus can differ from pickup or in-store menus, and timing-sensitive categories like breakfast can disappear as soon as the restaurant leaves that service window.',
+								),
+								array(
+									'question' => 'What is the best next step after reading the delivery guide?',
+									'answer'   => 'Compare the delivery path with the McDelivery guide, the app deals page, and the broader McValue coverage. That shows whether the final total is being driven by convenience, bundle choice, or the loss of a better deal path.',
+								),
+							),
+							'related_links'  => array(
+								array(
+									'label'       => 'Read the McDelivery guide',
+									'url'         => $this->get_seeded_page_url( 'mcdelivery-guide' ),
+									'description' => 'Use the McDelivery page when you want the official McDonald\'s-branded delivery path specifically.',
+								),
 								array(
 									'label'       => 'Read the deals and McValue guide',
 									'url'         => $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ),
@@ -1270,10 +2027,99 @@ class McPrices_Integration {
 									'url'         => $this->get_seeded_page_url( 'mcdonalds-app-deals' ),
 									'description' => 'Use this when pickup or app-led ordering may beat delivery on final cost.',
 								),
+							),
+							'external_links' => array(
 								array(
-									'label'       => 'Read the prices by state pillar',
-									'url'         => $this->get_seeded_page_url( 'mcdonalds-prices-by-state' ),
-									'description' => 'Regional pricing is one of the reasons delivered totals vary so much across markets.',
+									'label'       => 'Official McDelivery FAQ',
+									'url'         => $this->get_official_reference_url( 'mcdelivery' ),
+									'description' => 'Use the official McDelivery FAQ when you want the current McDonald\'s-branded delivery guidance.',
+								),
+								array(
+									'label'       => 'Official McDonald\'s app download page',
+									'url'         => $this->get_official_reference_url( 'app' ),
+									'description' => 'Helpful when you want to compare delivery against pickup inside the official ordering flow.',
+								),
+							),
+						)
+					),
+				),
+				'mcdelivery-guide' => array(
+					'title'   => 'McDelivery Guide',
+					'content' => $this->build_seeded_support_topic_page_content(
+						array(
+							'intro'          => array(
+								'This McDelivery guide focuses on the McDonald\'s-branded delivery path specifically. It answers the questions readers usually mean when they search how much is McDelivery, McDelivery fees, or McDelivery menu options in the USA.',
+								'McDelivery intent is slightly different from generic delivery intent. Readers here want to understand the official McDonald\'s delivery experience, how it relates to the app, and why the final delivered total can still look different from the regular menu price they saw elsewhere.',
+							),
+							'highlights'     => array(
+								'McDelivery is the McDonald\'s-branded delivery experience, but fees and logistics can still depend on the local ordering setup.',
+								'Readers usually search McDelivery because they want to know the real delivered total, not just the menu-board price.',
+								'Breakfast timing, bundle size, and app participation can all change whether McDelivery feels worth it.',
+							),
+							'sections'       => array(
+								array(
+									'heading'    => 'What McDelivery means in practice',
+									'paragraphs' => array(
+										'McDelivery is the branded delivery route associated with McDonald\'s, but the customer experience still depends on your market, local availability, and the delivery setup used at the restaurant. That is why McDelivery searches often include fee questions and menu questions rather than just the brand name itself.',
+										'For readers, the important distinction is that McDelivery is a service path. It is not automatically identical to pickup ordering, counter ordering, or every third-party delivery experience that includes McDonald\'s products.',
+									),
+								),
+								array(
+									'heading'    => 'Why the final McDelivery total can surprise people',
+									'paragraphs' => array(
+										'When users search how much is McDelivery, they are usually reacting to the difference between the core menu price and the delivered checkout total. Fees, platform economics, distance, basket size, and local markup behavior can all shape the number they finally see.',
+										'That makes McDelivery one of the clearest examples of why menu-price content needs support pages. The posted item price is still useful, but it is not the whole story once ordering convenience becomes part of the decision.',
+									),
+								),
+								array(
+									'heading'    => 'When McDelivery makes sense versus pickup',
+									'paragraphs' => array(
+										'McDelivery tends to make more sense for larger baskets, group orders, or situations where time savings matters more than the lowest possible total. For a small solo order, pickup or a strong app offer may preserve more value.',
+										'Breakfast creates an additional timing filter. Even if the McDelivery menu shows breakfast items, the restaurant still has to receive the order while breakfast is available locally. That is why breakfast-hours pages remain important here too.',
+									),
+								),
+							),
+							'faq_items'      => array(
+								array(
+									'question' => 'Does McDelivery always mean the same fees everywhere?',
+									'answer'   => 'No. McDelivery costs can vary by local setup, basket size, and other checkout factors. The exact fee pattern is one of the main reasons readers search for McDelivery guidance in the first place.',
+								),
+								array(
+									'question' => 'Is McDelivery the same as every other third-party McDonald\'s delivery option?',
+									'answer'   => 'Not exactly. McDelivery is the branded service path, while generic delivery questions may involve broader platform comparisons. That is why this page is paired with the general delivery guide instead of replacing it.',
+								),
+								array(
+									'question' => 'What is the best next step after checking McDelivery?',
+									'answer'   => 'Compare the official McDelivery route against pickup in the app, the broader delivery guide, and the live deals and rewards pages. That is where the best-value ordering method usually becomes clear.',
+								),
+							),
+							'related_links'  => array(
+								array(
+									'label'       => 'Read the delivery guide',
+									'url'         => $this->get_seeded_page_url( 'delivery-guide' ),
+									'description' => 'Use the broader delivery page when you want the full delivery-value comparison.',
+								),
+								array(
+									'label'       => 'Read the breakfast hours guide',
+									'url'         => $this->get_seeded_page_url( 'breakfast-hours' ),
+									'description' => 'Timing matters here because breakfast delivery still depends on the local breakfast window.',
+								),
+								array(
+									'label'       => 'Read the McDonald\'s app deals page',
+									'url'         => $this->get_seeded_page_url( 'mcdonalds-app-deals' ),
+									'description' => 'Compare McDelivery against pickup-based app offers before placing the order.',
+								),
+							),
+							'external_links' => array(
+								array(
+									'label'       => 'Official McDelivery FAQ',
+									'url'         => $this->get_official_reference_url( 'mcdelivery' ),
+									'description' => 'Use the official McDelivery FAQ for the live service explanation and current operational guidance.',
+								),
+								array(
+									'label'       => 'Official McDonald\'s app download page',
+									'url'         => $this->get_official_reference_url( 'app' ),
+									'description' => 'Open the official app if you want to compare the branded delivery path with pickup at your local store.',
 								),
 							),
 						)
@@ -1283,16 +2129,53 @@ class McPrices_Integration {
 					'title'   => 'Rewards Guide',
 					'content' => $this->build_seeded_support_topic_page_content(
 						array(
-							'intro'         => array(
-								'This guide covers how MyMcDonald&#8217;s Rewards fits into current USA pricing, including points, redemptions, app-only discounts, and how rewards interact with meal deals.',
-								'Rewards matter because many readers are not only comparing menu prices. They are also deciding whether to pay cash, redeem points, or stack a local app offer into the same order path.',
+							'intro'          => array(
+								'This rewards guide explains how MyMcDonald&#8217;s Rewards fits into the real McDonald&#8217;s USA value picture, including point-earning intent, redemption thinking, and the way rewards interact with app coupons, meal deals, and everyday McValue ordering.',
+								'Readers searching MyMcDonald\'s Rewards are usually trying to answer one of three questions: how the rewards system affects the final price, whether rewards are better than a live app deal, and what the smartest redemption path looks like for repeat McDonald\'s orders.',
 							),
-							'highlights'    => array(
+							'highlights'     => array(
 								'Rewards change the practical value of burgers, breakfast, fries, drinks, and desserts.',
-								'The most useful comparison is often rewards versus a meal deal, not rewards in isolation.',
-								'The live app remains the final authority on what a reader can redeem locally.',
+								'The strongest comparison is usually rewards versus a live deal or meal path, not rewards in isolation.',
+								'The official McDonald\'s app remains the final authority on point earning, redemption visibility, and local participation.',
 							),
-							'related_links' => array(
+							'sections'       => array(
+								array(
+									'heading'    => 'Why rewards intent is different from coupon intent',
+									'paragraphs' => array(
+										'Coupon intent is usually immediate: a reader wants today\'s lowest price. Rewards intent is broader. It asks whether repeat purchases create a better long-term value path than one-time discounts, and whether saving points for a future item beats taking a current coupon now.',
+										'That means a rewards page should not just restate that points exist. It should help readers understand when rewards matter most, especially across categories that people buy again and again, such as breakfast, coffee, fries, and burgers.',
+									),
+								),
+								array(
+									'heading'    => 'The common question behind points-per-dollar searches',
+									'paragraphs' => array(
+										'Many readers search how many points per dollar McDonald\'s gives because they are really asking a value question. They want to know whether the rewards program changes their effective spend over time and whether a familiar order becomes more attractive once the rewards layer is included.',
+										'The exact earning and redemption details should always be verified inside the official McDonald\'s system, but the strategic question can still be answered here: rewards are most useful when they are compared against the app-deals path and the menu categories the customer buys repeatedly.',
+									),
+								),
+								array(
+									'heading'    => 'Where rewards fit best in the wider menu journey',
+									'paragraphs' => array(
+										'Rewards are especially relevant for habitual orders rather than one-time novelty purchases. A daily coffee, recurring breakfast sandwich, or repeat fries-and-burger order can make rewards feel more meaningful than a single one-off discount.',
+										'This is why the rewards page should interlink tightly with the app-deals page, the broader value guide, and live category pages. It helps readers move from theoretical points into the actual categories where they spend most often.',
+									),
+								),
+							),
+							'faq_items'      => array(
+								array(
+									'question' => 'Is MyMcDonald\'s Rewards always better than an app deal?',
+									'answer'   => 'Not always. Some orders favor immediate app coupons, while others favor saving or spending rewards points. The smart comparison is rewards versus the live deal path and the normal menu price for the category you actually buy most often.',
+								),
+								array(
+									'question' => 'Why do readers search points per dollar so often?',
+									'answer'   => 'Because they are trying to understand the effective value of repeat McDonald\'s spending, not just the existence of a loyalty program. It is a value question disguised as a program-details question.',
+								),
+								array(
+									'question' => 'What is the best next page after the rewards guide?',
+									'answer'   => 'Usually the app-deals page or the broader McValue guide. Those pages help you compare loyalty value against immediate coupon value and category-level pricing.',
+								),
+							),
+							'related_links'  => array(
 								array(
 									'label'       => 'Read the McDonald\'s app deals page',
 									'url'         => $this->get_seeded_page_url( 'mcdonalds-app-deals' ),
@@ -1309,6 +2192,18 @@ class McPrices_Integration {
 									'description' => 'See the current tracked deals page inside the live directory.',
 								),
 							),
+							'external_links' => array(
+								array(
+									'label'       => 'Official MyMcDonald\'s information',
+									'url'         => $this->get_official_reference_url( 'rewards' ),
+									'description' => 'Use the official page for current rewards-program details and live participation context.',
+								),
+								array(
+									'label'       => 'Official McDonald\'s app download page',
+									'url'         => $this->get_official_reference_url( 'app' ),
+									'description' => 'Open the official app when you are ready to compare earning, redemption, and coupon options directly.',
+								),
+							),
 						)
 					),
 				),
@@ -1316,16 +2211,53 @@ class McPrices_Integration {
 					'title'   => 'Limited-Time Menu',
 					'content' => $this->build_seeded_support_topic_page_content(
 						array(
-							'intro'         => array(
-								'This page highlights current limited-time McDonald&#8217;s USA menu items, seasonal sandwiches, desserts, breakfast collaborations, and short-run deal bundles that may not stay on the menu for long.',
-								'Limited-time pages are valuable because they help readers separate evergreen menu pricing from short-run releases that can quickly change the burger, dessert, fries, breakfast, and deals conversation.',
+							'intro'          => array(
+								'This limited-time McDonald&#8217;s menu guide covers the fast-moving part of the site: seasonal launches, short-run sandwiches, dessert returns, and temporary deal bundles that can reshape price and menu behavior for a brief window.',
+								'Limited-time search intent is different from normal menu intent. Readers are usually asking whether a returning favorite such as Shamrock Shake or McRib is back, what it costs this year, how the calories compare, and whether the item is nationally available or only showing up in some markets.',
 							),
-							'highlights'    => array(
+							'highlights'     => array(
 								'Limited-time menu pages are most useful when paired with the live what\'s-new category page.',
-								'Short-run items can temporarily reset normal value comparisons inside burgers, breakfast, and desserts.',
-								'Regional availability and app promotion support can still vary by restaurant.',
+								'Short-run items can temporarily reset normal value comparisons inside burgers, breakfast, desserts, and deals.',
+								'Regional availability and app promotion support can still vary by restaurant and launch window.',
 							),
-							'related_links' => array(
+							'sections'       => array(
+								array(
+									'heading'    => 'Why limited-time intent needs its own support page',
+									'paragraphs' => array(
+										'Limited-time searches are more time-sensitive than standard menu searches because the reader is often trying to confirm whether an item is back before they drive to the store or open the app. That urgency changes how the content should work: fast clarity first, then deeper comparison.',
+										'This page exists so the site can separate evergreen menu coverage from short-run releases. That makes the overall topical structure cleaner for both users and search engines, because temporary products behave differently from core burgers, sides, or desserts.',
+									),
+								),
+								array(
+									'heading'    => 'The two strongest repeat limited-time entities: Shamrock Shake and McRib',
+									'paragraphs' => array(
+										'Shamrock Shake and McRib dominate limited-time search behavior because readers ask the same three things every cycle: is it back, how much is it, and how many calories does it have? Those questions are repeated enough that they shape the entire limited-time content pattern.',
+										'That is why this page should mention both pricing and nutrition context for limited runs, even when the live category page contains the item cards. The support page answers the recurring search intent, while the live page handles the exact tracked item.',
+									),
+								),
+								array(
+									'heading'    => 'How to compare a limited-time item with the regular menu',
+									'paragraphs' => array(
+										'Limited-time launches often create excitement, but the smart comparison is still against the core menu. A seasonal shake should be compared with the dessert category, and a short-run sandwich should be compared with the burger or chicken category it is actually competing with.',
+										'That is where internal linking matters most. A what\'s-new page should route readers into the permanent category guides so they can judge whether the limited item is genuinely compelling or just temporarily visible.',
+									),
+								),
+							),
+							'faq_items'      => array(
+								array(
+									'question' => 'What are the most searched McDonald\'s limited-time items?',
+									'answer'   => 'Shamrock Shake and McRib are two of the strongest repeat limited-time search entities because they generate return-availability, price, and calorie questions every cycle.',
+								),
+								array(
+									'question' => 'Why do limited-time prices vary so much?',
+									'answer'   => 'Because short-run items still sit inside local franchise pricing, app promotion behavior, and regional availability differences. A temporary item can feel even more variable than a core menu burger or breakfast sandwich.',
+								),
+								array(
+									'question' => 'What is the best next page after checking a limited-time item?',
+									'answer'   => 'Move into the live what\'s-new category page for exact tracked items, then compare the item with the relevant permanent category such as burgers, desserts, or deals to judge whether it is actually the best order choice.',
+								),
+							),
+							'related_links'  => array(
 								array(
 									'label'       => 'Open the live what\'s-new category page',
 									'url'         => $this->get_menu_category_page_url( 'whats-new' ),
@@ -1342,6 +2274,18 @@ class McPrices_Integration {
 									'description' => 'Helpful when a short-run item also appears inside a bundle, app promotion, or meal-deal context.',
 								),
 							),
+							'external_links' => array(
+								array(
+									'label'       => 'Official McDonald\'s full menu',
+									'url'         => $this->get_official_reference_url( 'full_menu' ),
+									'description' => 'Use the official menu as the final check for whether a limited-time product is visible nationally.',
+								),
+								array(
+									'label'       => 'Official McDonald\'s deals page',
+									'url'         => $this->get_official_reference_url( 'deals' ),
+									'description' => 'Helpful when a temporary item is also being pushed with a live digital promotion.',
+								),
+							),
 						)
 					),
 				),
@@ -1349,16 +2293,53 @@ class McPrices_Integration {
 					'title'   => 'Snack Wrap',
 					'content' => $this->build_seeded_support_topic_page_content(
 						array(
-							'intro'         => array(
-								'This guide tracks the current McDonald&#8217;s USA snack wrap lineup, including spicy and ranch builds, pricing, and calories.',
-								'Snack Wrap interest is usually tied to lighter lunch decisions, lower-entry chicken comparisons, or the question of whether a wrap order makes more sense than a sandwich or nugget meal.',
+							'intro'          => array(
+								'This Snack Wrap guide covers the current McDonald&#8217;s USA wrap lineup with a focus on the search intent readers actually show: spicy chicken snack wrap interest, snack wrap price checks, calorie questions, and the comparison between wraps and the rest of the chicken menu.',
+								'Snack Wrap visitors are usually not doing a generic wrap search. They are deciding whether a lighter chicken order, a lower-entry lunch, or a faster hand-held option makes more sense than McChicken, McCrispy, nuggets, or a full combo meal.',
 							),
-							'highlights'    => array(
+							'highlights'     => array(
 								'Readers normally compare Snack Wrap pricing against McChicken, McCrispy, and nuggets rather than against wraps alone.',
 								'Snack Wrap pages work best when paired with the chicken-and-fish pillar and the live wrap category page.',
 								'Calories, sauce choice, and add-on sides still shape the final order value.',
 							),
-							'related_links' => array(
+							'sections'       => array(
+								array(
+									'heading'    => 'Why spicy chicken snack wrap searches matter',
+									'paragraphs' => array(
+										'Spicy Snack Wrap searches are a strong signal that the reader is looking for flavor identity as much as price. They want to know whether the wrap is just a small chicken option or whether it offers a meaningfully different profile from McChicken or McCrispy sandwiches.',
+										'That is why this page should talk about positioning, not just item existence. The wrap sits at a distinct decision point between lighter lunch, fast handheld order, and lower-cost chicken entry.',
+									),
+								),
+								array(
+									'heading'    => 'Snack Wrap price versus other chicken orders',
+									'paragraphs' => array(
+										'When readers search snack wrap McDonald\'s price, they are usually deciding whether the wrap is cheaper or more sensible than a small sandwich order. The real comparison is not wrap versus wrap. It is wrap versus McChicken, wrap versus nuggets, or wrap versus a fuller premium chicken meal.',
+										'That comparison becomes even clearer when sides are added. A wrap that looks light and affordable can move much closer to sandwich pricing once fries and a drink are included.',
+									),
+								),
+								array(
+									'heading'    => 'How calories and add-ons change the wrap decision',
+									'paragraphs' => array(
+										'Snack Wrap calories usually matter because the wrap is often chosen by readers who are trying to control the total more carefully than they would with a larger chicken sandwich. Sauce choice and side choice therefore matter more here than they might on a heavier meal path.',
+										'This is why the page should route users toward the live wrap items, the chicken-and-fish pillar, and the broader value guide. The right order depends on whether the customer wants a light one-item lunch or a fuller combo-style meal.',
+									),
+								),
+							),
+							'faq_items'      => array(
+								array(
+									'question' => 'Is the Snack Wrap mainly a price search or a flavor search?',
+									'answer'   => 'It is usually both. Many readers search for the price first, but spicy and ranch variation interest shows that flavor positioning is a major part of the wrap decision too.',
+								),
+								array(
+									'question' => 'What is the most useful way to compare a Snack Wrap?',
+									'answer'   => 'The strongest comparison is usually against McChicken, McCrispy, and nuggets rather than against wrap items in isolation. That shows whether the wrap really is the better lunch or value choice for your order.',
+								),
+								array(
+									'question' => 'What is the best next page after checking Snack Wrap details?',
+									'answer'   => 'Move into the live Snack Wrap category page for exact items or into the chicken-and-fish pillar when the question becomes a wider chicken-menu comparison.',
+								),
+							),
+							'related_links'  => array(
 								array(
 									'label'       => 'Open the live Snack Wrap category page',
 									'url'         => $this->get_menu_category_page_url( 'snackwrap' ),
@@ -1375,6 +2356,18 @@ class McPrices_Integration {
 									'description' => 'Use this when the Snack Wrap question is really about lower-cost order building.',
 								),
 							),
+							'external_links' => array(
+								array(
+									'label'       => 'Official McDonald\'s full menu',
+									'url'         => $this->get_official_reference_url( 'full_menu' ),
+									'description' => 'Use the official menu as the live availability check when you want to confirm the current wrap lineup.',
+								),
+								array(
+									'label'       => 'Official McDonald\'s nutrition calculator',
+									'url'         => $this->get_official_reference_url( 'nutrition' ),
+									'description' => 'Helpful when the wrap question turns into a calorie or ingredient comparison.',
+								),
+							),
 						)
 					),
 				),
@@ -1382,16 +2375,53 @@ class McPrices_Integration {
 					'title'   => '$1 $2 $3 Menu',
 					'content' => $this->build_seeded_support_topic_page_content(
 						array(
-							'intro'         => array(
-								'This guide covers the budget-focused McDonald&#8217;s USA value lineup, including lower-cost breakfast picks, burgers, nuggets, fries, and other entry-price items.',
-								'Readers still search for a dollar-menu-style answer even when the live savings structure is now shaped by McValue, meal deals, and app offers rather than one simple national low-price menu.',
+							'intro'          => array(
+								'This guide exists because readers still search for the old McDonald\'s $1 $2 $3 menu even though the modern value structure is shaped more by McValue, app deals, meal bundling, and rotating digital offers than by one simple national low-price board.',
+								'In other words, dollar-menu intent is still very real, but it has to be answered in modern menu language. Readers want the cheapest realistic McDonald&#8217;s order path, not just a nostalgic list format from an earlier phase of the brand.',
 							),
-							'highlights'    => array(
+							'highlights'     => array(
 								'Use this page when the real question is the lowest realistic spend rather than a premium combo meal.',
 								'The best next step is usually the deals and McValue pillar because that reflects the live structure more accurately.',
 								'Breakfast, burgers, nuggets, fries, and dessert add-ons are the most common low-entry comparison paths.',
 							),
-							'related_links' => array(
+							'sections'       => array(
+								array(
+									'heading'    => 'Why dollar-menu searches still matter',
+									'paragraphs' => array(
+										'Readers continue to search $1 menu, $1 $2 $3 menu, and dollar-menu-style queries because they are trying to solve the same value problem: what is the cheapest satisfying McDonald\'s order right now? Even if the naming convention changed, the customer intent did not.',
+										'That is why this page should not pretend the old search behavior disappeared. It should translate that search intent into the current McValue and deal structure without confusing the user or forcing them to guess which page now holds the answer.',
+									),
+								),
+								array(
+									'heading'    => 'Where the lowest-entry menu decisions usually happen',
+									'paragraphs' => array(
+										'The lowest-entry order path usually lives in breakfast basics, small burgers, fries, nuggets, and value-focused app deals. Readers are not always looking for one exact dollar amount. Often they want the safest low-spend category so they can order quickly without overthinking it.',
+										'This is where internal linking into McValue, deals, and extra value meals becomes essential. Cheap ordering is not one page on the site. It is a cluster of related value decisions.',
+									),
+								),
+								array(
+									'heading'    => 'How the app changes the old dollar-menu idea',
+									'paragraphs' => array(
+										'One major difference between the classic dollar-menu era and the current ordering environment is the app. A live app offer can suddenly make a different burger, nugget, or breakfast order the cheapest effective option even if the published menu still points somewhere else.',
+										'That means modern value content has to compare app offers, McValue listings, and meal structures together. The reader is not just searching for a label. They are searching for the best low-cost path today.',
+									),
+								),
+							),
+							'faq_items'      => array(
+								array(
+									'question' => 'Does McDonald\'s still have the old $1 $2 $3 menu?',
+									'answer'   => 'Readers still use that language, but the live value structure is better understood through McValue, deals, and app-led discounts rather than one simple national low-price board.',
+								),
+								array(
+									'question' => 'What categories usually matter most for low-cost McDonald\'s ordering?',
+									'answer'   => 'Breakfast basics, lower-cost burgers, nuggets, fries, and rotating app offers are usually where the lowest-entry comparisons happen first.',
+								),
+								array(
+									'question' => 'What is the best next page after the dollar-menu guide?',
+									'answer'   => 'Usually the deals and McValue guide or the live McValue category page. Those pages show how the current savings structure actually works in practice.',
+								),
+							),
+							'related_links'  => array(
 								array(
 									'label'       => 'Read the deals and McValue guide',
 									'url'         => $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ),
@@ -1406,6 +2436,18 @@ class McPrices_Integration {
 									'label'       => 'Read the extra value meals guide',
 									'url'         => $this->get_seeded_page_url( 'extra-value-meals' ),
 									'description' => 'Use this when the low-cost question turns into a full combo-meal comparison.',
+								),
+							),
+							'external_links' => array(
+								array(
+									'label'       => 'Official McDonald\'s deals page',
+									'url'         => $this->get_official_reference_url( 'deals' ),
+									'description' => 'Check the current live deals when the goal is the lowest possible spend today.',
+								),
+								array(
+									'label'       => 'Official McDonald\'s app download page',
+									'url'         => $this->get_official_reference_url( 'app' ),
+									'description' => 'Open the official app if you want to compare app savings against the published menu path.',
 								),
 							),
 						)
@@ -1444,20 +2486,285 @@ class McPrices_Integration {
 						)
 					),
 				),
+				'budget-finder' => array(
+					'title'   => 'Budget Meal Finder',
+					'content' => $this->build_seeded_interactive_tool_page_content(
+						array(
+							'slug'       => 'budget-finder',
+							'intro'      => array(
+								'The Budget Meal Finder is built for readers who want the fastest answer to a practical ordering question: what is the best McDonald&#8217;s USA menu item under a fixed spend target right now? Instead of scanning every category manually, the tool filters the tracked menu catalog into clean under-$5, under-$8, under-$10, and under-$15 paths.',
+								'This is especially useful when your real decision is not just the cheapest item, but the best mix of price, calories, and direct path back to the live item page. The tool keeps that planning logic visible without changing the broader menu structure around it.',
+							),
+							'highlights' => array(
+								'Use this tool when you want a fast value-first shortlist before opening the full category or item pages.',
+								'Results are ranked by a simple calories-per-dollar value score, then linked back to the live menu item pages for confirmation.',
+								'Local checkout totals can still vary because of taxes, franchise pricing, delivery fees, and app-only offers.',
+							),
+							'sections'   => array(
+								array(
+									'heading'    => 'How the Budget Meal Finder works',
+									'paragraphs' => array(
+										'The tool reads from the current tracked McDonald&#8217;s USA menu items stored in the native theme data, then filters items by your selected spend cap. That means the result list reflects the same internal menu inventory used across the category pages and item pages on the site rather than a disconnected sample widget.',
+										'Ranking is based on calories per dollar so the first result is not automatically the cheapest result. In practice, many readers want the most filling choice that still fits the budget ceiling, and the value score helps surface that path quickly.',
+									),
+								),
+								array(
+									'heading'    => 'When this tool is most useful',
+									'paragraphs' => array(
+										'Budget-first menu searches usually happen when readers are comparing a quick solo lunch, a cheap breakfast, a lighter snack, or a low-spend add-on that still feels worthwhile. This tool helps those comparisons stay focused without forcing the reader to search each category one by one.',
+										'It also works well as the first click before a deeper guide. Once the shortlist is visible, the best next step is usually the live item page, the deals and McValue guide, or the extra value meals page depending on whether the buyer wants the cheapest standalone item or a full meal path.',
+									),
+								),
+							),
+							'faq_items'  => array(
+								array(
+									'question' => 'Does the Budget Meal Finder show final local checkout totals?',
+									'answer'   => 'No. It uses the current tracked menu prices on this site as planning references, but final totals can still change by location, taxes, delivery markup, and app participation.',
+								),
+								array(
+									'question' => 'Why are results ranked by value score instead of the cheapest price alone?',
+									'answer'   => 'Because many readers want the best practical value under a budget, not just the smallest headline spend. Calories per dollar is a quick way to surface the more filling options first.',
+								),
+								array(
+									'question' => 'What should I do after finding a budget-friendly option?',
+									'answer'   => 'Open the linked item page for the exact menu context, then compare it against the live category page or the deals guide if you think an app-led or meal-led order could beat the standalone value pick.',
+								),
+							),
+							'related_links' => array(
+								array(
+									'label'       => 'Read the deals and McValue guide',
+									'url'         => $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ),
+									'description' => 'Use this when app deals and bundle pricing matter more than the standalone item budget.',
+								),
+								array(
+									'label'       => 'Read the extra value meals guide',
+									'url'         => $this->get_seeded_page_url( 'extra-value-meals' ),
+									'description' => 'Move here if the better decision is a full meal rather than a single value pick.',
+								),
+								array(
+									'label'       => 'Open the full menu directory',
+									'url'         => $this->get_menu_directory_root_url(),
+									'description' => 'Browse every live category when you want to widen the comparison after using the tool.',
+								),
+							),
+							'external_links' => array(
+								array(
+									'label'       => 'Official McDonald\'s deals page',
+									'url'         => $this->get_official_reference_url( 'deals' ),
+									'description' => 'Check live promotions that may beat the tracked base-menu value path.',
+								),
+								array(
+									'label'       => 'Official McDonald\'s app page',
+									'url'         => $this->get_official_reference_url( 'app' ),
+									'description' => 'Useful when the final budget decision depends on app-only offers or rewards.',
+								),
+							),
+						)
+					),
+				),
+				'calorie-calculator' => array(
+					'title'   => 'Meal Calorie Builder',
+					'content' => $this->build_seeded_interactive_tool_page_content(
+						array(
+							'slug'       => 'calorie-calculator',
+							'intro'      => array(
+								'The Meal Calorie Builder is designed for readers who want to assemble a McDonald&#8217;s USA order one item at a time and see the running calorie total together with the estimated spend. It turns the normal category-by-category browsing experience into a practical order-planning tool without replacing the main menu pages.',
+								'That matters because people rarely decide from calories alone. They usually balance price, fullness, fries, drinks, dessert add-ons, and breakfast-versus-lunch tradeoffs at the same time. This builder keeps those comparisons in one place and still links naturally back to the live item pages.',
+							),
+							'highlights' => array(
+								'Select any mix of current tracked menu items and the tool updates the total calories, total price, and item count instantly.',
+								'Search and category filters help mobile users narrow the list quickly instead of scrolling through the full catalog every time.',
+								'The builder is best used for planning and comparison. For final ingredient or allergen confirmation, official McDonald\'s sources still matter most.',
+							),
+							'sections'   => array(
+								array(
+									'heading'    => 'How to use the Meal Calorie Builder well',
+									'paragraphs' => array(
+										'Start by searching for the first anchor item in the meal, such as a burger, breakfast sandwich, fries size, coffee drink, or dessert. Then add the side and drink choices that usually change the total most. This order makes the builder more useful because it mirrors how people actually assemble a McDonald&#8217;s order in real life.',
+										'The summary panel updates in real time so you can see how quickly a larger fries size, dessert add-on, or sweet drink changes both calories and cost. That makes the page a planning surface, not just a static nutrition note.',
+									),
+								),
+								array(
+									'heading'    => 'Why this tool helps more than a single calorie fact',
+									'paragraphs' => array(
+										'Single calorie facts are useful when you already know the exact item, but many readers are still deciding between two or three possible meal structures. The builder helps those readers test the full order path instead of checking calories in isolation and losing track of price at the same time.',
+										'It also supports side-by-side thinking across categories. A breakfast sandwich with Hash Browns and coffee, a burger with medium fries and a drink, or a McCaf&#233; order plus dessert can all be modeled quickly without leaving the page.',
+									),
+								),
+							),
+							'faq_items'  => array(
+								array(
+									'question' => 'Does the Meal Calorie Builder use the same item data as the rest of the site?',
+									'answer'   => 'Yes. It uses the tracked native menu catalog stored in the theme so the names, prices, and calorie references stay aligned with the main menu pages and item pages.',
+								),
+								array(
+									'question' => 'Is the calorie total a final nutrition guarantee?',
+									'answer'   => 'No. It is a planning total based on the current tracked menu references on the site. Customizations, ingredient differences, and location-specific preparation details should still be checked with the official McDonald\'s nutrition tools.',
+								),
+								array(
+									'question' => 'What is the best next step after building a meal here?',
+									'answer'   => 'Use the linked item pages or the nutrition guide if you need deeper context on one item, then confirm final ordering details in the official McDonald\'s app or nutrition calculator when accuracy matters most.',
+								),
+							),
+							'related_links' => array(
+								array(
+									'label'       => 'Read the nutrition and allergens guide',
+									'url'         => $this->get_seeded_page_url( 'mcdonalds-nutrition-calories-allergens' ),
+									'description' => 'Use this when the planning question turns into a deeper nutrition or ingredient check.',
+								),
+								array(
+									'label'       => 'Read the drinks menu guide',
+									'url'         => $this->get_seeded_page_url( 'beverage-menu' ),
+									'description' => 'Helpful when beverages are driving the biggest calorie swing in the order.',
+								),
+								array(
+									'label'       => 'Read the fries and sides guide',
+									'url'         => $this->get_seeded_page_url( 'fries-sides' ),
+									'description' => 'Use this when the side-size decision is the main calorie or price variable.',
+								),
+							),
+							'external_links' => array(
+								array(
+									'label'       => 'Official McDonald\'s nutrition calculator',
+									'url'         => $this->get_official_reference_url( 'nutrition' ),
+									'description' => 'Best for final ingredient, allergen, and customization verification after building a draft order here.',
+								),
+								array(
+									'label'       => 'Official McDonald\'s app page',
+									'url'         => $this->get_official_reference_url( 'app' ),
+									'description' => 'Useful when the final order path depends on app-only menu availability or rewards.',
+								),
+							),
+						)
+					),
+				),
+				'compare-items' => array(
+					'title'   => 'Compare Menu Items',
+					'content' => $this->build_seeded_interactive_tool_page_content(
+						array(
+							'slug'       => 'compare-items',
+							'intro'      => array(
+								'The Compare Menu Items tool is built for the most common real-world McDonald&#8217;s USA search behavior: comparing two to four exact items before ordering. Instead of opening multiple tabs for burgers, breakfast sandwiches, fries, drinks, or desserts, the tool brings the important price and calorie signals into one direct side-by-side view.',
+								'That makes it useful for readers deciding between a cheaper versus fuller order, a lighter versus heavier order, or a premium versus value pick inside the same category. It also helps cross-category decisions, such as breakfast versus burgers or a drink-led treat order versus dessert add-ons.',
+							),
+							'highlights' => array(
+								'Compare up to four current tracked menu items at once with price, calories, category, and value score visible in one grid.',
+								'The tool highlights the lowest price, lowest calories, and strongest calories-per-dollar result so readers can read the comparison faster.',
+								'Each result card keeps a direct route back to the live item page for the final menu context.',
+							),
+							'sections'   => array(
+								array(
+									'heading'    => 'What this comparison tool helps you decide',
+									'paragraphs' => array(
+										'Many menu searches start with one item name but quickly become a comparison question. Readers often want to know whether Big Mac beats Quarter Pounder on value, whether a McChicken order undercuts a premium chicken sandwich enough to matter, or whether a dessert add-on still makes sense after the main meal is already set.',
+										'The tool is meant to support that moment. It strips away the unnecessary scrolling and keeps the comparison focused on the fields that shape the real decision first: price, calories, category context, and simple value score.',
+									),
+								),
+								array(
+									'heading'    => 'How to compare items the smart way',
+									'paragraphs' => array(
+										'The best comparisons usually happen between items that solve the same ordering problem. That may mean two burgers, two breakfast items, two nuggets counts, or two dessert choices. Cross-category comparisons still help, but they work best when the question is truly about the whole order path rather than a like-for-like product test.',
+										'After the side-by-side view gives you the shortlist, open the live item page or the relevant category guide for the deeper context around meals, app deals, add-ons, or category-level value patterns.',
+									),
+								),
+							),
+							'faq_items'  => array(
+								array(
+									'question' => 'Can I compare items from different McDonald\'s categories here?',
+									'answer'   => 'Yes. The tool works across the tracked menu catalog, so you can compare burgers, breakfast items, fries, desserts, drinks, and other categories side by side when that is the real ordering question.',
+								),
+								array(
+									'question' => 'What does the value score mean in the comparison cards?',
+									'answer'   => 'The value score is a simple calories-per-dollar reference. It is not a quality score, but it helps surface which item gives the most energy for the listed spend inside the current tracked menu data.',
+								),
+								array(
+									'question' => 'What should I do once I narrow the comparison down?',
+									'answer'   => 'Open the linked item page or category guide for the finalists, then use the app, nutrition calculator, or live ordering flow when you need the final confirmation step before checkout.',
+								),
+							),
+							'related_links' => array(
+								array(
+									'label'       => 'Read the burgers menu guide',
+									'url'         => $this->get_seeded_page_url( 'burgers-menu' ),
+									'description' => 'One of the strongest places to continue when the comparison is burger-led.',
+								),
+								array(
+									'label'       => 'Read the breakfast menu guide',
+									'url'         => $this->get_seeded_page_url( 'breakfast-menu' ),
+									'description' => 'Use this when the comparison starts or ends with breakfast items and timing matters too.',
+								),
+								array(
+									'label'       => 'Read the chicken and fish guide',
+									'url'         => $this->get_seeded_page_url( 'chicken-fish-menu' ),
+									'description' => 'Helpful when premium chicken, McChicken, Filet-O-Fish, or wrap-style choices are part of the shortlist.',
+								),
+							),
+							'external_links' => array(
+								array(
+									'label'       => 'Official McDonald\'s full menu',
+									'url'         => $this->get_official_reference_url( 'full_menu' ),
+									'description' => 'Useful for final live availability checks after you finish the side-by-side comparison here.',
+								),
+								array(
+									'label'       => 'Official McDonald\'s app page',
+									'url'         => $this->get_official_reference_url( 'app' ),
+									'description' => 'Open the app when promotions or rewards could change which item wins in practice.',
+								),
+							),
+						)
+					),
+				),
 				'shareables-bundles' => array(
 					'title'   => 'Shareables & Bundles',
 					'content' => $this->build_seeded_support_topic_page_content(
 						array(
-							'intro'         => array(
-								'This guide covers larger McDonald&#8217;s USA share boxes and bundles, including 40-piece McNuggets, large fries packs, cookie totes, and family-style ordering ideas.',
-								'Shareable pages help readers who are building group orders rather than solo meals. That usually changes what value means, because the best family-style total can come from nuggets, fries, desserts, drinks, or a mix of separate categories.',
+							'intro'          => array(
+								'This Shareables & Bundles guide is built for readers searching McDonald\'s bundle box, McDonald\'s family meal, McDonald\'s family box, or dinner box style queries. These searches are less about one item and more about how to build a group order without overspending.',
+								'Shareable-order intent works differently from solo meal intent. A bundle that looks expensive in isolation may still be the smarter option if it replaces several separate sandwiches, nugget boxes, fries, drinks, or dessert add-ons for a family or small group.',
 							),
-							'highlights'    => array(
+							'highlights'     => array(
 								'Group orders should be compared by total usefulness, not just by the biggest headline pack.',
-								'Shareables connect most strongly with nuggets, fries, desserts, and drinks pages.',
+								'Bundle box and family meal searches usually overlap with nuggets, fries, drinks, and desserts rather than one single category.',
 								'App participation and local availability can still affect which bundles actually appear at checkout.',
 							),
-							'related_links' => array(
+							'sections'       => array(
+								array(
+									'heading'    => 'Why bundle box and family meal searches are growing',
+									'paragraphs' => array(
+										'Readers who search bundle box or family meal are usually trying to solve a coordination problem: how to feed multiple people fast without building each person\'s order from scratch. That makes the page useful for both pricing and ordering strategy, not just keyword coverage.',
+										'It also explains why this page belongs in the support cluster rather than the regular menu categories. Shareables combine multiple menu areas at once, which means the answer is broader than one nugget page or one fries page can provide alone.',
+									),
+								),
+								array(
+									'heading'    => 'The strongest shareable anchors on the McDonald\'s menu',
+									'paragraphs' => array(
+										'Chicken McNuggets, large fries, drinks, cookies, and dessert add-ons are some of the strongest shareable anchors because they scale well across group orders. A 40-piece McNuggets order, for example, behaves very differently from a solo meal and often becomes the first comparison point for family-style McDonald\'s searches.',
+										'That is why internal linking from this page should move directly into nuggets, fries, beverages, and desserts. Group-order value is built from a combination of categories, not a single isolated product.',
+									),
+								),
+								array(
+									'heading'    => 'How to compare bundles against separate items',
+									'paragraphs' => array(
+										'The smartest shareables comparison is not just bundle versus bundle. It is bundle versus custom-built order. Sometimes separate low-cost items plus an app deal create the better total; other times the convenience of a bigger grouped order wins.',
+										'This is where the deals and McValue pages still matter. Even group-order intent can shift if a live app promotion changes the effective price of nuggets, fries, or drinks enough to beat the default bundle logic.',
+									),
+								),
+							),
+							'faq_items'      => array(
+								array(
+									'question' => 'What are the most common McDonald\'s group-order searches?',
+									'answer'   => 'Bundle box, family meal, family box, dinner box, nugget bundle, and shareables queries are some of the strongest repeat searches because they reflect a real group-order planning problem rather than a one-item curiosity.',
+								),
+								array(
+									'question' => 'Is a McDonald\'s bundle always cheaper than buying items separately?',
+									'answer'   => 'Not always. The answer depends on app offers, item mix, and how many people are eating. A support page like this should help readers compare grouped convenience against custom-built value.',
+								),
+								array(
+									'question' => 'What is the best next page after checking shareables and bundles?',
+									'answer'   => 'Usually the nuggets guide, fries guide, drinks guide, or the broader deals and McValue page. Those pages help you test whether the grouped order or the custom order is the better move.',
+								),
+							),
+							'related_links'  => array(
 								array(
 									'label'       => 'Read the nuggets and strips menu prices pillar',
 									'url'         => $this->get_seeded_page_url( 'nuggets-and-strips' ),
@@ -1472,6 +2779,18 @@ class McPrices_Integration {
 									'label'       => 'Read the drinks menu prices pillar',
 									'url'         => $this->get_seeded_page_url( 'beverage-menu' ),
 									'description' => 'Drinks often complete the group-order value comparison.',
+								),
+							),
+							'external_links' => array(
+								array(
+									'label'       => 'Official McDonald\'s full menu',
+									'url'         => $this->get_official_reference_url( 'full_menu' ),
+									'description' => 'Use the official menu when you want the live category view behind a shareable order.',
+								),
+								array(
+									'label'       => 'Official McDonald\'s deals page',
+									'url'         => $this->get_official_reference_url( 'deals' ),
+									'description' => 'Helpful when a live promotion may change the best group-order structure.',
 								),
 							),
 						)
@@ -2640,11 +3959,45 @@ class McPrices_Integration {
 	 */
 	protected function managed_page_uses_custom_content( $page ) {
 		return $page instanceof \WP_Post
-			&& '1' === (string) get_post_meta( (int) $page->ID, '_mcprices_allow_custom_content', true );
+			&& '1' === (string) get_post_meta( (int) $page->ID, '_mcprices_allow_custom_content', true )
+			&& ! $this->managed_page_has_legacy_shortcode_scaffold( $page );
 	}
 
 	/**
-	 * Preserve editor-authored support-page content after admin updates.
+	 * Return whether a managed menu page still uses the old shortcode-only body.
+	 *
+	 * @param \WP_Post|null $page Page object when available.
+	 * @return bool
+	 */
+	protected function managed_page_has_legacy_shortcode_scaffold( $page ) {
+		if ( ! $page instanceof \WP_Post ) {
+			return false;
+		}
+
+		$managed_type = (string) get_post_meta( (int) $page->ID, '_mcprices_managed_page', true );
+		$content      = trim( (string) $page->post_content );
+
+		if ( '' === $content ) {
+			return false;
+		}
+
+		if ( 'menu-root' === $managed_type ) {
+			return (bool) preg_match( '/^<!--\s*wp:shortcode\s*-->\s*\[mcprices_menu_directory\]\s*<!--\s*\/wp:shortcode\s*-->$/', $content );
+		}
+
+		if ( 'menu-category' === $managed_type ) {
+			return (bool) preg_match( '/^<!--\s*wp:shortcode\s*-->\s*\[mcprices_menu_category\b[^\]]*\]\s*<!--\s*\/wp:shortcode\s*-->$/', $content );
+		}
+
+		if ( 'menu-item' === $managed_type ) {
+			return (bool) preg_match( '/^<!--\s*wp:shortcode\s*-->\s*\[mcprices_menu_item\b[^\]]*\]\s*<!--\s*\/wp:shortcode\s*-->$/', $content );
+		}
+
+		return false;
+	}
+
+	/**
+	 * Preserve editor-authored managed page content after admin updates.
 	 *
 	 * @param int      $post_id Post ID.
 	 * @param \WP_Post $post    Post object.
@@ -2664,7 +4017,12 @@ class McPrices_Integration {
 			return;
 		}
 
-		if ( '' === (string) get_post_meta( $post_id, '_mcprices_support_page', true ) ) {
+		$is_support_page = '' !== (string) get_post_meta( $post_id, '_mcprices_support_page', true );
+		$is_front_page   = (int) get_option( 'page_on_front' ) === (int) $post_id;
+		$managed_type    = (string) get_post_meta( $post_id, '_mcprices_managed_page', true );
+		$is_menu_page    = in_array( $managed_type, array( 'menu-root', 'menu-category', 'menu-item' ), true );
+
+		if ( ! $is_support_page && ! $is_front_page && ! $is_menu_page ) {
 			return;
 		}
 
@@ -2857,6 +4215,479 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Build a reusable semantic callout block for category and item pages.
+	 *
+	 * @param string                                     $eyebrow    Eyebrow label.
+	 * @param string                                     $title      Callout title.
+	 * @param array<int, string>                         $paragraphs Paragraph HTML.
+	 * @param array<int, array<string, string>>          $actions    CTA button definitions.
+	 * @return string
+	 */
+	protected function build_semantic_callout_html( $eyebrow, $title, array $paragraphs, array $actions = array() ) {
+		$html  = '<div class="mcprices-guide-callout mcprices-guide-callout--semantic">';
+		$html .= '<p class="mcprices-guide-callout__eyebrow">' . esc_html( (string) $eyebrow ) . '</p>';
+		$html .= '<h3 class="mcprices-guide-callout__title">' . esc_html( (string) $title ) . '</h3>';
+
+		foreach ( $paragraphs as $paragraph ) {
+			$paragraph = trim( (string) $paragraph );
+
+			if ( '' === $paragraph ) {
+				continue;
+			}
+
+			$html .= '<p class="mcprices-guide-callout__copy">' . wp_kses_post( $paragraph ) . '</p>';
+		}
+
+		if ( ! empty( $actions ) ) {
+			$html .= '<div class="mcprices-guide-callout__actions">';
+
+			foreach ( $actions as $action ) {
+				$label = trim( (string) ( $action['label'] ?? '' ) );
+				$url   = trim( (string) ( $action['url'] ?? '' ) );
+
+				if ( '' === $label || '' === $url ) {
+					continue;
+				}
+
+				$html .= '<a class="btn-card" href="' . esc_url( $url ) . '">' . esc_html( $label ) . '</a>';
+			}
+
+			$html .= '</div>';
+		}
+
+		$html .= '</div>';
+
+		return $html;
+	}
+
+	/**
+	 * Return semantic copy that keeps thin menu category pages above a practical content floor.
+	 *
+	 * @param array  $category    Category data.
+	 * @param string $guide_url   Guide URL.
+	 * @param string $guide_title Guide title.
+	 * @return string
+	 */
+	protected function get_menu_category_semantic_callout( array $category, $guide_url = '', $guide_title = '' ) {
+		$context = $this->get_menu_category_semantic_context_data( $category, $guide_url, $guide_title );
+
+		if ( empty( $context['paragraphs'] ) ) {
+			return '';
+		}
+
+		return $this->build_semantic_callout_html(
+			(string) $context['eyebrow'],
+			(string) $context['title'],
+			is_array( $context['paragraphs'] ) ? $context['paragraphs'] : array(),
+			is_array( $context['actions'] ) ? $context['actions'] : array()
+		);
+	}
+
+	/**
+	 * Return reusable semantic context data for one managed category page.
+	 *
+	 * @param array  $category    Category data.
+	 * @param string $guide_url   Guide URL.
+	 * @param string $guide_title Guide title.
+	 * @return array<string, mixed>
+	 */
+	protected function get_menu_category_semantic_context_data( array $category, $guide_url = '', $guide_title = '' ) {
+		$category_id = isset( $category['id'] ) ? (string) $category['id'] : '';
+
+		$full_menu_link   = $this->build_seed_text_link( $this->get_menu_directory_root_url(), 'full McDonald\'s menu directory' );
+		$guide_link       = $guide_url && $guide_title ? $this->build_seed_text_link( $guide_url, $guide_title ) : 'the related full guide';
+		$price_state_link = $this->build_seed_text_link( $this->get_seeded_page_url( 'mcdonalds-prices-by-state' ), 'prices by state guide' );
+		$deals_link       = $this->build_seed_text_link( $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ), 'deals and McValue guide' );
+		$nutrition_link   = $this->build_seed_text_link( $this->get_seeded_page_url( 'mcdonalds-nutrition-calories-allergens' ), 'nutrition and allergens guide' );
+		$app_link         = $this->build_seed_text_link( $this->get_seeded_page_url( 'mcdonalds-app-deals' ), 'McDonald\'s app deals page' );
+
+		$paragraphs = array();
+		$title      = 'How to use this live category page';
+
+		switch ( $category_id ) {
+			case 'burgers':
+				$paragraphs = array(
+					'This burgers category page is the fastest place to compare the live McDonald\'s burgers menu across ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'burgers', 'Big Mac' ), 'Big Mac' ) . ', ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'burgers', 'Quarter Pounder with Cheese' ), 'Quarter Pounder with Cheese' ) . ', ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'burgers', 'McDouble' ), 'McDouble' ) . ', cheeseburgers, hamburgers, and other core burger listings. It serves a different purpose from the longer guide page: this screen stays focused on live burger cards and direct burger item pages so readers can move quickly from broad intent to one exact product.',
+					'Burger searches usually split into three semantic groups. Some readers want a flagship burger such as Big Mac or Quarter Pounder. Others want the best low-entry beef value, which is where McDouble, Double Cheeseburger, Cheeseburger, and Hamburger comparisons matter. A third group is really comparing meal logic rather than sandwich logic, which is why burger pages need strong links into value and combo content instead of pretending every search is only about one sandwich price.',
+					'Use the live grid below when the question is one exact burger. Use ' . $guide_link . ' when you want the wider burger ladder, calorie context, and flagship-versus-value comparison. If the real blocker is local price variation, move next to the ' . $price_state_link . '. If the blocker is value, app offers, or meal logic, the ' . $deals_link . ' is the better next stop. That structure keeps this page unique while still supporting Big Mac price, Quarter Pounder price, McDouble price, cheeseburger price, and cheapest McDonald\'s burger intent naturally.',
+				);
+				break;
+			case 'chickenfish':
+				$paragraphs = array(
+					'This chicken and fish category page is built for readers comparing the live McDonald\'s chicken menu and fish listings in one place. That includes ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'chickenfish', 'McCrispy' ), 'McCrispy' ) . ', ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'chickenfish', 'Spicy McCrispy' ), 'Spicy McCrispy' ) . ', ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'chickenfish', 'McChicken' ), 'McChicken' ) . ', and ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'chickenfish', 'Filet-O-Fish' ), 'Filet-O-Fish' ) . ' searches that often overlap even when the customer thinks they are looking for only one item.',
+					'The real semantic split inside this category is premium chicken versus lower-entry chicken versus preference-led fish ordering. McCrispy pages answer premium chicken intent, McChicken pages answer value chicken intent, and Filet-O-Fish pages answer a much narrower taste-and-preference search pattern. That is why the live grid matters here: it shows the decision ladder clearly instead of forcing every reader into one article path first.',
+					'If you only need the exact current listing, use the item cards below. If you want the fuller explanation around prices, calories, and where wraps or combo upgrades fit, use ' . $guide_link . '. For nutritional or ingredient checks that affect the final decision, move to the ' . $nutrition_link . '. For app-driven savings or chicken meal value, the ' . $deals_link . ' gives the better next layer of context.',
+				);
+				break;
+			case 'nuggets':
+				$paragraphs = array(
+					'This McNuggets and strips category page exists for readers who want all the current nugget-size and strip-size choices in one live menu view. It brings together ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'nuggets', '4 pc Chicken McNuggets' ), '4 pc Chicken McNuggets' ) . ', ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'nuggets', '10 pc Chicken McNuggets' ), '10 pc Chicken McNuggets' ) . ', ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'nuggets', '20 pc Chicken McNuggets' ), '20 pc Chicken McNuggets' ) . ', ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'nuggets', '40 pc Chicken McNuggets' ), '40 pc Chicken McNuggets' ) . ', and McCrispy Strips so the customer can compare small snack, meal-size, and shareable nugget intent without leaving the category.',
+					'Nugget searches usually revolve around piece count, meal pairing, and group-order value rather than brand discovery. A 4-piece or 6-piece search is often part of a snack or Happy Meal path, while 10-piece, 20-piece, and 40-piece queries are usually closer to meal planning, family ordering, or shareables. Strips add another comparison layer because they answer a different texture and premium-chicken intent from classic nuggets.',
+					'Use this live page when the key question is count, price, or category-level comparison. Use ' . $guide_link . ' if you want more explanation around size ladders, shareable ordering, and calorie context. When sauces, nutrition, or deal bundles become the real question, move next to the sauces guide, the ' . $nutrition_link . ', or the ' . $deals_link . ' so the final order choice stays grounded in the wider menu structure.',
+				);
+				break;
+			case 'snackwrap':
+				$paragraphs = array(
+					'This Snack Wrap category page is intentionally simple because the live lineup is small, but the search intent around it is not. Readers searching snack wrap price, spicy snack wrap, ranch snack wrap, or snack wrap calories are usually deciding whether a lighter chicken order or a faster handheld lunch makes more sense than a larger sandwich or a nugget meal.',
+					'The two wrap flavors below answer slightly different kinds of demand. ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'snackwrap', 'Spicy Snack Wrap' ), 'Spicy Snack Wrap' ) . ' catches flavor-driven and spicy-chicken intent, while ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'snackwrap', 'Ranch Snack Wrap' ), 'Ranch Snack Wrap' ) . ' attracts readers who want a milder wrap build or a smaller chicken option. The category page therefore needs more semantic context than the item count alone suggests.',
+					'If you want the exact wrap listing, use the live cards below. If your real question is whether wraps beat McChicken, McCrispy, fries, or combo orders on value or calories, move next to ' . $guide_link . ', the chicken and fish guide, or the ' . $deals_link . '. That keeps the page useful for snack wrap menu, spicy snack wrap price, ranch snack wrap calories, and lower-cost chicken lunch intent without duplicating the long-form article.',
+				);
+				break;
+			case 'sides':
+				$paragraphs = array(
+					'This fries and sides category page is the live comparison layer for one of the most searched supporting menu groups on the site. It brings together ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'sides', 'World Famous Fries Small' ), 'small fries' ) . ', ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'sides', 'World Famous Fries Medium' ), 'medium fries' ) . ', ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'sides', 'World Famous Fries Large' ), 'large fries' ) . ', and ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'sides', 'Apple Slices' ), 'Apple Slices' ) . ' so readers can compare size-driven side intent in one place.',
+					'Side pages are deceptively important for semantic search because many users are not looking for a full meal guide. They are looking for fries sizes, fries calories, apple slices, or the add-on that changes the final price and calorie total most. A medium fries page and a large fries page therefore solve different intents even inside the same category, especially when combo upgrades or shareable orders are involved.',
+					'Use this page when you want the live side-by-side size ladder. Use ' . $guide_link . ' when the real question is how fries and sides interact with meals, value, calories, and add-on logic across the whole menu. If you are checking ingredients or calories before adding a side, the ' . $nutrition_link . ' is the best verification layer after this live view.',
+				);
+				break;
+			case 'happymeal':
+				$paragraphs = array(
+					'This Happy Meal category page is the live kids-meal comparison layer for the current tracked McDonald\'s USA menu. It keeps the main Happy Meal builds together so parents and value searchers can compare ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'happymeal', 'Hamburger Happy Meal' ), 'Hamburger Happy Meal' ) . ', ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'happymeal', '4 pc McNuggets Happy Meal' ), '4 pc McNuggets Happy Meal' ) . ', and ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'happymeal', '6 pc McNuggets Happy Meal' ), '6 pc McNuggets Happy Meal' ) . ' intent without jumping between separate guides first.',
+					'Happy Meal search behavior is more layered than it looks. Some readers care about the cheapest kids meal, some care about nugget count, some care about fries versus apple slices, and others care about the full kids-meal bundle with drink and toy. That means the category page needs enough semantic context to help users understand why these are not identical queries even when they all live under the same menu label.',
+					'Use the live cards below for the exact tracked options. Use ' . $guide_link . ' when you want broader kids-meal pricing, calories, and ordering advice. If you need calorie or ingredient checks before choosing nuggets, fries, juice, or milk, move next to the ' . $nutrition_link . '. If your real question is group value or low-cost ordering, compare the results here with the ' . $deals_link . ' and the ' . $full_menu_link . '.',
+				);
+				break;
+			case 'sauces':
+				$paragraphs = array(
+					'This sauces and condiments category page covers a deceptively small but high-intent part of the McDonald\'s menu. Readers searching ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'sauces', 'Tangy Barbecue Sauce' ), 'barbecue sauce' ) . ', ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'sauces', 'Honey Mustard Sauce' ), 'honey mustard' ) . ', ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'sauces', 'Sweet \'N Sour Sauce' ), 'sweet and sour sauce' ) . ', or ketchup packets are usually already close to checkout and want the exact dip or condiment that best fits nuggets, fries, strips, or snack wraps.',
+					'Sauce searches often behave like pairing searches rather than standalone food searches. That means this category page has to answer more than existence. It needs to help the reader compare flavor profile, common order pairing, and whether the sauce is part of a nuggets or fries decision instead of pretending a condiment page can work as a thin one-line listing.',
+					'Use the live sauce cards below for the exact tracked condiment page you need. Use ' . $guide_link . ' when you want broader context around dipping strategy, included sauces, and how condiments change nuggets, strips, or fries ordering. If your real question is ingredients or allergen detail, move next to the ' . $nutrition_link . ' before treating any sauce choice as final.',
+				);
+				break;
+			case 'deals':
+				$paragraphs = array(
+					'This deals category page is the live view for readers who want the current McDonald\'s value structure at a glance. It collects active deal-led entities such as ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'deals', 'Breakfast Buy 1 Add 1 for $1' ), 'Breakfast Buy 1 Add 1 for $1' ) . ', ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'deals', 'Lunch Buy 1 Add 1 for $1' ), 'Lunch Buy 1 Add 1 for $1' ) . ', ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'deals', 'McChicken Meal Deal' ), 'McChicken Meal Deal' ) . ', and ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'deals', 'McDouble Meal Deal' ), 'McDouble Meal Deal' ) . ' so users can move straight to the offer path they actually mean.',
+					'Deal searches usually split into app-led savings, meal-deal savings, and buy-one-add-one logic. Those are related but not identical intents. Someone searching McDonald\'s app deals may be closer to the ' . $app_link . ', while someone searching McDouble meal deal or breakfast buy one add one is closer to a specific live offer card below. This category page helps organize those differences naturally instead of flattening them into one generic savings paragraph.',
+					'Use the live offers below when you already know the deal path you want. Use ' . $guide_link . ' when you need the broader explanation around McValue, rewards, breakfast value, and app strategy. If the final decision is still blocked by regional pricing or order channel differences, compare what you see here with the ' . $price_state_link . ' and the delivery pages so the offer looks realistic in context.',
+				);
+				break;
+			case 'whats-new':
+				$paragraphs = array(
+					'This what\'s new category page is the live landing point for limited-time McDonald\'s menu intent. It is built for readers checking whether a featured item, returning seasonal release, or current spotlight product is actively showing on the tracked menu today.',
+					'Limited-time search behavior is different from evergreen menu behavior because the user is often asking two questions at once: is the item back, and is it worth choosing over the regular menu? That is why live featured-item cards matter here. They help users move quickly from curiosity into an exact product page without turning the category itself into a duplicate of the long-form limited-time guide.',
+					'Use the current cards below when the goal is one exact featured item. Use ' . $guide_link . ' when you want wider context around limited-time pricing, seasonal entities such as Shamrock Shake or McRib, and how short-run products fit the wider burger, dessert, or deals conversation. If you want the broader evergreen menu after checking a featured item, go back to the ' . $full_menu_link . ' to compare it against the permanent categories.',
+				);
+				break;
+		}
+
+		if ( empty( $paragraphs ) ) {
+			$featured_links = array();
+
+			foreach ( array_slice( $category['items'] ?? array(), 0, 4 ) as $featured_item ) {
+				if ( empty( $featured_item['name'] ) || empty( $featured_item['slug'] ) ) {
+					continue;
+				}
+
+				$featured_links[] = $this->build_seed_text_link(
+					$this->get_menu_item_page_url( $category_id, (string) $featured_item['slug'] ),
+					(string) $featured_item['name']
+				);
+			}
+
+			$featured_text = $this->build_seed_human_list( $featured_links );
+
+			if ( '' === $featured_text ) {
+				$featured_text = 'the tracked items below';
+			}
+
+			$paragraphs = array(
+				'This ' . esc_html( strtolower( (string) $category['card_title'] ) ) . ' category page is built for readers who want the live tracked McDonald\'s USA menu view before narrowing down to one exact product page. It keeps category-level comparison, direct item links, and quick price-check intent together without forcing every visitor into a long-form article first.',
+				'The strongest use of a category page is broad comparison. Readers can scan ' . $featured_text . ' to see how the section is structured, then jump deeper into one dedicated item page when the question becomes one exact price, calorie reference, or ordering choice.',
+				'Use the live cards below when you want the current tracked listings. Use ' . $guide_link . ' when you need deeper comparison, FAQs, and broader context. If the next question is category-wide value, pricing by market, or nutrition verification, continue into the ' . $deals_link . ', the ' . $price_state_link . ', or the ' . $nutrition_link . ' after using this live view.',
+			);
+		}
+
+		$paragraphs[] = 'This separation between the live category page and the longer guide is intentional. The category page keeps the current menu cards, direct item links, and fast price-check intent in one place, while the guide handles the broader comparison logic around calories, value, FAQs, deals, and order strategy. Using both together helps readers answer whether they need one exact ' . esc_html( strtolower( (string) $category['card_title'] ) ) . ' item now or a wider menu decision before ordering. It also helps search engines and AI retrieval systems understand that this page is the live inventory layer while the guide is the broader topical authority layer for the same category.';
+
+		$actions = array();
+
+		if ( $guide_url && $guide_title ) {
+			$actions[] = array(
+				'label' => 'Read the Full Guide',
+				'url'   => $guide_url,
+			);
+		}
+
+		$actions[] = array(
+			'label' => 'Browse Full Menu',
+			'url'   => $this->get_menu_directory_root_url(),
+		);
+
+		return array(
+			'eyebrow'    => 'Category Context',
+			'title'      => $title,
+			'paragraphs' => $paragraphs,
+			'actions'    => $actions,
+		);
+	}
+
+	/**
+	 * Return one category-specific comparison paragraph for item pages.
+	 *
+	 * @param array $category      Category data.
+	 * @param array $item          Item data.
+	 * @param array $related_items Related item data.
+	 * @return string
+	 */
+	protected function get_menu_item_semantic_comparison_paragraph( array $category, array $item, array $related_items ) {
+		$category_id   = isset( $category['id'] ) ? (string) $category['id'] : '';
+		$category_name = isset( $category['card_title'] ) ? (string) $category['card_title'] : 'menu';
+		$item_name     = isset( $item['name'] ) ? (string) $item['name'] : 'this item';
+
+		$related_links = array();
+		foreach ( array_slice( $related_items, 0, 3 ) as $related_item ) {
+			if ( empty( $related_item['name'] ) || empty( $related_item['slug'] ) ) {
+				continue;
+			}
+
+			$related_links[] = $this->build_seed_text_link(
+				$this->get_menu_item_page_url( $category_id, (string) $related_item['slug'] ),
+				(string) $related_item['name']
+			);
+		}
+
+		$related_text = $this->build_seed_human_list( $related_links );
+
+		if ( '' === $related_text ) {
+			$related_text = 'other items in the same category';
+		}
+
+		switch ( $category_id ) {
+			case 'burgers':
+				return 'Inside the ' . esc_html( $category_name ) . ' menu, ' . esc_html( $item_name ) . ' is usually compared with ' . $related_text . ' before the customer decides whether the flagship-burger premium or the lower-entry burger value makes more sense. That comparison matters because burger intent usually splits between signature taste, meal-size satisfaction, and cheapest practical beef order rather than one simple sandwich lookup.';
+			case 'chickenfish':
+				return 'Inside the ' . esc_html( $category_name ) . ' category, ' . esc_html( $item_name ) . ' often competes with ' . $related_text . ' because readers are balancing premium chicken, lower-cost chicken, and preference-led fish ordering in the same journey. The item page gives the exact listing, while the category page shows where the item sits in the wider chicken-and-fish decision ladder.';
+			case 'nuggets':
+				return 'Within the ' . esc_html( $category_name ) . ' cluster, readers usually compare ' . esc_html( $item_name ) . ' against ' . $related_text . ' because piece count, strip count, and shareable sizing change the order purpose completely. A small count can answer snack intent, while larger counts answer meal, family, or group-order intent.';
+			case 'snackwrap':
+				return 'Snack Wrap searches are usually not isolated. Readers often compare ' . esc_html( $item_name ) . ' with ' . $related_text . ' to decide whether the wrap feels like the better light lunch, the better flavored wrap, or simply the better lower-entry chicken order. That comparison logic is what gives a small category like this real semantic depth.';
+			case 'sides':
+				return 'In the ' . esc_html( $category_name ) . ' category, ' . esc_html( $item_name ) . ' is commonly compared with ' . $related_text . ' because size ladders and add-on logic matter more here than brand discovery. A fries-size page, for example, often answers a different intent from an Apple Slices page even though both live under sides.';
+			case 'happymeal':
+				return 'Inside the ' . esc_html( $category_name ) . ' cluster, ' . esc_html( $item_name ) . ' is part of a kids-meal comparison set that usually includes ' . $related_text . '. Parents and value searchers often compare nugget count, hamburger versus nuggets, and fries-versus-apple-slices logic before they decide which kids meal is actually the best fit.';
+			case 'deals':
+				return 'In the live ' . esc_html( $category_name ) . ' category, ' . esc_html( $item_name ) . ' is usually compared with ' . $related_text . ' because deal intent splits across app offers, buy-one-add-one mechanics, and meal-deal value. The exact offer card matters, but the surrounding offer set explains whether the deal is really the best order path.';
+			case 'whats-new':
+				return 'In the ' . esc_html( $category_name ) . ' category, ' . esc_html( $item_name ) . ' needs to be judged alongside ' . $related_text . ' because limited-time items rarely exist in isolation. Readers are usually asking whether the current featured item is back, how it compares with other live highlights, and whether it is worth choosing over the core menu.';
+			case 'breakfast':
+				return 'Breakfast item searches often turn into breakfast-order comparisons, which is why ' . esc_html( $item_name ) . ' is frequently weighed against ' . $related_text . ' before the customer decides between a sandwich, a side, or a fuller morning meal. Timing, combo structure, and coffee pairing all affect how the item is actually used.';
+			case 'meals':
+				return 'Meal pages work best when readers compare ' . esc_html( $item_name ) . ' with ' . $related_text . ' because combo intent is really about the total order path, not the sandwich name alone. Fries, drink choice, and whether the meal beats a deal path all matter here.';
+			case 'mcvalue':
+				return 'Value-item searches often compare ' . esc_html( $item_name ) . ' with ' . $related_text . ' because the real question is the lowest practical spend, not just the item name itself. That makes McValue item pages more about order strategy than brand discovery.';
+			case 'mccafe':
+				return 'McCafe drink searches often compare ' . esc_html( $item_name ) . ' with ' . $related_text . ' because size, flavor, and caffeine intent all change what the "best" coffee choice means. The item page answers the exact listing, but the surrounding drink set shows where the choice sits in the wider coffee ladder.';
+			case 'beverages':
+				return 'Beverage pages are usually part of a size or sugar comparison rather than a one-item story, which is why ' . esc_html( $item_name ) . ' is naturally compared with ' . $related_text . '. Drinks can change the total order cost and calories faster than many readers expect.';
+			case 'sweets':
+				return 'Dessert searches often work as add-on comparisons, so ' . esc_html( $item_name ) . ' is frequently weighed against ' . $related_text . ' to decide whether the extra spend and calories feel worth it after the main meal is already set.';
+			case 'sauces':
+				return 'Sauce pages are small but highly intent-specific. Readers compare ' . esc_html( $item_name ) . ' with ' . $related_text . ' because the real question is which dip or condiment best fits nuggets, strips, fries, or a snack-wrap order rather than whether the sauce exists at all.';
+			default:
+				return 'Inside the ' . esc_html( $category_name ) . ' category, ' . esc_html( $item_name ) . ' is best understood next to ' . $related_text . ' because item pages answer the exact listing while category pages explain the broader price ladder, calorie pattern, and next-best alternatives.';
+		}
+	}
+
+	/**
+	 * Return semantic context for one managed menu item page.
+	 *
+	 * @param array  $category      Category data.
+	 * @param array  $item          Item data.
+	 * @param string $guide_url     Guide URL.
+	 * @param string $guide_title   Guide title.
+	 * @param array  $related_items Related items.
+	 * @return string
+	 */
+	protected function get_menu_item_semantic_callout( array $category, array $item, $guide_url = '', $guide_title = '', array $related_items = array() ) {
+		$context = $this->get_menu_item_semantic_context_data( $category, $item, $guide_url, $guide_title, $related_items );
+
+		return $this->build_semantic_callout_html(
+			(string) $context['eyebrow'],
+			(string) $context['title'],
+			is_array( $context['paragraphs'] ) ? $context['paragraphs'] : array(),
+			is_array( $context['actions'] ) ? $context['actions'] : array()
+		);
+	}
+
+	/**
+	 * Return reusable semantic context data for one managed menu item page.
+	 *
+	 * @param array  $category      Category data.
+	 * @param array  $item          Item data.
+	 * @param string $guide_url     Guide URL.
+	 * @param string $guide_title   Guide title.
+	 * @param array  $related_items Related item data.
+	 * @return array<string, mixed>
+	 */
+	protected function get_menu_item_semantic_context_data( array $category, array $item, $guide_url = '', $guide_title = '', array $related_items = array() ) {
+		$item_name      = isset( $item['name'] ) ? (string) $item['name'] : 'This item';
+		$category_name  = isset( $category['card_title'] ) ? (string) $category['card_title'] : 'menu';
+		$item_price     = ! empty( $item['price'] ) ? (string) $item['price'] : 'a live price that varies by location';
+		$item_calories  = ! empty( $item['calories'] ) ? (string) $item['calories'] : 'a calorie reference that can vary by selection';
+		$summary        = ! empty( $item['summary'] ) ? (string) $item['summary'] : 'the current tracked menu listing';
+		$category_url   = $this->get_menu_category_page_url( isset( $category['id'] ) ? (string) $category['id'] : '' );
+		$category_link  = $this->build_seed_text_link( $category_url, $category_name . ' category page' );
+		$guide_link     = $guide_url && $guide_title ? $this->build_seed_text_link( $guide_url, $guide_title ) : 'the main category guide';
+		$nutrition_url  = $this->get_official_reference_url( 'nutrition' );
+		$nutrition_link = $this->build_seed_text_link( $nutrition_url, 'official McDonald\'s nutrition calculator' );
+		$deals_link     = $this->build_seed_text_link( $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ), 'deals and McValue guide' );
+
+		$paragraphs = array(
+			'This ' . esc_html( $item_name ) . ' page works best for readers searching ' . esc_html( strtolower( $item_name ) ) . ' price, ' . esc_html( strtolower( $item_name ) ) . ' calories, or the current ' . esc_html( $category_name ) . ' listing without scanning the whole menu first. Right now the tracked reference shows ' . esc_html( $item_price ) . ' and ' . esc_html( $item_calories ) . ', which makes this page the quick-answer layer before a broader category or meal comparison.',
+			esc_html( $summary ) . ' That may sound straightforward, but on a real ordering path the item is rarely judged in isolation. Readers still need to know whether the listing is stronger as a standalone order, a combo candidate, a snack-size option, or part of a value or family-order comparison depending on the wider menu branch they came from.',
+			$this->get_menu_item_semantic_comparison_paragraph( $category, $item, $related_items ),
+			'Use this page for the exact tracked item. Use the ' . $category_link . ' when you want the wider live comparison across the same section, and use ' . $guide_link . ' when you need deeper context around prices, calories, FAQs, and deal logic. If ingredients or allergen details matter more than the headline listing, verify the final decision in the ' . $nutrition_link . ' before ordering. If value is the real blocker, compare the item against the ' . $deals_link . ' before you treat the posted price as the final likely spend.',
+			'That extra context matters because the same menu item can feel very different depending on location, app participation, delivery markup, and whether it ends up inside a combo or side-by-side comparison. Keeping this item page richer than a bare listing helps the site answer price, calories, value, and comparison intent naturally without forcing every searcher to open the full guide first.',
+		);
+
+		$actions = array(
+			array(
+				'label' => 'Back to ' . $category_name,
+				'url'   => $category_url,
+			),
+			array(
+				'label' => 'Official Nutrition',
+				'url'   => $nutrition_url,
+			),
+		);
+
+		return array(
+			'eyebrow'    => 'Item Context',
+			'title'      => $item_name . ' ordering context',
+			'paragraphs' => $paragraphs,
+			'actions'    => $actions,
+		);
+	}
+
+	/**
+	 * Return reusable semantic context data for the managed /menu/ hub page.
+	 *
+	 * @return array<string, mixed>
+	 */
+	protected function get_menu_root_context_data() {
+		return array(
+			'eyebrow'    => 'Menu Hub',
+			'title'      => 'How to use the full menu hub',
+			'paragraphs' => array(
+				'This menu hub is designed to help readers move from broad McDonald\'s USA menu intent into one live category page, then into one exact item page, without losing the wider context that makes the final order easier to judge.',
+				'Start with the category cards below when you want the current tracked menu view for breakfast, burgers, chicken and fish, fries and sides, McCafe coffees, drinks, Happy Meals, or extra value meals. Then open the item pages when you want one exact listing with price, calories, and related ordering context.',
+				'If you need longer explanations before comparing a live menu item, use the linked guide pages such as ' . $this->build_seed_text_link( $this->get_seeded_page_url( 'breakfast-menu' ), 'Breakfast Menu' ) . ', ' . $this->build_seed_text_link( $this->get_seeded_page_url( 'burgers-menu' ), 'Burgers Menu' ) . ', ' . $this->build_seed_text_link( $this->get_seeded_page_url( 'beverage-menu' ), 'Drinks Menu' ) . ', and the ' . $this->build_seed_text_link( $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ), 'Deals & McValue guide' ) . ' before returning to the live cards below.',
+			),
+		);
+	}
+
+	/**
+	 * Build editable block content for the managed /menu/ hub page.
+	 *
+	 * @return string
+	 */
+	protected function build_menu_root_editable_content() {
+		$context = $this->get_menu_root_context_data();
+		$content = '';
+
+		foreach ( $context['paragraphs'] as $paragraph ) {
+			$content .= $this->build_seed_block_paragraph( $paragraph );
+		}
+
+		return $content;
+	}
+
+	/**
+	 * Build editable block content for one managed category page.
+	 *
+	 * @param array  $category    Category data.
+	 * @param string $guide_url   Guide URL.
+	 * @param string $guide_title Guide title.
+	 * @return string
+	 */
+	protected function build_menu_category_editable_content( array $category, $guide_url = '', $guide_title = '' ) {
+		$context = $this->get_menu_category_semantic_context_data( $category, $guide_url, $guide_title );
+		$content = '';
+
+		foreach ( $context['paragraphs'] ?? array() as $paragraph ) {
+			$content .= $this->build_seed_block_paragraph( $paragraph );
+		}
+
+		return $content;
+	}
+
+	/**
+	 * Build editable block content for one managed item page.
+	 *
+	 * @param array  $category      Category data.
+	 * @param array  $item          Item data.
+	 * @param string $guide_url     Guide URL.
+	 * @param string $guide_title   Guide title.
+	 * @param array  $related_items Related item data.
+	 * @return string
+	 */
+	protected function build_menu_item_editable_content( array $category, array $item, $guide_url = '', $guide_title = '', array $related_items = array() ) {
+		$context = $this->get_menu_item_semantic_context_data( $category, $item, $guide_url, $guide_title, $related_items );
+		$content = '';
+
+		foreach ( $context['paragraphs'] ?? array() as $paragraph ) {
+			$content .= $this->build_seed_block_paragraph( $paragraph );
+		}
+
+		return $content;
+	}
+
+	/**
+	 * Return whether rendered editor content contains visible body markup.
+	 *
+	 * @param string $content_html Rendered content HTML.
+	 * @return bool
+	 */
+	protected function rendered_menu_page_content_exists( $content_html ) {
+		$content_html = trim( (string) $content_html );
+
+		if ( '' === $content_html ) {
+			return false;
+		}
+
+		$stripped = trim( wp_strip_all_tags( preg_replace( '/<!--[\s\S]*?-->/', '', $content_html ) ) );
+
+		return '' !== $stripped;
+	}
+
+	/**
+	 * Wrap rendered editor content in the same semantic callout shell.
+	 *
+	 * @param string $eyebrow     Eyebrow label.
+	 * @param string $title       Callout title.
+	 * @param string $content_html Rendered editor content.
+	 * @param array  $actions     CTA button definitions.
+	 * @return string
+	 */
+	protected function build_semantic_callout_content_html( $eyebrow, $title, $content_html, array $actions = array() ) {
+		$html  = '<div class="mcprices-guide-callout mcprices-guide-callout--semantic">';
+		$html .= '<p class="mcprices-guide-callout__eyebrow">' . esc_html( (string) $eyebrow ) . '</p>';
+		$html .= '<h3 class="mcprices-guide-callout__title">' . esc_html( (string) $title ) . '</h3>';
+		$html .= '<div class="mcprices-guide-callout__content">' . $content_html . '</div>';
+
+		if ( ! empty( $actions ) ) {
+			$html .= '<div class="mcprices-guide-callout__actions">';
+
+			foreach ( $actions as $action ) {
+				$label = trim( (string) ( $action['label'] ?? '' ) );
+				$url   = trim( (string) ( $action['url'] ?? '' ) );
+
+				if ( '' === $label || '' === $url ) {
+					continue;
+				}
+
+				$html .= '<a class="btn-card" href="' . esc_url( $url ) . '">' . esc_html( $label ) . '</a>';
+			}
+
+			$html .= '</div>';
+		}
+
+		$html .= '</div>';
+
+		return $html;
+	}
+
+	/**
 	 * Wrap a heading in Gutenberg comment markup.
 	 *
 	 * @param string $text  Heading text.
@@ -2973,6 +4804,54 @@ class McPrices_Integration {
 		$last = array_pop( $items );
 
 		return implode( ', ', $items ) . ', and ' . $last;
+	}
+
+	/**
+	 * Return a curated set of official reference URLs used on support pages.
+	 *
+	 * @param string $key Reference key.
+	 * @return string
+	 */
+	protected function get_official_reference_url( $key ) {
+		$references = array(
+			'about_food'  => 'https://www.mcdonalds.com/us/en-us/about-our-food.html',
+			'app'         => 'https://www.mcdonalds.com/us/en-us/download-app.html',
+			'breakfast'   => 'https://www.mcdonalds.com/us/en-us/full-menu/breakfast.html',
+			'deals'       => 'https://www.mcdonalds.com/us/en-us/deals.html',
+			'full_menu'   => 'https://www.mcdonalds.com/us/en-us/full-menu.html',
+			'mcdelivery'  => 'https://www.mcdonalds.com/us/en-us/faq/mcdelivery.html',
+			'mcdvoice'    => 'https://www.mcdvoice.com/',
+			'nutrition'   => 'https://www.mcdonalds.com/us/en-us/about-our-food/nutrition-calculator.html',
+			'rewards'     => 'https://www.mcdonalds.com/us/en-us/mymcdonalds.html',
+			'uk_burgers'  => 'https://www.mcdonalds.com/gb/en-gb/menu/burgers.html',
+			'uk_menu'     => 'https://www.mcdonalds.com/gb/en-gb/menu.htm.html',
+		);
+
+		$key = sanitize_key( (string) $key );
+
+		return isset( $references[ $key ] ) ? (string) $references[ $key ] : '';
+	}
+
+	/**
+	 * Build a safe inline text link for seeded block copy.
+	 *
+	 * @param string $url   Link URL.
+	 * @param string $label Link label.
+	 * @return string
+	 */
+	protected function build_seed_text_link( $url, $label ) {
+		$url   = trim( (string) $url );
+		$label = trim( (string) $label );
+
+		if ( '' === $label ) {
+			return '';
+		}
+
+		if ( '' === $url ) {
+			return esc_html( $label );
+		}
+
+		return '<a href="' . esc_url( $url ) . '">' . esc_html( $label ) . '</a>';
 	}
 
 	/**
@@ -3120,7 +4999,7 @@ class McPrices_Integration {
 	 * @param array<int, array<string, string>> $links Related link data.
 	 * @return string
 	 */
-	protected function build_seeded_related_links_block( array $links ) {
+	protected function build_seeded_links_block( $heading, array $links ) {
 		$list_items = array();
 
 		foreach ( $links as $link ) {
@@ -3145,7 +5024,86 @@ class McPrices_Integration {
 			return '';
 		}
 
-		return $this->build_seed_block_heading( 'Related guides and live menu pages', 2 ) . $this->build_seed_block_list( $list_items );
+		return $this->build_seed_block_heading( $heading, 2 ) . $this->build_seed_block_list( $list_items );
+	}
+
+	/**
+	 * Build a related-links block for internal linking.
+	 *
+	 * @param array<int, array<string, string>> $links Related link data.
+	 * @return string
+	 */
+	protected function build_seeded_related_links_block( array $links ) {
+		return $this->build_seeded_links_block( 'Related guides and live menu pages', $links );
+	}
+
+	/**
+	 * Build an authority-links block for external references.
+	 *
+	 * @param array<int, array<string, string>> $links External reference data.
+	 * @return string
+	 */
+	protected function build_seeded_external_links_block( array $links ) {
+		return $this->build_seeded_links_block( 'Official references and verification links', $links );
+	}
+
+	/**
+	 * Build a reusable editorial and sourcing note for seeded guide pages.
+	 *
+	 * @return string
+	 */
+	protected function get_seeded_editorial_note_html() {
+		$methodology_url = home_url( '/pricing-methodology/' );
+		$official_menu   = $this->get_official_reference_url( 'full_menu' );
+		$official_app    = $this->get_official_reference_url( 'app' );
+		$official_food   = $this->get_official_reference_url( 'about_food' );
+
+		$html  = '<div class="mcprices-editorial-note">';
+		$html .= '<p><strong>Last updated:</strong> ' . esc_html( $this->get_current_site_date( 'F j, Y' ) ) . '</p>';
+		$html .= '<p><strong>Editorial note:</strong> This is an independent planning guide built from tracked McDonald&#8217;s USA menu data and internal review. Final prices, app offers, ingredients, and availability should always be confirmed at the official source before ordering.</p>';
+		$html .= '<p><a href="' . esc_url( $methodology_url ) . '">How we track prices</a> &middot; <a href="' . esc_url( $official_menu ) . '" target="_blank" rel="noopener noreferrer">Official full menu</a> &middot; <a href="' . esc_url( $official_app ) . '" target="_blank" rel="noopener noreferrer">Official app</a> &middot; <a href="' . esc_url( $official_food ) . '" target="_blank" rel="noopener noreferrer">About our food</a></p>';
+		$html .= '</div>';
+
+		return $html;
+	}
+
+	/**
+	 * Build a reusable editorial and sourcing note for seeded guide pages.
+	 *
+	 * @return string
+	 */
+	protected function build_seeded_editorial_note_block() {
+		return $this->build_seed_block_html( $this->get_seeded_editorial_note_html() );
+	}
+
+	/**
+	 * Return whether one page should receive the editorial trust note on render.
+	 *
+	 * @param \WP_Post $post Page object.
+	 * @return bool
+	 */
+	protected function should_prepend_editorial_note_to_page( \WP_Post $post ) {
+		if ( 'page' !== $post->post_type || (int) get_option( 'page_on_front' ) === (int) $post->ID ) {
+			return false;
+		}
+
+		if ( '' !== (string) get_post_meta( (int) $post->ID, '_mcprices_support_page', true ) ) {
+			return true;
+		}
+
+		if ( 'menu-root' === (string) get_post_meta( (int) $post->ID, '_mcprices_managed_page', true ) ) {
+			return true;
+		}
+
+		$guide_slugs = array();
+
+		foreach ( $this->get_menu_category_primary_guide_map() as $guide_data ) {
+			if ( ! empty( $guide_data['slug'] ) ) {
+				$guide_slugs[] = (string) $guide_data['slug'];
+			}
+		}
+
+		return in_array( (string) $post->post_name, array_values( array_unique( $guide_slugs ) ), true );
 	}
 
 	/**
@@ -3161,11 +5119,13 @@ class McPrices_Integration {
 				'intro'         => array(),
 				'highlights'    => array(),
 				'sections'      => array(),
+				'faq_items'     => array(),
 				'related_links' => array(),
+				'external_links' => array(),
 			)
 		);
 
-		$content = '';
+		$content = $this->build_seeded_editorial_note_block();
 
 		foreach ( $args['intro'] as $paragraph ) {
 			$content .= $this->build_seed_block_paragraph( $paragraph );
@@ -3197,9 +5157,158 @@ class McPrices_Integration {
 		$content .= $this->build_seed_block_heading( 'How to use this page on McDonald\'s Menu Prices USA', 2 );
 		$content .= $this->build_seed_block_paragraph( 'Use this focused guide when you already know the topic you want to compare, then move into the linked pillar pages, category pages, and item pages when you need broader context, deeper price comparisons, or a more exact menu path before ordering.' );
 
+		$content .= $this->build_seeded_faq_blocks( is_array( $args['faq_items'] ) ? $args['faq_items'] : array() );
 		$content .= $this->build_seeded_related_links_block( is_array( $args['related_links'] ) ? $args['related_links'] : array() );
+		$content .= $this->build_seeded_external_links_block( is_array( $args['external_links'] ) ? $args['external_links'] : array() );
 
 		return $content;
+	}
+
+	/**
+	 * Build a tool-led support page with an interactive placeholder surface.
+	 *
+	 * @param array<string, mixed> $args Page arguments.
+	 * @return string
+	 */
+	protected function build_seeded_interactive_tool_page_content( array $args ) {
+		$args = wp_parse_args(
+			$args,
+			array(
+				'slug'           => '',
+				'intro'          => array(),
+				'highlights'     => array(),
+				'sections'       => array(),
+				'faq_items'      => array(),
+				'related_links'  => array(),
+				'external_links' => array(),
+			)
+		);
+
+		$content = $this->build_seeded_editorial_note_block();
+
+		foreach ( $args['intro'] as $paragraph ) {
+			$content .= $this->build_seed_block_paragraph( $paragraph );
+		}
+
+		if ( ! empty( $args['highlights'] ) && is_array( $args['highlights'] ) ) {
+			$content .= $this->build_seed_block_heading( 'Key takeaways', 2 );
+			$content .= $this->build_seed_block_list( $args['highlights'] );
+		}
+
+		if ( '' !== trim( (string) $args['slug'] ) ) {
+			$content .= $this->build_seed_block_html( $this->get_interactive_tool_placeholder_markup( (string) $args['slug'] ) );
+		}
+
+		foreach ( $args['sections'] as $section ) {
+			$heading = trim( (string) ( $section['heading'] ?? '' ) );
+
+			if ( '' !== $heading ) {
+				$content .= $this->build_seed_block_heading( $heading, 2 );
+			}
+
+			if ( ! empty( $section['paragraphs'] ) && is_array( $section['paragraphs'] ) ) {
+				foreach ( $section['paragraphs'] as $paragraph ) {
+					$content .= $this->build_seed_block_paragraph( $paragraph );
+				}
+			}
+
+			if ( ! empty( $section['list'] ) && is_array( $section['list'] ) ) {
+				$content .= $this->build_seed_block_list( $section['list'] );
+			}
+		}
+
+		$content .= $this->build_seed_block_heading( 'How to use this tool with the live menu pages', 2 );
+		$content .= $this->build_seed_block_paragraph( 'Use the tool first when you want a fast shortlist or a quick side-by-side answer, then move into the linked category pages, item pages, and longer guides when you need the richer context around menu value, ordering strategy, or final confirmation before checkout.' );
+
+		$content .= $this->build_seeded_faq_blocks( is_array( $args['faq_items'] ) ? $args['faq_items'] : array() );
+		$content .= $this->build_seeded_related_links_block( is_array( $args['related_links'] ) ? $args['related_links'] : array() );
+		$content .= $this->build_seeded_external_links_block( is_array( $args['external_links'] ) ? $args['external_links'] : array() );
+
+		return $content;
+	}
+
+	/**
+	 * Return a safe placeholder node for one interactive tool shell.
+	 *
+	 * @param string $slug Tool slug.
+	 * @return string
+	 */
+	protected function get_interactive_tool_placeholder_markup( $slug ) {
+		$slug = sanitize_key( (string) $slug );
+
+		if ( '' === $slug ) {
+			return '';
+		}
+
+		return '<div class="mcprices-tool-placeholder" data-mcprices-tool-placeholder="' . esc_attr( $slug ) . '"></div>';
+	}
+
+	/**
+	 * Return the current tracked item catalog used by the interactive tools.
+	 *
+	 * @return array<int, array<string, mixed>>
+	 */
+	protected function get_interactive_tool_catalog() {
+		static $catalog = null;
+
+		if ( null !== $catalog ) {
+			return $catalog;
+		}
+
+		$catalog             = array();
+		$excluded_categories = array( 'sauces' );
+
+		foreach ( $this->get_menu_directory_categories() as $category_id => $category ) {
+			if ( ! is_array( $category ) || in_array( (string) $category_id, $excluded_categories, true ) ) {
+				continue;
+			}
+
+			$category_label = trim( (string) ( $category['card_title'] ?? $category['title'] ?? '' ) );
+
+			if ( '' === $category_label || empty( $category['items'] ) || ! is_array( $category['items'] ) ) {
+				continue;
+			}
+
+			foreach ( $category['items'] as $item ) {
+				$name         = trim( (string) ( $item['name'] ?? '' ) );
+				$price_value  = (float) $this->parse_schema_price( $item['price'] ?? '' );
+				$calorie_text = $this->parse_schema_calories( $item['calories'] ?? '' );
+				$calories     = '' !== $calorie_text ? (int) $calorie_text : 0;
+				$item_slug    = trim( (string) ( $item['slug'] ?? '' ) );
+
+				if ( '' === $name || '' === $item_slug || $price_value <= 0 || $calories <= 0 ) {
+					continue;
+				}
+
+				$catalog[] = array(
+					'id'          => (string) $category_id . '::' . $item_slug,
+					'name'        => $name,
+					'category'    => $category_label,
+					'categoryId'  => (string) $category_id,
+					'subLabel'    => trim( (string) ( $item['sub_label'] ?? '' ) ),
+					'price'       => round( $price_value, 2 ),
+					'calories'    => $calories,
+					'priceText'   => trim( (string) ( $item['price'] ?? '' ) ),
+					'calorieText' => trim( (string) ( $item['calories'] ?? '' ) ),
+					'url'         => $this->get_menu_item_page_url( (string) $category_id, $item_slug ),
+				);
+			}
+		}
+
+		usort(
+			$catalog,
+			static function ( $left, $right ) {
+				$category_compare = strcasecmp( (string) ( $left['category'] ?? '' ), (string) ( $right['category'] ?? '' ) );
+
+				if ( 0 !== $category_compare ) {
+					return $category_compare;
+				}
+
+				return strcasecmp( (string) ( $left['name'] ?? '' ), (string) ( $right['name'] ?? '' ) );
+			}
+		);
+
+		return $catalog;
 	}
 
 	/**
@@ -3234,7 +5343,7 @@ class McPrices_Integration {
 			)
 		);
 
-		$content = '';
+		$content = $this->build_seeded_editorial_note_block();
 
 		foreach ( $args['intro'] as $paragraph ) {
 			$content .= $this->build_seed_block_paragraph( $paragraph );
@@ -3839,6 +5948,7 @@ class McPrices_Integration {
 			array(
 				'categories' => $this->get_menu_directory_categories(),
 				'root'       => $this->get_menu_directory_root_url(),
+				'format'     => 'editable-menu-pages-v2',
 			)
 		);
 	}
@@ -3866,7 +5976,7 @@ class McPrices_Integration {
 				'slug'        => 'menu',
 				'post_parent' => 0,
 				'menu_order'  => 0,
-				'content'     => '<!-- wp:shortcode -->[mcprices_menu_directory]<!-- /wp:shortcode -->',
+				'content'     => $this->build_menu_root_editable_content(),
 				'excerpt'     => 'Browse every McDonald\'s USA menu category, then open separate item pages for prices, calories, and quick details.',
 				'type'        => 'menu-root',
 				'key'         => 'menu',
@@ -3895,7 +6005,11 @@ class McPrices_Integration {
 					'slug'        => (string) $category['slug'],
 					'post_parent' => $root_page_id,
 					'menu_order'  => $category_order,
-					'content'     => '<!-- wp:shortcode -->[mcprices_menu_category category="' . esc_attr( $category_id ) . '"]<!-- /wp:shortcode -->',
+					'content'     => $this->build_menu_category_editable_content(
+						$category,
+						$this->get_menu_category_primary_guide_url( $category_id ),
+						$this->get_menu_category_primary_guide_title( $category_id )
+					),
 					'excerpt'     => (string) $category['description'],
 					'type'        => 'menu-category',
 					'key'         => (string) $category_id,
@@ -3919,6 +6033,15 @@ class McPrices_Integration {
 				$item_title = trim( (string) $item['name'] ) . ' Price USA';
 				$item_excerpt = trim( (string) $item['summary'] );
 				$item_key = (string) $category_id . '::' . (string) $item['slug'];
+				$related_items = array_values(
+					array_filter(
+						$category['items'],
+						static function ( $candidate ) use ( $item ) {
+							return isset( $candidate['slug'], $item['slug'] ) && $candidate['slug'] !== $item['slug'];
+						}
+					)
+				);
+				$related_items = array_slice( $related_items, 0, 3 );
 				$expected_keys[ $item_key ] = true;
 
 				$item_result = $this->upsert_menu_directory_page(
@@ -3928,7 +6051,13 @@ class McPrices_Integration {
 						'slug'        => (string) $item['slug'],
 						'post_parent' => $category_page_id,
 						'menu_order'  => $item_order,
-						'content'     => '<!-- wp:shortcode -->[mcprices_menu_item category="' . esc_attr( $category_id ) . '" item="' . esc_attr( $item['slug'] ) . '"]<!-- /wp:shortcode -->',
+						'content'     => $this->build_menu_item_editable_content(
+							$category,
+							$item,
+							$this->get_menu_category_primary_guide_url( $category_id ),
+							$this->get_menu_category_primary_guide_title( $category_id ),
+							$related_items
+						),
 						'excerpt'     => $item_excerpt,
 						'type'        => 'menu-item',
 						'key'         => $item_key,
@@ -4215,19 +6344,288 @@ class McPrices_Integration {
 		);
 
 		foreach ( $posts as $post ) {
-			if ( ! $post instanceof \WP_Post || $this->sitemap_post_is_excluded( $post ) ) {
+			if ( ! $post instanceof \WP_Post ) {
 				continue;
 			}
 
 			$seo_title       = $this->get_rank_math_post_title( $post );
 			$seo_description = $this->get_rank_math_post_description( $post );
 			$focus_keyword   = $this->get_rank_math_post_focus_keyword( $post );
+			$canonical_url   = $this->get_canonical_url_for_post( $post );
+			$should_noindex  = $this->should_noindex_post( $post );
 
 			update_post_meta( (int) $post->ID, 'rank_math_title', $seo_title );
 			update_post_meta( (int) $post->ID, 'rank_math_description', $seo_description );
 			update_post_meta( (int) $post->ID, 'rank_math_focus_keyword', $focus_keyword );
-			update_post_meta( (int) $post->ID, 'rank_math_robots', array( 'index' ) );
+
+			if ( $should_noindex ) {
+				update_post_meta( (int) $post->ID, 'rank_math_robots', array( 'noindex', 'follow' ) );
+			} else {
+				update_post_meta( (int) $post->ID, 'rank_math_robots', array( 'index', 'follow' ) );
+			}
+
+			if ( '' !== $canonical_url && untrailingslashit( $canonical_url ) !== untrailingslashit( (string) get_permalink( $post ) ) ) {
+				update_post_meta( (int) $post->ID, 'rank_math_canonical_url', esc_url_raw( $canonical_url ) );
+			} else {
+				delete_post_meta( (int) $post->ID, 'rank_math_canonical_url' );
+			}
 		}
+	}
+
+	/**
+	 * Return the current set of duplicate-intent item pages that should resolve
+	 * to a single primary canonical page.
+	 *
+	 * @return array<string, string>
+	 */
+	protected function get_duplicate_menu_item_canonical_map() {
+		return array(
+			'mcvalue::mcchicken'              => 'chickenfish::mcchicken',
+			'mcvalue::cheeseburger'           => 'burgers::cheeseburger',
+			'mcvalue::double-cheeseburger'    => 'burgers::double-cheeseburger',
+			'mcvalue::hash-browns'            => 'breakfast::hash-browns',
+			'mcvalue::sausage-biscuit'        => 'breakfast::sausage-biscuit',
+			'mcvalue::sausage-burrito'        => 'breakfast::sausage-burrito',
+			'mcvalue::sausage-mcmuffin'       => 'breakfast::sausage-mcmuffin',
+			'mcvalue::4-pc-chicken-mcnuggets' => 'nuggets::4-pc-chicken-mcnuggets',
+			'mcvalue::6-pc-chicken-mcnuggets' => 'nuggets::6-pc-chicken-mcnuggets',
+			'mcvalue::small-world-famous-fries' => 'sides::world-famous-fries-small',
+		);
+	}
+
+	/**
+	 * Return the canonical managed key for a menu item page.
+	 *
+	 * @param string $managed_key Managed key.
+	 * @return string
+	 */
+	protected function get_primary_menu_item_managed_key( $managed_key ) {
+		$managed_key = trim( (string) $managed_key );
+		$map         = $this->get_duplicate_menu_item_canonical_map();
+
+		return isset( $map[ $managed_key ] ) ? (string) $map[ $managed_key ] : $managed_key;
+	}
+
+	/**
+	 * Return one managed page by key.
+	 *
+	 * @param string $managed_key  Managed key.
+	 * @param string $managed_type Optional managed page type.
+	 * @return \WP_Post|null
+	 */
+	protected function get_managed_page_by_key( $managed_key, $managed_type = '' ) {
+		$managed_key = trim( (string) $managed_key );
+
+		if ( '' === $managed_key ) {
+			return null;
+		}
+
+		$page_ids = get_posts(
+			array(
+				'post_type'              => 'page',
+				'post_status'            => 'publish',
+				'posts_per_page'         => 1,
+				'fields'                 => 'ids',
+				'meta_key'               => '_mcprices_managed_key',
+				'meta_value'             => $managed_key,
+				'orderby'                => 'ID',
+				'order'                  => 'ASC',
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+			)
+		);
+
+		if ( empty( $page_ids[0] ) ) {
+			return null;
+		}
+
+		$page = get_post( (int) $page_ids[0] );
+
+		if ( ! $page instanceof \WP_Post ) {
+			return null;
+		}
+
+		if ( '' !== $managed_type && (string) get_post_meta( (int) $page->ID, '_mcprices_managed_page', true ) !== (string) $managed_type ) {
+			return null;
+		}
+
+		return $page;
+	}
+
+	/**
+	 * Return the canonical public URL for one managed menu item key.
+	 *
+	 * @param string $managed_key Managed key in category::item-slug format.
+	 * @return string
+	 */
+	protected function get_menu_item_url_by_managed_key( $managed_key ) {
+		$page = $this->get_managed_page_by_key( $managed_key, 'menu-item' );
+
+		if ( $page instanceof \WP_Post ) {
+			return (string) get_permalink( $page );
+		}
+
+		$item_context = $this->get_menu_directory_item_context_by_key( $managed_key );
+
+		if ( empty( $item_context['category'] ) || empty( $item_context['item'] ) ) {
+			return '';
+		}
+
+		return trailingslashit(
+			untrailingslashit( $this->get_menu_category_page_url( (string) $item_context['category']['id'] ) )
+			. '/'
+			. (string) $item_context['item']['slug']
+		);
+	}
+
+	/**
+	 * Return whether the posts page currently has any published posts.
+	 *
+	 * @return bool
+	 */
+	protected function blog_has_published_posts() {
+		static $has_posts = null;
+
+		if ( null !== $has_posts ) {
+			return $has_posts;
+		}
+
+		$counts    = wp_count_posts( 'post' );
+		$published = isset( $counts->publish ) ? (int) $counts->publish : 0;
+		$has_posts = $published > 0;
+
+		return $has_posts;
+	}
+
+	/**
+	 * Return whether a page is the posts page and currently too thin to index.
+	 *
+	 * @param \WP_Post $post Post object.
+	 * @return bool
+	 */
+	protected function is_empty_blog_page( \WP_Post $post ) {
+		return 'page' === $post->post_type
+			&& (int) $post->ID === (int) get_option( 'page_for_posts' )
+			&& ! $this->blog_has_published_posts();
+	}
+
+	/**
+	 * Normalize text for duplicate-title comparisons.
+	 *
+	 * @param string $text Source text.
+	 * @return string
+	 */
+	protected function normalize_comparable_text( $text ) {
+		$text = strtolower( html_entity_decode( wp_strip_all_tags( (string) $text ), ENT_QUOTES | ENT_HTML5, 'UTF-8' ) );
+		$text = preg_replace( '/\s+/u', ' ', $text );
+
+		return trim( (string) $text );
+	}
+
+	/**
+	 * Return the primary duplicate target for one numbered slug page.
+	 *
+	 * @param \WP_Post $post Post object.
+	 * @return \WP_Post|null
+	 */
+	protected function get_duplicate_slug_canonical_post( \WP_Post $post ) {
+		$post_slug = (string) $post->post_name;
+
+		if ( ! preg_match( '/^(.*?)-(\d+)$/', $post_slug, $matches ) ) {
+			return null;
+		}
+
+		$base_slug = trim( (string) $matches[1] );
+
+		if ( '' === $base_slug ) {
+			return null;
+		}
+
+		$candidates = get_posts(
+			array(
+				'post_type'              => $post->post_type,
+				'post_status'            => 'publish',
+				'posts_per_page'         => 5,
+				'name'                   => $base_slug,
+				'post__not_in'           => array( (int) $post->ID ),
+				'orderby'                => 'ID',
+				'order'                  => 'ASC',
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+			)
+		);
+
+		$post_title = $this->normalize_comparable_text( (string) $post->post_title );
+
+		foreach ( $candidates as $candidate ) {
+			if ( ! $candidate instanceof \WP_Post ) {
+				continue;
+			}
+
+			$candidate_title = $this->normalize_comparable_text( (string) $candidate->post_title );
+
+			if ( '' !== $post_title && $post_title === $candidate_title ) {
+				return $candidate;
+			}
+
+			$post_key      = (string) get_post_meta( (int) $post->ID, '_mcprices_managed_key', true );
+			$candidate_key = (string) get_post_meta( (int) $candidate->ID, '_mcprices_managed_key', true );
+
+			if ( '' !== $post_key && '' !== $candidate_key && $post_key === $candidate_key ) {
+				return $candidate;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Return the canonical URL for one page when it should not self-canonicalize.
+	 *
+	 * @param \WP_Post $post Post object.
+	 * @return string
+	 */
+	protected function get_canonical_url_for_post( \WP_Post $post ) {
+		if ( 'sample-page' === (string) $post->post_name ) {
+			return home_url( '/' );
+		}
+
+		$duplicate_target = $this->get_duplicate_slug_canonical_post( $post );
+
+		if ( $duplicate_target instanceof \WP_Post ) {
+			return (string) get_permalink( $duplicate_target );
+		}
+
+		$managed_type = (string) get_post_meta( (int) $post->ID, '_mcprices_managed_page', true );
+		$managed_key  = (string) get_post_meta( (int) $post->ID, '_mcprices_managed_key', true );
+
+		if ( 'menu-item' === $managed_type && '' !== $managed_key ) {
+			$primary_key = $this->get_primary_menu_item_managed_key( $managed_key );
+
+			if ( $primary_key !== $managed_key ) {
+				return $this->get_menu_item_url_by_managed_key( $primary_key );
+			}
+		}
+
+		return '';
+	}
+
+	/**
+	 * Return whether a post should be noindexed locally and on live deploys.
+	 *
+	 * @param \WP_Post $post Post object.
+	 * @return bool
+	 */
+	protected function should_noindex_post( \WP_Post $post ) {
+		if ( $this->is_empty_blog_page( $post ) ) {
+			return true;
+		}
+
+		$canonical_url = $this->get_canonical_url_for_post( $post );
+
+		return '' !== $canonical_url && untrailingslashit( $canonical_url ) !== untrailingslashit( (string) get_permalink( $post ) );
 	}
 
 	/**
@@ -4286,10 +6684,17 @@ class McPrices_Integration {
 		}
 
 		if ( 'menu-category' === $managed_type ) {
-			return $title . ' | McDonald\'s Menu Prices USA';
+			return $title . ' | McDonald\'s Menu';
 		}
 
 		if ( 'menu-item' === $managed_type ) {
+			$item_context = $this->get_menu_directory_item_context_by_key( (string) get_post_meta( (int) $post->ID, '_mcprices_managed_key', true ) );
+			$category     = isset( $item_context['category']['card_title'] ) ? trim( (string) $item_context['category']['card_title'] ) : '';
+
+			if ( '' !== $category ) {
+				return $title . ' | ' . $category . ' Menu & Calories';
+			}
+
 			return $title . ' | Calories & Menu Guide';
 		}
 
@@ -4322,10 +6727,7 @@ class McPrices_Integration {
 	 */
 	protected function get_rank_math_post_description( \WP_Post $post ) {
 		if ( (int) get_option( 'page_on_front' ) === (int) $post->ID ) {
-			return $this->limit_text_to_words(
-				'Complete McDonald\'s USA menu prices updated ' . $this->get_current_site_date() . '. Compare burgers, breakfast, McCafe drinks, McValue deals, McNuggets, Happy Meals, fries, desserts, sauces, beverages, combo meals, limited-time items, calories, and ordering context in dollars. This homepage is organized with clean internal links, readable URLs, Rank Math metadata, and a sitemap-friendly structure so readers and search engines can quickly reach every important price page without confusion or duplicate paths.',
-				75
-			);
+			return $this->limit_text_to_characters( $this->get_homepage_meta_description(), 155 );
 		}
 
 		$managed_type = (string) get_post_meta( (int) $post->ID, '_mcprices_managed_page', true );
@@ -4334,9 +6736,9 @@ class McPrices_Integration {
 		$excerpt      = trim( wp_strip_all_tags( (string) $post->post_excerpt ) );
 
 		if ( 'menu-root' === $managed_type ) {
-			return $this->limit_text_to_words(
-				'Browse the full McDonald\'s USA menu with clean category links, individual item pages, current dollar prices, calorie notes, combo meal context, breakfast items, McValue picks, drinks, desserts, sauces, and limited-time updates. This hub gives readers a simple path through every major section while helping search engines understand the site architecture, internal links, canonical price pages, sitemap relationships, category coverage, and page hierarchy clearly.',
-				75
+			return $this->limit_text_to_characters(
+				'Browse the full McDonald\'s USA menu by category. Compare prices, calories, deals, and links to breakfast, burgers, McCafe, drinks, desserts, and more.',
+				155
 			);
 		}
 
@@ -4344,12 +6746,12 @@ class McPrices_Integration {
 			$category = $this->get_menu_directory_category_by_key( $managed_key );
 
 			if ( ! empty( $category ) ) {
-				return $this->limit_text_to_words(
+				return $this->limit_text_to_characters(
 					sprintf(
-						'Explore %1$s with clean links to every related McDonald\'s USA item page. This category groups current dollar prices, calorie details, value notes, meal context, app-deal relevance, and menu comparisons in one human-readable URL structure. It helps readers compare options faster and gives Rank Math, Google, and sitemap crawlers a focused section path for better discovery, internal navigation, and topical authority.',
-						(string) $category['title']
+						'Explore %1$s prices, calories, and item links on McDonald\'s Menu Prices USA. Compare live options and open each item page from this category hub.',
+						(string) $category['card_title']
 					),
-					75
+					155
 				);
 			}
 		}
@@ -4361,27 +6763,27 @@ class McPrices_Integration {
 				$item     = $item_context['item'];
 				$category = $item_context['category'];
 
-				return $this->limit_text_to_words(
+				return $this->limit_text_to_characters(
 					sprintf(
-						'%1$s covers the current McDonald\'s USA price, calorie details, menu category, and ordering context for this item. Use this page when comparing %2$s choices, checking value against combo meals, McValue picks, fries, drinks, sauces, and app deals, or confirming the item through a clean readable URL before ordering from a local restaurant, kiosk, drive-thru, delivery service, or app.',
+						'%1$s price, calories, and %2$s menu context on McDonald\'s Menu Prices USA. Compare this item with related menu options before you order.',
 						(string) $item['name'],
 						(string) $category['card_title']
 					),
-					75
+					155
 				);
 			}
 		}
 
 		if ( '' !== $excerpt ) {
-			return $this->limit_text_to_words( $excerpt . ' Use this McDonald\'s Menu Prices USA guide for clear pricing context, calorie notes, internal links, current menu details, value comparisons, and a clean SEO-friendly page structure that supports readable URLs, Rank Math metadata, and sitemap discovery.', 75 );
+			return $this->limit_text_to_characters( $excerpt, 155 );
 		}
 
-		return $this->limit_text_to_words(
+		return $this->limit_text_to_characters(
 			sprintf(
-				'%1$s is part of McDonald\'s Menu Prices USA, an independent menu price guide built around readable URLs, current dollar prices, calorie details, McValue deals, breakfast information, drinks, desserts, and supporting internal links that help readers compare McDonald\'s menu options quickly.',
+				'%1$s is part of McDonald\'s Menu Prices USA, an independent guide covering menu prices, calories, deals, breakfast, drinks, desserts, and related pages.',
 				$title
 			),
-			75
+			155
 		);
 	}
 
@@ -4449,6 +6851,38 @@ class McPrices_Integration {
 		}
 
 		return rtrim( implode( ' ', array_slice( $words, 0, $max_words ) ), '.,;:-' ) . '.';
+	}
+
+	/**
+	 * Limit plain text to a readable character count for meta descriptions.
+	 *
+	 * @param string $text      Raw text.
+	 * @param int    $max_chars Maximum character count.
+	 * @return string
+	 */
+	protected function limit_text_to_characters( $text, $max_chars = 155 ) {
+		$text = html_entity_decode( wp_strip_all_tags( (string) $text ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+		$text = trim( preg_replace( '/\s+/', ' ', $text ) );
+
+		if ( '' === $text ) {
+			return '';
+		}
+
+		$text_length = function_exists( 'mb_strlen' ) ? mb_strlen( $text ) : strlen( $text );
+
+		if ( $text_length <= $max_chars ) {
+			return $text;
+		}
+
+		$snippet = function_exists( 'mb_substr' ) ? mb_substr( $text, 0, $max_chars + 1 ) : substr( $text, 0, $max_chars + 1 );
+		$snippet = preg_replace( '/\s+\S*$/u', '', (string) $snippet );
+		$snippet = trim( (string) $snippet );
+
+		if ( '' === $snippet ) {
+			$snippet = function_exists( 'mb_substr' ) ? mb_substr( $text, 0, $max_chars ) : substr( $text, 0, $max_chars );
+		}
+
+		return rtrim( (string) $snippet, '.,;:-' ) . '.';
 	}
 
 	/**
@@ -4565,17 +6999,26 @@ class McPrices_Integration {
 	}
 
 	/**
-	 * Render the native hero search markup outside of post-content KSES stripping.
+	 * Return the native hero search markup used on the homepage.
 	 *
 	 * @return string
 	 */
-	public function render_hero_search_shortcode() {
+	public function get_hero_search_markup() {
 		return '<form class="hero-search" role="search" data-mcprices-search>'
 			. '<div class="hero-search-icon" aria-hidden="true">&#128269;</div>'
 			. '<input type="search" name="mcprices_search" placeholder="Search for Big Mac, McFlurry, Happy Meal&hellip;" autocomplete="off" data-mcprices-search-input>'
 			. '<button type="submit">Search</button>'
 			. '</form>'
 			. '<div class="hero-search-feedback" data-mcprices-search-feedback aria-live="polite"></div>';
+	}
+
+	/**
+	 * Render the native hero search markup outside of post-content KSES stripping.
+	 *
+	 * @return string
+	 */
+	public function render_hero_search_shortcode() {
+		return $this->get_hero_search_markup();
 	}
 
 	/**
@@ -4621,6 +7064,14 @@ class McPrices_Integration {
 
 		if ( ! is_array( $item ) ) {
 			return $this->get_menu_category_page_url( $category_id );
+		}
+
+		$managed_key  = (string) $category['id'] . '::' . (string) $item['slug'];
+		$primary_key  = $this->get_primary_menu_item_managed_key( $managed_key );
+		$canonical_url = $this->get_menu_item_url_by_managed_key( $primary_key );
+
+		if ( '' !== $canonical_url ) {
+			return $canonical_url;
 		}
 
 		return trailingslashit( untrailingslashit( $this->get_menu_category_page_url( $category_id ) ) . '/' . $item['slug'] );
@@ -5359,12 +7810,14 @@ class McPrices_Integration {
 	}
 
 	/**
-	 * Render the managed root menu directory page.
+	 * Render the managed root menu directory page markup.
 	 *
+	 * @param string $editable_content_html Rendered editor content.
 	 * @return string
 	 */
-	public function render_menu_directory_shortcode() {
-		$categories = $this->get_menu_directory_categories();
+	protected function render_menu_directory_page_markup( $editable_content_html = '' ) {
+		$categories      = $this->get_menu_directory_categories();
+		$editable_exists = $this->rendered_menu_page_content_exists( $editable_content_html );
 
 		ob_start();
 		?>
@@ -5374,7 +7827,13 @@ class McPrices_Integration {
 					<div class="section-header">
 						<div class="section-label">Menu Directory</div>
 						<h2 class="section-title">Browse McDonald&rsquo;s USA Menu Categories</h2>
-						<p class="section-sub">Open any category page to browse every tracked item, then use the read-more links to open dedicated item pages without changing the homepage design.</p>
+						<?php if ( $editable_exists ) : ?>
+							<div class="section-sub mcprices-directory-rich-sub">
+								<?php echo $editable_content_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							</div>
+						<?php else : ?>
+							<p class="section-sub">Open any category page to browse every tracked item, then use the read-more links to open dedicated item pages without changing the homepage design.</p>
+						<?php endif; ?>
 					</div>
 					<div class="cat-grid">
 						<?php foreach ( $categories as $category ) : ?>
@@ -5399,29 +7858,31 @@ class McPrices_Integration {
 	}
 
 	/**
-	 * Render one managed category landing page.
+	 * Render the managed menu category page markup.
 	 *
-	 * @param array $atts Shortcode attributes.
+	 * @param array  $category              Category data.
+	 * @param string $editable_content_html Rendered editor content.
 	 * @return string
 	 */
-	public function render_menu_category_shortcode( $atts ) {
-		$atts = shortcode_atts(
-			array(
-				'category' => '',
-			),
-			(array) $atts,
-			'mcprices_menu_category'
-		);
+	protected function render_menu_category_page_markup( array $category, $editable_content_html = '' ) {
+		$guide_url              = $this->get_menu_category_primary_guide_url( $category['id'] );
+		$guide_title            = $this->get_menu_category_primary_guide_title( $category['id'] );
+		$guide_teaser           = $this->get_menu_category_primary_guide_teaser( $category['id'], count( $category['items'] ) );
+		$semantic_context       = $this->get_menu_category_semantic_context_data( $category, $guide_url, $guide_title );
+		$editable_exists        = $this->rendered_menu_page_content_exists( $editable_content_html );
+		$semantic_callout_title = ! empty( $semantic_context['title'] ) ? (string) $semantic_context['title'] : 'How to use this live category page';
+		$semantic_callout       = '';
 
-		$category = $this->get_menu_directory_category_data( $atts['category'] );
-
-		if ( ! is_array( $category ) ) {
-			return '';
+		if ( $editable_exists ) {
+			$semantic_callout = $this->build_semantic_callout_content_html(
+				! empty( $semantic_context['eyebrow'] ) ? (string) $semantic_context['eyebrow'] : 'Category Context',
+				$semantic_callout_title,
+				$editable_content_html,
+				! empty( $semantic_context['actions'] ) && is_array( $semantic_context['actions'] ) ? $semantic_context['actions'] : array()
+			);
+		} else {
+			$semantic_callout = $this->get_menu_category_semantic_callout( $category, $guide_url, $guide_title );
 		}
-
-		$guide_url    = $this->get_menu_category_primary_guide_url( $category['id'] );
-		$guide_title  = $this->get_menu_category_primary_guide_title( $category['id'] );
-		$guide_teaser = $this->get_menu_category_primary_guide_teaser( $category['id'], count( $category['items'] ) );
 
 		ob_start();
 		?>
@@ -5462,6 +7923,11 @@ class McPrices_Integration {
 							<?php echo $guide_teaser; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						</div>
 					<?php endif; ?>
+					<?php if ( $semantic_callout ) : ?>
+						<div class="mcprices-directory-guide mcprices-directory-guide--semantic">
+							<?php echo $semantic_callout; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						</div>
+					<?php endif; ?>
 					<div class="menu-cards-grid featured-grid mcprices-directory-cards">
 						<?php foreach ( $category['items'] as $item ) : ?>
 							<article class="menu-card mcprices-directory-card">
@@ -5498,28 +7964,14 @@ class McPrices_Integration {
 	}
 
 	/**
-	 * Render one managed menu item page.
+	 * Render the managed menu item page markup.
 	 *
-	 * @param array $atts Shortcode attributes.
+	 * @param array  $category              Category data.
+	 * @param array  $item                  Item data.
+	 * @param string $editable_content_html Rendered editor content.
 	 * @return string
 	 */
-	public function render_menu_item_shortcode( $atts ) {
-		$atts = shortcode_atts(
-			array(
-				'category' => '',
-				'item'     => '',
-			),
-			(array) $atts,
-			'mcprices_menu_item'
-		);
-
-		$category = $this->get_menu_directory_category_data( $atts['category'] );
-		$item     = $this->get_menu_directory_item_data( $atts['category'], $atts['item'] );
-
-		if ( ! is_array( $category ) || ! is_array( $item ) ) {
-			return '';
-		}
-
+	protected function render_menu_item_page_markup( array $category, array $item, $editable_content_html = '' ) {
 		$guide_url   = $this->get_menu_category_primary_guide_url( $category['id'] );
 		$guide_title = $this->get_menu_category_primary_guide_title( $category['id'] );
 
@@ -5531,7 +7983,17 @@ class McPrices_Integration {
 				}
 			)
 		);
-		$related_items = array_slice( $related_items, 0, 3 );
+		$related_items         = array_slice( $related_items, 0, 3 );
+		$semantic_context      = $this->get_menu_item_semantic_context_data( $category, $item, $guide_url, $guide_title, $related_items );
+		$editable_exists       = $this->rendered_menu_page_content_exists( $editable_content_html );
+		$item_semantic_callout = $editable_exists
+			? $this->build_semantic_callout_content_html(
+				! empty( $semantic_context['eyebrow'] ) ? (string) $semantic_context['eyebrow'] : 'Item Context',
+				! empty( $semantic_context['title'] ) ? (string) $semantic_context['title'] : ( (string) $item['name'] . ' ordering context' ),
+				$editable_content_html,
+				! empty( $semantic_context['actions'] ) && is_array( $semantic_context['actions'] ) ? $semantic_context['actions'] : array()
+			)
+			: $this->get_menu_item_semantic_callout( $category, $item, $guide_url, $guide_title, $related_items );
 
 		ob_start();
 		?>
@@ -5598,6 +8060,11 @@ class McPrices_Integration {
 							</div>
 						</div>
 					</div>
+					<?php if ( $item_semantic_callout ) : ?>
+						<div class="mcprices-directory-guide mcprices-item-guide">
+							<?php echo $item_semantic_callout; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						</div>
+					<?php endif; ?>
 					<?php if ( ! empty( $related_items ) ) : ?>
 						<div class="section-header section-header-left mcprices-related-header">
 							<div class="section-label">Same Category</div>
@@ -5630,6 +8097,232 @@ class McPrices_Integration {
 					<?php endif; ?>
 				</div>
 			</section>
+		</div>
+		<?php
+
+		return (string) ob_get_clean();
+	}
+
+	/**
+	 * Render the current managed menu page using editor-authored content.
+	 *
+	 * @param \WP_Post $post         Current page object.
+	 * @param string   $content_html Rendered content HTML.
+	 * @return string
+	 */
+	protected function render_managed_menu_page_from_editor( \WP_Post $post, $content_html ) {
+		$managed_type = (string) get_post_meta( (int) $post->ID, '_mcprices_managed_page', true );
+		$managed_key  = (string) get_post_meta( (int) $post->ID, '_mcprices_managed_key', true );
+
+		if ( $this->managed_page_has_legacy_shortcode_scaffold( $post ) ) {
+			return (string) $content_html;
+		}
+
+		if ( 'menu-category' === $managed_type ) {
+			$category = $this->get_menu_directory_category_data( $managed_key );
+
+			if ( is_array( $category ) ) {
+				return $this->render_menu_category_page_markup( $category, $content_html );
+			}
+		}
+
+		if ( 'menu-item' === $managed_type && false !== strpos( $managed_key, '::' ) ) {
+			list( $category_id, $item_slug ) = array_pad( explode( '::', $managed_key, 2 ), 2, '' );
+			$category = $this->get_menu_directory_category_data( $category_id );
+			$item     = $this->get_menu_directory_item_data( $category_id, $item_slug );
+
+			if ( is_array( $category ) && is_array( $item ) ) {
+				return $this->render_menu_item_page_markup( $category, $item, $content_html );
+			}
+		}
+
+		return (string) $content_html;
+	}
+
+	/**
+	 * Render the managed root menu directory page.
+	 *
+	 * @return string
+	 */
+	public function render_menu_directory_shortcode() {
+		return $this->render_menu_directory_page_markup();
+	}
+
+	/**
+	 * Render one managed category landing page.
+	 *
+	 * @param array $atts Shortcode attributes.
+	 * @return string
+	 */
+	public function render_menu_category_shortcode( $atts ) {
+		$atts = shortcode_atts(
+			array(
+				'category' => '',
+			),
+			(array) $atts,
+			'mcprices_menu_category'
+		);
+
+		$category = $this->get_menu_directory_category_data( $atts['category'] );
+
+		if ( ! is_array( $category ) ) {
+			return '';
+		}
+
+		return $this->render_menu_category_page_markup( $category );
+	}
+
+	/**
+	 * Render one managed menu item page.
+	 *
+	 * @param array $atts Shortcode attributes.
+	 * @return string
+	 */
+	public function render_menu_item_shortcode( $atts ) {
+		$atts = shortcode_atts(
+			array(
+				'category' => '',
+				'item'     => '',
+			),
+			(array) $atts,
+			'mcprices_menu_item'
+		);
+
+		$category = $this->get_menu_directory_category_data( $atts['category'] );
+		$item     = $this->get_menu_directory_item_data( $atts['category'], $atts['item'] );
+
+		if ( ! is_array( $category ) || ! is_array( $item ) ) {
+			return '';
+		}
+
+		return $this->render_menu_item_page_markup( $category, $item );
+	}
+
+	/**
+	 * Return the rendered interactive tool shell for one known tool slug.
+	 *
+	 * @param string $slug Tool slug.
+	 * @return string
+	 */
+	protected function get_interactive_tool_markup( $slug ) {
+		$slug = sanitize_key( (string) $slug );
+
+		switch ( $slug ) {
+			case 'budget-finder':
+				return $this->get_budget_finder_tool_markup();
+			case 'calorie-calculator':
+				return $this->get_calorie_calculator_tool_markup();
+			case 'compare-items':
+				return $this->get_compare_items_tool_markup();
+			default:
+				return '';
+		}
+	}
+
+	/**
+	 * Return the budget finder tool shell.
+	 *
+	 * @return string
+	 */
+	protected function get_budget_finder_tool_markup() {
+		ob_start();
+		?>
+		<div class="mcprices-tool-shell mcprices-tool-shell--budget" data-mcprices-tool-root="budget-finder">
+			<div class="mcprices-tool-banner">
+				<div class="mcprices-tool-banner__content">
+					<div class="mcprices-tool-eyebrow">Budget-first ordering</div>
+					<h2 class="mcprices-tool-title">Find the best meal under your target spend</h2>
+					<p class="mcprices-tool-copy">Tap a budget and the tool pulls the strongest current tracked options by calories-per-dollar value, while keeping a direct path back to each live item page.</p>
+				</div>
+			</div>
+			<div class="mcprices-budget-controls" role="tablist" aria-label="Budget brackets">
+				<button class="mcprices-tool-pill" type="button" data-budget-option="5">Under $5</button>
+				<button class="mcprices-tool-pill is-active" type="button" data-budget-option="8" aria-pressed="true">Under $8</button>
+				<button class="mcprices-tool-pill" type="button" data-budget-option="10">Under $10</button>
+				<button class="mcprices-tool-pill" type="button" data-budget-option="15">Under $15</button>
+			</div>
+			<p class="mcprices-tool-feedback" data-budget-feedback>Showing the highest-value current picks under the selected spend cap.</p>
+			<div class="mcprices-budget-results" data-budget-results></div>
+		</div>
+		<?php
+
+		return (string) ob_get_clean();
+	}
+
+	/**
+	 * Return the calorie calculator tool shell.
+	 *
+	 * @return string
+	 */
+	protected function get_calorie_calculator_tool_markup() {
+		ob_start();
+		?>
+		<div class="mcprices-tool-shell mcprices-tool-shell--calculator" data-mcprices-tool-root="calorie-calculator">
+			<div class="mcprices-tool-banner">
+				<div class="mcprices-tool-banner__content">
+					<div class="mcprices-tool-eyebrow">Build your order</div>
+					<h2 class="mcprices-tool-title">Add items and track total calories plus cost</h2>
+					<p class="mcprices-tool-copy">Search the current tracked McDonald&rsquo;s USA catalog, add the items you want, and watch the estimated spend and calories update in real time.</p>
+				</div>
+			</div>
+			<div class="mcprices-calculator-layout">
+				<div class="mcprices-calculator-catalog">
+					<div class="mcprices-calculator-controls">
+						<label class="screen-reader-text" for="mcprices-calorie-search">Search menu items</label>
+						<input id="mcprices-calorie-search" class="mcprices-tool-search" type="search" placeholder="Search Big Mac, Hash Browns, McFlurry..." data-calorie-search>
+						<div class="mcprices-tool-chip-row" data-calorie-filters></div>
+					</div>
+					<div class="mcprices-calculator-list" data-calorie-list></div>
+				</div>
+				<aside class="mcprices-calculator-summary">
+					<div class="mcprices-summary-label">Your meal</div>
+					<div class="mcprices-summary-stat">
+						<span class="mcprices-summary-stat__label">Total calories</span>
+						<strong class="mcprices-summary-stat__value" data-calorie-total>0 <span>kcal</span></strong>
+					</div>
+					<div class="mcprices-summary-stat">
+						<span class="mcprices-summary-stat__label">Estimated total</span>
+						<strong class="mcprices-summary-stat__value" data-price-total>$0.00</strong>
+					</div>
+					<div class="mcprices-summary-stat">
+						<span class="mcprices-summary-stat__label">Items selected</span>
+						<strong class="mcprices-summary-stat__value" data-item-total>0</strong>
+					</div>
+					<div class="mcprices-calculator-selection" data-calorie-selection></div>
+					<button class="mcprices-tool-secondary" type="button" data-calorie-clear>Clear all</button>
+				</aside>
+			</div>
+		</div>
+		<?php
+
+		return (string) ob_get_clean();
+	}
+
+	/**
+	 * Return the compare-items tool shell.
+	 *
+	 * @return string
+	 */
+	protected function get_compare_items_tool_markup() {
+		ob_start();
+		?>
+		<div class="mcprices-tool-shell mcprices-tool-shell--compare" data-mcprices-tool-root="compare-items">
+			<div class="mcprices-tool-banner">
+				<div class="mcprices-tool-banner__content">
+					<div class="mcprices-tool-eyebrow">Side-by-side comparison</div>
+					<h2 class="mcprices-tool-title">Compare menu items before you order</h2>
+					<p class="mcprices-tool-copy">Choose two to four live tracked items and the tool highlights price, calories, and simple value signals in one clean comparison grid.</p>
+				</div>
+			</div>
+			<div class="mcprices-compare-controls">
+				<select class="mcprices-tool-select" data-compare-select="0" aria-label="First item"></select>
+				<select class="mcprices-tool-select" data-compare-select="1" aria-label="Second item"></select>
+				<select class="mcprices-tool-select" data-compare-select="2" aria-label="Third item"></select>
+				<select class="mcprices-tool-select" data-compare-select="3" aria-label="Fourth item"></select>
+				<button class="mcprices-tool-primary" type="button" data-compare-run>Compare items</button>
+			</div>
+			<p class="mcprices-tool-feedback" data-compare-feedback>Select two to four items to see the strongest current side-by-side comparison.</p>
+			<div class="mcprices-compare-grid" data-compare-grid></div>
 		</div>
 		<?php
 
@@ -5710,11 +8403,56 @@ class McPrices_Integration {
 	 * @return string
 	 */
 	public function filter_dynamic_date_content( $content ) {
-		if ( ! $this->design_enabled() || ! is_front_page() || is_home() ) {
+		if ( ! $this->design_enabled() ) {
 			return $content;
 		}
 
-		return $this->replace_dynamic_date_strings( $content );
+		$content = $this->replace_dynamic_date_strings( $content );
+
+		if ( is_front_page() && false !== strpos( (string) $content, 'data-mcprices-hero-search-placeholder="1"' ) ) {
+			$content = preg_replace(
+				'/<div class="mcprices-hero-search-placeholder" data-mcprices-hero-search-placeholder="1"><\/div>/',
+				$this->get_hero_search_markup(),
+				(string) $content,
+				1
+			);
+		}
+
+		if ( false !== strpos( (string) $content, 'data-mcprices-tool-placeholder=' ) ) {
+			$content = preg_replace_callback(
+				'/<div class="mcprices-tool-placeholder" data-mcprices-tool-placeholder="([^"]+)"><\/div>/',
+				function ( $matches ) {
+					$slug = isset( $matches[1] ) ? sanitize_key( (string) $matches[1] ) : '';
+
+					return '' !== $slug ? $this->get_interactive_tool_markup( $slug ) : '';
+				},
+				(string) $content
+			);
+		}
+
+		if ( ! is_singular( 'page' ) ) {
+			return $content;
+		}
+
+		$post = get_queried_object();
+
+		if ( $post instanceof \WP_Post ) {
+			$managed_type = (string) get_post_meta( (int) $post->ID, '_mcprices_managed_page', true );
+
+			if ( in_array( $managed_type, array( 'menu-category', 'menu-item' ), true ) ) {
+				return $this->render_managed_menu_page_from_editor( $post, $content );
+			}
+		}
+
+		if ( ! $post instanceof \WP_Post || ! $this->should_prepend_editorial_note_to_page( $post ) ) {
+			return $content;
+		}
+
+		if ( false !== strpos( (string) $content, 'mcprices-editorial-note' ) ) {
+			return $content;
+		}
+
+		return $this->get_seeded_editorial_note_html() . $content;
 	}
 
 	/**
@@ -5781,13 +8519,14 @@ class McPrices_Integration {
 				esc_url( $this->get_menu_category_page_url( 'sauces' ) ),
 			),
 			'footer3' => sprintf(
-				'<!-- wp:html --><div class="footer-col-title">Information</div><ul class="footer-links"><li><a href="%1$s">About Us</a></li><li><a href="%2$s">Privacy Policy</a></li><li><a href="%3$s">Cookie Policy</a></li><li><a href="%4$s">Ad Disclosure</a></li><li><a href="%5$s">Disclaimer</a></li><li><a href="%6$s">Contact</a></li><li><a href="%7$s">Sitemap</a></li></ul><!-- /wp:html -->',
+				'<!-- wp:html --><div class="footer-col-title">Information</div><ul class="footer-links"><li><a href="%1$s">About Us</a></li><li><a href="%2$s">Privacy Policy</a></li><li><a href="%3$s">Cookie Policy</a></li><li><a href="%4$s">Ad Disclosure</a></li><li><a href="%5$s">Disclaimer</a></li><li><a href="%6$s">Contact</a></li><li><a href="%7$s">Methodology</a></li><li><a href="%8$s">Sitemap</a></li></ul><!-- /wp:html -->',
 				esc_url( home_url( '/about/' ) ),
 				esc_url( home_url( '/privacy-policy/' ) ),
 				esc_url( home_url( '/cookie-policy/' ) ),
 				esc_url( home_url( '/ad-disclosure/' ) ),
 				esc_url( home_url( '/disclaimer/' ) ),
 				esc_url( home_url( '/contact/' ) ),
+				esc_url( home_url( '/pricing-methodology/' ) ),
 				esc_url( home_url( '/sitemap/' ) )
 			),
 			'footer4' => sprintf(
@@ -5826,6 +8565,10 @@ class McPrices_Integration {
 			array(
 				'title' => __( 'Menu', 'kadence' ),
 				'url'   => $this->get_section_url( 'full-menu' ),
+			),
+			array(
+				'title' => __( 'Interactive Tools', 'kadence' ),
+				'url'   => $this->get_section_url( 'interactive-tools' ),
 			),
 			array(
 				'title' => __( 'Deals', 'kadence' ),
@@ -5868,6 +8611,10 @@ class McPrices_Integration {
 			array(
 				'title' => __( 'Ad Policy', 'kadence' ),
 				'url'   => home_url( '/ad-disclosure/' ),
+			),
+			array(
+				'title' => __( 'Methodology', 'kadence' ),
+				'url'   => home_url( '/pricing-methodology/' ),
 			),
 		);
 	}
@@ -6646,6 +9393,24 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Return a node attribute from an XPath query when available.
+	 *
+	 * @param \DOMXPath $xpath XPath helper.
+	 * @param \DOMNode  $context Query context node.
+	 * @param string    $query Relative XPath query.
+	 * @param string    $attribute Attribute name.
+	 * @return string
+	 */
+	protected function get_xpath_node_attribute( $xpath, $context, $query, $attribute ) {
+		$node = $xpath->query( $query, $context )->item(0);
+		if ( ! $node instanceof \DOMElement ) {
+			return '';
+		}
+
+		return trim( (string) $node->getAttribute( $attribute ) );
+	}
+
+	/**
 	 * Return the FAQ items currently shown on the homepage.
 	 *
 	 * @return array
@@ -6759,6 +9524,144 @@ class McPrices_Integration {
 				'answer'   => 'The lowest paid items in the current USA menu data on this site are Vanilla Cone at $1.29 and the Honest Kids Appley Ever After juice box at $1.29, followed by several $1.69 drink options.',
 			),
 		);
+	}
+
+	/**
+	 * Return the pillar/category links currently visible on the homepage.
+	 *
+	 * @return array<int, array<string, string>>
+	 */
+	protected function get_homepage_category_schema_items() {
+		static $items = null;
+
+		if ( null !== $items ) {
+			return $items;
+		}
+
+		$items = array();
+		$xpath = $this->get_homepage_dom_xpath();
+
+		if ( ! $xpath ) {
+			return $items;
+		}
+
+		$category_nodes = $xpath->query(
+			'//a[' . $this->get_xpath_class_selector( 'cat-card' ) . ']'
+		);
+
+		foreach ( $category_nodes as $category_node ) {
+			if ( ! $category_node instanceof \DOMElement ) {
+				continue;
+			}
+
+			$name  = $this->get_xpath_node_text( $xpath, $category_node, './/div[' . $this->get_xpath_class_selector( 'cat-name' ) . ']' );
+			$count = $this->get_xpath_node_text( $xpath, $category_node, './/div[' . $this->get_xpath_class_selector( 'cat-count' ) . ']' );
+			$url   = esc_url_raw( (string) $category_node->getAttribute( 'href' ) );
+			$image = esc_url_raw( $this->get_xpath_node_attribute( $xpath, $category_node, './/img[1]', 'src' ) );
+
+			if ( '' === $name || '' === $url ) {
+				continue;
+			}
+
+			$items[] = array(
+				'name'        => $name,
+				'url'         => $url,
+				'description' => $count ? $name . ' category page with ' . $count . ' shown in the homepage directory.' : $name . ' category page in the homepage directory.',
+				'image'       => $image,
+			);
+		}
+
+		return $items;
+	}
+
+	/**
+	 * Return the deep-dive guide links currently visible on the homepage.
+	 *
+	 * @return array<int, array<string, string>>
+	 */
+	protected function get_homepage_guide_schema_items() {
+		static $items = null;
+
+		if ( null !== $items ) {
+			return $items;
+		}
+
+		$items = array();
+		$xpath = $this->get_homepage_dom_xpath();
+
+		if ( ! $xpath ) {
+			return $items;
+		}
+
+		$guide_nodes = $xpath->query(
+			'//section[@id="guides"]//a[' . $this->get_xpath_class_selector( 'link-card' ) . ']'
+		);
+
+		foreach ( $guide_nodes as $guide_node ) {
+			if ( ! $guide_node instanceof \DOMElement ) {
+				continue;
+			}
+
+			$name        = $this->get_xpath_node_text( $xpath, $guide_node, './/div[' . $this->get_xpath_class_selector( 'link-card-title' ) . ']' );
+			$description = $this->get_xpath_node_text( $xpath, $guide_node, './/div[' . $this->get_xpath_class_selector( 'link-card-text' ) . ']' );
+			$url         = esc_url_raw( (string) $guide_node->getAttribute( 'href' ) );
+
+			if ( '' === $name || '' === $url ) {
+				continue;
+			}
+
+			$items[] = array(
+				'name'        => $name,
+				'url'         => $url,
+				'description' => $description,
+			);
+		}
+
+		return $items;
+	}
+
+	/**
+	 * Return the official external resource links currently shown on the homepage.
+	 *
+	 * @return array<int, array<string, string>>
+	 */
+	protected function get_homepage_official_resource_schema_items() {
+		static $items = null;
+
+		if ( null !== $items ) {
+			return $items;
+		}
+
+		$items = array();
+		$xpath = $this->get_homepage_dom_xpath();
+
+		if ( ! $xpath ) {
+			return $items;
+		}
+
+		$resource_nodes = $xpath->query(
+			'//section[contains(@class, "delivery-section")]//a[' . $this->get_xpath_class_selector( 'platform-chip' ) . ']'
+		);
+
+		foreach ( $resource_nodes as $resource_node ) {
+			if ( ! $resource_node instanceof \DOMElement ) {
+				continue;
+			}
+
+			$name = trim( preg_replace( '/\s+/u', ' ', wp_strip_all_tags( (string) $resource_node->textContent ) ) );
+			$url  = esc_url_raw( (string) $resource_node->getAttribute( 'href' ) );
+
+			if ( '' === $name || '' === $url ) {
+				continue;
+			}
+
+			$items[] = array(
+				'name' => $name,
+				'url'  => $url,
+			);
+		}
+
+		return $items;
 	}
 
 	/**
@@ -7203,6 +10106,30 @@ class McPrices_Integration {
 	 * @return array
 	 */
 	public function filter_homepage_robots( $robots ) {
+		if ( is_singular( 'page' ) ) {
+			$post = get_queried_object();
+
+			if ( $post instanceof \WP_Post && $this->should_noindex_post( $post ) ) {
+				unset( $robots['index'] );
+				$robots['noindex'] = true;
+				$robots['follow']  = true;
+
+				return $robots;
+			}
+		}
+
+		if ( is_home() ) {
+			$posts_page = get_post( (int) get_option( 'page_for_posts' ) );
+
+			if ( $posts_page instanceof \WP_Post && $this->is_empty_blog_page( $posts_page ) ) {
+				unset( $robots['index'] );
+				$robots['noindex'] = true;
+				$robots['follow']  = true;
+
+				return $robots;
+			}
+		}
+
 		if ( ! $this->is_seo_homepage() ) {
 			return $robots;
 		}
@@ -7266,10 +10193,34 @@ class McPrices_Integration {
 		$logo_url    = $this->get_site_logo_url();
 		$faq_items   = $this->is_seo_homepage() ? $this->get_homepage_faq_schema_items() : array();
 		$products    = $this->is_seo_homepage() ? $this->get_homepage_popular_products() : array();
+		$category_items = $this->is_seo_homepage() ? $this->get_homepage_category_schema_items() : array();
+		$guide_items    = $this->is_seo_homepage() ? $this->get_homepage_guide_schema_items() : array();
+		$resource_items = $this->is_seo_homepage() ? $this->get_homepage_official_resource_schema_items() : array();
 		$current_url = esc_url_raw( $this->get_current_request_url() );
 		$breadcrumbs = $this->get_breadcrumb_schema_items();
 		$search_url  = $url . '?s={search_term_string}';
 		$graph       = array();
+		$topics      = array(
+			$this->get_homepage_primary_keyword(),
+			"McDonald's USA calories",
+			"McDonald's USA breakfast hours",
+			"McDonald's USA deals",
+			'McValue menu',
+		);
+
+		foreach ( $category_items as $category_item ) {
+			if ( ! empty( $category_item['name'] ) ) {
+				$topics[] = (string) $category_item['name'];
+			}
+		}
+
+		foreach ( $guide_items as $guide_item ) {
+			if ( ! empty( $guide_item['name'] ) ) {
+				$topics[] = (string) $guide_item['name'];
+			}
+		}
+
+		$topics = array_values( array_unique( array_filter( array_map( 'strval', $topics ) ) ) );
 
 		$graph[] = array_filter(
 			array(
@@ -7278,6 +10229,11 @@ class McPrices_Integration {
 				'name'        => $this->get_schema_organization_name(),
 				'url'         => $url,
 				'description' => $this->get_schema_site_description(),
+				'areaServed'  => array(
+					'@type' => 'Country',
+					'name'  => 'United States',
+				),
+				'knowsAbout'  => $topics,
 				'logo'        => $logo_url ? array(
 					'@type' => 'ImageObject',
 					'url'   => esc_url_raw( $logo_url ),
@@ -7304,6 +10260,54 @@ class McPrices_Integration {
 		);
 
 		if ( $this->is_seo_homepage() ) {
+			$significant_links = array();
+			$mentions          = array();
+			$main_entities     = array();
+
+			foreach ( $category_items as $category_item ) {
+				if ( empty( $category_item['url'] ) ) {
+					continue;
+				}
+
+				$significant_links[] = $category_item['url'];
+			}
+
+			foreach ( $guide_items as $guide_item ) {
+				if ( empty( $guide_item['url'] ) ) {
+					continue;
+				}
+
+				$significant_links[] = $guide_item['url'];
+			}
+
+			foreach ( $resource_items as $resource_item ) {
+				if ( empty( $resource_item['name'] ) || empty( $resource_item['url'] ) ) {
+					continue;
+				}
+
+				$mentions[] = array(
+					'@type' => 'WebPage',
+					'name'  => $resource_item['name'],
+					'url'   => $resource_item['url'],
+				);
+			}
+
+			if ( ! empty( $category_items ) ) {
+				$main_entities[] = array( '@id' => $url . '#pillar-pages' );
+			}
+
+			if ( ! empty( $guide_items ) ) {
+				$main_entities[] = array( '@id' => $url . '#guide-pages' );
+			}
+
+			if ( ! empty( $products ) ) {
+				$main_entities[] = array( '@id' => $url . '#popular-items' );
+			}
+
+			if ( ! empty( $faq_items ) ) {
+				$main_entities[] = array( '@id' => $url . '#faq' );
+			}
+
 			$graph[] = array(
 				'@type'        => 'CollectionPage',
 				'@id'          => $url . '#webpage',
@@ -7312,14 +10316,107 @@ class McPrices_Integration {
 				'description'  => $description,
 				'inLanguage'   => 'en-US',
 				'isPartOf'     => array( '@id' => $url . '#website' ),
-				'about'        => array(
-					$this->get_homepage_primary_keyword(),
-					"McDonald's USA calories",
-					"McDonald's USA breakfast hours",
-					"McDonald's USA deals",
-					'McValue menu',
+				'about'        => array_map(
+					static function ( $topic ) {
+						return array(
+							'@type' => 'Thing',
+							'name'  => (string) $topic,
+						);
+					},
+					$topics
 				),
+				'mainEntity'   => $main_entities,
+				'significantLink' => array_values( array_unique( $significant_links ) ),
+				'mentions'     => $mentions,
 				'dateModified' => $this->get_homepage_modified_date(),
+			);
+		}
+
+		if ( ! empty( $category_items ) ) {
+			$item_list = array();
+
+			foreach ( $category_items as $index => $category_item ) {
+				$category_id = $url . '#category-' . sanitize_title( (string) $category_item['name'] );
+
+				$graph[] = array_filter(
+					array(
+						'@type'       => 'CollectionPage',
+						'@id'         => $category_id,
+						'url'         => $category_item['url'],
+						'name'        => $category_item['name'],
+						'description' => $category_item['description'],
+						'isPartOf'    => array( '@id' => $url . '#webpage' ),
+						'primaryImageOfPage' => $category_item['image'] ? array(
+							'@type' => 'ImageObject',
+							'url'   => $category_item['image'],
+						) : null,
+					)
+				);
+
+				$graph[] = array(
+					'@type'    => 'SiteNavigationElement',
+					'@id'      => $url . '#nav-' . sanitize_title( (string) $category_item['name'] ),
+					'name'     => $category_item['name'],
+					'url'      => $category_item['url'],
+					'isPartOf' => array( '@id' => $url . '#website' ),
+				);
+
+				$item_list[] = array(
+					'@type'    => 'ListItem',
+					'position' => $index + 1,
+					'url'      => $category_item['url'],
+					'name'     => $category_item['name'],
+					'item'     => array(
+						'@id' => $category_id,
+					),
+				);
+			}
+
+			$graph[] = array(
+				'@type'           => 'ItemList',
+				'@id'             => $url . '#pillar-pages',
+				'name'            => 'McDonald\'s USA Menu Category Pages',
+				'numberOfItems'   => count( $item_list ),
+				'itemListOrder'   => 'https://schema.org/ItemListOrderAscending',
+				'itemListElement' => $item_list,
+			);
+		}
+
+		if ( ! empty( $guide_items ) ) {
+			$item_list = array();
+
+			foreach ( $guide_items as $index => $guide_item ) {
+				$guide_id = $url . '#guide-' . sanitize_title( (string) $guide_item['name'] );
+
+				$graph[] = array_filter(
+					array(
+						'@type'       => 'WebPage',
+						'@id'         => $guide_id,
+						'url'         => $guide_item['url'],
+						'name'        => $guide_item['name'],
+						'description' => $guide_item['description'],
+						'isPartOf'    => array( '@id' => $url . '#webpage' ),
+					)
+				);
+
+				$item_list[] = array(
+					'@type'    => 'ListItem',
+					'position' => $index + 1,
+					'url'      => $guide_item['url'],
+					'name'     => $guide_item['name'],
+					'item'     => array(
+						'@id' => $guide_id,
+					),
+				);
+			}
+
+			$graph[] = array(
+				'@type'           => 'ItemList',
+				'@id'             => $url . '#guide-pages',
+				'name'            => 'McDonald\'s USA Guide Pages',
+				'numberOfItems'   => count( $item_list ),
+				'itemListOrder'   => 'https://schema.org/ItemListOrderAscending',
+				'itemListElement' => $item_list,
 			);
 		}
 
@@ -7432,6 +10529,797 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Remove empty schema values before JSON encoding.
+	 *
+	 * @param array $node Schema node.
+	 * @return array
+	 */
+	protected function filter_schema_empty_values( array $node ) {
+		return array_filter(
+			$node,
+			static function ( $value ) {
+				return null !== $value && '' !== $value && array() !== $value;
+			}
+		);
+	}
+
+	/**
+	 * Convert readable topic names into Thing nodes.
+	 *
+	 * @param array $names Topic names.
+	 * @return array
+	 */
+	protected function build_schema_thing_list( array $names ) {
+		$things = array();
+
+		foreach ( array_unique( array_filter( array_map( 'strval', $names ) ) ) as $name ) {
+			$things[] = array(
+				'@type' => 'Thing',
+				'name'  => $name,
+			);
+		}
+
+		return $things;
+	}
+
+	/**
+	 * Return a published/modified date string for one page.
+	 *
+	 * @param \WP_Post $post Post object.
+	 * @param string   $field Date field.
+	 * @return string
+	 */
+	protected function get_schema_page_date( \WP_Post $post, $field = 'modified' ) {
+		$date = 'published' === $field
+			? get_post_time( 'c', false, $post )
+			: get_post_modified_time( 'c', false, $post );
+
+		return $date ? (string) $date : wp_date( 'c', null, wp_timezone() );
+	}
+
+	/**
+	 * Return a NutritionInformation node when calories are known.
+	 *
+	 * @param string $calorie_text Calorie text.
+	 * @return array
+	 */
+	protected function get_schema_nutrition_node( $calorie_text ) {
+		$calories = $this->parse_schema_calories( $calorie_text );
+
+		if ( '' === $calories ) {
+			return array();
+		}
+
+		return array(
+			'@type'    => 'NutritionInformation',
+			'calories' => $calories . ' kcal',
+		);
+	}
+
+	/**
+	 * Return an Offer node when a numeric price is available.
+	 *
+	 * @param string $price_text Price text.
+	 * @param string $url        Offer URL.
+	 * @return array
+	 */
+	protected function get_schema_offer_node( $price_text, $url ) {
+		$price = $this->parse_schema_price( $price_text );
+
+		if ( '' === $price ) {
+			return array();
+		}
+
+		return array(
+			'@type'         => 'Offer',
+			'priceCurrency' => 'USD',
+			'price'         => $price,
+			'url'           => esc_url_raw( $url ),
+		);
+	}
+
+	/**
+	 * Return a WebApplication node for one interactive tool page.
+	 *
+	 * @param string $slug        Tool slug.
+	 * @param string $current_url Current page URL.
+	 * @return array
+	 */
+	protected function get_interactive_tool_schema_node( $slug, $current_url ) {
+		$tools = array(
+			'budget-finder'      => array(
+				'name'        => 'Budget Meal Finder',
+				'description' => 'Interactive McDonald\'s USA menu tool for finding the best current item under a chosen spend target.',
+				'featureList' => array(
+					'Filter current tracked menu items by budget bracket',
+					'Rank results by calories-per-dollar value score',
+					'Open the linked live item page from each result',
+				),
+			),
+			'calorie-calculator' => array(
+				'name'        => 'Meal Calorie Builder',
+				'description' => 'Interactive McDonald\'s USA menu tool for adding items, tracking calories, and estimating total spend.',
+				'featureList' => array(
+					'Search the tracked live menu catalog',
+					'Add multiple items into one running meal total',
+					'Track price and calories together before ordering',
+				),
+			),
+			'compare-items'      => array(
+				'name'        => 'Compare Menu Items',
+				'description' => 'Interactive McDonald\'s USA tool for side-by-side price, calorie, and value comparison across menu items.',
+				'featureList' => array(
+					'Compare two to four tracked menu items at once',
+					'Highlight lowest price, lowest calories, and strongest value score',
+					'Open the linked live item page after comparing',
+				),
+			),
+		);
+
+		if ( empty( $tools[ $slug ] ) ) {
+			return array();
+		}
+
+		return $this->filter_schema_empty_values(
+			array(
+				'@type'                 => 'WebApplication',
+				'@id'                   => esc_url_raw( $current_url ) . '#tool',
+				'name'                  => $tools[ $slug ]['name'],
+				'url'                   => esc_url_raw( $current_url ),
+				'description'           => $tools[ $slug ]['description'],
+				'applicationCategory'   => 'UtilitiesApplication',
+				'applicationSubCategory'=> 'Menu planning tool',
+				'operatingSystem'       => 'Any',
+				'isAccessibleForFree'   => true,
+				'browserRequirements'   => 'Requires a modern web browser with JavaScript enabled.',
+				'featureList'           => $tools[ $slug ]['featureList'],
+			)
+		);
+	}
+
+	/**
+	 * Return additional product/menu properties for one tracked item.
+	 *
+	 * @param array $category Category data.
+	 * @param array $item     Item data.
+	 * @return array
+	 */
+	protected function get_schema_item_additional_properties( array $category, array $item ) {
+		$properties = array();
+
+		if ( ! empty( $category['card_title'] ) ) {
+			$properties[] = array(
+				'@type' => 'PropertyValue',
+				'name'  => 'Category',
+				'value' => (string) $category['card_title'],
+			);
+		}
+
+		if ( ! empty( $item['status'] ) ) {
+			$properties[] = array(
+				'@type' => 'PropertyValue',
+				'name'  => 'Status',
+				'value' => (string) $item['status'],
+			);
+		}
+
+		if ( ! empty( $item['sub_label'] ) ) {
+			$properties[] = array(
+				'@type' => 'PropertyValue',
+				'name'  => 'Menu Subsection',
+				'value' => (string) $item['sub_label'],
+			);
+		}
+
+		return $properties;
+	}
+
+	/**
+	 * Build a MenuItem schema node for one tracked item.
+	 *
+	 * @param array  $category Category data.
+	 * @param array  $item     Item data.
+	 * @param string $item_url Public item URL.
+	 * @param string $node_id  Node ID.
+	 * @param string $page_id  Optional page ID.
+	 * @return array
+	 */
+	protected function build_menu_item_schema_node( array $category, array $item, $item_url, $node_id, $page_id = '' ) {
+		return $this->filter_schema_empty_values(
+			array(
+				'@type'              => 'MenuItem',
+				'@id'                => esc_url_raw( $node_id ),
+				'name'               => (string) $item['name'],
+				'url'                => esc_url_raw( $item_url ),
+				'description'        => (string) $item['summary'],
+				'image'              => ! empty( $item['image'] ) ? array( esc_url_raw( (string) $item['image'] ) ) : null,
+				'offers'             => $this->get_schema_offer_node( $item['price'] ?? '', $item_url ),
+				'nutrition'          => $this->get_schema_nutrition_node( $item['calories'] ?? '' ),
+				'additionalProperty' => $this->get_schema_item_additional_properties( $category, $item ),
+				'mainEntityOfPage'   => $page_id ? array( '@id' => esc_url_raw( $page_id ) ) : null,
+			)
+		);
+	}
+
+	/**
+	 * Build a Product schema node for one tracked item page.
+	 *
+	 * @param array  $category Category data.
+	 * @param array  $item     Item data.
+	 * @param string $item_url Public item URL.
+	 * @param string $node_id  Node ID.
+	 * @param string $page_id  Optional page ID.
+	 * @return array
+	 */
+	protected function build_product_schema_node( array $category, array $item, $item_url, $node_id, $page_id = '' ) {
+		return $this->filter_schema_empty_values(
+			array(
+				'@type'              => 'Product',
+				'@id'                => esc_url_raw( $node_id ),
+				'name'               => (string) $item['name'],
+				'url'                => esc_url_raw( $item_url ),
+				'description'        => (string) $item['summary'],
+				'category'           => ! empty( $category['card_title'] ) ? (string) $category['card_title'] : null,
+				'image'              => ! empty( $item['image'] ) ? array( esc_url_raw( (string) $item['image'] ) ) : null,
+				'brand'              => array(
+					'@type' => 'Brand',
+					'name'  => "McDonald's",
+				),
+				'offers'             => $this->get_schema_offer_node( $item['price'] ?? '', $item_url ),
+				'additionalProperty' => $this->get_schema_item_additional_properties( $category, $item ),
+				'mainEntityOfPage'   => $page_id ? array( '@id' => esc_url_raw( $page_id ) ) : null,
+			)
+		);
+	}
+
+	/**
+	 * Return whether a support page should use article-style schema.
+	 *
+	 * @param string $slug Support page slug.
+	 * @return bool
+	 */
+	protected function support_page_uses_article_schema( $slug ) {
+		$excluded = array(
+			'privacy-policy',
+			'cookie-policy',
+			'contact',
+			'disclaimer',
+			'advertising-disclosure',
+			'html-sitemap',
+		);
+
+		return '' !== (string) $slug && ! in_array( (string) $slug, $excluded, true );
+	}
+
+	/**
+	 * Return the related menu category for a long-form guide slug when one exists.
+	 *
+	 * @param string $slug Guide slug.
+	 * @return array
+	 */
+	protected function get_menu_category_for_guide_slug( $slug ) {
+		foreach ( $this->get_menu_category_primary_guide_map() as $category_id => $guide ) {
+			if ( ! empty( $guide['slug'] ) && (string) $guide['slug'] === (string) $slug ) {
+				return $this->get_menu_directory_category_data( $category_id );
+			}
+		}
+
+		return array();
+	}
+
+	/**
+	 * Extract visible FAQ-like question/answer pairs from a rendered page body.
+	 *
+	 * @param \WP_Post $post Post object.
+	 * @return array
+	 */
+	protected function get_page_faq_schema_items( \WP_Post $post ) {
+		if ( ! $this->support_page_uses_article_schema( (string) $post->post_name ) ) {
+			return array();
+		}
+
+		$rendered = apply_filters( 'the_content', (string) $post->post_content );
+
+		if ( '' === trim( wp_strip_all_tags( $rendered ) ) ) {
+			return array();
+		}
+
+		libxml_use_internal_errors( true );
+
+		$document = new \DOMDocument();
+		$loaded   = $document->loadHTML(
+			'<?xml encoding="utf-8" ?>' . $rendered,
+			LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOERROR | LIBXML_NOWARNING
+		);
+
+		libxml_clear_errors();
+
+		if ( ! $loaded ) {
+			return array();
+		}
+
+		$xpath     = new \DOMXPath( $document );
+		$headings  = $xpath->query( '//h2 | //h3 | //h4' );
+		$questions = array();
+		$seen      = array();
+
+		if ( ! $headings instanceof \DOMNodeList ) {
+			return array();
+		}
+
+		foreach ( $headings as $heading ) {
+			$question = trim( preg_replace( '/\s+/u', ' ', wp_strip_all_tags( (string) $heading->textContent ) ) );
+
+			if ( '' === $question || '?' !== substr( $question, -1 ) ) {
+				continue;
+			}
+
+			$question_key = strtolower( $question );
+
+			if ( isset( $seen[ $question_key ] ) ) {
+				continue;
+			}
+
+			$answer_parts = array();
+
+			for ( $node = $heading->nextSibling; $node; $node = $node->nextSibling ) {
+				if ( XML_ELEMENT_NODE === $node->nodeType && in_array( strtolower( $node->nodeName ), array( 'h2', 'h3', 'h4' ), true ) ) {
+					break;
+				}
+
+				$text = trim( preg_replace( '/\s+/u', ' ', wp_strip_all_tags( (string) $node->textContent ) ) );
+
+				if ( '' !== $text ) {
+					$answer_parts[] = $text;
+				}
+			}
+
+			$answer = trim( implode( ' ', $answer_parts ) );
+
+			if ( '' === $answer ) {
+				continue;
+			}
+
+			$questions[] = array(
+				'question' => $question,
+				'answer'   => $this->limit_text_to_words( $answer, 90 ),
+			);
+
+			$seen[ $question_key ] = true;
+
+			if ( count( $questions ) >= 8 ) {
+				break;
+			}
+		}
+
+		return count( $questions ) >= 2 ? $questions : array();
+	}
+
+	/**
+	 * Append a breadcrumb graph node when a page has multiple crumbs.
+	 *
+	 * @param array  $graph       Schema graph.
+	 * @param string $current_url Current page URL.
+	 * @return array
+	 */
+	protected function append_breadcrumb_schema_node( array $graph, $current_url ) {
+		$breadcrumbs = $this->get_breadcrumb_schema_items();
+
+		if ( empty( $breadcrumbs ) || count( $breadcrumbs ) <= 1 ) {
+			return $graph;
+		}
+
+		$breadcrumb_items = array();
+
+		foreach ( $breadcrumbs as $index => $breadcrumb ) {
+			if ( empty( $breadcrumb['name'] ) || empty( $breadcrumb['url'] ) ) {
+				continue;
+			}
+
+			$breadcrumb_items[] = array(
+				'@type'    => 'ListItem',
+				'position' => $index + 1,
+				'name'     => $breadcrumb['name'],
+				'item'     => $breadcrumb['url'],
+			);
+		}
+
+		if ( ! empty( $breadcrumb_items ) ) {
+			$graph[] = array(
+				'@type'           => 'BreadcrumbList',
+				'@id'             => esc_url_raw( $current_url ) . '#breadcrumb',
+				'itemListElement' => $breadcrumb_items,
+			);
+		}
+
+		return $graph;
+	}
+
+	/**
+	 * Render structured data for managed menu, guide, and support pages.
+	 *
+	 * @return void
+	 */
+	public function render_managed_page_schema() {
+		if ( ! $this->design_enabled() || is_front_page() || is_home() || ! is_singular( 'page' ) ) {
+			return;
+		}
+
+		$post = get_queried_object();
+
+		if ( ! $post instanceof \WP_Post ) {
+			return;
+		}
+
+		$managed_type = (string) get_post_meta( (int) $post->ID, '_mcprices_managed_page', true );
+		$managed_key  = (string) get_post_meta( (int) $post->ID, '_mcprices_managed_key', true );
+		$support_slug = (string) get_post_meta( (int) $post->ID, '_mcprices_support_page', true );
+
+		if ( '' === $managed_type && '' === $support_slug ) {
+			return;
+		}
+
+		$site_url     = esc_url_raw( home_url( '/' ) );
+		$current_url  = esc_url_raw( get_permalink( $post ) );
+		$request_url  = esc_url_raw( $this->get_current_request_url() );
+		$title        = trim( wp_strip_all_tags( (string) get_the_title( $post ) ) );
+		$description  = $this->get_rank_math_post_description( $post );
+		$logo_url     = $this->get_site_logo_url();
+		$published_at = $this->get_schema_page_date( $post, 'published' );
+		$modified_at  = $this->get_schema_page_date( $post, 'modified' );
+		$graph        = array();
+
+		if ( $request_url && untrailingslashit( $request_url ) === untrailingslashit( $current_url ) ) {
+			$current_url = $request_url;
+		}
+
+		$graph[] = $this->filter_schema_empty_values(
+			array(
+				'@type'       => 'Organization',
+				'@id'         => $site_url . '#organization',
+				'name'        => $this->get_schema_organization_name(),
+				'url'         => $site_url,
+				'description' => $this->get_schema_site_description(),
+				'logo'        => $logo_url ? array(
+					'@type' => 'ImageObject',
+					'url'   => esc_url_raw( $logo_url ),
+				) : null,
+			)
+		);
+
+		$graph[] = array(
+			'@type'       => 'WebSite',
+			'@id'         => $site_url . '#website',
+			'url'         => $site_url,
+			'name'        => $this->get_schema_organization_name(),
+			'description' => $this->get_schema_site_description(),
+			'inLanguage'  => 'en-US',
+			'publisher'   => array( '@id' => $site_url . '#organization' ),
+		);
+
+		$page_node         = array(
+			'@type'        => 'WebPage',
+			'@id'          => $current_url . '#webpage',
+			'url'          => $current_url,
+			'name'         => $title,
+			'description'  => $description,
+			'inLanguage'   => 'en-US',
+			'isPartOf'     => array( '@id' => $site_url . '#website' ),
+			'datePublished' => $published_at,
+			'dateModified' => $modified_at,
+		);
+		$significant_links = array();
+		$about_topics      = array();
+
+		if ( 'menu-root' === $managed_type ) {
+			$categories    = $this->get_menu_directory_categories();
+			$section_items = array();
+			$list_items    = array();
+
+			foreach ( $categories as $index => $category ) {
+				if ( empty( $category['id'] ) || empty( $category['card_title'] ) ) {
+					continue;
+				}
+
+				$category_url = esc_url_raw( $this->get_menu_category_page_url( $category['id'] ) );
+				$section_id   = $category_url . '#menu-section';
+
+				$graph[] = $this->filter_schema_empty_values(
+					array(
+						'@type'       => 'MenuSection',
+						'@id'         => $section_id,
+						'url'         => $category_url,
+						'name'        => (string) $category['card_title'],
+						'description' => (string) $category['description'],
+					)
+				);
+
+				$section_items[] = array( '@id' => $section_id );
+				$list_items[]    = array(
+					'@type'    => 'ListItem',
+					'position' => count( $list_items ) + 1,
+					'url'      => $category_url,
+					'name'     => (string) $category['card_title'],
+					'item'     => array( '@id' => $section_id ),
+				);
+
+				$significant_links[] = $category_url;
+				$about_topics[]      = (string) $category['card_title'];
+			}
+
+			$graph[] = $this->filter_schema_empty_values(
+				array(
+					'@type'          => 'Menu',
+					'@id'            => $current_url . '#menu-directory',
+					'name'           => "McDonald's USA Menu Directory",
+					'description'    => $description,
+					'hasMenuSection' => $section_items,
+				)
+			);
+
+			$graph[] = array(
+				'@type'           => 'ItemList',
+				'@id'             => $current_url . '#menu-categories',
+				'name'            => "McDonald's USA Menu Categories",
+				'numberOfItems'   => count( $list_items ),
+				'itemListOrder'   => 'https://schema.org/ItemListOrderAscending',
+				'itemListElement' => $list_items,
+			);
+
+			$page_node['@type']           = 'CollectionPage';
+			$page_node['about']           = $this->build_schema_thing_list(
+				array_merge(
+					array(
+						"McDonald's menu prices USA",
+						"McDonald's menu categories",
+						"McDonald's calories",
+					),
+					$about_topics
+				)
+			);
+			$page_node['mainEntity']      = array(
+				array( '@id' => $current_url . '#menu-directory' ),
+				array( '@id' => $current_url . '#menu-categories' ),
+			);
+			$page_node['significantLink'] = array_values( array_unique( array_filter( $significant_links ) ) );
+		} elseif ( 'menu-category' === $managed_type ) {
+			$category = $this->get_menu_directory_category_by_key( $managed_key );
+
+			if ( empty( $category ) ) {
+				return;
+			}
+
+			$guide_url      = esc_url_raw( $this->get_menu_category_primary_guide_url( $category['id'] ) );
+			$guide_title    = $this->get_menu_category_primary_guide_title( $category['id'] );
+			$menu_section   = array();
+			$list_items     = array();
+			$category_links = array(
+				esc_url_raw( $this->get_menu_directory_root_url() ),
+				$guide_url,
+			);
+
+			foreach ( $category['items'] as $item ) {
+				if ( empty( $item['slug'] ) || empty( $item['name'] ) ) {
+					continue;
+				}
+
+				$item_url     = esc_url_raw( $this->get_menu_item_page_url( $category['id'], $item['slug'] ) );
+				$menu_item_id = $item_url . '#menu-item';
+
+				$graph[] = $this->build_menu_item_schema_node( $category, $item, $item_url, $menu_item_id );
+
+				$menu_section[] = array( '@id' => $menu_item_id );
+				$list_items[]   = array(
+					'@type'    => 'ListItem',
+					'position' => count( $list_items ) + 1,
+					'url'      => $item_url,
+					'name'     => (string) $item['name'],
+					'item'     => array( '@id' => $menu_item_id ),
+				);
+
+				$category_links[] = $item_url;
+			}
+
+			$graph[] = $this->filter_schema_empty_values(
+				array(
+					'@type'       => 'MenuSection',
+					'@id'         => $current_url . '#menu-section',
+					'url'         => $current_url,
+					'name'        => (string) $category['title'],
+					'description' => (string) $category['description'],
+					'hasMenuItem' => $menu_section,
+				)
+			);
+
+			$graph[] = array(
+				'@type'           => 'ItemList',
+				'@id'             => $current_url . '#item-list',
+				'name'            => (string) $category['card_title'] . ' menu items',
+				'numberOfItems'   => count( $list_items ),
+				'itemListOrder'   => 'https://schema.org/ItemListOrderAscending',
+				'itemListElement' => $list_items,
+			);
+
+			$page_node['@type']           = 'CollectionPage';
+			$page_node['about']           = $this->build_schema_thing_list(
+				array(
+					(string) $category['card_title'],
+					"McDonald's " . (string) $category['card_title'] . ' menu prices',
+					"McDonald's " . (string) $category['card_title'] . ' calories',
+				)
+			);
+			$page_node['mainEntity']      = array(
+				array( '@id' => $current_url . '#menu-section' ),
+				array( '@id' => $current_url . '#item-list' ),
+			);
+			$page_node['significantLink'] = array_values( array_unique( array_filter( $category_links ) ) );
+			$page_node['mentions']        = ( $guide_url && $guide_title ) ? array(
+				array(
+					'@type' => 'WebPage',
+					'name'  => $guide_title,
+					'url'   => $guide_url,
+				),
+			) : array();
+		} elseif ( 'menu-item' === $managed_type ) {
+			$item_context = $this->get_menu_directory_item_context_by_key( $managed_key );
+
+			if ( empty( $item_context['category'] ) || empty( $item_context['item'] ) ) {
+				return;
+			}
+
+			$category      = $item_context['category'];
+			$item          = $item_context['item'];
+			$category_url  = esc_url_raw( $this->get_menu_category_page_url( $category['id'] ) );
+			$guide_url     = esc_url_raw( $this->get_menu_category_primary_guide_url( $category['id'] ) );
+			$product_id    = $current_url . '#product';
+			$menu_item_id  = $current_url . '#menu-item';
+			$significant_links = array(
+				$category_url,
+				esc_url_raw( $this->get_menu_directory_root_url() ),
+				$guide_url,
+			);
+
+			$graph[] = $this->build_product_schema_node( $category, $item, $current_url, $product_id, $current_url . '#webpage' );
+			$graph[] = $this->build_menu_item_schema_node( $category, $item, $current_url, $menu_item_id, $current_url . '#webpage' );
+
+			$related_items = array_values(
+				array_filter(
+					$category['items'],
+					static function ( $candidate ) use ( $item ) {
+						return isset( $candidate['slug'], $item['slug'] ) && (string) $candidate['slug'] !== (string) $item['slug'];
+					}
+				)
+			);
+
+			if ( ! empty( $related_items ) ) {
+				$related_list = array();
+
+				foreach ( array_slice( $related_items, 0, 3 ) as $related_item ) {
+					$related_url         = esc_url_raw( $this->get_menu_item_page_url( $category['id'], $related_item['slug'] ) );
+					$significant_links[] = $related_url;
+					$related_list[]      = array(
+						'@type'    => 'ListItem',
+						'position' => count( $related_list ) + 1,
+						'url'      => $related_url,
+						'name'     => (string) $related_item['name'],
+					);
+				}
+
+				$graph[] = array(
+					'@type'           => 'ItemList',
+					'@id'             => $current_url . '#related-items',
+					'name'            => 'Related ' . (string) $category['card_title'] . ' items',
+					'numberOfItems'   => count( $related_list ),
+					'itemListOrder'   => 'https://schema.org/ItemListOrderAscending',
+					'itemListElement' => $related_list,
+				);
+			}
+
+			$page_node['about']           = $this->build_schema_thing_list(
+				array(
+					(string) $item['name'],
+					(string) $category['card_title'],
+					"McDonald's " . (string) $item['name'] . ' price',
+					"McDonald's " . (string) $item['name'] . ' calories',
+				)
+			);
+			$page_node['mainEntity']      = array(
+				array( '@id' => $product_id ),
+				array( '@id' => $menu_item_id ),
+			);
+			$page_node['significantLink'] = array_values( array_unique( array_filter( $significant_links ) ) );
+		} elseif ( '' !== $support_slug ) {
+			$related_category = $this->get_menu_category_for_guide_slug( $support_slug );
+			$faq_items        = $this->get_page_faq_schema_items( $post );
+			$main_entities    = array();
+			$tool_node        = $this->get_interactive_tool_schema_node( $support_slug, $current_url );
+
+			if ( ! empty( $related_category['id'] ) ) {
+				$significant_links[] = esc_url_raw( $this->get_menu_category_page_url( $related_category['id'] ) );
+				$significant_links[] = esc_url_raw( $this->get_menu_directory_root_url() );
+				$about_topics[]      = (string) $related_category['card_title'];
+				$about_topics[]      = "McDonald's " . (string) $related_category['card_title'] . ' menu prices';
+			}
+
+			if ( $this->support_page_uses_article_schema( $support_slug ) ) {
+				$graph[] = $this->filter_schema_empty_values(
+					array(
+						'@type'            => 'Article',
+						'@id'              => $current_url . '#article',
+						'headline'         => $title,
+						'description'      => $description,
+						'url'              => $current_url,
+						'inLanguage'       => 'en-US',
+						'datePublished'    => $published_at,
+						'dateModified'     => $modified_at,
+						'author'           => array( '@id' => $site_url . '#organization' ),
+						'publisher'        => array( '@id' => $site_url . '#organization' ),
+						'mainEntityOfPage' => array( '@id' => $current_url . '#webpage' ),
+						'about'            => $this->build_schema_thing_list(
+							array_merge(
+								array( $title ),
+								$about_topics
+							)
+						),
+					)
+				);
+
+				$main_entities[] = array( '@id' => $current_url . '#article' );
+			}
+
+			if ( ! empty( $tool_node ) ) {
+				$graph[] = $tool_node;
+				$main_entities[] = array( '@id' => $current_url . '#tool' );
+				$about_topics[]  = (string) ( $tool_node['name'] ?? '' );
+			}
+
+			if ( ! empty( $faq_items ) ) {
+				$graph[] = array(
+					'@type'      => 'FAQPage',
+					'@id'        => $current_url . '#faq',
+					'url'        => $current_url,
+					'isPartOf'   => array( '@id' => $current_url . '#webpage' ),
+					'mainEntity' => array_map(
+						static function ( $faq_item ) {
+							return array(
+								'@type'          => 'Question',
+								'name'           => $faq_item['question'],
+								'acceptedAnswer' => array(
+									'@type' => 'Answer',
+									'text'  => $faq_item['answer'],
+								),
+							);
+						},
+						$faq_items
+					),
+				);
+
+				$main_entities[] = array( '@id' => $current_url . '#faq' );
+			}
+
+			if ( ! empty( $main_entities ) ) {
+				$page_node['mainEntity'] = $main_entities;
+			}
+
+			if ( ! empty( $about_topics ) ) {
+				$page_node['about'] = $this->build_schema_thing_list( array_merge( array( $title ), $about_topics ) );
+			}
+
+			if ( ! empty( $significant_links ) ) {
+				$page_node['significantLink'] = array_values( array_unique( array_filter( $significant_links ) ) );
+			}
+		} else {
+			return;
+		}
+
+		$graph[] = $this->filter_schema_empty_values( $page_node );
+		$graph   = $this->append_breadcrumb_schema_node( $graph, $current_url );
+		?>
+		<script type="application/ld+json"><?php echo wp_json_encode( array( '@context' => 'https://schema.org', '@graph' => $graph ), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); ?></script>
+		<?php
+	}
+
+	/**
 	 * Return whether the current request is for the dynamic sitemap endpoint.
 	 *
 	 * @return bool
@@ -7468,19 +11356,8 @@ class McPrices_Integration {
 			return true;
 		}
 
-		if ( preg_match( '/-\d+$/', (string) $post->post_name ) ) {
-			foreach ( $this->get_seeded_support_pages() as $slug => $page_data ) {
-				if ( 0 !== strpos( (string) $post->post_name, (string) $slug . '-' ) ) {
-					continue;
-				}
-
-				$title      = trim( wp_strip_all_tags( wp_specialchars_decode( (string) $page_data['title'], ENT_QUOTES ) ) );
-				$post_title = trim( wp_strip_all_tags( wp_specialchars_decode( (string) $post->post_title, ENT_QUOTES ) ) );
-
-				if ( $title === $post_title ) {
-					return true;
-				}
-			}
+		if ( $this->should_noindex_post( $post ) ) {
+			return true;
 		}
 
 		return false;
@@ -7589,6 +11466,144 @@ class McPrices_Integration {
 		}
 
 		return $entries;
+	}
+
+	/**
+	 * Return the current request path relative to the WordPress home path.
+	 *
+	 * @return string
+	 */
+	protected function get_site_relative_request_path() {
+		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
+		$request_uri = is_string( $request_uri ) ? $request_uri : '';
+		$request_path = (string) wp_parse_url( $request_uri, PHP_URL_PATH );
+		$home_path    = (string) wp_parse_url( home_url( '/' ), PHP_URL_PATH );
+
+		$request_path = trim( $request_path, '/' );
+		$home_path    = trim( $home_path, '/' );
+
+		if ( '' !== $home_path && 0 === strpos( $request_path, $home_path . '/' ) ) {
+			$request_path = substr( $request_path, strlen( $home_path ) + 1 );
+		} elseif ( $request_path === $home_path ) {
+			$request_path = '';
+		}
+
+		return trim( (string) $request_path, '/' );
+	}
+
+	/**
+	 * Normalize legacy menu request paths to the current canonical URL scheme.
+	 *
+	 * @param string $path Site-relative request path.
+	 * @return string
+	 */
+	protected function normalize_legacy_menu_request_path( $path ) {
+		$path = trim( ltrim( (string) $path, '/' ), '/' );
+
+		if ( '' === $path ) {
+			return '';
+		}
+
+		$category_slug_map = array(
+			'whats-new'   => 'whats-new',
+			'meals'       => 'extra-value-meals',
+			'mcvalue'     => 'mcvalue-menu',
+			'breakfast'   => 'breakfast-menu',
+			'burgers'     => 'burgers-menu',
+			'chickenfish' => 'chicken-fish',
+			'nuggets'     => 'mcnuggets-strips',
+			'snackwrap'   => 'snack-wrap',
+			'sides'       => 'fries-sides',
+			'happymeal'   => 'happy-meal',
+			'sweets'      => 'sweets-treats',
+			'mccafe'      => 'mccafe-coffees',
+			'beverages'   => 'beverages-drinks',
+			'sauces'      => 'sauces-condiments',
+			'deals'       => 'deals-and-offers',
+		);
+
+		foreach ( $category_slug_map as $old_slug => $new_slug ) {
+			$old_prefix = 'menu/' . $old_slug;
+
+			if ( $path === $old_prefix || 0 === strpos( $path, $old_prefix . '/' ) ) {
+				$path = 'menu/' . $new_slug . substr( $path, strlen( $old_prefix ) );
+				break;
+			}
+		}
+
+		$legacy_item_paths = array(
+			'menu/whats-new/the-big-arch'                         => 'menu/whats-new/the-big-archtm-two-1-4-lb-beef-patties-special-sauce-lettuce-cheese-pickles',
+			'menu/whats-new/ramyeon-mcshaker-fries'               => 'menu/whats-new/ramyeon-mcshakertm-fries-medium',
+			'menu/whats-new/the-saja-boys-breakfast-meal'         => 'menu/whats-new/the-saja-boys-breakfast-meal-spicy-mcmuffin-hashbrown-drink',
+			'menu/mcnuggets-strips/mccrispy-strips'               => 'menu/mcnuggets-strips/mccrispy-strips-3-pc',
+			'menu/mccafe-coffees/premium-roast-coffee'            => 'menu/mccafe-coffees/premium-roast-coffee-any-size',
+			'menu/mcvalue-menu/the-mcdouble-meal-deal'            => 'menu/burgers-menu/mcdouble',
+			'menu/mcvalue-menu/mcchicken'                         => 'menu/chicken-fish/mcchicken',
+			'menu/mcvalue-menu/cheeseburger'                      => 'menu/burgers-menu/cheeseburger',
+			'menu/mcvalue-menu/double-cheeseburger'               => 'menu/burgers-menu/double-cheeseburger',
+			'menu/mcvalue-menu/hash-browns'                       => 'menu/breakfast-menu/hash-browns',
+			'menu/mcvalue-menu/sausage-biscuit'                   => 'menu/breakfast-menu/sausage-biscuit',
+			'menu/mcvalue-menu/sausage-burrito'                   => 'menu/breakfast-menu/sausage-burrito',
+			'menu/mcvalue-menu/sausage-mcmuffin'                  => 'menu/breakfast-menu/sausage-mcmuffin',
+			'menu/mcvalue-menu/4-pc-chicken-mcnuggets'            => 'menu/mcnuggets-strips/4-pc-chicken-mcnuggets',
+			'menu/mcvalue-menu/6-pc-chicken-mcnuggets'            => 'menu/mcnuggets-strips/6-pc-chicken-mcnuggets',
+			'menu/mcvalue-menu/small-world-famous-fries'          => 'menu/fries-sides/world-famous-fries-small',
+			'menu/sweets-treats/chocolate-chip-cookie'            => 'menu/sweets-treats/chocolate-chip-cookie-single',
+			'menu/sweets-treats/oreo-mcflurry'                    => 'menu/sweets-treats/oreo-mcflurry-regular',
+			'menu/sweets-treats/mms-mcflurry'                     => 'menu/sweets-treats/mms-mcflurry-regular',
+			'menu/happy-meal/hamburger-happy-meal'                => 'menu/happy-meal/hamburger-happy-meal-w-apple-slices-or-sm-fries-drink-toy',
+			'menu/happy-meal/4-pc-mcnuggets-happy-meal'           => 'menu/happy-meal/4-pc-mcnuggets-happy-meal-w-apple-slices-or-sm-fries-drink-toy',
+			'menu/happy-meal/6-pc-mcnuggets-happy-meal'           => 'menu/happy-meal/6-pc-mcnuggets-happy-meal-w-apple-slices-or-sm-fries-drink-toy',
+			'menu/sauces-condiments/hunter-sauce'                 => 'menu/sauces-condiments/hunter-sauce-kpop-demon-hunters-ltd',
+			'menu/sauces-condiments/demon-sauce'                  => 'menu/sauces-condiments/demon-sauce-kpop-demon-hunters-ltd',
+			'menu/extra-value-meals/10-pc-chicken-mcnuggets-meal' => 'menu/extra-value-meals/10-pc-chicken-mcnuggets-meal-med',
+		);
+
+		return isset( $legacy_item_paths[ $path ] ) ? (string) $legacy_item_paths[ $path ] : $path;
+	}
+
+	/**
+	 * Redirect duplicate, legacy, and weak URLs to their canonical targets.
+	 *
+	 * @return void
+	 */
+	public function maybe_redirect_noncanonical_request() {
+		if ( ! $this->design_enabled() || is_admin() || wp_doing_ajax() || is_feed() ) {
+			return;
+		}
+
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+			return;
+		}
+
+		if ( $this->is_sitemap_request() || $this->is_robots_request() ) {
+			return;
+		}
+
+		if ( is_404() ) {
+			$request_path    = $this->get_site_relative_request_path();
+			$normalized_path = $this->normalize_legacy_menu_request_path( $request_path );
+
+			if ( '' !== $request_path && '' !== $normalized_path && $normalized_path !== $request_path ) {
+				wp_safe_redirect( home_url( '/' . ltrim( $normalized_path, '/' ) . '/' ), 301, 'McPrices' );
+				exit;
+			}
+
+			return;
+		}
+
+		if ( is_singular( 'page' ) ) {
+			$post = get_queried_object();
+
+			if ( $post instanceof \WP_Post ) {
+				$canonical_url = $this->get_canonical_url_for_post( $post );
+
+				if ( '' !== $canonical_url && untrailingslashit( $canonical_url ) !== untrailingslashit( (string) get_permalink( $post ) ) ) {
+					wp_safe_redirect( $canonical_url, 301, 'McPrices' );
+					exit;
+				}
+			}
+		}
 	}
 
 	/**
@@ -7850,6 +11865,10 @@ class McPrices_Integration {
 			return;
 		}
 
+		if ( $this->managed_page_uses_custom_content( $front_page ) ) {
+			return;
+		}
+
 		$homepage_pattern = $this->get_homepage_pattern_markup();
 		if ( empty( $homepage_pattern ) ) {
 			return;
@@ -7899,6 +11918,10 @@ class McPrices_Integration {
 
 		$front_page = get_post( $front_page_id );
 		if ( ! $front_page || 'page' !== $front_page->post_type ) {
+			return;
+		}
+
+		if ( $this->managed_page_uses_custom_content( $front_page ) ) {
 			return;
 		}
 
@@ -8262,6 +12285,13 @@ class McPrices_Integration {
 			return;
 		}
 
+		$design_css_path    = get_theme_file_path( '/assets/css/mcprices-integrated.css' );
+		$enhanced_css_path  = get_theme_file_path( '/assets/css/mcprices-enhanced-layer.css' );
+		$interactions_path  = get_theme_file_path( '/assets/js/mcprices-integrated.js' );
+		$design_css_version = file_exists( $design_css_path ) ? (string) filemtime( $design_css_path ) : kadence()->get_asset_version( $design_css_path );
+		$enhanced_css_version = file_exists( $enhanced_css_path ) ? (string) filemtime( $enhanced_css_path ) : kadence()->get_asset_version( $enhanced_css_path );
+		$interactions_version = file_exists( $interactions_path ) ? (string) filemtime( $interactions_path ) : kadence()->get_asset_version( $interactions_path );
+
 		wp_enqueue_style(
 			'kadence-mcprices-fonts',
 			'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700&display=swap',
@@ -8273,21 +12303,21 @@ class McPrices_Integration {
 			'kadence-mcprices-design',
 			get_theme_file_uri( '/assets/css/mcprices-integrated.css' ),
 			array( 'kadence-global' ),
-			kadence()->get_asset_version( get_theme_file_path( '/assets/css/mcprices-integrated.css' ) )
+			$design_css_version
 		);
 
 		wp_enqueue_style(
 			'kadence-mcprices-enhanced-layer',
 			get_theme_file_uri( '/assets/css/mcprices-enhanced-layer.css' ),
 			array( 'kadence-mcprices-design' ),
-			kadence()->get_asset_version( get_theme_file_path( '/assets/css/mcprices-enhanced-layer.css' ) )
+			$enhanced_css_version
 		);
 
 		wp_enqueue_script(
 			'kadence-mcprices-interactions',
 			get_theme_file_uri( '/assets/js/mcprices-integrated.js' ),
 			array(),
-			kadence()->get_asset_version( get_theme_file_path( '/assets/js/mcprices-integrated.js' ) ),
+			$interactions_version,
 			true
 		);
 
@@ -8303,6 +12333,12 @@ class McPrices_Integration {
 				);
 			}
 		}
+
+		wp_add_inline_script(
+			'kadence-mcprices-interactions',
+			'window.mcpricesToolCatalog = ' . wp_json_encode( $this->get_interactive_tool_catalog(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) . ';',
+			'before'
+		);
 	}
 
 	/**

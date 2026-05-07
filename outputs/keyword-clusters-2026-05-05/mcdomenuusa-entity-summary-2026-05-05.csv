@@ -1,0 +1,166 @@
+topical_silo,primary_entity,entity_type,parent_entity,cluster_count,keyword_count,total_volume,dominant_page_type,suggested_url,intent_mix
+Brand Core,McDonald's Menu,menu_hub,,16,1619,691760,hub,https://mcdomenuusa.com/menu/,geo_price | nutrition_allergens | nutrition_caffeine | nutrition_ingredients | nutrition_macros | overview_general | overview_menu | price_value | timing_hours
+Breakfast,Breakfast Menu,menu_guide,,8,469,302010,guide,https://mcdomenuusa.com/breakfast-menu/,geo_price | nutrition_ingredients | nutrition_macros | overview_general | overview_menu | price_value
+Customer Journey,McDVoice Survey,service_page,,2,138,132390,service,https://mcdomenuusa.com/mcdvoice/,overview_general | service_survey
+Burgers,Big Mac,product_variant,Burgers Menu,14,241,103030,item,https://mcdomenuusa.com/menu/burgers-menu/big-mac/,availability_status | geo_price | nutrition_ingredients | nutrition_macros | overview_general | overview_menu | price_value
+Chicken & Fish,McChicken,product_variant,Chicken & Fish Menu,9,285,100460,item,https://mcdomenuusa.com/menu/chicken-fish/mcchicken/,geo_price | nutrition_ingredients | nutrition_macros | overview_general | overview_menu | price_value
+Value & Deals,Chicken McNuggets,product_family,McValue Menu,11,534,74960,family_section,https://mcdomenuusa.com/mcdonalds-deals-mcvalue-guide/,nutrition_allergens | nutrition_ingredients | nutrition_macros | overview_general | overview_menu | price_value
+Burgers,Quarter Pounder with Cheese,product_variant,Burgers Menu,5,172,50190,item,https://mcdomenuusa.com/menu/burgers-menu/quarter-pounder-with-cheese/,nutrition_ingredients | nutrition_macros | overview_general | overview_menu | price_value
+Burgers,McDouble,product_variant,Burgers Menu,7,125,49040,item,https://mcdomenuusa.com/menu/burgers-menu/mcdouble/,comparison | geo_price | nutrition_ingredients | nutrition_macros | overview_general | overview_menu | price_value
+Value & Deals,Extra Value Meals,menu_guide,,4,20,47970,guide,https://mcdomenuusa.com/extra-value-meals/,availability_status | overview_general | overview_menu | price_value
+Breakfast,Hash Browns,product_variant,Breakfast Menu,7,241,44340,item,https://mcdomenuusa.com/menu/breakfast-menu/hash-browns/,nutrition_allergens | nutrition_ingredients | nutrition_macros | overview_general | overview_menu | price_value
+Sweets & Treats,OREO McFlurry,product_variant,Sweets & Treats,7,240,42030,item,https://mcdomenuusa.com/menu/sweets-treats/oreo-mcflurry/,geo_price | nutrition_allergens | nutrition_ingredients | nutrition_macros | overview_general | overview_menu | price_value
+Burgers,Double Cheeseburger,product_variant,Burgers Menu,6,105,41040,item,https://mcdomenuusa.com/menu/burgers-menu/double-cheeseburger/,geo_price | nutrition_ingredients | nutrition_macros | overview_general | overview_menu | price_value
+Value & Deals,Big Mac Meal,product_variant,Extra Value Meals,6,54,31690,item,https://mcdomenuusa.com/menu/extra-value-meals/big-mac-meal/,geo_price | nutrition_macros | overview_menu | price_value
+Breakfast,Egg McMuffin,product_variant,Breakfast Menu,5,137,30730,item,https://mcdomenuusa.com/menu/breakfast-menu/egg-mcmuffin/,nutrition_ingredients | nutrition_macros | overview_general | price_value | timing_hours
+Chicken & Fish,Filet-O-Fish,product_variant,Chicken & Fish Menu,4,178,27880,item,https://mcdomenuusa.com/menu/chicken-fish/filet-o-fish/,nutrition_macros | overview_general | overview_menu | price_value
+Chicken & Fish,McCrispy,product_variant,Chicken & Fish Menu,4,47,25170,item,https://mcdomenuusa.com/menu/chicken-fish/mccrispy/,nutrition_ingredients | nutrition_macros | overview_general | price_value
+Value & Deals,Shareables & Bundles,support_page,,3,174,22470,support,https://mcdomenuusa.com/shareables-bundles/,overview_general | overview_menu | price_value
+Beverages,Soft Drink Small,product_variant,Soft Drink,6,228,21860,item,https://mcdomenuusa.com/menu/beverages-drinks/soft-drink-small/,nutrition_allergens | nutrition_caffeine | nutrition_ingredients | nutrition_macros | overview_general | price_value
+Fries & Sides,World Famous Fries Small,product_variant,World Famous Fries,4,146,21170,item,https://mcdomenuusa.com/menu/fries-sides/world-famous-fries-small/,nutrition_macros | overview_general | overview_menu | price_value
+Burgers,Double Quarter Pounder with Cheese,product_variant,Burgers Menu,5,46,20950,item,https://mcdomenuusa.com/menu/burgers-menu/double-quarter-pounder-with-cheese/,nutrition_ingredients | nutrition_macros | overview_general | overview_menu | price_value
+Sweets & Treats,Sweets & Treats,menu_guide,,6,234,19670,guide,https://mcdomenuusa.com/sweets-treats/,nutrition_allergens | nutrition_ingredients | nutrition_macros | overview_general | overview_menu | price_value
+Happy Meal,Happy Meal,menu_guide,,10,189,19620,guide,https://mcdomenuusa.com/happy-meal-menu/,geo_price | nutrition_ingredients | nutrition_macros | overview_menu | price_value
+Sweets & Treats,Vanilla Cone,product_variant,Sweets & Treats,3,145,18970,item,https://mcdomenuusa.com/menu/sweets-treats/vanilla-cone/,nutrition_macros | overview_general | price_value
+Breakfast,Sausage McMuffin,product_variant,Breakfast Menu,5,100,18080,item,https://mcdomenuusa.com/menu/breakfast-menu/sausage-mcmuffin/,nutrition_ingredients | nutrition_macros | overview_general | overview_menu | price_value
+McCafe Coffees,McCafe Caramel Frappe Small,product_variant,McCafe Caramel Frappe,6,156,16540,item,https://mcdomenuusa.com/menu/mccafe-coffees/mccafe-caramel-frappe-small/,nutrition_caffeine | nutrition_ingredients | nutrition_macros | overview_general | overview_menu | price_value
+McCafe Coffees,Frappe,product_family,McCafe Coffees,7,178,16290,family_section,https://mcdomenuusa.com/mccafe-menu/,nutrition_allergens | nutrition_caffeine | nutrition_ingredients | nutrition_macros | overview_general | overview_menu | price_value
+McNuggets & Strips,6 pc Chicken McNuggets,product_variant,Chicken McNuggets,5,149,15560,item,https://mcdomenuusa.com/menu/mcnuggets-strips/6-pc-chicken-mcnuggets/,nutrition_allergens | nutrition_macros | overview_general | overview_menu | price_value
+Breakfast,Big Breakfast,product_variant,Breakfast Menu,4,95,15440,item,https://mcdomenuusa.com/menu/breakfast-menu/big-breakfast/,nutrition_ingredients | nutrition_macros | overview_menu | price_value
+Beverages,Beverages & Drinks,menu_guide,,5,181,14870,guide,https://mcdomenuusa.com/beverage-menu/,nutrition_caffeine | nutrition_macros | overview_general | overview_menu | price_value
+McNuggets & Strips,10 pc Chicken McNuggets,product_variant,Chicken McNuggets,4,78,13790,item,https://mcdomenuusa.com/menu/mcnuggets-strips/10-pc-chicken-mcnuggets/,nutrition_macros | overview_general | overview_menu | price_value
+Breakfast,Sausage Burrito,product_variant,Breakfast Menu,5,104,13620,item,https://mcdomenuusa.com/menu/breakfast-menu/sausage-burrito/,nutrition_ingredients | nutrition_macros | overview_general | overview_menu | price_value
+McNuggets & Strips,20 pc Chicken McNuggets,product_variant,Chicken McNuggets,4,80,13500,item,https://mcdomenuusa.com/menu/mcnuggets-strips/20-pc-chicken-mcnuggets/,nutrition_macros | overview_general | overview_menu | price_value
+Burgers,Cheeseburger,product_variant,Burgers Menu,5,136,13370,item,https://mcdomenuusa.com/menu/burgers-menu/cheeseburger/,geo_price | nutrition_ingredients | nutrition_macros | overview_general | price_value
+McCafe Coffees,McCafe Iced Coffee Small,product_variant,McCafe Iced Coffee,7,147,13200,item,https://mcdomenuusa.com/menu/mccafe-coffees/mccafe-iced-coffee-small/,nutrition_allergens | nutrition_caffeine | nutrition_ingredients | nutrition_macros | overview_menu | price_value | timing_hours
+Fries & Sides,Fries & Sides,menu_guide,,5,39,12690,guide,https://mcdomenuusa.com/fries-sides/,nutrition_allergens | nutrition_macros | overview_general | overview_menu | price_value
+Sweets & Treats,Chocolate Chip Cookie,product_variant,Sweets & Treats,4,63,12540,item,https://mcdomenuusa.com/menu/sweets-treats/chocolate-chip-cookie/,nutrition_ingredients | nutrition_macros | overview_general | price_value
+Sauces & Condiments,Sauces & Condiments,menu_guide,,3,23,12100,guide,https://mcdomenuusa.com/sauces-condiments/,nutrition_macros | overview_general | overview_menu
+Burgers,Double Cheeseburger vs McDouble,comparison,Burgers Menu,1,12,11920,comparison,,comparison
+Breakfast,McGriddle,product_family,Breakfast Menu,5,104,11580,family_section,https://mcdomenuusa.com/breakfast-menu/,nutrition_ingredients | nutrition_macros | overview_general | overview_menu | price_value
+Breakfast,Sausage McGriddles,product_variant,Breakfast Menu,4,37,11030,item,https://mcdomenuusa.com/menu/breakfast-menu/sausage-mcgriddles/,nutrition_ingredients | nutrition_macros | overview_general | price_value
+Sweets & Treats,Hot Fudge Sundae,product_variant,Sweets & Treats,5,38,10870,item,https://mcdomenuusa.com/menu/sweets-treats/hot-fudge-sundae/,nutrition_allergens | nutrition_ingredients | nutrition_macros | overview_general | price_value
+McCafe Coffees,McCafe Coffees,menu_guide,,5,93,10860,guide,https://mcdomenuusa.com/mccafe-menu/,nutrition_caffeine | nutrition_macros | overview_general | overview_menu | price_value
+McCafe Coffees,McCafe Mocha Frappe Small,product_variant,McCafe Mocha Frappe,7,128,9540,item,https://mcdomenuusa.com/menu/mccafe-coffees/mccafe-mocha-frappe-small/,nutrition_allergens | nutrition_caffeine | nutrition_ingredients | nutrition_macros | overview_general | overview_menu | price_value
+McNuggets & Strips,McNuggets & Strips,menu_guide,,4,112,9250,guide,https://mcdomenuusa.com/nuggets-and-strips/,nutrition_macros | overview_general | overview_menu | price_value
+Breakfast,Hotcakes,product_variant,Breakfast Menu,6,122,9140,item,https://mcdomenuusa.com/menu/breakfast-menu/hotcakes/,nutrition_allergens | nutrition_ingredients | nutrition_macros | overview_general | overview_menu | price_value
+Beverages,Smoothie,product_family,Beverages & Drinks,6,105,9090,family_section,https://mcdomenuusa.com/beverage-menu/,nutrition_allergens | nutrition_ingredients | nutrition_macros | overview_general | overview_menu | price_value
+Breakfast,McMuffin,product_family,Breakfast Menu,5,63,8160,family_section,https://mcdomenuusa.com/breakfast-menu/,nutrition_ingredients | nutrition_macros | overview_general | overview_menu | price_value
+Beverages,Sweet Tea,product_family,Beverages & Drinks,6,98,7820,family_section,https://mcdomenuusa.com/beverage-menu/,nutrition_allergens | nutrition_caffeine | nutrition_ingredients | nutrition_macros | overview_general | price_value
+Chicken & Fish,Chicken & Fish Menu,menu_guide,,4,105,7650,guide,https://mcdomenuusa.com/chicken-fish-menu/,nutrition_macros | overview_general | overview_menu | price_value
+Fries & Sides,World Famous Fries Large,product_variant,World Famous Fries,3,75,7220,item,https://mcdomenuusa.com/menu/fries-sides/world-famous-fries-large/,geo_price | overview_general | price_value
+Breakfast,Sausage Biscuit,product_variant,Breakfast Menu,5,52,7010,item,https://mcdomenuusa.com/menu/breakfast-menu/sausage-biscuit/,nutrition_ingredients | nutrition_macros | overview_general | overview_menu | price_value
+Breakfast,Sausage McMuffin with Egg,product_variant,Breakfast Menu,3,25,6950,item,https://mcdomenuusa.com/menu/breakfast-menu/sausage-mcmuffin-with-egg/,nutrition_macros | overview_general | price_value
+Breakfast,"Sausage, Egg & Cheese McGriddles",product_variant,Breakfast Menu,3,25,6930,item,https://mcdomenuusa.com/menu/breakfast-menu/sausage-egg-cheese-mcgriddles/,nutrition_macros | overview_general | price_value
+Breakfast,Fruit & Maple Oatmeal,product_variant,Breakfast Menu,6,39,6430,item,https://mcdomenuusa.com/menu/breakfast-menu/fruit-maple-oatmeal/,nutrition_allergens | nutrition_ingredients | nutrition_macros | overview_general | price_value | timing_hours
+Nutrition,"Nutrition, Calories & Allergens",support_page,,2,80,6340,support,https://mcdomenuusa.com/mcdonalds-nutrition-calories-allergens/,nutrition_ingredients | nutrition_macros
+Sweets & Treats,Baked Apple Pie,product_variant,Sweets & Treats,4,65,5900,item,https://mcdomenuusa.com/menu/sweets-treats/baked-apple-pie/,nutrition_macros | overview_general | overview_menu | price_value
+McCafe Coffees,McCafe Hot Chocolate,product_family,McCafe Coffees,6,36,5800,family_section,https://mcdomenuusa.com/mccafe-menu/,nutrition_allergens | nutrition_caffeine | nutrition_ingredients | nutrition_macros | overview_general | price_value
+Limited Time,McRib,product_family,Limited Time Menu,5,46,5760,family_section,https://mcdomenuusa.com/limited-time-menu/,nutrition_ingredients | nutrition_macros | overview_general | overview_menu | price_value
+Value & Deals,Deals & McValue Guide,support_page,,2,47,5610,support,https://mcdomenuusa.com/mcdonalds-deals-mcvalue-guide/,overview_general | price_value
+Value & Deals,World Famous Fries,product_family,McValue Menu,3,15,5520,family_section,https://mcdomenuusa.com/mcdonalds-deals-mcvalue-guide/,nutrition_macros | overview_general | price_value
+Sweets & Treats,M&M'S McFlurry,product_variant,Sweets & Treats,4,34,5360,item,https://mcdomenuusa.com/menu/sweets-treats/m-ms-mcflurry/,nutrition_allergens | nutrition_macros | overview_general | price_value
+Beverages,Frozen Fanta Blue Raspberry,product_family,Beverages & Drinks,4,32,5290,family_section,https://mcdomenuusa.com/beverage-menu/,nutrition_macros | overview_general | overview_menu | price_value
+Breakfast,Bagel,product_variant,Breakfast Menu,4,29,5150,item,https://mcdomenuusa.com/menu/breakfast-menu/bagel/,nutrition_ingredients | nutrition_macros | overview_general | price_value
+Beverages,Unsweetened Iced Tea,product_family,Beverages & Drinks,3,36,4130,family_section,https://mcdomenuusa.com/beverage-menu/,nutrition_caffeine | nutrition_macros | overview_general
+Beverages,Strawberry Banana Smoothie,product_family,Beverages & Drinks,4,29,4100,family_section,https://mcdomenuusa.com/beverage-menu/,nutrition_ingredients | nutrition_macros | overview_general | price_value
+Sweets & Treats,McFlurry,product_family,Sweets & Treats,7,30,3810,family_section,https://mcdomenuusa.com/sweets-treats/,geo_price | nutrition_allergens | nutrition_ingredients | nutrition_macros | overview_general | overview_menu | price_value
+Sweets & Treats,Cookies,product_family,Sweets & Treats,3,18,3750,family_section,https://mcdomenuusa.com/sweets-treats/,nutrition_macros | overview_general | price_value
+McNuggets & Strips,40 pc Chicken McNuggets,product_variant,Chicken McNuggets,3,42,3670,item,https://mcdomenuusa.com/menu/mcnuggets-strips/40-pc-chicken-mcnuggets/,nutrition_macros | overview_general | price_value
+Burgers,Hamburger,product_variant,Burgers Menu,4,52,3600,item,https://mcdomenuusa.com/menu/burgers-menu/hamburger/,nutrition_macros | overview_general | overview_menu | price_value
+Breakfast,"Steak, Egg & Cheese Bagel",product_variant,Breakfast Menu,4,27,3600,item,https://mcdomenuusa.com/menu/breakfast-menu/steak-egg-cheese-bagel/,nutrition_ingredients | nutrition_macros | overview_general | price_value
+Sweets & Treats,Chocolate Chip Cookies,product_variant,Sweets & Treats,4,18,3410,item,https://mcdomenuusa.com/menu/sweets-treats/chocolate-chip-cookies/,nutrition_ingredients | nutrition_macros | overview_general | price_value
+Chicken & Fish,Spicy McCrispy,product_variant,Chicken & Fish Menu,4,9,3350,item,https://mcdomenuusa.com/menu/chicken-fish/spicy-mccrispy/,nutrition_ingredients | nutrition_macros | overview_general | price_value
+Fries & Sides,World Famous Fries Medium,product_variant,World Famous Fries,3,54,3180,item,https://mcdomenuusa.com/menu/fries-sides/world-famous-fries-medium/,nutrition_macros | overview_general | price_value
+McNuggets & Strips,McCrispy Strips,product_variant,McNuggets & Strips,2,2,3030,item,https://mcdomenuusa.com/menu/mcnuggets-strips/mccrispy-strips/,overview_general | price_value
+Value & Deals,The McDouble Meal Deal,product_variant,McValue Menu,1,1,3000,item,https://mcdomenuusa.com/menu/mcvalue-menu/mcdouble-meal-deal/,price_value
+McCafe Coffees,Premium Roast Coffee,product_variant,McCafe Coffees,5,29,2980,item,https://mcdomenuusa.com/menu/mccafe-coffees/premium-roast-coffee/,nutrition_allergens | nutrition_caffeine | nutrition_ingredients | overview_menu | price_value
+Breakfast,"Bacon, Egg & Cheese McGriddles",product_variant,Breakfast Menu,3,20,2810,item,https://mcdomenuusa.com/menu/breakfast-menu/bacon-egg-cheese-mcgriddles/,nutrition_macros | overview_general | price_value
+Breakfast,Big Breakfast with Hotcakes,product_variant,Breakfast Menu,3,22,2780,item,https://mcdomenuusa.com/menu/breakfast-menu/big-breakfast-with-hotcakes/,nutrition_macros | overview_menu | price_value
+Limited Time,Limited Time Menu,support_page,,3,54,2540,support,https://mcdomenuusa.com/limited-time-menu/,nutrition_macros | overview_general | price_value
+Breakfast,"Bacon, Egg & Cheese Biscuit",product_variant,Breakfast Menu,3,27,2440,item,https://mcdomenuusa.com/menu/breakfast-menu/bacon-egg-cheese-biscuit/,nutrition_macros | overview_general | price_value
+Burgers,Quarter Pounder with Cheese Deluxe,product_variant,Burgers Menu,4,11,2430,item,https://mcdomenuusa.com/menu/burgers-menu/quarter-pounder-with-cheese-deluxe/,availability_status | nutrition_macros | overview_general | price_value
+Burgers,Daily Double,product_variant,Burgers Menu,4,9,2420,item,https://mcdomenuusa.com/menu/burgers-menu/daily-double/,nutrition_macros | overview_general | overview_menu | price_value
+Sauces & Condiments,Creamy Ranch Sauce,product_variant,Sauces & Condiments,4,21,2270,item,https://mcdomenuusa.com/menu/sauces-condiments/creamy-ranch-sauce/,nutrition_allergens | nutrition_ingredients | nutrition_macros | overview_general
+Sweets & Treats,Chocolate Shake,product_family,Sweets & Treats,3,18,2250,family_section,https://mcdomenuusa.com/sweets-treats/,nutrition_macros | overview_general | price_value
+Sauces & Condiments,Spicy Buffalo Sauce,product_variant,Sauces & Condiments,1,22,2120,item,https://mcdomenuusa.com/menu/sauces-condiments/spicy-buffalo-sauce/,nutrition_ingredients
+Value & Deals,Cheeseburger Meal,product_variant,Extra Value Meals,3,33,2010,item,https://mcdomenuusa.com/menu/extra-value-meals/cheeseburger-meal/,nutrition_macros | overview_menu | price_value
+Beverages,Minute Maid Premium Orange Juice,product_family,Beverages & Drinks,5,21,1960,family_section,https://mcdomenuusa.com/beverage-menu/,nutrition_ingredients | nutrition_macros | overview_general | price_value | timing_hours
+Beverages,Lemonade,product_family,Beverages & Drinks,5,12,1950,family_section,https://mcdomenuusa.com/beverage-menu/,nutrition_caffeine | nutrition_ingredients | nutrition_macros | overview_general | price_value
+Beverages,Mango Pineapple Smoothie,product_family,Beverages & Drinks,4,19,1770,family_section,https://mcdomenuusa.com/beverage-menu/,nutrition_ingredients | nutrition_macros | overview_general | price_value
+Chicken & Fish,Deluxe McCrispy,product_variant,Chicken & Fish Menu,2,5,1730,item,https://mcdomenuusa.com/menu/chicken-fish/deluxe-mccrispy/,overview_general | price_value
+Sweets & Treats,Strawberry Shake,product_family,Sweets & Treats,3,12,1590,family_section,https://mcdomenuusa.com/sweets-treats/,nutrition_macros | overview_general | price_value
+Sweets & Treats,Vanilla Shake,product_family,Sweets & Treats,2,10,1570,family_section,https://mcdomenuusa.com/sweets-treats/,overview_general | price_value
+McCafe Coffees,McCafe Iced Caramel Macchiato,product_family,McCafe Coffees,4,18,1520,family_section,https://mcdomenuusa.com/mccafe-menu/,nutrition_caffeine | nutrition_macros | overview_general | price_value
+Customer Journey,Rewards Guide,service_page,,2,23,1490,support,https://mcdomenuusa.com/rewards-guide/,overview_general | service_rewards
+Breakfast,"Bacon, Egg & Cheese Bagel",product_variant,Breakfast Menu,3,10,1360,item,https://mcdomenuusa.com/menu/breakfast-menu/bacon-egg-cheese-bagel/,nutrition_macros | overview_general | price_value
+McCafe Coffees,McCafe Caramel Macchiato,product_family,McCafe Coffees,4,19,1310,family_section,https://mcdomenuusa.com/mccafe-menu/,nutrition_caffeine | nutrition_macros | overview_general | price_value
+Breakfast,Hotcakes and Sausage,product_variant,Breakfast Menu,3,15,1220,item,https://mcdomenuusa.com/menu/breakfast-menu/hotcakes-sausage/,nutrition_macros | overview_general | price_value
+Snack Wrap,Spicy Snack Wrap,product_variant,Snack Wrap,1,1,1200,item,https://mcdomenuusa.com/menu/snack-wrap/spicy-snack-wrap/,overview_general
+Beverages,Reduced Sugar Low Fat Chocolate Milk,product_family,Beverages & Drinks,1,9,1180,family_section,https://mcdomenuusa.com/beverage-menu/,overview_general
+Sauces & Condiments,Honey,product_variant,Sauces & Condiments,4,18,1130,item,https://mcdomenuusa.com/menu/sauces-condiments/honey/,nutrition_allergens | nutrition_ingredients | nutrition_macros | overview_general
+Sauces & Condiments,Tangy Barbecue Sauce,product_variant,Sauces & Condiments,2,12,990,item,https://mcdomenuusa.com/menu/sauces-condiments/tangy-barbecue-sauce/,nutrition_allergens | nutrition_ingredients
+Burgers,Burgers Menu,menu_guide,,3,12,920,guide,https://mcdomenuusa.com/burgers-menu/,overview_general | overview_menu | price_value
+Value & Deals,Egg McMuffin Meal,product_variant,Extra Value Meals,3,17,890,item,https://mcdomenuusa.com/menu/extra-value-meals/egg-mcmuffin-meal/,nutrition_macros | overview_menu | price_value
+McCafe Coffees,McCafe Latte,product_family,McCafe Coffees,6,16,860,family_section,https://mcdomenuusa.com/mccafe-menu/,nutrition_caffeine | nutrition_ingredients | nutrition_macros | overview_general | overview_menu | price_value
+Fries & Sides,Apple Slices,product_variant,Fries & Sides,3,6,840,item,https://mcdomenuusa.com/menu/fries-sides/apple-slices/,nutrition_macros | overview_general | overview_menu
+McNuggets & Strips,4 pc Chicken McNuggets,product_variant,Chicken McNuggets,3,15,710,item,https://mcdomenuusa.com/menu/mcnuggets-strips/4-pc-chicken-mcnuggets/,nutrition_macros | overview_general | price_value
+Sauces & Condiments,Sweet 'N Sour Sauce,product_variant,Sauces & Condiments,2,18,680,item,https://mcdomenuusa.com/menu/sauces-condiments/sweet-n-sour-sauce/,nutrition_allergens | nutrition_ingredients
+Happy Meal,Hamburger Happy Meal,product_variant,Happy Meal,3,9,660,item,https://mcdomenuusa.com/menu/happy-meal/hamburger-happy-meal/,nutrition_macros | overview_menu | price_value
+Burgers,Bacon Quarter Pounder with Cheese,product_variant,Burgers Menu,3,6,540,item,https://mcdomenuusa.com/menu/burgers-menu/bacon-quarter-pounder-with-cheese/,nutrition_macros | overview_general | price_value
+Value & Deals,McValue Menu,menu_guide,,1,1,500,guide,https://mcdomenuusa.com/mcdonalds-deals-mcvalue-guide/,overview_menu
+Beverages,Hot Tea,product_family,Beverages & Drinks,1,6,500,family_section,https://mcdomenuusa.com/beverage-menu/,overview_general
+Breakfast,"Sausage, Egg & Cheese Bagel",product_variant,Breakfast Menu,3,6,500,item,https://mcdomenuusa.com/menu/breakfast-menu/sausage-egg-cheese-bagel/,nutrition_macros | overview_general | price_value
+McCafe Coffees,McCafe Iced Caramel Coffee,product_family,McCafe Coffees,3,9,470,family_section,https://mcdomenuusa.com/mccafe-menu/,nutrition_caffeine | nutrition_macros | overview_menu
+Value & Deals,Quarter Pounder with Cheese Meal,product_variant,Extra Value Meals,3,14,450,item,https://mcdomenuusa.com/menu/extra-value-meals/quarter-pounder-with-cheese-meal/,nutrition_macros | overview_menu | price_value
+Value & Deals,McFlurry with OREO Cookies,product_variant,McValue Menu,1,3,440,item,https://mcdomenuusa.com/menu/mcvalue-menu/mcflurry-with-oreo-cookies/,overview_general
+McCafe Coffees,McCafe Cappuccino,product_family,McCafe Coffees,4,10,440,family_section,https://mcdomenuusa.com/mccafe-menu/,nutrition_caffeine | nutrition_macros | overview_general | price_value
+Value & Deals,McCrispy Meal,product_variant,Extra Value Meals,3,5,350,item,https://mcdomenuusa.com/menu/extra-value-meals/mccrispy-meal/,nutrition_macros | overview_menu | price_value
+Value & Deals,Filet-O-Fish Meal,product_variant,Extra Value Meals,3,8,340,item,https://mcdomenuusa.com/menu/extra-value-meals/filet-o-fish-meal/,nutrition_macros | overview_menu | price_value
+Sauces & Condiments,Ketchup Packet,product_variant,Sauces & Condiments,2,3,330,item,https://mcdomenuusa.com/menu/sauces-condiments/ketchup-packet/,nutrition_macros | overview_general
+McCafe Coffees,McCafe Iced Caramel Latte,product_family,McCafe Coffees,2,5,320,family_section,https://mcdomenuusa.com/mccafe-menu/,nutrition_macros | overview_general
+Geographic Pricing,Big Mac Price USA,support_page,,2,8,300,support,https://mcdomenuusa.com/big-mac-price-usa/,geo_price
+McCafe Coffees,McCafe Caramel Latte,product_family,McCafe Coffees,1,4,280,family_section,https://mcdomenuusa.com/mccafe-menu/,overview_general
+McCafe Coffees,McCafe Iced Latte,product_family,McCafe Coffees,3,8,270,family_section,https://mcdomenuusa.com/mccafe-menu/,nutrition_caffeine | overview_general | price_value
+Sweets & Treats,Derpy McFlurry,product_variant,Sweets & Treats,3,8,270,item,https://mcdomenuusa.com/menu/sweets-treats/derpy-mcflurry/,nutrition_macros | overview_general | price_value
+McCafe Coffees,McCafe Iced Coffee,product_family,McCafe Coffees,1,1,250,family_section,https://mcdomenuusa.com/mccafe-menu/,overview_menu
+Breakfast,Sausage Biscuit with Egg,product_variant,Breakfast Menu,2,4,250,item,https://mcdomenuusa.com/menu/breakfast-menu/sausage-biscuit-with-egg/,nutrition_macros | overview_general
+Breakfast,Breakfast Hours,support_page,,3,12,250,support,https://mcdomenuusa.com/breakfast-hours/,overview_general | overview_menu | timing_hours
+Sweets & Treats,Hot Caramel Sundae,product_variant,Sweets & Treats,1,2,240,item,https://mcdomenuusa.com/menu/sweets-treats/hot-caramel-sundae/,overview_general
+McCafe Coffees,McCafe Mocha Latte,product_family,McCafe Coffees,2,5,210,family_section,https://mcdomenuusa.com/mccafe-menu/,nutrition_macros | overview_general
+Happy Meal,6 pc McNuggets Happy Meal,product_variant,Happy Meal,3,7,200,item,https://mcdomenuusa.com/menu/happy-meal/6-pc-mcnuggets-happy-meal/,nutrition_macros | overview_menu | price_value
+Value & Deals,McFlurry with M&M'S Candies,product_variant,McValue Menu,1,2,190,item,https://mcdomenuusa.com/menu/mcvalue-menu/mcflurry-with-m-ms-candies/,overview_general
+Customer Journey,McDelivery Guide,service_page,,1,4,190,support,https://mcdomenuusa.com/mcdelivery-guide/,service_delivery
+McCafe Coffees,Americano,product_family,McCafe Coffees,2,5,180,family_section,https://mcdomenuusa.com/mccafe-menu/,nutrition_caffeine | overview_general
+Value & Deals,Double Quarter Pounder with Cheese Meal,product_variant,Extra Value Meals,3,3,180,item,https://mcdomenuusa.com/menu/extra-value-meals/double-quarter-pounder-with-cheese-meal/,nutrition_macros | overview_menu | price_value
+Value & Deals,Sausage McGriddles Meal,product_variant,Extra Value Meals,3,4,160,item,https://mcdomenuusa.com/menu/extra-value-meals/sausage-mcgriddles-meal/,nutrition_macros | overview_menu | price_value
+McCafe Coffees,McCafe Mocha Frappe,product_family,McCafe Coffees,1,1,150,family_section,https://mcdomenuusa.com/mccafe-menu/,overview_general
+Sauces & Condiments,Mustard Packet,product_variant,Sauces & Condiments,2,3,150,item,https://mcdomenuusa.com/menu/sauces-condiments/mustard-packet/,nutrition_macros | overview_general
+Chicken & Fish,Spicy Deluxe McCrispy,product_variant,Chicken & Fish Menu,2,2,150,item,https://mcdomenuusa.com/menu/chicken-fish/spicy-deluxe-mccrispy/,overview_general | price_value
+Snack Wrap,Snack Wrap,menu_guide,,2,2,140,guide,https://mcdomenuusa.com/snack-wrap/,overview_general | price_value
+Value & Deals,Sausage Burrito Meal,product_variant,Extra Value Meals,2,4,130,item,https://mcdomenuusa.com/menu/extra-value-meals/sausage-burrito-meal/,overview_menu | price_value
+Value & Deals,Sausage McMuffin with Egg Meal,product_variant,Extra Value Meals,2,2,100,item,https://mcdomenuusa.com/menu/extra-value-meals/sausage-mcmuffin-with-egg-meal/,overview_menu | price_value
+Breakfast,Egg and Cheese Bagel,product_variant,Breakfast Menu,2,3,100,item,https://mcdomenuusa.com/menu/breakfast-menu/egg-cheese-bagel/,nutrition_macros | overview_general
+Value & Deals,"Sausage, Egg & Cheese McGriddles Meal",product_variant,Extra Value Meals,3,4,100,item,https://mcdomenuusa.com/menu/extra-value-meals/sausage-egg-cheese-mcgriddles-meal/,nutrition_macros | overview_menu | price_value
+McCafe Coffees,McCafe Caramel Cappuccino,product_family,McCafe Coffees,1,2,90,family_section,https://mcdomenuusa.com/mccafe-menu/,overview_general
+McCafe Coffees,McCafe Iced Mocha Latte,product_family,McCafe Coffees,2,3,90,family_section,https://mcdomenuusa.com/mccafe-menu/,nutrition_macros | overview_general
+Value & Deals,Deluxe McCrispy Meal,product_variant,Extra Value Meals,1,1,70,item,https://mcdomenuusa.com/menu/extra-value-meals/deluxe-mccrispy-meal/,overview_menu
+Value & Deals,Spicy McCrispy Meal,product_variant,Extra Value Meals,1,1,70,item,https://mcdomenuusa.com/menu/extra-value-meals/spicy-mccrispy-meal/,overview_menu
+McCafe Coffees,McCafe Iced Coffee Medium,product_variant,McCafe Iced Coffee,1,1,70,item,https://mcdomenuusa.com/menu/mccafe-coffees/mccafe-iced-coffee-medium/,nutrition_caffeine
+Sauces & Condiments,Honey Mustard Sauce,product_variant,Sauces & Condiments,1,2,70,item,https://mcdomenuusa.com/menu/sauces-condiments/honey-mustard-sauce/,nutrition_ingredients
+Beverages,Soft Drink,product_family,Beverages & Drinks,2,5,50,family_section,https://mcdomenuusa.com/beverage-menu/,overview_general | price_value
+McCafe Coffees,McCafe Iced French Vanilla Coffee,product_family,McCafe Coffees,1,1,40,family_section,https://mcdomenuusa.com/mccafe-menu/,overview_menu
+Beverages,Sweet Tea Large,product_variant,Sweet Tea,1,1,40,item,https://mcdomenuusa.com/menu/beverages-drinks/sweet-tea-large/,nutrition_macros
+McCafe Coffees,McCafe Iced Coffee Large,product_variant,McCafe Iced Coffee,1,1,40,item,https://mcdomenuusa.com/menu/mccafe-coffees/mccafe-iced-coffee-large/,nutrition_caffeine
+McCafe Coffees,McCafe Caramel Frappe,product_family,McCafe Coffees,1,1,40,family_section,https://mcdomenuusa.com/mccafe-menu/,overview_general
+Value & Deals,Chicken McNuggets Meal,product_family,Extra Value Meals,1,1,40,family_section,https://mcdomenuusa.com/extra-value-meals/,overview_menu
+McCafe Coffees,McCafe French Vanilla Latte,product_family,McCafe Coffees,1,1,30,family_section,https://mcdomenuusa.com/mccafe-menu/,nutrition_macros
+Happy Meal,4 pc McNuggets Happy Meal,product_variant,Happy Meal,1,2,30,item,https://mcdomenuusa.com/menu/happy-meal/4-pc-mcnuggets-happy-meal/,price_value
+Beverages,Soft Drink Medium vs Soft Drink Small,comparison,Soft Drink,1,1,20,comparison,,comparison
+McCafe Coffees,McCafe Mocha Frappe Medium vs McCafe Mocha Frappe Small,comparison,McCafe Mocha Frappe,1,1,20,comparison,,comparison
+Beverages,DASANI Water,product_variant,Beverages & Drinks,1,1,20,item,https://mcdomenuusa.com/menu/beverages-drinks/dasani-water/,nutrition_macros
+Customer Journey,McDonald's App Deals,service_page,,1,1,20,support,https://mcdomenuusa.com/mcdonalds-app-deals/,service_app
+Geographic Pricing,Prices by State,support_page,,1,1,10,support,https://mcdomenuusa.com/mcdonalds-prices-by-state/,price_value
+Value & Deals,"Bacon, Egg & Cheese McGriddles Meal",product_variant,Extra Value Meals,1,1,10,item,https://mcdomenuusa.com/menu/extra-value-meals/bacon-egg-cheese-mcgriddles-meal/,nutrition_macros
+Burgers,Cheeseburger vs Double Cheeseburger,comparison,Burgers Menu,1,1,10,comparison,,comparison
+Value & Deals,"Bacon, Egg & Cheese Biscuit Meal",product_variant,Extra Value Meals,1,1,10,item,https://mcdomenuusa.com/menu/extra-value-meals/bacon-egg-cheese-biscuit-meal/,nutrition_macros

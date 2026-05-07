@@ -1,0 +1,27 @@
+{
+    "summary": {
+        "total_pages": 280,
+        "status_non_200": 0,
+        "missing_title": 0,
+        "missing_h1": 0,
+        "missing_meta_desc": 0,
+        "meta_desc_over_165": 0,
+        "meta_desc_over_200": 0,
+        "missing_canonical": 1,
+        "missing_jsonld": 0,
+        "noindex_pages": 1
+    },
+    "issues": [
+        {
+            "slug": "blog",
+            "url": "http://localhost/wordpress/blog/",
+            "status": 200,
+            "title_len": 33,
+            "h1_len": 13,
+            "meta_desc_len": 151,
+            "canonical": "",
+            "robots": "noindex, follow",
+            "jsonld_count": 2
+        }
+    ]
+}

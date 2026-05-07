@@ -1,0 +1,2186 @@
+[
+  {
+    "id": 3,
+    "slug": "privacy-policy",
+    "managed": "",
+    "support": "privacy-policy",
+    "url": "http://localhost/wordpress/privacy-policy/",
+    "words": 312
+  },
+  {
+    "id": 108,
+    "slug": "about",
+    "managed": "",
+    "support": "about",
+    "url": "http://localhost/wordpress/about/",
+    "words": 302
+  },
+  {
+    "id": 110,
+    "slug": "cookie-policy",
+    "managed": "",
+    "support": "cookie-policy",
+    "url": "http://localhost/wordpress/cookie-policy/",
+    "words": 298
+  },
+  {
+    "id": 111,
+    "slug": "contact",
+    "managed": "",
+    "support": "contact",
+    "url": "http://localhost/wordpress/contact/",
+    "words": 279
+  },
+  {
+    "id": 112,
+    "slug": "disclaimer",
+    "managed": "",
+    "support": "disclaimer",
+    "url": "http://localhost/wordpress/disclaimer/",
+    "words": 294
+  },
+  {
+    "id": 113,
+    "slug": "ad-disclosure",
+    "managed": "",
+    "support": "ad-disclosure",
+    "url": "http://localhost/wordpress/ad-disclosure/",
+    "words": 276
+  },
+  {
+    "id": 114,
+    "slug": "sitemap",
+    "managed": "",
+    "support": "sitemap",
+    "url": "http://localhost/wordpress/sitemap/",
+    "words": 256
+  },
+  {
+    "id": 115,
+    "slug": "big-mac-price-uk",
+    "managed": "",
+    "support": "big-mac-price-uk",
+    "url": "http://localhost/wordpress/big-mac-price-uk/",
+    "words": 968
+  },
+  {
+    "id": 116,
+    "slug": "mcdonalds-app-deals",
+    "managed": "",
+    "support": "mcdonalds-app-deals",
+    "url": "http://localhost/wordpress/mcdonalds-app-deals/",
+    "words": 988
+  },
+  {
+    "id": 117,
+    "slug": "calorie-counter",
+    "managed": "",
+    "support": "calorie-counter",
+    "url": "http://localhost/wordpress/calorie-counter/",
+    "words": 913
+  },
+  {
+    "id": 118,
+    "slug": "breakfast-times",
+    "managed": "",
+    "support": "breakfast-times",
+    "url": "http://localhost/wordpress/breakfast-times/",
+    "words": 930
+  },
+  {
+    "id": 119,
+    "slug": "allergen-guide",
+    "managed": "",
+    "support": "allergen-guide",
+    "url": "http://localhost/wordpress/allergen-guide/",
+    "words": 931
+  },
+  {
+    "id": 120,
+    "slug": "price-history",
+    "managed": "",
+    "support": "price-history",
+    "url": "http://localhost/wordpress/price-history/",
+    "words": 936
+  },
+  {
+    "id": 121,
+    "slug": "vegan-options",
+    "managed": "",
+    "support": "vegan-options",
+    "url": "http://localhost/wordpress/vegan-options/",
+    "words": 992
+  },
+  {
+    "id": 122,
+    "slug": "mcdelivery-guide",
+    "managed": "",
+    "support": "mcdelivery-guide",
+    "url": "http://localhost/wordpress/mcdelivery-guide/",
+    "words": 909
+  },
+  {
+    "id": 123,
+    "slug": "limited-time-menu",
+    "managed": "",
+    "support": "limited-time-menu",
+    "url": "http://localhost/wordpress/limited-time-menu/",
+    "words": 923
+  },
+  {
+    "id": 183,
+    "slug": "big-mac-price-usa",
+    "managed": "",
+    "support": "big-mac-price-usa",
+    "url": "http://localhost/wordpress/big-mac-price-usa/",
+    "words": 1006
+  },
+  {
+    "id": 186,
+    "slug": "breakfast-hours",
+    "managed": "",
+    "support": "breakfast-hours",
+    "url": "http://localhost/wordpress/breakfast-hours/",
+    "words": 923
+  },
+  {
+    "id": 189,
+    "slug": "delivery-guide",
+    "managed": "",
+    "support": "delivery-guide",
+    "url": "http://localhost/wordpress/delivery-guide/",
+    "words": 917
+  },
+  {
+    "id": 190,
+    "slug": "rewards-guide",
+    "managed": "",
+    "support": "rewards-guide",
+    "url": "http://localhost/wordpress/rewards-guide/",
+    "words": 914
+  },
+  {
+    "id": 192,
+    "slug": "breakfast-menu",
+    "managed": "",
+    "support": "breakfast-menu",
+    "url": "http://localhost/wordpress/breakfast-menu/",
+    "words": 3591
+  },
+  {
+    "id": 193,
+    "slug": "burgers-menu",
+    "managed": "",
+    "support": "burgers-menu",
+    "url": "http://localhost/wordpress/burgers-menu/",
+    "words": 3265
+  },
+  {
+    "id": 194,
+    "slug": "chicken-fish-menu",
+    "managed": "",
+    "support": "chicken-fish-menu",
+    "url": "http://localhost/wordpress/chicken-fish-menu/",
+    "words": 2883
+  },
+  {
+    "id": 195,
+    "slug": "nuggets-and-strips",
+    "managed": "",
+    "support": "nuggets-and-strips",
+    "url": "http://localhost/wordpress/nuggets-and-strips/",
+    "words": 3182
+  },
+  {
+    "id": 196,
+    "slug": "snack-wrap",
+    "managed": "",
+    "support": "snack-wrap",
+    "url": "http://localhost/wordpress/snack-wrap/",
+    "words": 916
+  },
+  {
+    "id": 197,
+    "slug": "fries-sides",
+    "managed": "",
+    "support": "fries-sides",
+    "url": "http://localhost/wordpress/fries-sides/",
+    "words": 2673
+  },
+  {
+    "id": 198,
+    "slug": "happy-meal-menu",
+    "managed": "",
+    "support": "happy-meal-menu",
+    "url": "http://localhost/wordpress/happy-meal-menu/",
+    "words": 3130
+  },
+  {
+    "id": 199,
+    "slug": "sweets-treats",
+    "managed": "",
+    "support": "sweets-treats",
+    "url": "http://localhost/wordpress/sweets-treats/",
+    "words": 3062
+  },
+  {
+    "id": 200,
+    "slug": "mccafe-menu",
+    "managed": "",
+    "support": "mccafe-menu",
+    "url": "http://localhost/wordpress/mccafe-menu/",
+    "words": 4416
+  },
+  {
+    "id": 201,
+    "slug": "beverage-menu",
+    "managed": "",
+    "support": "beverage-menu",
+    "url": "http://localhost/wordpress/beverage-menu/",
+    "words": 3555
+  },
+  {
+    "id": 202,
+    "slug": "dollar-menu",
+    "managed": "",
+    "support": "dollar-menu",
+    "url": "http://localhost/wordpress/dollar-menu/",
+    "words": 894
+  },
+  {
+    "id": 203,
+    "slug": "extra-value-meals",
+    "managed": "",
+    "support": "extra-value-meals",
+    "url": "http://localhost/wordpress/extra-value-meals/",
+    "words": 2791
+  },
+  {
+    "id": 204,
+    "slug": "shareables-bundles",
+    "managed": "",
+    "support": "shareables-bundles",
+    "url": "http://localhost/wordpress/shareables-bundles/",
+    "words": 916
+  },
+  {
+    "id": 205,
+    "slug": "sauces-condiments",
+    "managed": "",
+    "support": "sauces-condiments",
+    "url": "http://localhost/wordpress/sauces-condiments/",
+    "words": 3356
+  },
+  {
+    "id": 283,
+    "slug": "menu",
+    "managed": "menu-root",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/",
+    "words": 3392
+  },
+  {
+    "id": 292,
+    "slug": "extra-value-meals",
+    "managed": "menu-category",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/",
+    "words": 1116
+  },
+  {
+    "id": 294,
+    "slug": "egg-mcmuffin-meal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/egg-mcmuffin-meal/",
+    "words": 822
+  },
+  {
+    "id": 305,
+    "slug": "sausage-mcgriddles-meal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/sausage-mcgriddles-meal/",
+    "words": 816
+  },
+  {
+    "id": 309,
+    "slug": "bacon-egg-cheese-bagel-meal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/bacon-egg-cheese-bagel-meal/",
+    "words": 842
+  },
+  {
+    "id": 310,
+    "slug": "steak-egg-cheese-bagel-meal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/steak-egg-cheese-bagel-meal/",
+    "words": 842
+  },
+  {
+    "id": 312,
+    "slug": "big-mac-meal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/big-mac-meal/",
+    "words": 817
+  },
+  {
+    "id": 314,
+    "slug": "quarter-pounder-with-cheese-meal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/quarter-pounder-with-cheese-meal/",
+    "words": 843
+  },
+  {
+    "id": 316,
+    "slug": "bacon-quarter-pounder-with-cheese-meal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/bacon-quarter-pounder-with-cheese-meal/",
+    "words": 856
+  },
+  {
+    "id": 318,
+    "slug": "quarter-pounder-with-cheese-deluxe-meal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/quarter-pounder-with-cheese-deluxe-meal/",
+    "words": 856
+  },
+  {
+    "id": 320,
+    "slug": "double-quarter-pounder-with-cheese-meal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/double-quarter-pounder-with-cheese-meal/",
+    "words": 856
+  },
+  {
+    "id": 322,
+    "slug": "cheeseburger-meal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/cheeseburger-meal/",
+    "words": 804
+  },
+  {
+    "id": 326,
+    "slug": "mccrispy-meal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/mccrispy-meal/",
+    "words": 804
+  },
+  {
+    "id": 328,
+    "slug": "spicy-mccrispy-meal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/spicy-mccrispy-meal/",
+    "words": 817
+  },
+  {
+    "id": 330,
+    "slug": "deluxe-mccrispy-meal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/deluxe-mccrispy-meal/",
+    "words": 817
+  },
+  {
+    "id": 332,
+    "slug": "spicy-deluxe-mccrispy-meal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/spicy-deluxe-mccrispy-meal/",
+    "words": 830
+  },
+  {
+    "id": 336,
+    "slug": "ranch-snack-wrap-meal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/ranch-snack-wrap-meal/",
+    "words": 830
+  },
+  {
+    "id": 337,
+    "slug": "spicy-snack-wrap-meal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/spicy-snack-wrap-meal/",
+    "words": 830
+  },
+  {
+    "id": 341,
+    "slug": "filet-o-fish-meal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/filet-o-fish-meal/",
+    "words": 804
+  },
+  {
+    "id": 348,
+    "slug": "the-daily-double-meal-deal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mcvalue-menu/the-daily-double-meal-deal/",
+    "words": 795
+  },
+  {
+    "id": 349,
+    "slug": "sausage-biscuit",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mcvalue-menu/sausage-biscuit/",
+    "words": 767
+  },
+  {
+    "id": 350,
+    "slug": "sausage-mcmuffin",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mcvalue-menu/sausage-mcmuffin/",
+    "words": 767
+  },
+  {
+    "id": 351,
+    "slug": "sausage-burrito",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mcvalue-menu/sausage-burrito/",
+    "words": 767
+  },
+  {
+    "id": 352,
+    "slug": "hash-browns",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mcvalue-menu/hash-browns/",
+    "words": 767
+  },
+  {
+    "id": 353,
+    "slug": "double-cheeseburger",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mcvalue-menu/double-cheeseburger/",
+    "words": 769
+  },
+  {
+    "id": 354,
+    "slug": "mcchicken",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mcvalue-menu/mcchicken/",
+    "words": 756
+  },
+  {
+    "id": 356,
+    "slug": "6-pc-chicken-mcnuggets",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mcvalue-menu/6-pc-chicken-mcnuggets/",
+    "words": 795
+  },
+  {
+    "id": 358,
+    "slug": "small-world-famous-fries",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mcvalue-menu/small-world-famous-fries/",
+    "words": 795
+  },
+  {
+    "id": 360,
+    "slug": "cheeseburger",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mcvalue-menu/cheeseburger/",
+    "words": 742
+  },
+  {
+    "id": 362,
+    "slug": "4-pc-chicken-mcnuggets",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mcvalue-menu/4-pc-chicken-mcnuggets/",
+    "words": 781
+  },
+  {
+    "id": 367,
+    "slug": "breakfast-menu",
+    "managed": "menu-category",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/breakfast-menu/",
+    "words": 909
+  },
+  {
+    "id": 368,
+    "slug": "bacon-egg-cheese-biscuit",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/breakfast-menu/bacon-egg-cheese-biscuit/",
+    "words": 800
+  },
+  {
+    "id": 370,
+    "slug": "sausage-biscuit",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/breakfast-menu/sausage-biscuit/",
+    "words": 780
+  },
+  {
+    "id": 372,
+    "slug": "sausage-biscuit-with-egg",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/breakfast-menu/sausage-biscuit-with-egg/",
+    "words": 800
+  },
+  {
+    "id": 373,
+    "slug": "egg-mcmuffin",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/breakfast-menu/egg-mcmuffin/",
+    "words": 779
+  },
+  {
+    "id": 374,
+    "slug": "sausage-mcmuffin",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/breakfast-menu/sausage-mcmuffin/",
+    "words": 779
+  },
+  {
+    "id": 375,
+    "slug": "sausage-mcmuffin-with-egg",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/breakfast-menu/sausage-mcmuffin-with-egg/",
+    "words": 805
+  },
+  {
+    "id": 376,
+    "slug": "bacon-egg-cheese-mcgriddles",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/breakfast-menu/bacon-egg-cheese-mcgriddles/",
+    "words": 805
+  },
+  {
+    "id": 377,
+    "slug": "sausage-mcgriddles",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/breakfast-menu/sausage-mcgriddles/",
+    "words": 779
+  },
+  {
+    "id": 379,
+    "slug": "sausage-egg-cheese-mcgriddles",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/breakfast-menu/sausage-egg-cheese-mcgriddles/",
+    "words": 805
+  },
+  {
+    "id": 382,
+    "slug": "egg-and-cheese-bagel",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/breakfast-menu/egg-and-cheese-bagel/",
+    "words": 809
+  },
+  {
+    "id": 383,
+    "slug": "bacon-egg-cheese-bagel",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/breakfast-menu/bacon-egg-cheese-bagel/",
+    "words": 809
+  },
+  {
+    "id": 384,
+    "slug": "sausage-egg-cheese-bagel",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/breakfast-menu/sausage-egg-cheese-bagel/",
+    "words": 809
+  },
+  {
+    "id": 386,
+    "slug": "steak-egg-cheese-bagel",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/breakfast-menu/steak-egg-cheese-bagel/",
+    "words": 809
+  },
+  {
+    "id": 388,
+    "slug": "big-breakfast",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/breakfast-menu/big-breakfast/",
+    "words": 781
+  },
+  {
+    "id": 390,
+    "slug": "big-breakfast-with-hotcakes",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/breakfast-menu/big-breakfast-with-hotcakes/",
+    "words": 807
+  },
+  {
+    "id": 392,
+    "slug": "hotcakes",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/breakfast-menu/hotcakes/",
+    "words": 768
+  },
+  {
+    "id": 394,
+    "slug": "hotcakes-and-sausage",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/breakfast-menu/hotcakes-and-sausage/",
+    "words": 794
+  },
+  {
+    "id": 396,
+    "slug": "sausage-burrito",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/breakfast-menu/sausage-burrito/",
+    "words": 781
+  },
+  {
+    "id": 398,
+    "slug": "hash-browns",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/breakfast-menu/hash-browns/",
+    "words": 781
+  },
+  {
+    "id": 400,
+    "slug": "fruit-maple-oatmeal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/breakfast-menu/fruit-maple-oatmeal/",
+    "words": 794
+  },
+  {
+    "id": 403,
+    "slug": "burgers-menu",
+    "managed": "menu-category",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/burgers-menu/",
+    "words": 932
+  },
+  {
+    "id": 405,
+    "slug": "big-mac",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/burgers-menu/big-mac/",
+    "words": 783
+  },
+  {
+    "id": 407,
+    "slug": "quarter-pounder-with-cheese",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/burgers-menu/quarter-pounder-with-cheese/",
+    "words": 803
+  },
+  {
+    "id": 409,
+    "slug": "double-quarter-pounder-with-cheese",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/burgers-menu/double-quarter-pounder-with-cheese/",
+    "words": 813
+  },
+  {
+    "id": 410,
+    "slug": "quarter-pounder-with-cheese-deluxe",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/burgers-menu/quarter-pounder-with-cheese-deluxe/",
+    "words": 813
+  },
+  {
+    "id": 411,
+    "slug": "bacon-quarter-pounder-with-cheese",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/burgers-menu/bacon-quarter-pounder-with-cheese/",
+    "words": 813
+  },
+  {
+    "id": 412,
+    "slug": "mcdouble",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/burgers-menu/mcdouble/",
+    "words": 761
+  },
+  {
+    "id": 413,
+    "slug": "daily-double",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/burgers-menu/daily-double/",
+    "words": 774
+  },
+  {
+    "id": 414,
+    "slug": "double-cheeseburger",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/burgers-menu/double-cheeseburger/",
+    "words": 774
+  },
+  {
+    "id": 415,
+    "slug": "cheeseburger",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/burgers-menu/cheeseburger/",
+    "words": 761
+  },
+  {
+    "id": 416,
+    "slug": "hamburger",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/burgers-menu/hamburger/",
+    "words": 761
+  },
+  {
+    "id": 417,
+    "slug": "chicken-fish",
+    "managed": "menu-category",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/chicken-fish/",
+    "words": 780
+  },
+  {
+    "id": 418,
+    "slug": "mccrispy",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/chicken-fish/mccrispy/",
+    "words": 762
+  },
+  {
+    "id": 420,
+    "slug": "deluxe-mccrispy",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/chicken-fish/deluxe-mccrispy/",
+    "words": 772
+  },
+  {
+    "id": 422,
+    "slug": "spicy-mccrispy",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/chicken-fish/spicy-mccrispy/",
+    "words": 772
+  },
+  {
+    "id": 425,
+    "slug": "spicy-deluxe-mccrispy",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/chicken-fish/spicy-deluxe-mccrispy/",
+    "words": 782
+  },
+  {
+    "id": 426,
+    "slug": "filet-o-fish",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/chicken-fish/filet-o-fish/",
+    "words": 756
+  },
+  {
+    "id": 428,
+    "slug": "mcchicken",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/chicken-fish/mcchicken/",
+    "words": 756
+  },
+  {
+    "id": 431,
+    "slug": "mcnuggets-strips",
+    "managed": "menu-category",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mcnuggets-strips/",
+    "words": 809
+  },
+  {
+    "id": 433,
+    "slug": "4-pc-chicken-mcnuggets",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mcnuggets-strips/4-pc-chicken-mcnuggets/",
+    "words": 816
+  },
+  {
+    "id": 435,
+    "slug": "6-pc-chicken-mcnuggets",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mcnuggets-strips/6-pc-chicken-mcnuggets/",
+    "words": 816
+  },
+  {
+    "id": 436,
+    "slug": "10-pc-chicken-mcnuggets",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mcnuggets-strips/10-pc-chicken-mcnuggets/",
+    "words": 816
+  },
+  {
+    "id": 437,
+    "slug": "20-pc-chicken-mcnuggets",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mcnuggets-strips/20-pc-chicken-mcnuggets/",
+    "words": 816
+  },
+  {
+    "id": 438,
+    "slug": "40-pc-chicken-mcnuggets",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mcnuggets-strips/40-pc-chicken-mcnuggets/",
+    "words": 816
+  },
+  {
+    "id": 440,
+    "slug": "snack-wrap",
+    "managed": "menu-category",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/snack-wrap/",
+    "words": 672
+  },
+  {
+    "id": 441,
+    "slug": "ranch-snack-wrap",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/snack-wrap/ranch-snack-wrap/",
+    "words": 724
+  },
+  {
+    "id": 443,
+    "slug": "spicy-snack-wrap",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/snack-wrap/spicy-snack-wrap/",
+    "words": 724
+  },
+  {
+    "id": 444,
+    "slug": "fries-sides",
+    "managed": "menu-category",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/fries-sides/",
+    "words": 736
+  },
+  {
+    "id": 445,
+    "slug": "world-famous-fries-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/fries-sides/world-famous-fries-small/",
+    "words": 804
+  },
+  {
+    "id": 446,
+    "slug": "world-famous-fries-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/fries-sides/world-famous-fries-medium/",
+    "words": 804
+  },
+  {
+    "id": 449,
+    "slug": "world-famous-fries-large",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/fries-sides/world-famous-fries-large/",
+    "words": 804
+  },
+  {
+    "id": 451,
+    "slug": "apple-slices",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/fries-sides/apple-slices/",
+    "words": 784
+  },
+  {
+    "id": 453,
+    "slug": "happy-meal",
+    "managed": "menu-category",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/happy-meal/",
+    "words": 708
+  },
+  {
+    "id": 459,
+    "slug": "sweets-treats",
+    "managed": "menu-category",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sweets-treats/",
+    "words": 785
+  },
+  {
+    "id": 464,
+    "slug": "vanilla-cone",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sweets-treats/vanilla-cone/",
+    "words": 718
+  },
+  {
+    "id": 466,
+    "slug": "hot-fudge-sundae",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sweets-treats/hot-fudge-sundae/",
+    "words": 731
+  },
+  {
+    "id": 469,
+    "slug": "hot-caramel-sundae",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sweets-treats/hot-caramel-sundae/",
+    "words": 731
+  },
+  {
+    "id": 471,
+    "slug": "chocolate-shake-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sweets-treats/chocolate-shake-small/",
+    "words": 727
+  },
+  {
+    "id": 473,
+    "slug": "chocolate-shake-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sweets-treats/chocolate-shake-medium/",
+    "words": 727
+  },
+  {
+    "id": 474,
+    "slug": "chocolate-shake-large",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sweets-treats/chocolate-shake-large/",
+    "words": 727
+  },
+  {
+    "id": 475,
+    "slug": "vanilla-shake-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sweets-treats/vanilla-shake-small/",
+    "words": 727
+  },
+  {
+    "id": 476,
+    "slug": "vanilla-shake-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sweets-treats/vanilla-shake-medium/",
+    "words": 727
+  },
+  {
+    "id": 477,
+    "slug": "vanilla-shake-large",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sweets-treats/vanilla-shake-large/",
+    "words": 727
+  },
+  {
+    "id": 479,
+    "slug": "strawberry-shake-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sweets-treats/strawberry-shake-small/",
+    "words": 727
+  },
+  {
+    "id": 480,
+    "slug": "strawberry-shake-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sweets-treats/strawberry-shake-medium/",
+    "words": 727
+  },
+  {
+    "id": 481,
+    "slug": "strawberry-shake-large",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sweets-treats/strawberry-shake-large/",
+    "words": 727
+  },
+  {
+    "id": 482,
+    "slug": "baked-apple-pie",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sweets-treats/baked-apple-pie/",
+    "words": 729
+  },
+  {
+    "id": 486,
+    "slug": "mccafe-coffees",
+    "managed": "menu-category",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/",
+    "words": 2091
+  },
+  {
+    "id": 488,
+    "slug": "americano-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/americano-small/",
+    "words": 765
+  },
+  {
+    "id": 490,
+    "slug": "americano-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/americano-medium/",
+    "words": 765
+  },
+  {
+    "id": 492,
+    "slug": "americano-large",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/americano-large/",
+    "words": 765
+  },
+  {
+    "id": 494,
+    "slug": "mccafe-cappuccino-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-cappuccino-small/",
+    "words": 778
+  },
+  {
+    "id": 496,
+    "slug": "mccafe-cappuccino-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-cappuccino-medium/",
+    "words": 778
+  },
+  {
+    "id": 498,
+    "slug": "mccafe-cappuccino-large",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-cappuccino-large/",
+    "words": 778
+  },
+  {
+    "id": 500,
+    "slug": "mccafe-caramel-cappuccino-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-caramel-cappuccino-small/",
+    "words": 791
+  },
+  {
+    "id": 502,
+    "slug": "mccafe-caramel-cappuccino-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-caramel-cappuccino-medium/",
+    "words": 791
+  },
+  {
+    "id": 504,
+    "slug": "mccafe-caramel-cappuccino-large",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-caramel-cappuccino-large/",
+    "words": 791
+  },
+  {
+    "id": 506,
+    "slug": "mccafe-french-vanilla-cappuccino-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-french-vanilla-cappuccino-small/",
+    "words": 804
+  },
+  {
+    "id": 508,
+    "slug": "mccafe-french-vanilla-cappuccino-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-french-vanilla-cappuccino-medium/",
+    "words": 804
+  },
+  {
+    "id": 510,
+    "slug": "mccafe-french-vanilla-cappuccino-large",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-french-vanilla-cappuccino-large/",
+    "words": 804
+  },
+  {
+    "id": 512,
+    "slug": "mccafe-latte-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-latte-small/",
+    "words": 778
+  },
+  {
+    "id": 514,
+    "slug": "mccafe-latte-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-latte-medium/",
+    "words": 778
+  },
+  {
+    "id": 516,
+    "slug": "mccafe-latte-large",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-latte-large/",
+    "words": 778
+  },
+  {
+    "id": 518,
+    "slug": "mccafe-caramel-latte-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-caramel-latte-small/",
+    "words": 791
+  },
+  {
+    "id": 520,
+    "slug": "mccafe-caramel-latte-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-caramel-latte-medium/",
+    "words": 791
+  },
+  {
+    "id": 522,
+    "slug": "mccafe-caramel-latte-large",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-caramel-latte-large/",
+    "words": 791
+  },
+  {
+    "id": 524,
+    "slug": "mccafe-french-vanilla-latte-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-french-vanilla-latte-small/",
+    "words": 804
+  },
+  {
+    "id": 526,
+    "slug": "mccafe-french-vanilla-latte-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-french-vanilla-latte-medium/",
+    "words": 804
+  },
+  {
+    "id": 528,
+    "slug": "mccafe-french-vanilla-latte-large",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-french-vanilla-latte-large/",
+    "words": 804
+  },
+  {
+    "id": 530,
+    "slug": "mccafe-mocha-latte-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-mocha-latte-small/",
+    "words": 791
+  },
+  {
+    "id": 532,
+    "slug": "mccafe-mocha-latte-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-mocha-latte-medium/",
+    "words": 791
+  },
+  {
+    "id": 533,
+    "slug": "mccafe-mocha-latte-large",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-mocha-latte-large/",
+    "words": 791
+  },
+  {
+    "id": 535,
+    "slug": "mccafe-caramel-macchiato-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-caramel-macchiato-small/",
+    "words": 791
+  },
+  {
+    "id": 537,
+    "slug": "mccafe-caramel-macchiato-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-caramel-macchiato-medium/",
+    "words": 791
+  },
+  {
+    "id": 539,
+    "slug": "mccafe-caramel-macchiato-large",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-caramel-macchiato-large/",
+    "words": 791
+  },
+  {
+    "id": 541,
+    "slug": "mccafe-iced-coffee-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-iced-coffee-small/",
+    "words": 793
+  },
+  {
+    "id": 543,
+    "slug": "mccafe-iced-coffee-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-iced-coffee-medium/",
+    "words": 793
+  },
+  {
+    "id": 545,
+    "slug": "mccafe-iced-coffee-large",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-iced-coffee-large/",
+    "words": 793
+  },
+  {
+    "id": 547,
+    "slug": "mccafe-iced-caramel-coffee-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-iced-caramel-coffee-small/",
+    "words": 806
+  },
+  {
+    "id": 549,
+    "slug": "mccafe-iced-caramel-coffee-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-iced-caramel-coffee-medium/",
+    "words": 806
+  },
+  {
+    "id": 551,
+    "slug": "mccafe-iced-french-vanilla-coffee-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-iced-french-vanilla-coffee-small/",
+    "words": 819
+  },
+  {
+    "id": 553,
+    "slug": "mccafe-iced-french-vanilla-coffee-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-iced-french-vanilla-coffee-medium/",
+    "words": 819
+  },
+  {
+    "id": 555,
+    "slug": "mccafe-iced-latte-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-iced-latte-small/",
+    "words": 793
+  },
+  {
+    "id": 557,
+    "slug": "mccafe-iced-latte-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-iced-latte-medium/",
+    "words": 793
+  },
+  {
+    "id": 560,
+    "slug": "mccafe-iced-latte-large",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-iced-latte-large/",
+    "words": 793
+  },
+  {
+    "id": 562,
+    "slug": "mccafe-iced-caramel-latte-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-iced-caramel-latte-small/",
+    "words": 806
+  },
+  {
+    "id": 564,
+    "slug": "mccafe-iced-caramel-latte-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-iced-caramel-latte-medium/",
+    "words": 806
+  },
+  {
+    "id": 566,
+    "slug": "mccafe-iced-french-vanilla-latte-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-iced-french-vanilla-latte-small/",
+    "words": 819
+  },
+  {
+    "id": 568,
+    "slug": "mccafe-iced-french-vanilla-latte-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-iced-french-vanilla-latte-medium/",
+    "words": 819
+  },
+  {
+    "id": 570,
+    "slug": "mccafe-iced-caramel-macchiato-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-iced-caramel-macchiato-small/",
+    "words": 806
+  },
+  {
+    "id": 572,
+    "slug": "mccafe-iced-caramel-macchiato-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-iced-caramel-macchiato-medium/",
+    "words": 806
+  },
+  {
+    "id": 574,
+    "slug": "mccafe-iced-mocha-latte-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-iced-mocha-latte-small/",
+    "words": 806
+  },
+  {
+    "id": 576,
+    "slug": "mccafe-iced-mocha-latte-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-iced-mocha-latte-medium/",
+    "words": 806
+  },
+  {
+    "id": 578,
+    "slug": "mccafe-caramel-frappe-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-caramel-frappe-small/",
+    "words": 787
+  },
+  {
+    "id": 580,
+    "slug": "mccafe-caramel-frappe-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-caramel-frappe-medium/",
+    "words": 787
+  },
+  {
+    "id": 581,
+    "slug": "mccafe-caramel-frappe-large",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-caramel-frappe-large/",
+    "words": 787
+  },
+  {
+    "id": 582,
+    "slug": "mccafe-mocha-frappe-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-mocha-frappe-small/",
+    "words": 787
+  },
+  {
+    "id": 583,
+    "slug": "mccafe-mocha-frappe-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-mocha-frappe-medium/",
+    "words": 787
+  },
+  {
+    "id": 584,
+    "slug": "mccafe-mocha-frappe-large",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-mocha-frappe-large/",
+    "words": 787
+  },
+  {
+    "id": 585,
+    "slug": "mccafe-hot-chocolate-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-hot-chocolate-small/",
+    "words": 790
+  },
+  {
+    "id": 586,
+    "slug": "mccafe-hot-chocolate-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-hot-chocolate-medium/",
+    "words": 790
+  },
+  {
+    "id": 587,
+    "slug": "mccafe-hot-chocolate-large",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/mccafe-hot-chocolate-large/",
+    "words": 790
+  },
+  {
+    "id": 588,
+    "slug": "beverages-drinks",
+    "managed": "menu-category",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/",
+    "words": 1205
+  },
+  {
+    "id": 589,
+    "slug": "soft-drink-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/soft-drink-small/",
+    "words": 828
+  },
+  {
+    "id": 591,
+    "slug": "soft-drink-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/soft-drink-medium/",
+    "words": 828
+  },
+  {
+    "id": 592,
+    "slug": "soft-drink-large",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/soft-drink-large/",
+    "words": 828
+  },
+  {
+    "id": 593,
+    "slug": "frozen-fanta-blue-raspberry-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/frozen-fanta-blue-raspberry-small/",
+    "words": 839
+  },
+  {
+    "id": 594,
+    "slug": "frozen-fanta-blue-raspberry-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/frozen-fanta-blue-raspberry-medium/",
+    "words": 839
+  },
+  {
+    "id": 595,
+    "slug": "frozen-fanta-blue-raspberry-large",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/frozen-fanta-blue-raspberry-large/",
+    "words": 839
+  },
+  {
+    "id": 596,
+    "slug": "frozen-coca-cola-classic-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/frozen-coca-cola-classic-small/",
+    "words": 826
+  },
+  {
+    "id": 597,
+    "slug": "frozen-coca-cola-classic-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/frozen-coca-cola-classic-medium/",
+    "words": 826
+  },
+  {
+    "id": 598,
+    "slug": "frozen-coca-cola-classic-large",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/frozen-coca-cola-classic-large/",
+    "words": 826
+  },
+  {
+    "id": 599,
+    "slug": "strawberry-banana-smoothie-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/strawberry-banana-smoothie-small/",
+    "words": 824
+  },
+  {
+    "id": 600,
+    "slug": "strawberry-banana-smoothie-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/strawberry-banana-smoothie-medium/",
+    "words": 824
+  },
+  {
+    "id": 601,
+    "slug": "strawberry-banana-smoothie-large",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/strawberry-banana-smoothie-large/",
+    "words": 824
+  },
+  {
+    "id": 602,
+    "slug": "mango-pineapple-smoothie-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/mango-pineapple-smoothie-small/",
+    "words": 824
+  },
+  {
+    "id": 603,
+    "slug": "mango-pineapple-smoothie-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/mango-pineapple-smoothie-medium/",
+    "words": 824
+  },
+  {
+    "id": 604,
+    "slug": "mango-pineapple-smoothie-large",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/mango-pineapple-smoothie-large/",
+    "words": 824
+  },
+  {
+    "id": 605,
+    "slug": "lemonade-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/lemonade-small/",
+    "words": 800
+  },
+  {
+    "id": 606,
+    "slug": "lemonade-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/lemonade-medium/",
+    "words": 800
+  },
+  {
+    "id": 608,
+    "slug": "lemonade-large",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/lemonade-large/",
+    "words": 800
+  },
+  {
+    "id": 610,
+    "slug": "sweet-tea-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/sweet-tea-small/",
+    "words": 813
+  },
+  {
+    "id": 612,
+    "slug": "sweet-tea-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/sweet-tea-medium/",
+    "words": 813
+  },
+  {
+    "id": 614,
+    "slug": "sweet-tea-large",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/sweet-tea-large/",
+    "words": 813
+  },
+  {
+    "id": 616,
+    "slug": "unsweetened-iced-tea-any-size",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/unsweetened-iced-tea-any-size/",
+    "words": 839
+  },
+  {
+    "id": 618,
+    "slug": "hot-tea-any-size",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/hot-tea-any-size/",
+    "words": 826
+  },
+  {
+    "id": 620,
+    "slug": "minute-maid-premium-orange-juice-small",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/minute-maid-premium-orange-juice-small/",
+    "words": 852
+  },
+  {
+    "id": 622,
+    "slug": "minute-maid-premium-orange-juice-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/minute-maid-premium-orange-juice-medium/",
+    "words": 852
+  },
+  {
+    "id": 626,
+    "slug": "1-low-fat-milk-jug",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/1-low-fat-milk-jug/",
+    "words": 839
+  },
+  {
+    "id": 627,
+    "slug": "reduced-sugar-low-fat-chocolate-milk-jug",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/reduced-sugar-low-fat-chocolate-milk-jug/",
+    "words": 865
+  },
+  {
+    "id": 631,
+    "slug": "sauces-condiments",
+    "managed": "menu-category",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sauces-condiments/",
+    "words": 958
+  },
+  {
+    "id": 632,
+    "slug": "creamy-chili-mccrispy-strip-dip",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sauces-condiments/creamy-chili-mccrispy-strip-dip/",
+    "words": 843
+  },
+  {
+    "id": 634,
+    "slug": "tangy-barbecue-sauce",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sauces-condiments/tangy-barbecue-sauce/",
+    "words": 823
+  },
+  {
+    "id": 635,
+    "slug": "spicy-buffalo-sauce",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sauces-condiments/spicy-buffalo-sauce/",
+    "words": 823
+  },
+  {
+    "id": 636,
+    "slug": "honey-mustard-sauce",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sauces-condiments/honey-mustard-sauce/",
+    "words": 823
+  },
+  {
+    "id": 637,
+    "slug": "creamy-ranch-sauce",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sauces-condiments/creamy-ranch-sauce/",
+    "words": 823
+  },
+  {
+    "id": 638,
+    "slug": "sweet-n-sour-sauce",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sauces-condiments/sweet-n-sour-sauce/",
+    "words": 836
+  },
+  {
+    "id": 641,
+    "slug": "ketchup-packet",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sauces-condiments/ketchup-packet/",
+    "words": 800
+  },
+  {
+    "id": 642,
+    "slug": "mayonnaise-packet",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sauces-condiments/mayonnaise-packet/",
+    "words": 800
+  },
+  {
+    "id": 643,
+    "slug": "mustard-packet",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sauces-condiments/mustard-packet/",
+    "words": 800
+  },
+  {
+    "id": 644,
+    "slug": "honey",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sauces-condiments/honey/",
+    "words": 787
+  },
+  {
+    "id": 645,
+    "slug": "deals-and-offers",
+    "managed": "menu-category",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/deals-and-offers/",
+    "words": 841
+  },
+  {
+    "id": 646,
+    "slug": "mcchicken-meal-deal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/deals-and-offers/mcchicken-meal-deal/",
+    "words": 787
+  },
+  {
+    "id": 648,
+    "slug": "mcdouble-meal-deal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/deals-and-offers/mcdouble-meal-deal/",
+    "words": 789
+  },
+  {
+    "id": 649,
+    "slug": "daily-double-meal-deal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/deals-and-offers/daily-double-meal-deal/",
+    "words": 799
+  },
+  {
+    "id": 650,
+    "slug": "breakfast-buy-1-add-1-for-1",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/deals-and-offers/breakfast-buy-1-add-1-for-1/",
+    "words": 823
+  },
+  {
+    "id": 651,
+    "slug": "lunch-buy-1-add-1-for-1",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/deals-and-offers/lunch-buy-1-add-1-for-1/",
+    "words": 831
+  },
+  {
+    "id": 652,
+    "slug": "mcvalue-mini-mcflurry-picks",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/deals-and-offers/mcvalue-mini-mcflurry-picks/",
+    "words": 796
+  },
+  {
+    "id": 674,
+    "slug": "whats-new",
+    "managed": "menu-category",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/whats-new/",
+    "words": 697
+  },
+  {
+    "id": 682,
+    "slug": "sausage-mcmuffin-with-egg-meal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/sausage-mcmuffin-with-egg-meal/",
+    "words": 842
+  },
+  {
+    "id": 683,
+    "slug": "bacon-egg-cheese-biscuit-meal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/bacon-egg-cheese-biscuit-meal/",
+    "words": 842
+  },
+  {
+    "id": 684,
+    "slug": "sausage-biscuit-with-egg-meal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/sausage-biscuit-with-egg-meal/",
+    "words": 842
+  },
+  {
+    "id": 685,
+    "slug": "bacon-egg-cheese-mcgriddles-meal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/bacon-egg-cheese-mcgriddles-meal/",
+    "words": 842
+  },
+  {
+    "id": 686,
+    "slug": "sausage-egg-cheese-mcgriddles-meal",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/sausage-egg-cheese-mcgriddles-meal/",
+    "words": 842
+  },
+  {
+    "id": 725,
+    "slug": "mcvalue-menu",
+    "managed": "menu-category",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mcvalue-menu/",
+    "words": 754
+  },
+  {
+    "id": 1155,
+    "slug": "mcdonalds-deals-mcvalue-guide",
+    "managed": "",
+    "support": "mcdonalds-deals-mcvalue-guide",
+    "url": "http://localhost/wordpress/mcdonalds-deals-mcvalue-guide/",
+    "words": 3303
+  },
+  {
+    "id": 1157,
+    "slug": "mcdonalds-nutrition-calories-allergens",
+    "managed": "",
+    "support": "mcdonalds-nutrition-calories-allergens",
+    "url": "http://localhost/wordpress/mcdonalds-nutrition-calories-allergens/",
+    "words": 2785
+  },
+  {
+    "id": 1159,
+    "slug": "mcdonalds-prices-by-state",
+    "managed": "",
+    "support": "mcdonalds-prices-by-state",
+    "url": "http://localhost/wordpress/mcdonalds-prices-by-state/",
+    "words": 2788
+  },
+  {
+    "id": 1286,
+    "slug": "the-huntrix-meal-10-pc-mcnuggets-fries-drink",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/whats-new/the-huntrix-meal-10-pc-mcnuggets-fries-drink/",
+    "words": 733
+  },
+  {
+    "id": 1287,
+    "slug": "the-saja-boys-breakfast-meal-spicy-mcmuffin-hashbrown-drink",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/whats-new/the-saja-boys-breakfast-meal-spicy-mcmuffin-hashbrown-drink/",
+    "words": 750
+  },
+  {
+    "id": 1288,
+    "slug": "ramyeon-mcshakertm-fries-medium",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/whats-new/ramyeon-mcshakertm-fries-medium/",
+    "words": 729
+  },
+  {
+    "id": 1289,
+    "slug": "the-big-archtm-two-1-4-lb-beef-patties-special-sauce-lettuce-cheese-pickles",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/whats-new/the-big-archtm-two-1-4-lb-beef-patties-special-sauce-lettuce-cheese-pickles/",
+    "words": 739
+  },
+  {
+    "id": 1290,
+    "slug": "the-big-archtm-meal-with-med-fries-drink",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/whats-new/the-big-archtm-meal-with-med-fries-drink/",
+    "words": 736
+  },
+  {
+    "id": 1291,
+    "slug": "sausage-burrito-meal-2-burritos",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/sausage-burrito-meal-2-burritos/",
+    "words": 780
+  },
+  {
+    "id": 1292,
+    "slug": "10-pc-chicken-mcnuggets-meal-med",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/10-pc-chicken-mcnuggets-meal-med/",
+    "words": 843
+  },
+  {
+    "id": 1293,
+    "slug": "mccrispy-strips-meal-3-pc",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/mccrispy-strips-meal-3-pc/",
+    "words": 779
+  },
+  {
+    "id": 1294,
+    "slug": "ranch-spicy-snack-wrap-meal-2-wraps",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/extra-value-meals/ranch-spicy-snack-wrap-meal-2-wraps/",
+    "words": 801
+  },
+  {
+    "id": 1295,
+    "slug": "the-mcchicken-meal-deal-mcchicken-4-pc-nuggets-sm-fries-sm-drink",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mcvalue-menu/the-mcchicken-meal-deal-mcchicken-4-pc-nuggets-sm-fries-sm-drink/",
+    "words": 769
+  },
+  {
+    "id": 1296,
+    "slug": "the-mcdouble-meal-deal-mcdouble-4-pc-nuggets-sm-fries-sm-drink",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mcvalue-menu/the-mcdouble-meal-deal-mcdouble-4-pc-nuggets-sm-fries-sm-drink/",
+    "words": 769
+  },
+  {
+    "id": 1297,
+    "slug": "mcflurry-with-mms-candies-mini",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mcvalue-menu/mcflurry-with-mms-candies-mini/",
+    "words": 765
+  },
+  {
+    "id": 1298,
+    "slug": "mcflurry-with-oreo-cookies-mini",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mcvalue-menu/mcflurry-with-oreo-cookies-mini/",
+    "words": 743
+  },
+  {
+    "id": 1299,
+    "slug": "bagel-plain",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/breakfast-menu/bagel-plain/",
+    "words": 734
+  },
+  {
+    "id": 1300,
+    "slug": "mccrispy-strips-3-pc",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mcnuggets-strips/mccrispy-strips-3-pc/",
+    "words": 756
+  },
+  {
+    "id": 1301,
+    "slug": "hamburger-happy-meal-w-apple-slices-or-sm-fries-drink-toy",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/happy-meal/hamburger-happy-meal-w-apple-slices-or-sm-fries-drink-toy/",
+    "words": 732
+  },
+  {
+    "id": 1302,
+    "slug": "4-pc-mcnuggets-happy-meal-w-apple-slices-or-sm-fries-drink-toy",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/happy-meal/4-pc-mcnuggets-happy-meal-w-apple-slices-or-sm-fries-drink-toy/",
+    "words": 750
+  },
+  {
+    "id": 1303,
+    "slug": "6-pc-mcnuggets-happy-meal-w-apple-slices-or-sm-fries-drink-toy",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/happy-meal/6-pc-mcnuggets-happy-meal-w-apple-slices-or-sm-fries-drink-toy/",
+    "words": 750
+  },
+  {
+    "id": 1304,
+    "slug": "derpy-mcflurry-berry-popping-pearls",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sweets-treats/derpy-mcflurry-berry-popping-pearls/",
+    "words": 701
+  },
+  {
+    "id": 1305,
+    "slug": "oreo-mcflurry-regular",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sweets-treats/oreo-mcflurry-regular/",
+    "words": 699
+  },
+  {
+    "id": 1306,
+    "slug": "mms-mcflurry-regular",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sweets-treats/mms-mcflurry-regular/",
+    "words": 717
+  },
+  {
+    "id": 1309,
+    "slug": "premium-roast-coffee-any-size",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/mccafe-coffees/premium-roast-coffee-any-size/",
+    "words": 756
+  },
+  {
+    "id": 1310,
+    "slug": "honest-kids-appley-ever-after-juice-box",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/honest-kids-appley-ever-after-juice-box/",
+    "words": 799
+  },
+  {
+    "id": 1311,
+    "slug": "dasani-water-bottle",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/beverages-drinks/dasani-water-bottle/",
+    "words": 764
+  },
+  {
+    "id": 1312,
+    "slug": "hunter-sauce-kpop-demon-hunters-ltd",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sauces-condiments/hunter-sauce-kpop-demon-hunters-ltd/",
+    "words": 770
+  },
+  {
+    "id": 1313,
+    "slug": "demon-sauce-kpop-demon-hunters-ltd",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sauces-condiments/demon-sauce-kpop-demon-hunters-ltd/",
+    "words": 770
+  },
+  {
+    "id": 1382,
+    "slug": "chocolate-chip-cookie-single",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sweets-treats/chocolate-chip-cookie-single/",
+    "words": 729
+  },
+  {
+    "id": 1383,
+    "slug": "chocolate-chip-cookies-2-pack",
+    "managed": "menu-item",
+    "support": "",
+    "url": "http://localhost/wordpress/menu/sweets-treats/chocolate-chip-cookies-2-pack/",
+    "words": 729
+  },
+  {
+    "id": 1431,
+    "slug": "mcdvoice",
+    "managed": "",
+    "support": "mcdvoice",
+    "url": "http://localhost/wordpress/mcdvoice/",
+    "words": 998
+  },
+  {
+    "id": 1432,
+    "slug": "mcdvoice",
+    "managed": "",
+    "support": "mcdvoice",
+    "url": "http://localhost/wordpress/mcdvoice/",
+    "words": 998
+  }
+]
