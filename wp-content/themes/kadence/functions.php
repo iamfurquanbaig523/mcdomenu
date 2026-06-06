@@ -742,7 +742,19 @@ function kadence_mcprices_filter_priority_visible_title( $title, $post_id = 0 ) 
 function kadence_mcprices_current_page_is_priority_noindex() {
 	$path = kadence_mcprices_get_priority_request_path();
 
-	return in_array( $path, array( 'test', 'ad-disclosure' ), true );
+	if ( in_array( $path, array( 'test', 'ad-disclosure' ), true ) ) {
+		return true;
+	}
+
+	if ( is_singular() ) {
+		$post = get_queried_object();
+
+		if ( $post instanceof \WP_Post && in_array( (string) $post->post_name, array( 'test', 'ad-disclosure' ), true ) ) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 /**
@@ -776,6 +788,20 @@ function kadence_mcprices_filter_priority_rank_math_robots( $robots ) {
 	}
 
 	return array( 'noindex', 'follow' );
+}
+
+/**
+ * Emit a noindex fallback for stale SEO-plugin routes.
+ *
+ * @return void
+ */
+function kadence_mcprices_output_priority_noindex_fallback() {
+	if ( ! kadence_mcprices_current_page_is_priority_noindex() ) {
+		return;
+	}
+	?>
+	<meta name="robots" content="noindex, follow">
+	<?php
 }
 
 /**
@@ -946,3 +972,4 @@ add_filter( 'wp_robots', 'kadence_mcprices_filter_priority_wp_robots', 9999 );
 add_filter( 'rank_math/frontend/robots', 'kadence_mcprices_filter_priority_rank_math_robots', 9999 );
 add_filter( 'the_content', 'kadence_mcprices_filter_priority_content_blocks', 9999 );
 add_action( 'init', 'kadence_mcprices_sync_priority_runtime_meta', 99 );
+add_action( 'wp_head', 'kadence_mcprices_output_priority_noindex_fallback', 0 );

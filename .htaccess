@@ -5,6 +5,14 @@ RewriteRule ^menu/breakfast-menu/?$ /breakfast-menu/ [R=301,L]
 </IfModule>
 # END MCPRICES REDIRECTS
 
+# BEGIN MCPRICES CACHE BYPASS
+<IfModule LiteSpeed>
+RewriteCond %{REQUEST_URI} ^/$ [OR]
+RewriteCond %{REQUEST_URI} ^/test/?$
+RewriteRule .* - [E=Cache-Control:no-cache]
+</IfModule>
+# END MCPRICES CACHE BYPASS
+
 # BEGIN LSCACHE
 ## LITESPEED WP CACHE PLUGIN - Do not edit the contents of this block! ##
 <IfModule mod_rewrite.c>
