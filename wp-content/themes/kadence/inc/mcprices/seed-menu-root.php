@@ -327,7 +327,7 @@ class McPrices_Menu_Root_Seed {
 			array( 'Item', 'Small', 'Medium', 'Large' ),
 			$mccafe_iced_rows
 		);
-		$content .= self::build_block_paragraph( '<strong>Worth knowing:</strong> A medium McCafe Premium Roast Coffee is included in the $4 Breakfast Meal Deal. It is also one of the lowest-entry hot drink options on the menu. For full size and flavor combinations, visit the ' . self::build_site_link( 'mccafe-menu/', 'McCafe menu page' ) . '.' );
+		$content .= self::build_block_paragraph( '<strong>Worth knowing:</strong> A medium McCafe Premium Roast Coffee is included in the $4 Breakfast Meal Deal. It is also one of the lowest-entry hot drink options on the menu. For full size and flavor combinations, visit the ' . self::build_site_link( 'menu/mccafe-coffees/', 'McCafe menu page' ) . '.' );
 
 		$content .= self::build_block_heading( 'McDonald&#8217;s McValue Menu and Current Deals', 2 );
 		$content .= self::build_block_paragraph( 'Value is the biggest story on the McDonald&#8217;s menu in ' . esc_html( $current_year ) . '. The expanded ' . self::build_site_link( 'menu/mcvalue/', 'McValue menu' ) . ' now operates in three distinct tiers, giving customers more flexibility than the old one-size-fits-all value approach. This is also where many of the strongest current deals are concentrated.' );

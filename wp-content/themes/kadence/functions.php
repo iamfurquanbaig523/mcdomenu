@@ -95,7 +95,7 @@ function kadence_mcprices_get_dynamic_meta_title() {
 	$queried_object = get_queried_object();
 
 	if ( is_front_page() && ! is_home() ) {
-		return "McDonald's Prices {$current_year} USA | Updated Menu Prices";
+		return "McDonald's Menu Prices USA {$current_year} | Prices, Calories & Deals";
 	}
 
 	if ( $queried_object instanceof \WP_Post ) {
@@ -172,7 +172,7 @@ function kadence_mcprices_get_dynamic_meta_description() {
 	}
 
 	if ( is_front_page() && ! is_home() ) {
-		return "View the latest McDonald's prices in the USA, including burgers, breakfast, McCafe, Happy Meals, drinks, fries, desserts, combo meals, and value menu items.";
+		return "Compare McDonald's menu prices in the USA, including breakfast, burgers, Happy Meal prices, small drink prices, McCafe, McValue deals, calories, and local price notes.";
 	}
 
 	if ( is_singular( 'post' ) ) {

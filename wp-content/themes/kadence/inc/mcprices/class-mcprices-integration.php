@@ -57,7 +57,7 @@ class McPrices_Integration {
 	/**
 	 * Current Rank Math seed version.
 	 */
-	const RANK_MATH_SEED_VERSION = '2.0.2';
+	const RANK_MATH_SEED_VERSION = '2.0.3';
 
 	/**
 	 * Option used to track portable DB-backed setup seeding.
@@ -117,7 +117,7 @@ class McPrices_Integration {
 	/**
 	 * Current Rank Math page/category SEO metadata seed version.
 	 */
-	const SEO_ENTITY_SEED_VERSION = '1.0.5';
+	const SEO_ENTITY_SEED_VERSION = '1.0.6';
 
 	/**
 	 * Option used to track the authority-focused SEO/AEO cleanup pass.
@@ -127,7 +127,7 @@ class McPrices_Integration {
 	/**
 	 * Current authority-focused SEO/AEO cleanup version.
 	 */
-	const AUTHORITY_SEO_SEED_VERSION = '1.0.2';
+	const AUTHORITY_SEO_SEED_VERSION = '1.0.3';
 
 	/**
 	 * Singleton instance.
@@ -980,8 +980,8 @@ class McPrices_Integration {
 			'knowledgegraph_name'   => "McDonald's Menu Prices USA",
 			'knowledgegraph_type'   => 'person',
 			'local_business_type'   => 'Organization',
-			'homepage_title'        => "McDonald's Prices {$current_year} USA | Updated Menu Prices",
-			'homepage_description'  => "View the latest McDonald's prices in the USA, including burgers, breakfast, McCafe, Happy Meals, drinks, fries, desserts, combo meals, and value menu items.",
+			'homepage_title'        => "McDonald's Menu Prices USA {$current_year} | Prices, Calories & Deals",
+			'homepage_description'  => "Compare McDonald's menu prices in the USA, including breakfast, burgers, Happy Meal prices, small drink prices, McCafe, McValue deals, calories, and local price notes.",
 			'pt_post_title'         => "%title% | McDonald's Menu Prices USA",
 			'pt_post_description'   => '%excerpt%',
 			'tax_category_title'    => "%term% Prices USA {$current_year} | McDonald's Menu Prices USA",
@@ -1418,19 +1418,27 @@ class McPrices_Integration {
 					),
 				),
 				'mcdonalds-app-deals' => array(
-					'title'   => 'McDonald&#8217;s App Deals',
+					'title'   => 'McDonald&#8217;s App Deals (' . $this->get_current_site_date( 'F Y' ) . ')',
 					'content' => $this->build_seeded_support_topic_page_content(
 						array(
 							'intro'          => array(
-								'Our McDonald&#8217;s App Deals guide tracks the part of the McDonald&#8217;s USA value story that readers care about most: live app offers, app-only savings, rotating bundle deals, and the way digital ordering can change the real price of breakfast, burgers, fries, nuggets, and desserts.',
+								'Our McDonald&#8217;s App Deals guide tracks the part of the McDonald&#8217;s USA value story that readers care about most in ' . $this->get_current_site_date( 'F Y' ) . ': live app offers, app-only savings, rotating bundle deals, and the way digital ordering can change the real price of breakfast, burgers, fries, nuggets, and desserts.',
 								'Readers usually arrive here after searching McDonald\'s app deals, McDonald\'s app rewards, or app-only McValue offers. They are not just asking whether a deal exists. They want to know whether the app beats the menu board, whether the reward path is better than the coupon path, and whether pickup or delivery changes the result.',
 							),
 							'highlights'     => array(
+								'Current June 2026 deal paths to check first include the $5 McChicken Meal Deal, $5 McDouble Meal Deal, Daily Double Meal Deal, Buy 1 Add 1 for $1 breakfast/lunch offers, and Mini McFlurry picks.',
 								'App pricing can create a different value story from the counter price, the drive-thru board, or the delivery total.',
 								'The best comparison is usually app deal versus rewards redemption versus standard McValue pricing.',
 								'Local participation and offer rotation still matter, so the live app remains the final checkpoint.',
 							),
 							'sections'       => array(
+								array(
+									'heading'    => 'Current McDonald\'s app deals to check in June 2026',
+									'paragraphs' => array(
+										'Start with the offer types that currently matter most for USA value searches: $5 McChicken Meal Deal, $5 McDouble Meal Deal, Daily Double Meal Deal, breakfast Buy 1 Add 1 for $1, lunch Buy 1 Add 1 for $1, and Mini McFlurry value picks. These offers overlap with the live deals category, but the app can change eligibility, ordering channel, and location participation.',
+										'The practical move is to compare the app deal against the standard menu page before checkout. A $5 meal deal may beat a normal burger, fries, nuggets, and drink build, while a Buy 1 Add 1 breakfast offer may beat a standalone sandwich if you already want two qualifying items.',
+									),
+								),
 								array(
 									'heading'    => 'What makes app deals different from static menu pricing',
 									'paragraphs' => array(
@@ -2926,11 +2934,11 @@ class McPrices_Integration {
 				),
 			),
 			'burgers-menu' => array(
-				'title'   => "McDonald's Burgers Menu Prices USA",
+				'title'   => "McDonald's Burgers Menu Prices in USA",
 				'content' => $this->build_seeded_category_pillar_page_content(
 					array(
 						'category'        => 'burgers',
-						'page_label'      => "McDonald's Burgers Menu Prices USA",
+						'page_label'      => "McDonald's Burgers Menu Prices in USA",
 						'focus_label'     => "McDonald's burgers menu",
 						'include_items'   => array( 'Big Mac', 'Quarter Pounder builds', 'McDouble', 'Daily Double', 'cheeseburgers', 'hamburgers', 'limited-time burger releases' ),
 						'value_points'    => array(
@@ -3197,7 +3205,7 @@ class McPrices_Integration {
 				),
 			),
 			'happy-meal-menu' => array(
-				'title'   => "McDonald's Happy Meal Prices USA",
+				'title'   => "McDonald's Happy Meal Price (2026)",
 				'content' => $this->get_seeded_file_content( '/inc/mcprices/data/happy-meal-menu-seeded-content.html' ) ?: $this->build_seeded_category_pillar_page_content(
 					array(
 						'category'        => 'happymeal',
@@ -4135,10 +4143,6 @@ class McPrices_Integration {
 				'slug'  => 'sweets-treats',
 				'title' => "McDonald's Desserts Menu Prices USA",
 			),
-			'mccafe'      => array(
-				'slug'  => 'mccafe-menu',
-				'title' => "McDonald's McCafe Menu Prices USA",
-			),
 			'beverages'   => array(
 				'slug'  => 'menu/beverages-drinks',
 				'title' => "McDonald's Drinks Menu Prices USA",
@@ -4335,6 +4339,119 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Return a price value for a tracked item in one category.
+	 *
+	 * @param string $category_id Category ID.
+	 * @param string $item_name   Item name or slug.
+	 * @return string
+	 */
+	protected function get_tracked_item_price_text( $category_id, $item_name ) {
+		$item = $this->get_menu_directory_item_data( (string) $category_id, (string) $item_name );
+
+		return is_array( $item ) && ! empty( $item['price'] ) ? (string) $item['price'] : 'Not listed';
+	}
+
+	/**
+	 * Build a focused drinks size comparison table for the live beverages page.
+	 *
+	 * @return string
+	 */
+	protected function build_beverage_size_comparison_table_html() {
+		$rows = array(
+			array( 'Soft drinks', 'Soft Drink Small', 'Soft Drink Medium', 'Soft Drink Large', 'Coke, Sprite, Dr Pepper, Fanta, Diet Coke, Hi-C' ),
+			array( 'Frozen Fanta Blue Raspberry', 'Frozen Fanta Blue Raspberry Small', 'Frozen Fanta Blue Raspberry Medium', 'Frozen Fanta Blue Raspberry Large', 'Frozen drink size ladder' ),
+			array( 'Frozen Coca-Cola Classic', 'Frozen Coca-Cola Classic Small', 'Frozen Coca-Cola Classic Medium', 'Frozen Coca-Cola Classic Large', 'Frozen drink size ladder' ),
+			array( 'Strawberry Banana Smoothie', 'Strawberry Banana Smoothie Small', 'Strawberry Banana Smoothie Medium', 'Strawberry Banana Smoothie Large', 'Smoothie size ladder' ),
+			array( 'Mango Pineapple Smoothie', 'Mango Pineapple Smoothie Small', 'Mango Pineapple Smoothie Medium', 'Mango Pineapple Smoothie Large', 'Smoothie size ladder' ),
+			array( 'Lemonade', 'Lemonade Small', 'Lemonade Medium', 'Lemonade Large', 'Lemonade size ladder' ),
+			array( 'Sweet Tea', 'Sweet Tea Small', 'Sweet Tea Medium', 'Sweet Tea Large', 'Tea size ladder' ),
+			array( 'Unsweetened Iced Tea', 'Unsweetened Iced Tea Any size', 'Unsweetened Iced Tea Any size', 'Unsweetened Iced Tea Any size', 'Any size listed' ),
+			array( 'Hot Tea', 'Hot Tea Any size', 'Hot Tea Any size', 'Hot Tea Any size', 'Any size listed' ),
+			array( 'Orange Juice', 'Minute Maid Premium Orange Juice Small', 'Minute Maid Premium Orange Juice Medium', '', 'No large orange juice listing in the current tracked data' ),
+			array( 'Kids drinks, milk, and water', 'Honest Kids Appley Ever After (juice box)', '1% Low Fat Milk Jug', 'DASANI Water (bottle)', 'Single-package items rather than S/M/L fountain sizes' ),
+		);
+
+		$html  = '<h3>McDonald&#8217;s drinks price comparison by size</h3>';
+		$html .= '<p><strong>Direct answer:</strong> A small McDonald&#8217;s soft drink is tracked at ' . esc_html( $this->get_tracked_item_price_text( 'beverages', 'Soft Drink Small' ) ) . ' in the current USA menu data. The table below compares small, medium, large, and any-size drink prices before the live item cards.</p>';
+		$html .= '<div class="wp-block-table mcprices-seed-table"><table><thead><tr><th>Drink type</th><th>Small</th><th>Medium</th><th>Large / any size</th><th>Notes</th></tr></thead><tbody>';
+
+		foreach ( $rows as $row ) {
+			$html .= '<tr>';
+			$html .= '<td>' . esc_html( $row[0] ) . '</td>';
+			$html .= '<td>' . esc_html( '' !== $row[1] ? $this->get_tracked_item_price_text( 'beverages', $row[1] ) : 'Not listed' ) . '</td>';
+			$html .= '<td>' . esc_html( '' !== $row[2] ? $this->get_tracked_item_price_text( 'beverages', $row[2] ) : 'Not listed' ) . '</td>';
+			$html .= '<td>' . esc_html( '' !== $row[3] ? $this->get_tracked_item_price_text( 'beverages', $row[3] ) : 'Not listed' ) . '</td>';
+			$html .= '<td>' . esc_html( $row[4] ) . '</td>';
+			$html .= '</tr>';
+		}
+
+		$html .= '</tbody></table></div>';
+		$html .= '<p>For the highest-priority item page from this category, open the ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'beverages', 'Soft Drink Small' ), "small drink price page" ) . ' directly.</p>';
+
+		return $html;
+	}
+
+	/**
+	 * Build a complete current price table for one generated menu category.
+	 *
+	 * @param array  $category Category data.
+	 * @param string $heading  Heading text.
+	 * @param string $intro    Intro paragraph.
+	 * @return string
+	 */
+	protected function build_complete_category_price_table_html( array $category, $heading, $intro ) {
+		if ( empty( $category['items'] ) || ! is_array( $category['items'] ) ) {
+			return '';
+		}
+
+		$category_id = (string) ( $category['id'] ?? '' );
+		$html        = '<h3>' . esc_html( (string) $heading ) . '</h3>';
+		$html       .= '<p>' . esc_html( (string) $intro ) . '</p>';
+		$html       .= '<div class="wp-block-table mcprices-seed-table"><table><thead><tr><th>Item</th><th>Price</th><th>Calories</th><th>Type</th></tr></thead><tbody>';
+
+		foreach ( $category['items'] as $item ) {
+			if ( empty( $item['name'] ) || empty( $item['slug'] ) ) {
+				continue;
+			}
+
+			$html .= '<tr>';
+			$html .= '<td>' . $this->build_seed_text_link( $this->get_menu_item_page_url( $category_id, (string) $item['slug'] ), (string) $item['name'] ) . '</td>';
+			$html .= '<td>' . esc_html( (string) ( $item['price'] ?? 'Varies' ) ) . '</td>';
+			$html .= '<td>' . esc_html( (string) ( $item['calories'] ?? 'Varies' ) ) . '</td>';
+			$html .= '<td>' . esc_html( (string) ( $item['status'] ?? 'Item' ) ) . '</td>';
+			$html .= '</tr>';
+		}
+
+		$html .= '</tbody></table></div>';
+
+		return $html;
+	}
+
+	/**
+	 * Build priority extra content for category pages from the Search Console plan.
+	 *
+	 * @param array $category Category data.
+	 * @return string
+	 */
+	protected function build_priority_menu_category_content_html( array $category ) {
+		$category_id = (string) ( $category['id'] ?? '' );
+
+		if ( 'beverages' === $category_id ) {
+			return $this->build_beverage_size_comparison_table_html();
+		}
+
+		if ( 'mccafe' === $category_id ) {
+			return $this->build_complete_category_price_table_html(
+				$category,
+				"McDonald's McCafé price table",
+				'This is the complete current McCafé price table from the tracked USA menu data, including hot coffee, iced coffee, espresso drinks, frappes, and hot chocolate before the live item cards.'
+			);
+		}
+
+		return '';
+	}
+
+	/**
 	 * Return reusable semantic context data for one managed category page.
 	 *
 	 * @param array  $category    Category data.
@@ -4396,6 +4513,20 @@ class McPrices_Integration {
 					'This Happy Meal category page is the live kids-meal comparison layer for the current tracked McDonald\'s USA menu. It keeps the main Happy Meal builds together so parents and value searchers can compare ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'happymeal', 'Hamburger Happy Meal' ), 'Hamburger Happy Meal' ) . ', ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'happymeal', '4 pc McNuggets Happy Meal' ), '4 pc McNuggets Happy Meal' ) . ', and ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'happymeal', '6 pc McNuggets Happy Meal' ), '6 pc McNuggets Happy Meal' ) . ' intent without jumping between separate guides first.',
 					'Happy Meal search behavior is more layered than it looks. Some readers care about the cheapest kids meal, some care about nugget count, some care about fries versus apple slices, and others care about the full kids-meal bundle with drink and toy. That means the category page needs enough semantic context to help users understand why these are not identical queries even when they all live under the same menu label.',
 					'Use the live cards below for the exact tracked options. Use ' . $guide_link . ' when you want broader kids-meal pricing, calories, and ordering advice. If you need calorie or ingredient checks before choosing nuggets, fries, juice, or milk, move next to the ' . $nutrition_link . '. If your real question is group value or low-cost ordering, compare the results here with the ' . $deals_link . ' and the ' . $full_menu_link . '.',
+				);
+				break;
+			case 'mccafe':
+				$paragraphs = array(
+					'This McCafe Coffees category page is now the live price table for McDonald\'s coffee and espresso intent. It keeps hot coffee, iced coffee, lattes, cappuccinos, macchiatos, frappes, and hot chocolate together so readers can compare price, size, calories, and item-page links before choosing one drink.',
+					'McCafe searches are usually size-sensitive. A small iced coffee, medium latte, large frappe, and any-size premium roast answer different needs, so this category page should carry a complete price table rather than forcing readers into one broad coffee article first.',
+					'Use the full McCafe table above when you want the current tracked prices, then open a specific item page for one exact drink. Move to the beverages category if the real decision is between coffee, fountain drinks, tea, lemonade, smoothies, milk, juice, and water.',
+				);
+				break;
+			case 'beverages':
+				$paragraphs = array(
+					'This beverages category page is the live drink-price comparison layer for the current McDonald\'s USA menu. It now links directly to the highest-priority ' . $this->build_seed_text_link( $this->get_menu_item_page_url( 'beverages', 'Soft Drink Small' ), 'small drink price page' ) . ' while keeping soft drinks, frozen drinks, smoothies, lemonade, tea, juice, milk, and water in one comparison path.',
+					'Drink intent is usually size-led. Readers want to know whether small, medium, and large drinks change the total, whether a smoothie or frozen drink costs more than a fountain drink, and whether a kids drink, milk, or bottled water is a better match for the meal they are building.',
+					'Use the size table above first, then open a specific item card below when you need one exact drink page. For value context, compare drinks with ' . $deals_link . '; for sugar, calorie, or ingredient checks, use the ' . $nutrition_link . ' before ordering.',
 				);
 				break;
 			case 'sauces':
@@ -4611,6 +4742,107 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Return the visible title for one managed menu item page.
+	 *
+	 * @param array $category Category data.
+	 * @param array $item     Item data.
+	 * @return string
+	 */
+	protected function get_menu_item_page_title( array $category, array $item ) {
+		$category_id = isset( $category['id'] ) ? (string) $category['id'] : '';
+		$item_slug   = isset( $item['slug'] ) ? (string) $item['slug'] : '';
+
+		if ( 'beverages' === $category_id && 'soft-drink-small' === $item_slug ) {
+			return "How Much Is a Small Drink at McDonald's? (2026)";
+		}
+
+		return trim( (string) ( $item['name'] ?? '' ) ) . ' Price USA';
+	}
+
+	/**
+	 * Return a direct answer paragraph for generated item pages.
+	 *
+	 * @param array $category Category data.
+	 * @param array $item     Item data.
+	 * @return string
+	 */
+	protected function get_menu_item_direct_answer_text( array $category, array $item ) {
+		$category_id    = isset( $category['id'] ) ? (string) $category['id'] : '';
+		$item_slug      = isset( $item['slug'] ) ? (string) $item['slug'] : '';
+		$item_name      = trim( (string) ( $item['name'] ?? '' ) );
+		$item_price     = trim( (string) ( $item['price'] ?? '' ) );
+		$item_calories  = trim( (string) ( $item['calories'] ?? '' ) );
+		$category_title = trim( (string) ( $category['card_title'] ?? 'menu' ) );
+
+		if ( '' === $item_name || '' === $item_price ) {
+			return '';
+		}
+
+		if ( 'beverages' === $category_id && 'soft-drink-small' === $item_slug ) {
+			return "A small drink at McDonald's is tracked at {$item_price} in the current USA menu data. Coke, Sprite, Dr Pepper, Fanta, Diet Coke, Hi-C, and other fountain options usually share the same small soft drink price, but the final local total can vary by restaurant, app offer, tax, and delivery channel.";
+		}
+
+		$calorie_phrase = '' !== $item_calories ? ' with ' . $item_calories . ' listed calories' : '';
+
+		return "{$item_name} is tracked at {$item_price}{$calorie_phrase} in the current McDonald's USA {$category_title} data. Use this page as the quick price answer, then confirm the final local checkout total in the app or restaurant.";
+	}
+
+	/**
+	 * Return visible FAQ items for priority item pages.
+	 *
+	 * @param string $managed_key Managed page key.
+	 * @return array<int, array<string, string>>
+	 */
+	protected function get_priority_menu_item_faq_items( $managed_key ) {
+		if ( 'beverages::soft-drink-small' !== (string) $managed_key ) {
+			return array();
+		}
+
+		return array(
+			array(
+				'question' => "How much is a small drink at McDonald's in 2026?",
+				'answer'   => "The current tracked USA price for a small McDonald's soft drink is $1.69. Local franchise pricing, tax, app offers, and delivery pricing can still change the final checkout total.",
+			),
+			array(
+				'question' => "Are McDonald's small, medium, and large soft drinks the same price?",
+				'answer'   => 'In the current tracked data, small, medium, and large soft drinks are all listed at $1.69, but locations can vary. Check your local app before ordering if the exact total matters.',
+			),
+			array(
+				'question' => 'What drinks are included under the small soft drink price?',
+				'answer'   => "The small soft drink listing covers fountain choices such as Coca-Cola, Sprite, Dr Pepper, Fanta Orange, Diet Coke, Hi-C, and similar participating fountain beverages.",
+			),
+		);
+	}
+
+	/**
+	 * Build visible FAQ markup for priority item pages.
+	 *
+	 * @param string $managed_key Managed page key.
+	 * @return string
+	 */
+	protected function build_priority_menu_item_faq_markup( $managed_key ) {
+		$faq_items = $this->get_priority_menu_item_faq_items( $managed_key );
+
+		if ( empty( $faq_items ) ) {
+			return '';
+		}
+
+		$html  = '<div class="mcprices-guide-callout mcprices-guide-callout--semantic">';
+		$html .= '<p class="mcprices-guide-callout__eyebrow">FAQ</p>';
+		$html .= '<h3 class="mcprices-guide-callout__title">Small Drink Price FAQs</h3>';
+		$html .= '<div class="mcprices-guide-callout__content">';
+
+		foreach ( $faq_items as $faq_item ) {
+			$html .= '<h4>' . esc_html( (string) $faq_item['question'] ) . '</h4>';
+			$html .= '<p>' . esc_html( (string) $faq_item['answer'] ) . '</p>';
+		}
+
+		$html .= '</div></div>';
+
+		return $html;
+	}
+
+	/**
 	 * Return reusable semantic context data for the managed /menu/ hub page.
 	 *
 	 * @return array<string, mixed>
@@ -4654,6 +4886,11 @@ class McPrices_Integration {
 	protected function build_menu_category_editable_content( array $category, $guide_url = '', $guide_title = '' ) {
 		$context = $this->get_menu_category_semantic_context_data( $category, $guide_url, $guide_title );
 		$content = '';
+		$priority_content = $this->build_priority_menu_category_content_html( $category );
+
+		if ( '' !== trim( $priority_content ) ) {
+			$content .= $this->build_seed_block_html( $priority_content );
+		}
 
 		foreach ( $context['paragraphs'] ?? array() as $paragraph ) {
 			$content .= $this->build_seed_block_paragraph( $paragraph );
@@ -5999,7 +6236,7 @@ class McPrices_Integration {
 			array(
 				'categories' => $this->get_menu_directory_categories(),
 				'root'       => $this->get_menu_directory_root_url(),
-				'format'     => 'editable-menu-pages-v2',
+				'format'     => 'editable-menu-pages-v3-priority-seo',
 			)
 		);
 	}
@@ -6081,7 +6318,7 @@ class McPrices_Integration {
 			$item_order = 10;
 
 			foreach ( $category['items'] as $item ) {
-				$item_title = trim( (string) $item['name'] ) . ' Price USA';
+				$item_title = $this->get_menu_item_page_title( $category, $item );
 				$item_excerpt = trim( (string) $item['summary'] );
 				$item_key = (string) $category_id . '::' . (string) $item['slug'];
 				$related_items = array_values(
@@ -6301,8 +6538,8 @@ class McPrices_Integration {
 			&& '1' === (string) get_option( 'rank_math_registration_skip', '' )
 			&& '1' === (string) get_option( 'rank_math_wizard_completed', '' )
 			&& '1' === (string) get_option( 'blog_public', '' )
-			&& "McDonald's Prices {$current_year} USA | Updated Menu Prices" === ( $titles['homepage_title'] ?? '' )
-			&& "View the latest McDonald's prices in the USA, including burgers, breakfast, McCafe, Happy Meals, drinks, fries, desserts, combo meals, and value menu items." === ( $titles['homepage_description'] ?? '' )
+			&& "McDonald's Menu Prices USA {$current_year} | Prices, Calories & Deals" === ( $titles['homepage_title'] ?? '' )
+			&& "Compare McDonald's menu prices in the USA, including breakfast, burgers, Happy Meal prices, small drink prices, McCafe, McValue deals, calories, and local price notes." === ( $titles['homepage_description'] ?? '' )
 			&& "%title% | McDonald's Menu Prices USA" === ( $titles['pt_post_title'] ?? '' )
 			&& "%term% Prices USA {$current_year} | McDonald's Menu Prices USA" === ( $titles['tax_category_title'] ?? '' )
 			&& "Page Not Found | McDonald's Menu Prices USA" === ( $titles['404_title'] ?? '' ) ) {
@@ -6530,7 +6767,7 @@ class McPrices_Integration {
 			'menu/fries-sides'        => 'fries-sides',
 			'menu/happy-meal'         => 'happy-meal-menu',
 			'menu/sweets-treats'      => 'sweets-treats',
-			'menu/mccafe-coffees'     => 'mccafe-menu',
+			'mccafe-menu'             => 'menu/mccafe-coffees',
 			'beverage-menu'           => 'menu/beverages-drinks',
 			'menu/sauces-condiments'  => 'sauces-condiments',
 			'menu/deals-and-offers'   => 'mcdonalds-deals-mcvalue-guide',
@@ -6544,6 +6781,7 @@ class McPrices_Integration {
 	 */
 	protected function get_authority_seo_page_meta_seed() {
 		$year = $this->get_current_site_year();
+		$month_year = $this->get_current_site_date( 'F Y' );
 
 		return array(
 			'breakfast-menu' => array(
@@ -6552,7 +6790,7 @@ class McPrices_Integration {
 				'focus'       => "McDonald's breakfast menu prices, McDonald's breakfast calories, McDonald's breakfast hours",
 			),
 			'burgers-menu' => array(
-				'title'       => "McDonald's Burger Menu Prices USA {$year} | Calories & Meals",
+				'title'       => "McDonald's Burgers Menu Prices in USA {$year}",
 				'description' => "Compare McDonald's burger menu prices, calories, meals, value picks, Big Mac, Quarter Pounder, McDouble, Cheeseburger, and USA ordering tips.",
 				'focus'       => "McDonald's burger menu prices, McDonald's burgers calories, Big Mac price",
 			),
@@ -6572,9 +6810,24 @@ class McPrices_Integration {
 				'focus'       => "McDonald's fries prices, McDonald's fries calories, McDonald's sides menu",
 			),
 			'happy-meal-menu' => array(
-				'title'       => "McDonald's Happy Meal Prices USA {$year} | Calories & Kids Meals",
+				'title'       => "McDonald's Happy Meal Price ({$year})",
 				'description' => "Review McDonald's Happy Meal prices, calories, kids meal choices, Hamburger Happy Meal, McNuggets Happy Meal, sides, drinks, and toys.",
 				'focus'       => "McDonald's Happy Meal prices, McDonald's kids meals, Happy Meal calories",
+			),
+			'menu/mccafe-coffees' => array(
+				'title'       => "McDonald's McCafé Menu Prices ({$year})",
+				'description' => "Compare McDonald's McCafe menu prices, coffee, iced coffee, lattes, frappes, hot chocolate, calories, sizes, and current USA item pages.",
+				'focus'       => "McDonald's McCafe menu prices, McCafe coffee prices, McDonald's iced coffee prices",
+			),
+			'menu/beverages-drinks' => array(
+				'title'       => "McDonald's Beverages & Drinks Menu Prices USA {$year}",
+				'description' => "Compare McDonald's drinks menu prices by size, including small drinks, medium drinks, large soft drinks, tea, lemonade, smoothies, juice, milk, and water.",
+				'focus'       => "McDonald's drinks menu prices, McDonald's beverage prices, McDonald's small drink price",
+			),
+			'menu/beverages-drinks/soft-drink-small' => array(
+				'title'       => "How Much Is a Small Drink at McDonald's? ({$year})",
+				'description' => "See the current tracked McDonald's small drink price, soft drink calories, fountain drink options, size comparison, and USA ordering notes.",
+				'focus'       => "McDonald's small drink price, small drink McDonald's, McDonald's soft drink small",
 			),
 			'mccafe-menu' => array(
 				'title'       => "McDonald's McCafe Menu Prices USA {$year} | Coffee Calories",
@@ -6672,7 +6925,7 @@ class McPrices_Integration {
 				'focus'       => "McDonald's Menu Prices USA sitemap",
 			),
 			'mcdonalds-app-deals' => array(
-				'title'       => "McDonald's App Deals USA {$year} | Offers, Rewards & Value",
+				'title'       => "McDonald's App Deals ({$month_year}) | Offers & Rewards",
 				'description' => "Review McDonald's app deals, rewards, digital offers, McValue promos, delivery notes, and ways to compare savings against menu prices.",
 				'focus'       => "McDonald's app deals, McDonald's rewards, McDonald's offers",
 			),
@@ -7066,6 +7319,10 @@ class McPrices_Integration {
 	 * @return bool
 	 */
 	protected function should_noindex_post( \WP_Post $post ) {
+		if ( in_array( (string) $post->post_name, array( 'ad-disclosure' ), true ) ) {
+			return true;
+		}
+
 		if ( $this->is_empty_blog_page( $post ) ) {
 			return true;
 		}
@@ -8092,6 +8349,8 @@ class McPrices_Integration {
 	 * @return array
 	 */
 	protected function get_menu_directory_category_blueprints() {
+		$current_year = $this->get_current_site_year();
+
 		return array(
 			'whats-new'  => array(
 				'id'          => 'whats-new',
@@ -8195,7 +8454,7 @@ class McPrices_Integration {
 			'mccafe'     => array(
 				'id'          => 'mccafe',
 				'slug'        => 'mccafe-coffees',
-				'title'       => 'McCafe Coffee Prices USA',
+				'title'       => "McDonald's McCafé Menu Prices ({$current_year})",
 				'card_title'  => 'McCafe Coffees',
 				'count_label' => 'coffee drinks',
 				'description' => 'Full McCafe coffee and espresso pricing, including hot drinks, iced drinks, frappes, and hot chocolate.',
@@ -8204,7 +8463,7 @@ class McPrices_Integration {
 			'beverages'  => array(
 				'id'          => 'beverages',
 				'slug'        => 'beverages-drinks',
-				'title'       => 'Beverage Prices USA',
+				'title'       => "McDonald's Beverages & Drinks Menu Prices USA",
 				'card_title'  => 'Beverages',
 				'count_label' => 'drinks',
 				'description' => 'Soft drinks, frozen drinks, smoothies, lemonade, tea, juice, milk, and bottled water from the current USA beverage menu.',
@@ -8681,6 +8940,10 @@ class McPrices_Integration {
 	protected function render_menu_item_page_markup( array $category, array $item, $editable_content_html = '' ) {
 		$guide_url   = $this->get_menu_category_primary_guide_url( $category['id'] );
 		$guide_title = $this->get_menu_category_primary_guide_title( $category['id'] );
+		$managed_key = (string) ( $category['id'] ?? '' ) . '::' . (string) ( $item['slug'] ?? '' );
+		$item_page_title = $this->get_menu_item_page_title( $category, $item );
+		$item_direct_answer = $this->get_menu_item_direct_answer_text( $category, $item );
+		$item_faq_markup = $this->build_priority_menu_item_faq_markup( $managed_key );
 
 		$related_items = array_values(
 			array_filter(
@@ -8718,7 +8981,10 @@ class McPrices_Integration {
 					</div>
 					<div class="section-header section-header-left">
 						<div class="section-label">Item Page</div>
-						<h2 class="section-title"><?php echo esc_html( $item['name'] ); ?> Price USA</h2>
+						<h2 class="section-title"><?php echo esc_html( $item_page_title ); ?></h2>
+						<?php if ( $item_direct_answer ) : ?>
+							<p class="section-sub"><strong>Quick answer:</strong> <?php echo esc_html( $item_direct_answer ); ?></p>
+						<?php endif; ?>
 						<p class="section-sub"><?php echo esc_html( $item['summary'] ); ?></p>
 					</div>
 					<div class="mcprices-item-layout">
@@ -8770,6 +9036,11 @@ class McPrices_Integration {
 					<?php if ( $item_semantic_callout ) : ?>
 						<div class="mcprices-directory-guide mcprices-item-guide">
 							<?php echo $item_semantic_callout; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+						</div>
+					<?php endif; ?>
+					<?php if ( $item_faq_markup ) : ?>
+						<div class="mcprices-directory-guide mcprices-item-guide">
+							<?php echo $item_faq_markup; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						</div>
 					<?php endif; ?>
 					<?php if ( ! empty( $related_items ) ) : ?>
@@ -9227,11 +9498,10 @@ class McPrices_Integration {
 				esc_url( $this->get_menu_category_page_url( 'sauces' ) ),
 			),
 			'footer3' => sprintf(
-				'<!-- wp:html --><div class="footer-col-title">Information</div><ul class="footer-links"><li><a href="%1$s">About Us</a></li><li><a href="%2$s">Privacy Policy</a></li><li><a href="%3$s">Cookie Policy</a></li><li><a href="%4$s">Ad Disclosure</a></li><li><a href="%5$s">Disclaimer</a></li><li><a href="%6$s">Contact</a></li><li><a href="%7$s">Methodology</a></li><li><a href="%8$s">Sitemap</a></li></ul><!-- /wp:html -->',
+				'<!-- wp:html --><div class="footer-col-title">Information</div><ul class="footer-links"><li><a href="%1$s">About Us</a></li><li><a href="%2$s">Privacy Policy</a></li><li><a href="%3$s">Cookie Policy</a></li><li><a href="%4$s">Disclaimer</a></li><li><a href="%5$s">Contact</a></li><li><a href="%6$s">Methodology</a></li><li><a href="%7$s">Sitemap</a></li></ul><!-- /wp:html -->',
 				esc_url( home_url( '/about/' ) ),
 				esc_url( home_url( '/privacy-policy/' ) ),
 				esc_url( home_url( '/cookie-policy/' ) ),
-				esc_url( home_url( '/ad-disclosure/' ) ),
 				esc_url( home_url( '/disclaimer/' ) ),
 				esc_url( home_url( '/contact/' ) ),
 				esc_url( home_url( '/pricing-methodology/' ) ),
@@ -9315,10 +9585,6 @@ class McPrices_Integration {
 			array(
 				'title' => __( 'Disclaimer', 'kadence' ),
 				'url'   => home_url( '/disclaimer/' ),
-			),
-			array(
-				'title' => __( 'Ad Policy', 'kadence' ),
-				'url'   => home_url( '/ad-disclosure/' ),
 			),
 			array(
 				'title' => __( 'Methodology', 'kadence' ),
@@ -10002,7 +10268,7 @@ class McPrices_Integration {
 	 * @return string
 	 */
 	protected function get_homepage_meta_title() {
-		return "McDonald's Prices " . $this->get_current_site_year() . ' USA | Updated Menu Prices';
+		return "McDonald's Menu Prices USA " . $this->get_current_site_year() . ' | Prices, Calories & Deals';
 	}
 
 	/**
@@ -10011,7 +10277,7 @@ class McPrices_Integration {
 	 * @return string
 	 */
 	protected function get_homepage_meta_description() {
-		return "View the latest McDonald's prices in the USA, including burgers, breakfast, McCafe, Happy Meals, drinks, fries, desserts, combo meals, and value menu items.";
+		return "Compare McDonald's menu prices in the USA, including breakfast, burgers, Happy Meal prices, small drink prices, McCafe, McValue deals, calories, and local price notes.";
 	}
 
 	/**
@@ -11527,6 +11793,7 @@ class McPrices_Integration {
 			'cookie-policy',
 			'contact',
 			'disclaimer',
+			'ad-disclosure',
 			'advertising-disclosure',
 			'html-sitemap',
 		);
@@ -11636,6 +11903,41 @@ class McPrices_Integration {
 		}
 
 		return count( $questions ) >= 2 ? $questions : array();
+	}
+
+	/**
+	 * Return Product schema for priority guide pages that describe one product.
+	 *
+	 * @param string $support_slug Support page slug.
+	 * @param string $current_url  Current page URL.
+	 * @return array<string, mixed>
+	 */
+	protected function get_priority_support_product_schema_node( $support_slug, $current_url ) {
+		if ( 'happy-meal-menu' !== (string) $support_slug ) {
+			return array();
+		}
+
+		return $this->filter_schema_empty_values(
+			array(
+				'@type'       => 'Product',
+				'@id'         => esc_url_raw( $current_url ) . '#product',
+				'name'        => "McDonald's Happy Meal",
+				'description' => "McDonald's Happy Meal price guide covering Hamburger Happy Meal, 4-pc McNuggets Happy Meal, 6-pc McNuggets Happy Meal, sides, drinks, calories, and toy bundle context.",
+				'brand'       => array(
+					'@type' => 'Brand',
+					'name'  => "McDonald's",
+				),
+				'offers'      => array(
+					'@type'         => 'AggregateOffer',
+					'priceCurrency' => 'USD',
+					'lowPrice'      => '5.89',
+					'highPrice'     => '7.29',
+					'offerCount'    => '3',
+					'availability'  => 'https://schema.org/InStock',
+					'url'           => esc_url_raw( $current_url ),
+				),
+			)
+		);
 	}
 
 	/**
@@ -11958,6 +12260,36 @@ class McPrices_Integration {
 				);
 			}
 
+			$main_entities = array(
+				array( '@id' => $product_id ),
+				array( '@id' => $menu_item_id ),
+			);
+			$faq_items = $this->get_priority_menu_item_faq_items( $managed_key );
+
+			if ( ! empty( $faq_items ) ) {
+				$graph[] = array(
+					'@type'      => 'FAQPage',
+					'@id'        => $current_url . '#faq',
+					'url'        => $current_url,
+					'isPartOf'   => array( '@id' => $current_url . '#webpage' ),
+					'mainEntity' => array_map(
+						static function ( $faq_item ) {
+							return array(
+								'@type'          => 'Question',
+								'name'           => $faq_item['question'],
+								'acceptedAnswer' => array(
+									'@type' => 'Answer',
+									'text'  => $faq_item['answer'],
+								),
+							);
+						},
+						$faq_items
+					),
+				);
+
+				$main_entities[] = array( '@id' => $current_url . '#faq' );
+			}
+
 			$page_node['about']           = $this->build_schema_thing_list(
 				array(
 					(string) $item['name'],
@@ -11966,10 +12298,7 @@ class McPrices_Integration {
 					"McDonald's " . (string) $item['name'] . ' calories',
 				)
 			);
-			$page_node['mainEntity']      = array(
-				array( '@id' => $product_id ),
-				array( '@id' => $menu_item_id ),
-			);
+			$page_node['mainEntity']      = $main_entities;
 			$page_node['significantLink'] = array_values( array_unique( array_filter( $significant_links ) ) );
 		} elseif ( '' !== $support_slug ) {
 			$related_category = $this->get_menu_category_for_guide_slug( $support_slug );
@@ -12014,6 +12343,14 @@ class McPrices_Integration {
 				$graph[] = $tool_node;
 				$main_entities[] = array( '@id' => $current_url . '#tool' );
 				$about_topics[]  = (string) ( $tool_node['name'] ?? '' );
+			}
+
+			$product_node = $this->get_priority_support_product_schema_node( $support_slug, $current_url );
+
+			if ( ! empty( $product_node ) ) {
+				$graph[] = $product_node;
+				$main_entities[] = array( '@id' => $current_url . '#product' );
+				$about_topics[] = (string) ( $product_node['name'] ?? '' );
 			}
 
 			if ( ! empty( $faq_items ) ) {
@@ -12341,8 +12678,14 @@ class McPrices_Integration {
 			return;
 		}
 
+		$request_path = $this->get_site_relative_request_path();
+
+		if ( 'menu/breakfast-menu' === $request_path ) {
+			wp_safe_redirect( home_url( '/breakfast-menu/' ), 301, 'McPrices' );
+			exit;
+		}
+
 		if ( is_404() ) {
-			$request_path    = $this->get_site_relative_request_path();
 			$normalized_path = $this->normalize_legacy_menu_request_path( $request_path );
 
 			if ( '' !== $request_path && '' !== $normalized_path && $normalized_path !== $request_path ) {

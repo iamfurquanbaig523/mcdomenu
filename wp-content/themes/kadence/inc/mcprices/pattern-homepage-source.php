@@ -568,7 +568,7 @@ $guide_cards = array(
 	array( 'href' => $page_url( 'fries-sides' ), 'title' => 'Fries & Sides Prices USA', 'text' => 'See how fries sizes, Apple Slices, and side-upgrade choices change the final McDonald\'s USA total.' ),
 	array( 'href' => $page_url( 'happy-meal-menu' ), 'title' => 'Happy Meal Prices USA', 'text' => 'A family-order guide to Hamburger and McNuggets Happy Meals, kids-meal pricing, and related add-on choices.' ),
 	array( 'href' => $page_url( 'sweets-treats' ), 'title' => 'Desserts Menu Prices USA', 'text' => 'McFlurries, mini treats, cones, sundaes, shakes, pies, and dessert value comparisons in one sweets guide.' ),
-	array( 'href' => $page_url( 'mccafe-menu' ), 'title' => 'McCafe Menu Prices USA', 'text' => 'Hot coffee, iced coffee, espresso drinks, frappes, and McCafe size-led pricing comparisons for the USA menu.' ),
+	array( 'href' => $get_category_page_url( 'mccafe' ), 'title' => 'McCafe Menu Prices USA', 'text' => 'Hot coffee, iced coffee, espresso drinks, frappes, and McCafe size-led pricing comparisons for the USA menu.' ),
 	array( 'href' => $page_url( 'beverage-menu' ), 'title' => 'Drinks Menu Prices USA', 'text' => 'Soft drinks, tea, lemonade, juice, smoothies, frozen drinks, and beverage pricing across the USA menu.' ),
 	array( 'href' => $page_url( 'sauces-condiments' ), 'title' => 'Sauces & Condiments Prices USA', 'text' => 'Included dips, paid sauces, packet condiments, and the add-on choices that change nuggets, fries, and shareable orders.' ),
 	array( 'href' => $page_url( 'mcdonalds-deals-mcvalue-guide' ), 'title' => 'Deals & McValue Guide USA', 'text' => 'The main value pillar for $5-style meals, McValue ordering, app-led savings, and low-entry menu strategies.' ),
@@ -696,7 +696,7 @@ $render_rows = static function ( array $rows, $category_id ) use ( $get_item_pag
 ob_start();
 ?>
 <!-- wp:group {"className":"mcprices-page mcprices-managed-homepage","layout":{"type":"default"}} -->
-<div class="wp-block-group mcprices-page mcprices-managed-homepage" data-mcprices-pattern-version="3.3.0">
+<div class="wp-block-group mcprices-page mcprices-managed-homepage" data-mcprices-pattern-version="3.3.1">
 <!-- wp:html -->
 <section class="hero">
 	<div class="hero-bg"></div>
@@ -1103,6 +1103,7 @@ ob_start();
 		<div class="content-main seo-main">
 			<h2>McDonald's Prices USA <?php echo esc_html( $current_year ); ?> &mdash; Menu Price Guide</h2>
 			<p>Use this McDonald&#8217;s prices USA guide to compare current McDonald&#8217;s menu prices by category before you order. It works as a practical McDonald&#8217;s menu with prices for burgers, breakfast, McCaf&eacute; drinks, Happy Meals, fries, desserts, combo meals, McValue items, and limited-time deals.</p>
+			<p><strong>Entity statement:</strong> McDonald&#8217;s Menu Prices USA is an independent U.S. McDonald&#8217;s menu price guide, not affiliated with McDonald&#8217;s Corporation. If you want the highest-priority pages first, start with <a href="<?php echo esc_url( $page_url( 'happy-meal-menu' ) ); ?>">Happy Meal prices</a>, the <a href="<?php echo esc_url( $get_item_page_url( 'beverages', 'Soft Drink Small' ) ); ?>">small drink price page</a>, and <a href="<?php echo esc_url( $page_url( 'breakfast-menu' ) ); ?>">breakfast menu prices</a>.</p>
 			<p>The McDonald&#8217;s price list on this page is organized for quick planning, with menu item names, sample prices, calories, and category links in one place. You can start with breakfast menu prices, burger prices, McCaf&eacute; prices, Happy Meal prices, drinks menu prices, fries prices, desserts prices, or deals and offers depending on what you want to compare.</p>
 			<p>McDonald&#8217;s prices are not always the same at every restaurant. Local franchise pricing, city costs, taxes, delivery apps, app-exclusive offers, and current promotions can change the final checkout total, so this guide should be used as a helpful overview of McDonald&#8217;s menu prices USA rather than a guaranteed national receipt.</p>
 			<p>For value-focused ordering, compare combo meal prices, McValue meal deals, buy-one-add-one offers, app deals, and side or dessert add-ons before choosing a meal. This helps you see whether a standalone item, full combo meal, or current McDonald&#8217;s deal gives better value at your location.</p>
@@ -1139,7 +1140,6 @@ ob_start();
 					<a href="<?php echo esc_url( home_url( '/pricing-methodology/' ) ); ?>" class="sidebar-link">&#128221; How We Track Prices</a>
 					<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="sidebar-link">&#8505; About Us</a>
 					<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="sidebar-link">&#9993; Contact</a>
-					<a href="<?php echo esc_url( home_url( '/ad-disclosure/' ) ); ?>" class="sidebar-link">&#128204; Ad Disclosure</a>
 					<a href="<?php echo esc_url( home_url( '/disclaimer/' ) ); ?>" class="sidebar-link">&#9888; Disclaimer</a>
 				</div>
 			</div>
