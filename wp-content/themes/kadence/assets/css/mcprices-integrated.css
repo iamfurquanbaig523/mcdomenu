@@ -1058,6 +1058,8 @@ body.mcprices-theme-active #kt-scroll-up-reader:hover {
   font-family: "Poppins", system-ui, sans-serif;
   font-size: 20px;
   font-weight: 800;
+  line-height: 1.2;
+  margin: 0;
 }
 
 .mcprices-page .menu-section-count {

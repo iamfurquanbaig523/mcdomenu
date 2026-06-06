@@ -14,4 +14,4 @@ Disallow: /*?s=
 Disallow: /feed/
 Allow: /wp-admin/admin-ajax.php
 
-Sitemap: http://localhost/wordpress/sitemap.xml
+Sitemap: https://mcdomenuusa.com/sitemap.xml

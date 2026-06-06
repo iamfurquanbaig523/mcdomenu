@@ -95,7 +95,7 @@ function kadence_mcprices_get_dynamic_meta_title() {
 	$queried_object = get_queried_object();
 
 	if ( is_front_page() && ! is_home() ) {
-		return "McDonald's Menu Prices USA {$current_year} | Full Price List & Calories";
+		return "McDonald's Prices {$current_year} USA | Updated Menu Prices";
 	}
 
 	if ( $queried_object instanceof \WP_Post ) {
@@ -172,7 +172,7 @@ function kadence_mcprices_get_dynamic_meta_description() {
 	}
 
 	if ( is_front_page() && ! is_home() ) {
-		return "Complete McDonald's USA menu prices updated {$current_date}. Find prices for burgers, breakfast, McCafe, drinks, McValue deals, McNuggets, Happy Meals, desserts, and combo meals in dollars.";
+		return "View the latest McDonald's prices in the USA, including burgers, breakfast, McCafe, Happy Meals, drinks, fries, desserts, combo meals, and value menu items.";
 	}
 
 	if ( is_singular( 'post' ) ) {
@@ -365,6 +365,110 @@ function kadence_mcprices_filter_rank_math_description( $description ) {
 }
 
 /**
+ * Normalize old internal site URLs to the currently installed WordPress home.
+ *
+ * @param string $url URL to normalize.
+ * @return string
+ */
+function kadence_mcprices_normalize_runtime_url( $url ) {
+	if ( ! is_string( $url ) || '' === trim( $url ) ) {
+		return is_string( $url ) ? $url : '';
+	}
+
+	$current_home = untrailingslashit( home_url() );
+
+	return str_replace(
+		array(
+			'http://localhost/wordpress',
+			'http://127.0.0.1/wordpress',
+			'https://mcdomenuusa.com',
+			'https://www.mcdomenuusa.com',
+		),
+		array(
+			$current_home,
+			$current_home,
+			$current_home,
+			$current_home,
+		),
+		$url
+	);
+}
+
+/**
+ * Return the current singular page path relative to the WordPress home URL.
+ *
+ * @return string
+ */
+function kadence_mcprices_get_current_relative_page_path() {
+	if ( ! is_singular( 'page' ) ) {
+		return '';
+	}
+
+	$permalink = get_permalink();
+
+	if ( ! is_string( $permalink ) || '' === $permalink ) {
+		return '';
+	}
+
+	$path      = trim( (string) wp_parse_url( $permalink, PHP_URL_PATH ), '/' );
+	$home_path = trim( (string) wp_parse_url( home_url( '/' ), PHP_URL_PATH ), '/' );
+
+	if ( '' !== $home_path && 0 === strpos( $path, $home_path . '/' ) ) {
+		$path = substr( $path, strlen( $home_path ) + 1 );
+	} elseif ( $path === $home_path ) {
+		$path = '';
+	}
+
+	return trim( (string) $path, '/' );
+}
+
+/**
+ * Return category/navigation pages that should canonicalize to guide pages.
+ *
+ * @return array<string, string>
+ */
+function kadence_mcprices_get_authority_guide_canonical_path_map() {
+	return array(
+		'menu'                    => '',
+		'menu/whats-new'         => 'limited-time-menu',
+		'menu/extra-value-meals' => 'extra-value-meals',
+		'menu/mcvalue-menu'      => 'mcdonalds-deals-mcvalue-guide',
+		'menu/breakfast-menu'    => 'breakfast-menu',
+		'menu/burgers-menu'      => 'burgers-menu',
+		'menu/chicken-fish'      => 'chicken-fish-menu',
+		'menu/mcnuggets-strips'  => 'nuggets-and-strips',
+		'menu/snack-wrap'        => 'snack-wrap',
+		'menu/fries-sides'       => 'fries-sides',
+		'menu/happy-meal'        => 'happy-meal-menu',
+		'menu/sweets-treats'     => 'sweets-treats',
+		'menu/mccafe-coffees'    => 'mccafe-menu',
+		'beverage-menu'          => 'menu/beverages-drinks',
+		'menu/sauces-condiments' => 'sauces-condiments',
+		'menu/deals-and-offers'  => 'mcdonalds-deals-mcvalue-guide',
+	);
+}
+
+/**
+ * Keep Rank Math canonical URLs portable between localhost and live.
+ *
+ * @param string $canonical Canonical URL.
+ * @return string
+ */
+function kadence_mcprices_filter_rank_math_canonical( $canonical ) {
+	$canonical = kadence_mcprices_normalize_runtime_url( $canonical );
+	$path      = kadence_mcprices_get_current_relative_page_path();
+	$map       = kadence_mcprices_get_authority_guide_canonical_path_map();
+
+	if ( '' !== $path && isset( $map[ $path ] ) ) {
+		$target_path = trim( (string) $map[ $path ], '/' );
+
+		return '' === $target_path ? home_url( '/' ) : home_url( '/' . $target_path . '/' );
+	}
+
+	return $canonical;
+}
+
+/**
  * Return the default social image URL for the current request.
  *
  * @return string
@@ -452,7 +556,10 @@ function kadence_mcprices_register_dynamic_meta_hooks() {
 	add_action( 'wp_head', 'kadence_mcprices_output_canonical_tag', 3 );
 	add_filter( 'rank_math/frontend/title', 'kadence_mcprices_filter_rank_math_title', 20 );
 	add_filter( 'rank_math/frontend/description', 'kadence_mcprices_filter_rank_math_description', 20 );
+	add_filter( 'rank_math/frontend/canonical', 'kadence_mcprices_filter_rank_math_canonical', 20 );
 	add_filter( 'rank_math/opengraph/facebook/image', 'kadence_mcprices_filter_rank_math_facebook_image' );
+	add_filter( 'rank_math/sitemap/exlude_posts_with_canonical_urls', '__return_true' );
+	add_filter( 'rank_math/sitemap/enable_caching', '__return_false' );
 }
 add_action( 'after_setup_theme', 'kadence_mcprices_register_dynamic_meta_hooks', 60 );
 add_action( 'wp_head', 'kadence_mcprices_output_favicon_fallback', 1 );

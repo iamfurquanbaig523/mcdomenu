@@ -1,114 +1,171 @@
 <?php
-define( 'WP_CACHE', true );
-
 /**
- * The base configuration for WordPress
+ * Environment-aware WordPress configuration for local, staging, and release
+ * directories.
  *
- * The wp-config.php creation script uses this file during the installation.
- * You don't have to use the web site, you can copy this file to "wp-config.php"
- * and fill in the values.
- *
- * This file contains the following configurations:
- *
- * * Database settings
- * * Secret keys
- * * Database table prefix
- * * Localized language
- * * ABSPATH
- *
- * @link https://wordpress.org/support/article/editing-wp-config-php/
+ * Production secrets should be supplied by the server environment or by a
+ * shared .env file symlinked into each immutable release.
  *
  * @package WordPress
  */
 
-// ** Database settings - You can get this info from your web host ** //
-/** The name of the database for WordPress */
-define( 'DB_NAME', 'mcmenu' );
-
-/** Database username */
-define( 'DB_USER', 'root' );
-
-/** Database password */
-define( 'DB_PASSWORD', '' );
-
-/** Database hostname */
-define( 'DB_HOST', 'localhost' );
-
-/** Database charset to use in creating database tables. */
-define( 'DB_CHARSET', 'utf8' );
-
-/** The database collate type. Don't change this if in doubt. */
-define( 'DB_COLLATE', '' );
-
-/**#@+
- * Authentication unique keys and salts.
- *
- * Change these to different unique phrases! You can generate these using
- * the {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key service}.
- *
- * You can change these at any point in time to invalidate all existing cookies.
- * This will force all users to have to log in again.
- *
- * @since 2.6.0
- */
-define( 'AUTH_KEY',          '6KQdl5oZ{_:A*xM13w4}t^R&p#{^V aKdBm&$TX (%|^Syx.uBf9G#wTqV{.]>T|' );
-define( 'SECURE_AUTH_KEY',   'yr##y}o#VEFT+8F8u]yx:%@&DCid:*PK(A0KW^r1l(_~QY3,-VrA/@_xaWfE>L[N' );
-define( 'LOGGED_IN_KEY',     '$Iz50V2+Oc`_>&9ZYn/>B94R!3x#.Jd(Umv|{$xVS)CG5/fB80|8<a-e(nq,,:hp' );
-define( 'NONCE_KEY',         '*{cPfn2V+1eT]4AEi*+K5Spi#+y!I1@.hPsK.?5LBr;L~7J!3J-;q0bMZaf%NCA6' );
-define( 'AUTH_SALT',         '!(|?MT1z+v>4CKJfhb:W]sdfn<;A.;365+o4spRm&}U(KRxpa4ZQwh L{woq~1Ah' );
-define( 'SECURE_AUTH_SALT',  'AV6b$qR-UTfY,YH.+9=8i~fPILR_MT#@`7g3I,7e8*:Qf*9eQz`XBlZtPP 4M.jt' );
-define( 'LOGGED_IN_SALT',    'f| 6VJdmH.3pCNY*6KJhghB  r)]ySL;J|JZxtC^uT,q%B;_GPuA D|m=~]@6vN~' );
-define( 'NONCE_SALT',        'ngi:DUNq>u=QZh#M=B<de?XT>t)q,/&9G_,UJnNiK WEw)]bJMbV0tRSl%`R ]S=' );
-define( 'WP_CACHE_KEY_SALT', 'Vp]oy[D_Ry!k1d.wmBk qB<<jIL.CHNa?vr@:sf)qqI]zp|=o,g!IX/0<duu+x~E' );
-
-
-/**#@-*/
-
 /**
- * WordPress database table prefix.
+ * Load simple KEY=value pairs without requiring Composer on production.
  *
- * You can have multiple installations in one database if you give each
- * a unique prefix. Only numbers, letters, and underscores please!
+ * @param string $path Environment file path.
+ * @return void
  */
-$table_prefix = 'wp_';
+function mcprices_config_load_env( $path ) {
+	if ( ! is_readable( $path ) ) {
+		return;
+	}
 
+	$lines = file( $path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES );
 
-/* Add any custom values between this line and the "stop editing" line. */
+	if ( ! is_array( $lines ) ) {
+		return;
+	}
 
-define( 'WP_HOME', 'http://localhost/wordpress' );
-define( 'WP_SITEURL', 'http://localhost/wordpress' );
+	foreach ( $lines as $line ) {
+		$line = trim( (string) $line );
 
-$mcprices_local_host = 'localhost';
+		if ( '' === $line || '#' === $line[0] || false === strpos( $line, '=' ) ) {
+			continue;
+		}
 
-if ( ! empty( $_SERVER['HTTP_HOST'] ) ) {
-	$mcprices_local_host = strtolower( preg_replace( '/:\d+$/', '', (string) $_SERVER['HTTP_HOST'] ) );
+		list( $key, $value ) = explode( '=', $line, 2 );
+		$key                = trim( $key );
+		$value              = trim( $value );
+
+		if ( '' === $key || preg_match( '/[^A-Z0-9_]/', $key ) ) {
+			continue;
+		}
+
+		$first = substr( $value, 0, 1 );
+		$last  = substr( $value, -1 );
+
+		if ( ( '"' === $first && '"' === $last ) || ( "'" === $first && "'" === $last ) ) {
+			$value = substr( $value, 1, -1 );
+		}
+
+		if ( false === getenv( $key ) ) {
+			putenv( $key . '=' . $value );
+			$_ENV[ $key ]    = $value;
+			$_SERVER[ $key ] = $value;
+		}
+	}
 }
 
-if ( in_array( $mcprices_local_host, array( 'localhost', '127.0.0.1', '::1' ), true ) ) {
-	define( 'WP_ENVIRONMENT_TYPE', 'local' );
-	define( 'DISABLE_WP_CRON', true );
+/**
+ * Return an environment value.
+ *
+ * @param string $key Environment key.
+ * @param mixed  $default Default value.
+ * @return mixed
+ */
+function mcprices_config_env( $key, $default = '' ) {
+	$value = getenv( $key );
+
+	return false === $value ? $default : $value;
 }
 
-
-
 /**
- * For developers: WordPress debugging mode.
+ * Return a boolean environment value.
  *
- * Change this to true to enable the display of notices during development.
- * It is strongly recommended that plugin and theme developers use WP_DEBUG
- * in their development environments.
- *
- * For information on other constants that can be used for debugging,
- * visit the documentation.
- *
- * @link https://wordpress.org/support/article/debugging-in-wordpress/
+ * @param string $key Environment key.
+ * @param bool   $default Default value.
+ * @return bool
  */
+function mcprices_config_bool( $key, $default = false ) {
+	$value = mcprices_config_env( $key, null );
+
+	if ( null === $value || '' === $value ) {
+		return (bool) $default;
+	}
+
+	return in_array( strtolower( (string) $value ), array( '1', 'true', 'yes', 'on' ), true );
+}
+
+$mcprices_env_file = mcprices_config_env( 'MCPRICES_ENV_FILE', __DIR__ . '/.env' );
+mcprices_config_load_env( $mcprices_env_file );
+
+define( 'WP_CACHE', mcprices_config_bool( 'WP_CACHE', true ) );
+
+define( 'DB_NAME', mcprices_config_env( 'DB_NAME', 'mcmenu' ) );
+define( 'DB_USER', mcprices_config_env( 'DB_USER', 'root' ) );
+define( 'DB_PASSWORD', mcprices_config_env( 'DB_PASSWORD', '' ) );
+define( 'DB_HOST', mcprices_config_env( 'DB_HOST', 'localhost' ) );
+define( 'DB_CHARSET', mcprices_config_env( 'DB_CHARSET', 'utf8' ) );
+define( 'DB_COLLATE', mcprices_config_env( 'DB_COLLATE', '' ) );
+
+define( 'AUTH_KEY', mcprices_config_env( 'AUTH_KEY', 'local-auth-key-change-me' ) );
+define( 'SECURE_AUTH_KEY', mcprices_config_env( 'SECURE_AUTH_KEY', 'local-secure-auth-key-change-me' ) );
+define( 'LOGGED_IN_KEY', mcprices_config_env( 'LOGGED_IN_KEY', 'local-logged-in-key-change-me' ) );
+define( 'NONCE_KEY', mcprices_config_env( 'NONCE_KEY', 'local-nonce-key-change-me' ) );
+define( 'AUTH_SALT', mcprices_config_env( 'AUTH_SALT', 'local-auth-salt-change-me' ) );
+define( 'SECURE_AUTH_SALT', mcprices_config_env( 'SECURE_AUTH_SALT', 'local-secure-auth-salt-change-me' ) );
+define( 'LOGGED_IN_SALT', mcprices_config_env( 'LOGGED_IN_SALT', 'local-logged-in-salt-change-me' ) );
+define( 'NONCE_SALT', mcprices_config_env( 'NONCE_SALT', 'local-nonce-salt-change-me' ) );
+define( 'WP_CACHE_KEY_SALT', mcprices_config_env( 'WP_CACHE_KEY_SALT', 'local-cache-key-salt-change-me' ) );
+
+$table_prefix = preg_replace( '/[^A-Za-z0-9_]/', '', (string) mcprices_config_env( 'DB_TABLE_PREFIX', 'wp_' ) );
+
+if ( '' === $table_prefix ) {
+	$table_prefix = 'wp_';
+}
+
+$mcprices_wp_home    = trim( (string) mcprices_config_env( 'WP_HOME', 'http://localhost/wordpress' ) );
+$mcprices_wp_siteurl = trim( (string) mcprices_config_env( 'WP_SITEURL', $mcprices_wp_home ) );
+
+if ( '' !== $mcprices_wp_home ) {
+	define( 'WP_HOME', $mcprices_wp_home );
+}
+
+if ( '' !== $mcprices_wp_siteurl ) {
+	define( 'WP_SITEURL', $mcprices_wp_siteurl );
+}
+
+$mcprices_environment = trim( (string) mcprices_config_env( 'WP_ENVIRONMENT_TYPE', '' ) );
+
+if ( '' === $mcprices_environment ) {
+	$mcprices_host = 'localhost';
+
+	if ( ! empty( $_SERVER['HTTP_HOST'] ) ) {
+		$mcprices_host = strtolower( preg_replace( '/:\d+$/', '', (string) $_SERVER['HTTP_HOST'] ) );
+	}
+
+	$mcprices_environment = in_array( $mcprices_host, array( 'localhost', '127.0.0.1', '::1' ), true ) ? 'local' : 'production';
+}
+
+if ( ! defined( 'WP_ENVIRONMENT_TYPE' ) ) {
+	define( 'WP_ENVIRONMENT_TYPE', $mcprices_environment );
+}
+
 if ( ! defined( 'WP_DEBUG' ) ) {
-	define( 'WP_DEBUG', false );
+	define( 'WP_DEBUG', mcprices_config_bool( 'WP_DEBUG', false ) );
 }
 
-define( 'FS_METHOD', 'direct' );
-define( 'WP_AUTO_UPDATE_CORE', 'minor' );
+if ( ! defined( 'DISABLE_WP_CRON' ) ) {
+	define( 'DISABLE_WP_CRON', mcprices_config_bool( 'DISABLE_WP_CRON', 'local' === $mcprices_environment ) );
+}
+
+if ( ! defined( 'DISALLOW_FILE_MODS' ) ) {
+	define( 'DISALLOW_FILE_MODS', mcprices_config_bool( 'DISALLOW_FILE_MODS', 'production' === $mcprices_environment ) );
+}
+
+if ( ! defined( 'AUTOMATIC_UPDATER_DISABLED' ) ) {
+	define( 'AUTOMATIC_UPDATER_DISABLED', mcprices_config_bool( 'AUTOMATIC_UPDATER_DISABLED', 'production' === $mcprices_environment ) );
+}
+
+$mcprices_auto_update_core = mcprices_config_env( 'WP_AUTO_UPDATE_CORE', 'minor' );
+
+if ( in_array( strtolower( (string) $mcprices_auto_update_core ), array( 'true', 'false' ), true ) ) {
+	$mcprices_auto_update_core = mcprices_config_bool( 'WP_AUTO_UPDATE_CORE', true );
+}
+
+define( 'FS_METHOD', mcprices_config_env( 'FS_METHOD', 'direct' ) );
+define( 'WP_AUTO_UPDATE_CORE', $mcprices_auto_update_core );
+
 /* That's all, stop editing! Happy publishing. */
 
 /** Absolute path to the WordPress directory. */

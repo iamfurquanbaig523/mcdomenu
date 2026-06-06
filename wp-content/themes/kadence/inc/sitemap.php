@@ -211,37 +211,10 @@ function kadence_mcprices_get_static_sitemap_entries() {
 	if ( ! kadence_mcprices_site_is_noindex() && ( ! $front_page instanceof WP_Post || ! kadence_mcprices_post_is_noindex( $front_page ) ) ) {
 		$static_urls = array(
 			array( home_url( '/' ), 'weekly', '1.0' ),
-			array( home_url( '/#full-menu' ), 'weekly', '1.0' ),
-			array( home_url( '/#deals' ), 'weekly', '1.0' ),
-			array( home_url( '/#blog' ), 'weekly', '1.0' ),
-		);
-
-		$category_urls = array(
-			home_url( '/#burgers' ),
-			home_url( '/#breakfast' ),
-			home_url( '/#mccafe' ),
-			home_url( '/#mcflurry' ),
-			home_url( '/#saver' ),
-			home_url( '/#nuggets' ),
-			home_url( '/#wraps' ),
-			home_url( '/#happy-meal' ),
-			home_url( '/#drinks' ),
-			home_url( '/#sides' ),
-			home_url( '/#desserts' ),
-			home_url( '/#salads' ),
-			home_url( '/#vegetarian' ),
-			home_url( '/#sharers' ),
-			home_url( '/#sauces' ),
-			home_url( '/#under400' ),
-			home_url( '/#whats-new' ),
 		);
 
 		foreach ( $static_urls as $static_url ) {
 			$entries[] = kadence_mcprices_build_sitemap_entry( $static_url[0], $home_lastmod, $static_url[1], $static_url[2] );
-		}
-
-		foreach ( $category_urls as $category_url ) {
-			$entries[] = kadence_mcprices_build_sitemap_entry( $category_url, $home_lastmod, 'weekly', '0.9' );
 		}
 	}
 

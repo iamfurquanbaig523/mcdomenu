@@ -1648,12 +1648,14 @@ body.mcprices-theme-active .entry-content p {
   transition: all 0.3s ease;
 }
 
-.mcprices-page .faq-item.open .faq-a {
+.mcprices-page .faq-item.open .faq-a,
+.mcprices-page .faq-item[open] .faq-a {
   max-height: 320px;
   padding: 0 20px 20px;
 }
 
-.mcprices-page .faq-item.open .faq-icon {
+.mcprices-page .faq-item.open .faq-icon,
+.mcprices-page .faq-item[open] .faq-icon {
   transform: rotate(45deg);
   color: var(--mc-red);
 }

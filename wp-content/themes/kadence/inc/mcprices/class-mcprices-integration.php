@@ -80,6 +80,11 @@ class McPrices_Integration {
 	const HOMEPAGE_PATTERN_SIGNATURE_OPTION = 'mcprices_homepage_pattern_signature';
 
 	/**
+	 * Option used to track the homepage featured image seeding pass.
+	 */
+	const HOMEPAGE_FEATURED_IMAGE_SEED_OPTION = 'mcprices_homepage_featured_image_seed_version';
+
+	/**
 	 * Option used to track the currently seeded menu signature.
 	 */
 	const MENU_SIGNATURE_OPTION = 'mcprices_menu_signature';
@@ -113,6 +118,16 @@ class McPrices_Integration {
 	 * Current Rank Math page/category SEO metadata seed version.
 	 */
 	const SEO_ENTITY_SEED_VERSION = '1.0.5';
+
+	/**
+	 * Option used to track the authority-focused SEO/AEO cleanup pass.
+	 */
+	const AUTHORITY_SEO_SEED_VERSION_OPTION = 'mcprices_authority_seo_seed_version';
+
+	/**
+	 * Current authority-focused SEO/AEO cleanup version.
+	 */
+	const AUTHORITY_SEO_SEED_VERSION = '1.0.2';
 
 	/**
 	 * Singleton instance.
@@ -162,6 +177,8 @@ class McPrices_Integration {
 		add_action( 'init', array( $this, 'maybe_seed_page_categories' ), 26 );
 		add_action( 'init', array( $this, 'maybe_schedule_managed_bootstrap' ), 40 );
 		add_action( 'init', array( $this, 'maybe_seed_rank_math_entity_meta' ), 50 );
+		add_action( 'init', array( $this, 'maybe_seed_authority_seo_meta' ), 52 );
+		add_action( 'init', array( $this, 'maybe_seed_homepage_featured_image' ), 55 );
 		add_action( 'init', array( $this, 'maybe_flush_pending_rewrite_rules' ), 99 );
 		add_action( 'mcprices_run_managed_bootstrap', array( $this, 'run_managed_bootstrap' ) );
 		add_action( 'wp_head', array( $this, 'render_homepage_meta_tags' ), 2 );
@@ -191,6 +208,21 @@ class McPrices_Integration {
 	 */
 	protected function design_enabled() {
 		return (bool) get_theme_mod( self::ENABLE_SETTING, true );
+	}
+
+	/**
+	 * Return whether canonical consolidation redirects should run.
+	 *
+	 * @return bool
+	 */
+	protected function canonical_redirects_enabled() {
+		if ( defined( 'MCPRICES_ENABLE_CANONICAL_REDIRECTS' ) ) {
+			return (bool) MCPRICES_ENABLE_CANONICAL_REDIRECTS;
+		}
+
+		$value = getenv( 'MCPRICES_ENABLE_CANONICAL_REDIRECTS' );
+
+		return false !== $value && in_array( strtolower( (string) $value ), array( '1', 'true', 'yes', 'on' ), true );
 	}
 
 	/**
@@ -300,6 +332,10 @@ class McPrices_Integration {
 		}
 
 		if ( self::SEO_ENTITY_SEED_VERSION !== (string) get_option( self::SEO_ENTITY_SEED_VERSION_OPTION, '' ) ) {
+			return true;
+		}
+
+		if ( self::AUTHORITY_SEO_SEED_VERSION !== (string) get_option( self::AUTHORITY_SEO_SEED_VERSION_OPTION, '' ) ) {
 			return true;
 		}
 
@@ -937,7 +973,6 @@ class McPrices_Integration {
 	 */
 	protected function get_rank_math_titles_seed() {
 		$current_year = $this->get_current_site_year();
-		$current_date = $this->get_current_site_date();
 
 		return array(
 			'title_separator'      => '|',
@@ -945,8 +980,8 @@ class McPrices_Integration {
 			'knowledgegraph_name'   => "McDonald's Menu Prices USA",
 			'knowledgegraph_type'   => 'person',
 			'local_business_type'   => 'Organization',
-			'homepage_title'        => "McDonald's Menu Prices USA {$current_year} | Full Price List & Calories",
-			'homepage_description'  => "Complete McDonald's USA menu prices updated {$current_date}. Find prices for burgers, breakfast, McCafe, drinks, McValue deals, McNuggets, Happy Meals, desserts, and combo meals in dollars.",
+			'homepage_title'        => "McDonald's Prices {$current_year} USA | Updated Menu Prices",
+			'homepage_description'  => "View the latest McDonald's prices in the USA, including burgers, breakfast, McCafe, Happy Meals, drinks, fries, desserts, combo meals, and value menu items.",
 			'pt_post_title'         => "%title% | McDonald's Menu Prices USA",
 			'pt_post_description'   => '%excerpt%',
 			'tax_category_title'    => "%term% Prices USA {$current_year} | McDonald's Menu Prices USA",
@@ -1134,7 +1169,7 @@ class McPrices_Integration {
 				),
 				'sitemap' => array(
 					'title'   => 'Sitemap',
-					'content' => '<!-- wp:paragraph --><p>Browse the main areas of McDonald&#8217;s Menu Prices USA below, or use the XML sitemap at <a href="' . esc_url( home_url( '/sitemap.xml' ) ) . '">' . esc_html( home_url( '/sitemap.xml' ) ) . '</a> for the crawler-friendly version.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>This HTML sitemap is meant to help both readers and crawlers understand the site hierarchy. The structure starts with the homepage and the main menu hub, then branches into category pages such as breakfast, burgers, chicken and fish, McCafe coffees, beverages, fries and sides, Happy Meal, deals, and sauces. From there, readers can move into exact item pages or sideways into broader support guides such as breakfast hours, calorie information, allergen guidance, delivery questions, and app-deal coverage.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>A clear sitemap matters because this site is intentionally built around semantic routing instead of one long unstructured article. Category pages act as pillar pages, item pages cover exact entity intent, and the long-form guides explain broader comparisons and FAQs. Keeping those layers visible in one place improves usability and helps search engines understand which URL should answer which type of query.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>If you are browsing manually, the sitemap can also act as a shortcut map for internal linking. It helps you jump from a broad menu cluster into the exact burger, breakfast, drink, dessert, fries, sauce, or deal page you actually need without guessing which route is shortest.</p><!-- /wp:paragraph --><!-- wp:shortcode -->[rank_math_html_sitemap]<!-- /wp:shortcode -->',
+					'content' => '<!-- wp:paragraph --><p>Browse the main areas of McDonald&#8217;s Menu Prices USA below, or use the XML sitemap at <a href="' . esc_url( home_url( '/sitemap.xml' ) ) . '">' . esc_html( home_url( '/sitemap.xml' ) ) . '</a> for the crawler-friendly version.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>This HTML sitemap is meant to help both readers and crawlers understand the site hierarchy. The structure starts with the homepage and the main menu hub, then branches into category pages such as breakfast, burgers, chicken and fish, McCafe coffees, beverages, fries and sides, Happy Meal, deals, and sauces. From there, readers can move into exact item pages or sideways into broader support guides such as breakfast hours, calorie information, allergen guidance, delivery questions, and app-deal coverage.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>A clear sitemap matters because this site is intentionally built around semantic routing instead of one long unstructured article. Category pages act as pillar pages, item pages cover exact entity intent, and the long-form guides explain broader comparisons and FAQs. Keeping those layers visible in one place improves usability and helps search engines understand which URL should answer which type of query.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>If you are browsing manually, the sitemap can also act as a shortcut map for internal linking. It helps you jump from a broad menu cluster into the exact burger, breakfast, drink, dessert, fries, sauce, or deal page you actually need without guessing which route is shortest.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>Additional support routes are also listed here for topical completeness: <a href="' . esc_url( home_url( '/dollar-menu/' ) ) . '">Dollar Menu</a>, <a href="' . esc_url( home_url( '/vegan-options/' ) ) . '">Vegan Options</a>, <a href="' . esc_url( home_url( '/big-mac-price-uk/' ) ) . '">Big Mac Price UK</a>, and <a href="' . esc_url( home_url( '/mcdvoice/' ) ) . '">McDVoice Survey</a>. These smaller guides sit outside the main USA menu branch, so the sitemap keeps them reachable without changing the homepage design.</p><!-- /wp:paragraph --><!-- wp:shortcode -->[rank_math_html_sitemap]<!-- /wp:shortcode -->',
 				),
 				'big-mac-price-usa' => array(
 					'title'   => 'Big Mac Price USA',
@@ -1532,7 +1567,7 @@ class McPrices_Integration {
 								),
 								array(
 									'label'       => 'Read the drinks menu prices pillar',
-									'url'         => $this->get_seeded_page_url( 'beverage-menu' ),
+									'url'         => $this->get_menu_category_page_url( 'beverages' ),
 									'description' => 'Use the drinks pillar when beverage calories are driving the decision.',
 								),
 							),
@@ -1855,7 +1890,7 @@ class McPrices_Integration {
 								),
 								array(
 									'label'       => 'Read the drinks menu prices pillar',
-									'url'         => $this->get_seeded_page_url( 'beverage-menu' ),
+									'url'         => $this->get_menu_category_page_url( 'beverages' ),
 									'description' => 'Beverages are one of the simplest plant-based research paths on the menu.',
 								),
 								array(
@@ -2236,6 +2271,13 @@ class McPrices_Integration {
 									),
 								),
 								array(
+									'heading'    => 'Holiday spotlight: McDonald\'s Grinch Meal',
+									'paragraphs' => array(
+										'The McDonald\'s Grinch Meal belongs in limited-time coverage because it is a holiday promotion built around a Big Mac or 10-piece Chicken McNuggets choice, Dill Pickle "Grinch Salt" McShaker Fries, a medium drink, and collectible Grinch socks at participating restaurants.',
+										'Use the dedicated McDonald\'s Grinch Meal guide when you want the full holiday-meal breakdown, then return to this limited-time menu page for the broader seasonal rotation.',
+									),
+								),
+								array(
 									'heading'    => 'How to compare a limited-time item with the regular menu',
 									'paragraphs' => array(
 										'Limited-time launches often create excitement, but the smart comparison is still against the core menu. A seasonal shake should be compared with the dessert category, and a short-run sandwich should be compared with the burger or chicken category it is actually competing with.',
@@ -2258,6 +2300,11 @@ class McPrices_Integration {
 								),
 							),
 							'related_links'  => array(
+								array(
+									'label'       => 'Read the McDonald\'s Grinch Meal guide',
+									'url'         => $this->get_seeded_page_url( 'mcdonalds-grinch-meal' ),
+									'description' => 'See what comes with the holiday Grinch Meal, how McShaker Fries work, and how to compare the bundle with regular menu items.',
+								),
 								array(
 									'label'       => 'Open the live what\'s-new category page',
 									'url'         => $this->get_menu_category_page_url( 'whats-new' ),
@@ -2288,6 +2335,10 @@ class McPrices_Integration {
 							),
 						)
 					),
+				),
+				'mcdonalds-grinch-meal' => array(
+					'title'   => 'McDonald\'s Grinch Meal',
+					'content' => $this->get_seeded_file_content( '/inc/mcprices/data/mcdonalds-grinch-meal-seeded-content.html' ),
 				),
 				'snack-wrap' => array(
 					'title'   => 'Snack Wrap',
@@ -2614,7 +2665,7 @@ class McPrices_Integration {
 								),
 								array(
 									'label'       => 'Read the drinks menu guide',
-									'url'         => $this->get_seeded_page_url( 'beverage-menu' ),
+									'url'         => $this->get_menu_category_page_url( 'beverages' ),
 									'description' => 'Helpful when beverages are driving the biggest calorie swing in the order.',
 								),
 								array(
@@ -2777,7 +2828,7 @@ class McPrices_Integration {
 								),
 								array(
 									'label'       => 'Read the drinks menu prices pillar',
-									'url'         => $this->get_seeded_page_url( 'beverage-menu' ),
+									'url'         => $this->get_menu_category_page_url( 'beverages' ),
 									'description' => 'Drinks often complete the group-order value comparison.',
 								),
 							),
@@ -3205,7 +3256,7 @@ class McPrices_Integration {
 							),
 							array(
 								'label'       => 'Open the beverages pillar',
-								'url'         => $this->get_seeded_page_url( 'beverage-menu' ),
+								'url'         => $this->get_menu_category_page_url( 'beverages' ),
 								'description' => 'Check drink choices that usually matter in a family order.',
 							),
 							array(
@@ -3332,7 +3383,7 @@ class McPrices_Integration {
 							),
 							array(
 								'label'       => 'Open the beverages pillar',
-								'url'         => $this->get_seeded_page_url( 'beverage-menu' ),
+								'url'         => $this->get_menu_category_page_url( 'beverages' ),
 								'description' => 'Compare McCafe coffee pricing against soft drinks, tea, juice, smoothies, and frozen drinks.',
 							),
 							array(
@@ -4089,7 +4140,7 @@ class McPrices_Integration {
 				'title' => "McDonald's McCafe Menu Prices USA",
 			),
 			'beverages'   => array(
-				'slug'  => 'beverage-menu',
+				'slug'  => 'menu/beverages-drinks',
 				'title' => "McDonald's Drinks Menu Prices USA",
 			),
 			'sauces'      => array(
@@ -4571,7 +4622,7 @@ class McPrices_Integration {
 			'paragraphs' => array(
 				'This menu hub is designed to help readers move from broad McDonald\'s USA menu intent into one live category page, then into one exact item page, without losing the wider context that makes the final order easier to judge.',
 				'Start with the category cards below when you want the current tracked menu view for breakfast, burgers, chicken and fish, fries and sides, McCafe coffees, drinks, Happy Meals, or extra value meals. Then open the item pages when you want one exact listing with price, calories, and related ordering context.',
-				'If you need longer explanations before comparing a live menu item, use the linked guide pages such as ' . $this->build_seed_text_link( $this->get_seeded_page_url( 'breakfast-menu' ), 'Breakfast Menu' ) . ', ' . $this->build_seed_text_link( $this->get_seeded_page_url( 'burgers-menu' ), 'Burgers Menu' ) . ', ' . $this->build_seed_text_link( $this->get_seeded_page_url( 'beverage-menu' ), 'Drinks Menu' ) . ', and the ' . $this->build_seed_text_link( $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ), 'Deals & McValue guide' ) . ' before returning to the live cards below.',
+				'If you need longer explanations before comparing a live menu item, use the linked guide pages such as ' . $this->build_seed_text_link( $this->get_seeded_page_url( 'breakfast-menu' ), 'Breakfast Menu' ) . ', ' . $this->build_seed_text_link( $this->get_seeded_page_url( 'burgers-menu' ), 'Burgers Menu' ) . ', ' . $this->build_seed_text_link( $this->get_menu_category_page_url( 'beverages' ), 'Drinks Menu' ) . ', and the ' . $this->build_seed_text_link( $this->get_seeded_page_url( 'mcdonalds-deals-mcvalue-guide' ), 'Deals & McValue guide' ) . ' before returning to the live cards below.',
 			),
 		);
 	}
@@ -6245,14 +6296,13 @@ class McPrices_Integration {
 		$titles = get_option( 'rank-math-options-titles', array() );
 		$titles = is_array( $titles ) ? $titles : array();
 		$current_year = $this->get_current_site_year();
-		$current_date = $this->get_current_site_date();
 
 		if ( self::RANK_MATH_SEED_VERSION === get_option( self::RANK_MATH_SEED_VERSION_OPTION, '' )
 			&& '1' === (string) get_option( 'rank_math_registration_skip', '' )
 			&& '1' === (string) get_option( 'rank_math_wizard_completed', '' )
 			&& '1' === (string) get_option( 'blog_public', '' )
-			&& "McDonald's Menu Prices USA {$current_year} | Full Price List & Calories" === ( $titles['homepage_title'] ?? '' )
-			&& "Complete McDonald's USA menu prices updated {$current_date}. Find prices for burgers, breakfast, McCafe, drinks, McValue deals, McNuggets, Happy Meals, desserts, and combo meals in dollars." === ( $titles['homepage_description'] ?? '' )
+			&& "McDonald's Prices {$current_year} USA | Updated Menu Prices" === ( $titles['homepage_title'] ?? '' )
+			&& "View the latest McDonald's prices in the USA, including burgers, breakfast, McCafe, Happy Meals, drinks, fries, desserts, combo meals, and value menu items." === ( $titles['homepage_description'] ?? '' )
 			&& "%title% | McDonald's Menu Prices USA" === ( $titles['pt_post_title'] ?? '' )
 			&& "%term% Prices USA {$current_year} | McDonald's Menu Prices USA" === ( $titles['tax_category_title'] ?? '' )
 			&& "Page Not Found | McDonald's Menu Prices USA" === ( $titles['404_title'] ?? '' ) ) {
@@ -6322,6 +6372,396 @@ class McPrices_Integration {
 		$this->seed_rank_math_category_entity_meta();
 
 		update_option( self::SEO_ENTITY_SEED_VERSION_OPTION, self::SEO_ENTITY_SEED_VERSION, false );
+	}
+
+	/**
+	 * Seed authority-focused Rank Math metadata and guide-page canonicals.
+	 *
+	 * This keeps guide URLs such as /breakfast-menu/ as the canonical article
+	 * destinations while preserving /menu/... pages for navigation.
+	 *
+	 * @return void
+	 */
+	public function maybe_seed_authority_seo_meta() {
+		if ( ! $this->design_enabled() ) {
+			return;
+		}
+
+		if ( self::AUTHORITY_SEO_SEED_VERSION === (string) get_option( self::AUTHORITY_SEO_SEED_VERSION_OPTION, '' ) ) {
+			return;
+		}
+
+		$meta_seed      = $this->get_authority_seo_page_meta_seed();
+		$canonical_map  = $this->get_authority_guide_canonical_path_map();
+		$published_pages = get_posts(
+			array(
+				'post_type'              => 'page',
+				'post_status'            => 'publish',
+				'posts_per_page'         => -1,
+				'orderby'                => 'ID',
+				'order'                  => 'ASC',
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+			)
+		);
+
+		foreach ( $published_pages as $post ) {
+			if ( ! $post instanceof \WP_Post ) {
+				continue;
+			}
+
+			$path = $this->get_post_site_relative_permalink_path( $post );
+
+			if ( isset( $meta_seed[ $path ] ) && is_array( $meta_seed[ $path ] ) ) {
+				$page_meta = $meta_seed[ $path ];
+
+				if ( ! empty( $page_meta['title'] ) ) {
+					update_post_meta( (int) $post->ID, 'rank_math_title', $this->limit_text_to_characters( (string) $page_meta['title'], 70 ) );
+				}
+
+				if ( ! empty( $page_meta['description'] ) ) {
+					update_post_meta( (int) $post->ID, 'rank_math_description', $this->limit_text_to_characters( (string) $page_meta['description'], 155 ) );
+				}
+
+				if ( ! empty( $page_meta['focus'] ) ) {
+					update_post_meta( (int) $post->ID, 'rank_math_focus_keyword', (string) $page_meta['focus'] );
+				}
+			}
+
+			$current_canonical = trim( (string) get_post_meta( (int) $post->ID, 'rank_math_canonical_url', true ) );
+			if ( '' !== $current_canonical ) {
+				update_post_meta( (int) $post->ID, 'rank_math_canonical_url', esc_url_raw( $this->normalize_homepage_runtime_urls( $current_canonical ) ) );
+			}
+
+			if ( isset( $canonical_map[ $path ] ) ) {
+				update_post_meta( (int) $post->ID, 'rank_math_canonical_url', esc_url_raw( $this->get_home_url_for_relative_path( (string) $canonical_map[ $path ] ) ) );
+				update_post_meta( (int) $post->ID, 'rank_math_robots', array( 'noindex', 'follow' ) );
+			}
+
+			$this->dedupe_rank_math_post_meta( (int) $post->ID );
+		}
+
+		update_option( self::AUTHORITY_SEO_SEED_VERSION_OPTION, self::AUTHORITY_SEO_SEED_VERSION, false );
+	}
+
+	/**
+	 * Keep one value per Rank Math meta key to avoid conflicting admin output.
+	 *
+	 * @param int $post_id Post ID.
+	 * @return void
+	 */
+	protected function dedupe_rank_math_post_meta( $post_id ) {
+		$post_id = absint( $post_id );
+
+		if ( ! $post_id ) {
+			return;
+		}
+
+		foreach ( array( 'rank_math_title', 'rank_math_description', 'rank_math_focus_keyword', 'rank_math_canonical_url', 'rank_math_robots' ) as $meta_key ) {
+			$values = get_post_meta( $post_id, $meta_key, false );
+
+			if ( count( $values ) <= 1 ) {
+				continue;
+			}
+
+			$value = end( $values );
+			delete_post_meta( $post_id, $meta_key );
+
+			if ( '' !== $value && null !== $value ) {
+				add_post_meta( $post_id, $meta_key, $value, true );
+			}
+		}
+	}
+
+	/**
+	 * Return site-relative URL path for a post permalink.
+	 *
+	 * @param \WP_Post $post Post object.
+	 * @return string
+	 */
+	protected function get_post_site_relative_permalink_path( \WP_Post $post ) {
+		$permalink = get_permalink( $post );
+
+		if ( ! is_string( $permalink ) || '' === $permalink ) {
+			return '';
+		}
+
+		$path      = trim( (string) wp_parse_url( $permalink, PHP_URL_PATH ), '/' );
+		$home_path = trim( (string) wp_parse_url( home_url( '/' ), PHP_URL_PATH ), '/' );
+
+		if ( '' !== $home_path && 0 === strpos( $path, $home_path . '/' ) ) {
+			$path = substr( $path, strlen( $home_path ) + 1 );
+		} elseif ( $path === $home_path ) {
+			$path = '';
+		}
+
+		return trim( (string) $path, '/' );
+	}
+
+	/**
+	 * Build a home URL from a site-relative path.
+	 *
+	 * @param string $path Site-relative URL path.
+	 * @return string
+	 */
+	protected function get_home_url_for_relative_path( $path ) {
+		$path = trim( (string) $path, '/' );
+
+		return '' === $path ? home_url( '/' ) : home_url( '/' . $path . '/' );
+	}
+
+	/**
+	 * Return category/navigation pages that should consolidate to guide pages.
+	 *
+	 * @return array<string, string>
+	 */
+	protected function get_authority_guide_canonical_path_map() {
+		return array(
+			'menu'                    => '',
+			'menu/whats-new'          => 'limited-time-menu',
+			'menu/extra-value-meals'  => 'extra-value-meals',
+			'menu/mcvalue-menu'       => 'mcdonalds-deals-mcvalue-guide',
+			'menu/breakfast-menu'     => 'breakfast-menu',
+			'menu/burgers-menu'       => 'burgers-menu',
+			'menu/chicken-fish'       => 'chicken-fish-menu',
+			'menu/mcnuggets-strips'   => 'nuggets-and-strips',
+			'menu/snack-wrap'         => 'snack-wrap',
+			'menu/fries-sides'        => 'fries-sides',
+			'menu/happy-meal'         => 'happy-meal-menu',
+			'menu/sweets-treats'      => 'sweets-treats',
+			'menu/mccafe-coffees'     => 'mccafe-menu',
+			'beverage-menu'           => 'menu/beverages-drinks',
+			'menu/sauces-condiments'  => 'sauces-condiments',
+			'menu/deals-and-offers'   => 'mcdonalds-deals-mcvalue-guide',
+		);
+	}
+
+	/**
+	 * Return curated metadata for authority and trust pages.
+	 *
+	 * @return array<string, array<string, string>>
+	 */
+	protected function get_authority_seo_page_meta_seed() {
+		$year = $this->get_current_site_year();
+
+		return array(
+			'breakfast-menu' => array(
+				'title'       => "McDonald's Breakfast Menu Prices USA {$year} | Calories & Hours",
+				'description' => "See McDonald's breakfast menu prices, calories, meal options, McMuffins, biscuits, hash browns, breakfast hours, and USA ordering notes.",
+				'focus'       => "McDonald's breakfast menu prices, McDonald's breakfast calories, McDonald's breakfast hours",
+			),
+			'burgers-menu' => array(
+				'title'       => "McDonald's Burger Menu Prices USA {$year} | Calories & Meals",
+				'description' => "Compare McDonald's burger menu prices, calories, meals, value picks, Big Mac, Quarter Pounder, McDouble, Cheeseburger, and USA ordering tips.",
+				'focus'       => "McDonald's burger menu prices, McDonald's burgers calories, Big Mac price",
+			),
+			'chicken-fish-menu' => array(
+				'title'       => "McDonald's Chicken & Fish Menu Prices USA {$year} | Calories",
+				'description' => "Compare McDonald's chicken and fish menu prices, calories, McCrispy sandwiches, McChicken, Filet-O-Fish, nuggets, meals, and value notes.",
+				'focus'       => "McDonald's chicken menu prices, McDonald's fish menu, McCrispy price",
+			),
+			'extra-value-meals' => array(
+				'title'       => "McDonald's Extra Value Meals Prices USA {$year} | Combos",
+				'description' => "Browse McDonald's Extra Value Meals prices, calories, combo options, breakfast meals, burger meals, McCrispy meals, nuggets meals, and value tips.",
+				'focus'       => "McDonald's Extra Value Meals prices, McDonald's combo meals, McDonald's meal calories",
+			),
+			'fries-sides' => array(
+				'title'       => "McDonald's Fries & Sides Prices USA {$year} | Calories",
+				'description' => "Check McDonald's fries and sides prices, calories, small, medium, and large fries, apple slices, hash browns, portions, and USA ordering notes.",
+				'focus'       => "McDonald's fries prices, McDonald's fries calories, McDonald's sides menu",
+			),
+			'happy-meal-menu' => array(
+				'title'       => "McDonald's Happy Meal Prices USA {$year} | Calories & Kids Meals",
+				'description' => "Review McDonald's Happy Meal prices, calories, kids meal choices, Hamburger Happy Meal, McNuggets Happy Meal, sides, drinks, and toys.",
+				'focus'       => "McDonald's Happy Meal prices, McDonald's kids meals, Happy Meal calories",
+			),
+			'mccafe-menu' => array(
+				'title'       => "McDonald's McCafe Menu Prices USA {$year} | Coffee Calories",
+				'description' => "Compare McDonald's McCafe coffee prices, calories, iced coffee, lattes, frappes, smoothies, sizes, flavors, and USA drink ordering notes.",
+				'focus'       => "McDonald's McCafe menu prices, McCafe coffee calories, McDonald's iced coffee prices",
+			),
+			'beverage-menu' => array(
+				'title'       => "McDonald's Drinks Menu Prices USA {$year} | Beverages & Calories",
+				'description' => "Browse McDonald's drinks menu prices, calories, soft drinks, frozen drinks, teas, smoothies, McCafe drinks, sizes, and current USA options.",
+				'focus'       => "McDonald's drinks menu prices, McDonald's beverages calories, McDonald's drink sizes",
+			),
+			'sweets-treats' => array(
+				'title'       => "McDonald's Desserts Menu Prices USA {$year} | Sweets & Calories",
+				'description' => "Compare McDonald's desserts prices, calories, McFlurry, shakes, vanilla cone, apple pie, cookies, sizes, and USA sweets menu options.",
+				'focus'       => "McDonald's desserts prices, McDonald's McFlurry calories, McDonald's sweets menu",
+			),
+			'sauces-condiments' => array(
+				'title'       => "McDonald's Sauces Prices USA {$year} | Condiments & Calories",
+				'description' => "Check McDonald's sauces and condiments prices, calories, dipping sauce options, ketchup, barbecue, ranch, buffalo, and ordering notes.",
+				'focus'       => "McDonald's sauces prices, McDonald's condiments, McDonald's dipping sauces",
+			),
+			'nuggets-and-strips' => array(
+				'title'       => "McDonald's McNuggets & Strips Prices USA {$year} | Calories",
+				'description' => "Compare McDonald's McNuggets and McCrispy Strips prices, calories, 4 pc, 6 pc, 10 pc, 20 pc, 40 pc, meals, sauces, and value choices.",
+				'focus'       => "McDonald's nuggets prices, McNuggets calories, McCrispy Strips price",
+			),
+			'snack-wrap' => array(
+				'title'       => "McDonald's Snack Wrap Prices USA {$year} | Calories & Meals",
+				'description' => "Review McDonald's Snack Wrap prices, calories, crispy chicken wrap choices, meal options, sauces, value comparisons, and USA menu notes.",
+				'focus'       => "McDonald's Snack Wrap prices, Snack Wrap calories, McDonald's Snack Wrap meal",
+			),
+			'mcdonalds-deals-mcvalue-guide' => array(
+				'title'       => "McDonald's Deals & McValue Guide USA {$year} | Offers & Prices",
+				'description' => "Track McDonald's deals, McValue offers, meal deals, app offers, buy-one-add-one promos, value menu prices, and current USA savings notes.",
+				'focus'       => "McDonald's deals, McDonald's McValue, McDonald's app offers",
+			),
+			'limited-time-menu' => array(
+				'title'       => "McDonald's Limited-Time Menu USA {$year} | New Items & Prices",
+				'description' => "Follow McDonald's limited-time menu items, seasonal meals, new releases, prices, calories, availability notes, and related USA menu updates.",
+				'focus'       => "McDonald's limited time menu, McDonald's new menu items, McDonald's seasonal meals",
+			),
+			'budget-finder' => array(
+				'title'       => "Budget Meal Finder | McDonald's Prices Under $5, $8 & $10",
+				'description' => "Use the McDonald's Budget Meal Finder to compare tracked USA menu items by price, calories, category, and value under common spending limits.",
+				'focus'       => "McDonald's budget meal finder, McDonald's meals under $5, McDonald's value meals",
+			),
+			'calorie-calculator' => array(
+				'title'       => "McDonald's Meal Calorie Builder | Calories & Cost Calculator",
+				'description' => "Build a McDonald's meal, add menu items, and estimate total calories, item count, and current tracked USA menu cost before ordering.",
+				'focus'       => "McDonald's calorie calculator, McDonald's meal builder, McDonald's calories and prices",
+			),
+			'compare-items' => array(
+				'title'       => "Compare McDonald's Menu Items | Price, Calories & Value",
+				'description' => "Compare McDonald's menu items side by side by price, calories, category, protein where available, and value score for easier USA ordering.",
+				'focus'       => "compare McDonald's menu items, McDonald's price comparison, McDonald's calorie comparison",
+			),
+			'about' => array(
+				'title'       => "About McDonald's Menu Prices USA | Independent Price Guide",
+				'description' => "Learn how McDonald's Menu Prices USA organizes independent menu price, calorie, deal, and category guide information for readers.",
+				'focus'       => "about McDonald's Menu Prices USA",
+			),
+			'contact' => array(
+				'title'       => "Contact McDonald's Menu Prices USA | Corrections & Questions",
+				'description' => "Contact McDonald's Menu Prices USA for corrections, update requests, source questions, editorial feedback, and site-related inquiries.",
+				'focus'       => "contact McDonald's Menu Prices USA",
+			),
+			'pricing-methodology' => array(
+				'title'       => "How We Track McDonald's Prices | Methodology & Updates",
+				'description' => "See how McDonald's Menu Prices USA reviews prices, calories, updates, source notes, regional variation, editorial checks, and corrections.",
+				'focus'       => "McDonald's price methodology, McDonald's menu price updates",
+			),
+			'disclaimer' => array(
+				'title'       => "Disclaimer | McDonald's Menu Prices USA",
+				'description' => "Read the McDonald's Menu Prices USA disclaimer covering independent publication status, price variation, menu changes, and ordering limits.",
+				'focus'       => "McDonald's Menu Prices USA disclaimer",
+			),
+			'ad-disclosure' => array(
+				'title'       => "Ad Disclosure | McDonald's Menu Prices USA",
+				'description' => "Read the advertising disclosure for McDonald's Menu Prices USA, including how ads or affiliate-style placements may be handled.",
+				'focus'       => "ad disclosure McDonald's Menu Prices USA",
+			),
+			'privacy-policy' => array(
+				'title'       => "Privacy Policy | McDonald's Menu Prices USA",
+				'description' => "Review the privacy policy for McDonald's Menu Prices USA, including site data, cookies, analytics, advertising, and user privacy notes.",
+				'focus'       => "privacy policy McDonald's Menu Prices USA",
+			),
+			'cookie-policy' => array(
+				'title'       => "Cookie Policy | McDonald's Menu Prices USA",
+				'description' => "Review the cookie policy for McDonald's Menu Prices USA, including analytics, advertising, preference cookies, and browser controls.",
+				'focus'       => "cookie policy McDonald's Menu Prices USA",
+			),
+			'sitemap' => array(
+				'title'       => "HTML Sitemap | McDonald's Menu Prices USA",
+				'description' => "Use the McDonald's Menu Prices USA HTML sitemap to find menu hubs, item pages, price guides, calorie pages, tools, and trust pages.",
+				'focus'       => "McDonald's Menu Prices USA sitemap",
+			),
+			'mcdonalds-app-deals' => array(
+				'title'       => "McDonald's App Deals USA {$year} | Offers, Rewards & Value",
+				'description' => "Review McDonald's app deals, rewards, digital offers, McValue promos, delivery notes, and ways to compare savings against menu prices.",
+				'focus'       => "McDonald's app deals, McDonald's rewards, McDonald's offers",
+			),
+			'calorie-counter' => array(
+				'title'       => "McDonald's Calorie Counter USA {$year} | Menu Nutrition Guide",
+				'description' => "Use the McDonald's calorie counter guide to compare menu calories, meal choices, drinks, desserts, breakfast, burgers, and lighter options.",
+				'focus'       => "McDonald's calorie counter, McDonald's menu calories",
+			),
+			'breakfast-times' => array(
+				'title'       => "McDonald's Breakfast Times USA {$year} | Hours & Menu Notes",
+				'description' => "Check McDonald's breakfast times, common serving windows, all-day breakfast notes, menu availability, and links to breakfast prices.",
+				'focus'       => "McDonald's breakfast times, McDonald's breakfast hours",
+			),
+			'breakfast-hours' => array(
+				'title'       => "McDonald's Breakfast Hours USA {$year} | Start & End Times",
+				'description' => "Find McDonald's breakfast hours, common start and end times, weekend notes, location variation, and links to breakfast menu prices.",
+				'focus'       => "McDonald's breakfast hours, McDonald's breakfast time",
+			),
+			'allergen-guide' => array(
+				'title'       => "McDonald's Allergen Guide USA {$year} | Menu Safety Notes",
+				'description' => "Review McDonald's allergen guide notes, menu cross-contact reminders, official source links, and item-level price and calorie context.",
+				'focus'       => "McDonald's allergen guide, McDonald's allergens",
+			),
+			'price-history' => array(
+				'title'       => "McDonald's Price History USA {$year} | Menu Price Trends",
+				'description' => "Explore McDonald's price history, menu price changes, value trends, category comparisons, and how current USA prices are tracked.",
+				'focus'       => "McDonald's price history, McDonald's menu price trends",
+			),
+			'vegan-options' => array(
+				'title'       => "McDonald's Vegan Options USA {$year} | Menu Notes",
+				'description' => "Review McDonald's vegan options, plant-based ordering limits, ingredient cautions, fries notes, drinks, sauces, and official source reminders.",
+				'focus'       => "McDonald's vegan options, McDonald's vegan menu",
+			),
+			'mcdelivery-guide' => array(
+				'title'       => "McDelivery Guide USA {$year} | Delivery Prices & Menu Notes",
+				'description' => "Read the McDelivery guide for delivery menu prices, fees, app ordering, availability, McDonald's delivery partners, and value tips.",
+				'focus'       => "McDelivery guide, McDonald's delivery prices",
+			),
+			'delivery-guide' => array(
+				'title'       => "McDonald's Delivery Guide USA {$year} | Apps, Fees & Prices",
+				'description' => "Compare McDonald's delivery options, app ordering, delivery fees, menu price variation, availability, and links to McDelivery guidance.",
+				'focus'       => "McDonald's delivery guide, McDonald's delivery fees",
+			),
+			'rewards-guide' => array(
+				'title'       => "McDonald's Rewards Guide USA {$year} | Points, Deals & App",
+				'description' => "Use the McDonald's rewards guide to understand app points, rewards, deals, value comparisons, and how offers affect menu pricing.",
+				'focus'       => "McDonald's rewards guide, McDonald's rewards points",
+			),
+			'mcdonalds-nutrition-calories-allergens' => array(
+				'title'       => "McDonald's Nutrition, Calories & Allergens USA {$year}",
+				'description' => "Compare McDonald's nutrition, calories, allergen notes, official source links, category guides, item pages, and healthier ordering context.",
+				'focus'       => "McDonald's nutrition, McDonald's calories, McDonald's allergens",
+			),
+			'mcdonalds-prices-by-state' => array(
+				'title'       => "McDonald's Prices by State USA {$year} | Regional Variation",
+				'description' => "Understand McDonald's prices by state, regional variation, local store differences, app offers, delivery pricing, and menu price examples.",
+				'focus'       => "McDonald's prices by state, McDonald's regional prices",
+			),
+			'dollar-menu' => array(
+				'title'       => "McDonald's $1 $2 $3 Menu USA {$year} | Value Prices",
+				'description' => "Review McDonald's $1 $2 $3 menu and McValue-style options, value meals, low-cost items, current prices, and savings notes.",
+				'focus'       => "McDonald's dollar menu, McDonald's value menu",
+			),
+			'shareables-bundles' => array(
+				'title'       => "McDonald's Shareables & Bundles USA {$year} | Prices",
+				'description' => "Compare McDonald's shareables and bundles, group-order options, prices, calories, value comparisons, and current USA menu context.",
+				'focus'       => "McDonald's shareables, McDonald's bundles",
+			),
+			'big-mac-price-usa' => array(
+				'title'       => "Big Mac Price USA {$year} | Calories, Meal Cost & Value",
+				'description' => "Check the Big Mac price in the USA, calories, meal price context, value comparisons, burger category links, and current menu notes.",
+				'focus'       => "Big Mac price USA, Big Mac calories, Big Mac meal price",
+			),
+			'big-mac-price-uk' => array(
+				'title'       => "Big Mac Price UK {$year} | Comparison & Menu Context",
+				'description' => "Review Big Mac price UK context, comparison notes, calories, meal information, and how it differs from McDonald's USA menu pricing.",
+				'focus'       => "Big Mac price UK, McDonald's UK Big Mac price",
+			),
+			'mcdonalds-grinch-meal' => array(
+				'title'       => "McDonald's Grinch Meal USA | Limited-Time Menu Guide",
+				'description' => "Read the McDonald's Grinch Meal guide with availability notes, limited-time menu context, price expectations, calories, and related deals.",
+				'focus'       => "McDonald's Grinch Meal, Grinch Meal McDonald's",
+			),
+			'mcdvoice' => array(
+				'title'       => "McDVoice Survey Guide USA | McDonald's Feedback & Rewards",
+				'description' => "Learn about the McDVoice survey, official McDonald's feedback path, receipt survey notes, reward expectations, and related menu price links.",
+				'focus'       => "McDVoice survey, McDonald's feedback survey, McDonald's survey reward",
+			),
+		);
 	}
 
 	/**
@@ -6588,7 +7028,7 @@ class McPrices_Integration {
 	 * @return string
 	 */
 	protected function get_canonical_url_for_post( \WP_Post $post ) {
-		if ( 'sample-page' === (string) $post->post_name ) {
+		if ( in_array( (string) $post->post_name, array( 'sample-page', 'test' ), true ) ) {
 			return home_url( '/' );
 		}
 
@@ -6596,6 +7036,13 @@ class McPrices_Integration {
 
 		if ( $duplicate_target instanceof \WP_Post ) {
 			return (string) get_permalink( $duplicate_target );
+		}
+
+		$post_path     = $this->get_post_site_relative_permalink_path( $post );
+		$canonical_map = $this->get_authority_guide_canonical_path_map();
+
+		if ( '' !== $post_path && isset( $canonical_map[ $post_path ] ) ) {
+			return $this->get_home_url_for_relative_path( (string) $canonical_map[ $post_path ] );
 		}
 
 		$managed_type = (string) get_post_meta( (int) $post->ID, '_mcprices_managed_page', true );
@@ -6938,6 +7385,117 @@ class McPrices_Integration {
 		$homepage_pattern = require get_theme_file_path( '/inc/mcprices/pattern-homepage.php' );
 
 		return is_string( $homepage_pattern ) ? $homepage_pattern : '';
+	}
+
+	/**
+	 * Seed the homepage featured image from the theme asset once per install.
+	 *
+	 * @return void
+	 */
+	public function maybe_seed_homepage_featured_image() {
+		if ( '1.0.0' === (string) get_option( self::HOMEPAGE_FEATURED_IMAGE_SEED_OPTION, '' ) ) {
+			return;
+		}
+
+		$front_page_id = (int) get_option( 'page_on_front' );
+		if ( ! $front_page_id || 'page' !== get_post_type( $front_page_id ) ) {
+			return;
+		}
+
+		$source_path = get_theme_file_path( '/assets/images/mcprices/homepage/mcdonalds-menu-prices-usa-featured.png' );
+		if ( ! is_string( $source_path ) || ! file_exists( $source_path ) ) {
+			return;
+		}
+
+		$attachment_id = $this->get_seeded_homepage_featured_image_attachment_id();
+
+		if ( ! $attachment_id ) {
+			$attachment_id = $this->create_homepage_featured_image_attachment( $source_path, $front_page_id );
+		}
+
+		if ( ! $attachment_id ) {
+			return;
+		}
+
+		update_post_meta( $attachment_id, '_wp_attachment_image_alt', "Mcdonald's menu prices USA" );
+		update_post_meta( $attachment_id, '_mcprices_homepage_featured_image', '1' );
+		set_post_thumbnail( $front_page_id, $attachment_id );
+		update_option( self::HOMEPAGE_FEATURED_IMAGE_SEED_OPTION, '1.0.0', false );
+	}
+
+	/**
+	 * Return the seeded homepage featured image attachment, if it exists.
+	 *
+	 * @return int
+	 */
+	protected function get_seeded_homepage_featured_image_attachment_id() {
+		$attachments = get_posts(
+			array(
+				'post_type'              => 'attachment',
+				'post_status'            => 'inherit',
+				'posts_per_page'         => 1,
+				'fields'                 => 'ids',
+				'meta_key'               => '_mcprices_homepage_featured_image',
+				'meta_value'             => '1',
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+			)
+		);
+
+		return ! empty( $attachments[0] ) ? (int) $attachments[0] : 0;
+	}
+
+	/**
+	 * Create a Media Library attachment for the homepage featured image.
+	 *
+	 * @param string $source_path   Theme asset source path.
+	 * @param int    $front_page_id Front page ID.
+	 * @return int
+	 */
+	protected function create_homepage_featured_image_attachment( $source_path, $front_page_id ) {
+		$uploads = wp_upload_dir();
+
+		if ( ! empty( $uploads['error'] ) || empty( $uploads['path'] ) || empty( $uploads['url'] ) ) {
+			return 0;
+		}
+
+		$filename      = wp_unique_filename( $uploads['path'], 'mcdonalds-menu-prices-usa-featured.png' );
+		$target_path   = trailingslashit( $uploads['path'] ) . $filename;
+		$target_url    = trailingslashit( $uploads['url'] ) . $filename;
+		$copy_complete = copy( $source_path, $target_path );
+
+		if ( ! $copy_complete || ! file_exists( $target_path ) ) {
+			return 0;
+		}
+
+		$filetype = wp_check_filetype( $target_path );
+		$mime     = ! empty( $filetype['type'] ) ? $filetype['type'] : 'image/png';
+
+		$attachment_id = wp_insert_attachment(
+			array(
+				'guid'           => $target_url,
+				'post_mime_type' => $mime,
+				'post_title'     => "Mcdonald's menu prices USA",
+				'post_content'   => '',
+				'post_status'    => 'inherit',
+			),
+			$target_path,
+			$front_page_id
+		);
+
+		if ( is_wp_error( $attachment_id ) || ! $attachment_id ) {
+			return 0;
+		}
+
+		require_once ABSPATH . 'wp-admin/includes/image.php';
+
+		$metadata = wp_generate_attachment_metadata( (int) $attachment_id, $target_path );
+		if ( is_array( $metadata ) ) {
+			wp_update_attachment_metadata( (int) $attachment_id, $metadata );
+		}
+
+		return (int) $attachment_id;
 	}
 
 	/**
@@ -8194,7 +8752,7 @@ class McPrices_Integration {
 								</div>
 								<div class="card-footer">
 									<a class="btn-card" href="<?php echo esc_url( $this->get_menu_category_page_url( $category['id'] ) ); ?>">Back to <?php echo esc_html( $category['card_title'] ); ?></a>
-									<a class="btn-card" href="<?php echo esc_url( home_url( '/#full-menu' ) ); ?>">View full menu</a>
+									<a class="btn-card" href="<?php echo esc_url( home_url( '/' ) ); ?>">View full menu</a>
 								</div>
 							</div>
 						</div>
@@ -8380,7 +8938,7 @@ class McPrices_Integration {
 			<div class="mcprices-tool-banner">
 				<div class="mcprices-tool-banner__content">
 					<div class="mcprices-tool-eyebrow">Budget-first ordering</div>
-					<h2 class="mcprices-tool-title">Find the best meal under your target spend</h2>
+					<h3 class="mcprices-tool-title">Find the best meal under your target spend</h3>
 					<p class="mcprices-tool-copy">Tap a budget and the tool pulls the strongest current tracked options by calories-per-dollar value, while keeping a direct path back to each live item page.</p>
 				</div>
 			</div>
@@ -8410,7 +8968,7 @@ class McPrices_Integration {
 			<div class="mcprices-tool-banner">
 				<div class="mcprices-tool-banner__content">
 					<div class="mcprices-tool-eyebrow">Build your order</div>
-					<h2 class="mcprices-tool-title">Add items and track total calories plus cost</h2>
+					<h3 class="mcprices-tool-title">Add items and track total calories plus cost</h3>
 					<p class="mcprices-tool-copy">Search the current tracked McDonald&rsquo;s USA catalog, add the items you want, and watch the estimated spend and calories update in real time.</p>
 				</div>
 			</div>
@@ -8459,7 +9017,7 @@ class McPrices_Integration {
 			<div class="mcprices-tool-banner">
 				<div class="mcprices-tool-banner__content">
 					<div class="mcprices-tool-eyebrow">Side-by-side comparison</div>
-					<h2 class="mcprices-tool-title">Compare menu items before you order</h2>
+					<h3 class="mcprices-tool-title">Compare menu items before you order</h3>
 					<p class="mcprices-tool-copy">Choose two to four live tracked items and the tool highlights price, calories, and simple value signals in one clean comparison grid.</p>
 				</div>
 			</div>
@@ -8557,10 +9115,7 @@ class McPrices_Integration {
 		}
 
 		$content = $this->replace_dynamic_date_strings( $content );
-
-		if ( is_front_page() ) {
-			$content = $this->normalize_homepage_runtime_urls( $content );
-		}
+		$content = $this->normalize_homepage_runtime_urls( $content );
 
 		if ( is_front_page() && false !== strpos( (string) $content, 'data-mcprices-hero-search-placeholder="1"' ) ) {
 			$content = preg_replace(
@@ -8694,7 +9249,7 @@ class McPrices_Integration {
 				esc_url( home_url( '/delivery-guide/' ) ),
 				esc_url( home_url( '/breakfast-menu/' ) ),
 				esc_url( home_url( '/burgers-menu/' ) ),
-				esc_url( home_url( '/beverage-menu/' ) ),
+				esc_url( home_url( '/menu/beverages-drinks/' ) ),
 				esc_url( home_url( '/mcdonalds-deals-mcvalue-guide/' ) )
 			),
 		);
@@ -9420,7 +9975,7 @@ class McPrices_Integration {
 	 * @return string
 	 */
 	protected function get_homepage_primary_keyword() {
-		return "McDonald's Menu Prices USA " . $this->get_current_site_year();
+		return "McDonald's Prices USA " . $this->get_current_site_year();
 	}
 
 	/**
@@ -9447,7 +10002,7 @@ class McPrices_Integration {
 	 * @return string
 	 */
 	protected function get_homepage_meta_title() {
-		return $this->get_homepage_primary_keyword() . ' | Full Price List & Calories';
+		return "McDonald's Prices " . $this->get_current_site_year() . ' USA | Updated Menu Prices';
 	}
 
 	/**
@@ -9456,7 +10011,7 @@ class McPrices_Integration {
 	 * @return string
 	 */
 	protected function get_homepage_meta_description() {
-		return "Complete McDonald's USA menu prices updated " . $this->get_current_site_date() . '. Find prices for burgers, breakfast, McCafe, drinks, McValue deals, McNuggets, Happy Meals, desserts, and combo meals in dollars.';
+		return "View the latest McDonald's prices in the USA, including burgers, breakfast, McCafe, Happy Meals, drinks, fries, desserts, combo meals, and value menu items.";
 	}
 
 	/**
@@ -9643,40 +10198,66 @@ class McPrices_Integration {
 	 * @return array
 	 */
 	protected function get_homepage_faq_schema_items() {
-		$current_date = $this->get_current_site_date();
-
 		return array(
 			array(
-				'question' => 'How much is a Big Mac in the USA?',
-				'answer'   => 'The current USA menu data on this site lists the Big Mac at $5.99 on the core burger menu. Local restaurant, app, tax, and delivery pricing can still change the final total.',
+				'question' => 'Are McDonald\'s prices the same at every location?',
+				'answer'   => 'No. McDonald\'s prices can vary by city, franchise, taxes, app offers, delivery markups, and restaurant format. A Big Mac, breakfast meal, or McValue deal can cost more in airports, downtown stores, or delivery apps than at a standard local restaurant.',
 			),
 			array(
-				'question' => 'What is on the McValue menu right now?',
-				'answer'   => 'The current McValue lineup includes $5 McChicken and McDouble meal deals, an about-$6 Daily Double meal deal, breakfast buy one add one for $1 items like Sausage Biscuit and Hash Browns, lunch and dinner add-on picks like McChicken, Double Cheeseburger, 6 pc McNuggets, Small Fries, plus mini McFlurry treats.',
+				'question' => 'Where can I find McDonald\'s menu prices in the USA?',
+				'answer'   => 'This homepage works as a McDonald\'s menu with prices for the USA. Use the category sections for breakfast, burgers, McCafe, Happy Meals, fries, desserts, drinks, sauces, combo meals, and deals, then open the matching guide or item page when you want a closer comparison.',
 			),
 			array(
-				'question' => 'How much is a Happy Meal in the USA?',
-				'answer'   => 'This USA update lists Hamburger Happy Meal at about $5.89, 4 pc McNuggets Happy Meal at about $6.19, and 6 pc McNuggets Happy Meal at about $7.29.',
+				'question' => 'Why are McDonald\'s delivery prices sometimes higher?',
+				'answer'   => 'McDonald\'s delivery prices are often higher because the final total can include delivery menu pricing, service fees, small-order fees, taxes, and platform markups. If you are comparing value, check the in-store price, pickup price, and delivery checkout before you order.',
 			),
 			array(
-				'question' => 'What time does McDonald\'s serve breakfast in the USA?',
-				'answer'   => 'The attached breakfast data notes that breakfast is typically served until 10:30 AM on weekdays and 11:00 AM on weekends, although exact cutoffs can vary by restaurant.',
+				'question' => 'What time does McDonald\'s stop serving breakfast?',
+				'answer'   => 'Most McDonald\'s locations stop breakfast around 10:30 AM on weekdays and around 11:00 AM on weekends, but that is not universal. Local breakfast cut-off times, item availability, and 24-hour store rules can differ, so the McDonald\'s app or your restaurant is the best final check.',
 			),
 			array(
-				'question' => 'How many calories are in McDonald\'s large fries?',
-				'answer'   => 'Large World Famous Fries are listed at 480 calories in the current USA menu data on this site.',
+				'question' => 'Does McDonald\'s have different prices for breakfast, lunch, and dinner?',
+				'answer'   => 'Yes. Breakfast, lunch, and dinner menus use different items, meal bundles, and availability windows, so prices naturally differ across dayparts. Egg McMuffins, McGriddles, burgers, McNuggets, and combo meals are priced within their own menu sections rather than one flat all-day price list.',
 			),
 			array(
-				'question' => 'Does McDonald\'s USA have a vegan burger?',
-				'answer'   => 'This USA menu build does not currently show a national vegan burger on the main McDonald\'s USA lineup. Most location coverage is centered on burgers, chicken, breakfast, fries, coffee, and desserts.',
+				'question' => 'How can I get McDonald\'s deals or coupons?',
+				'answer'   => 'The McDonald\'s app is usually the best source for current deals, coupons, and rewards because many offers are app-exclusive or account-specific. A $5 meal deal, buy-one-add-one offer, free fries promotion, or points reward may be available at one restaurant but not another.',
 			),
 			array(
-				'question' => 'How much is a McFlurry in the USA?',
-				'answer'   => 'The current USA sweets data lists a regular OREO McFlurry at $5.59, a regular M&M\'s McFlurry at $5.59, and mini McFlurry options at $3.19 in the McValue section.',
+				'question' => 'What is McValue at McDonald\'s?',
+				'answer'   => 'McValue is McDonald\'s value platform for lower-cost ordering, combining meal deals, entry-price items, add-on offers, and app savings. It is useful when you want to compare whether a McChicken, McDouble, small fries, nuggets, breakfast item, or mini dessert gives the best value for the money.',
 			),
 			array(
-				'question' => 'What is the cheapest item on the McDonald\'s USA menu?',
-				'answer'   => 'The lowest paid items in the current USA menu data on this site are Vanilla Cone at $1.29 and the Honest Kids Appley Ever After juice box at $1.29, followed by several $1.69 drink options.',
+				'question' => 'How often are McDonald\'s menu prices updated on this site?',
+				'answer'   => 'This site reviews McDonald\'s menu prices when menu data, app offers, seasonal products, limited-time meals, or category changes are added. Because restaurant prices can change faster than a public guide, use these prices for planning and then confirm the live total before checkout.',
+			),
+			array(
+				'question' => 'Where can I find McDonald\'s calories, ingredients, and allergen information?',
+				'answer'   => 'You can use this site for a quick calorie reference, but the official McDonald\'s nutrition tools remain the best place to verify calories, ingredients, allergens, and customization effects. That matters most for dairy, egg, wheat, soy, fish, peanut, tree nut, or other allergy-related decisions.',
+			),
+			array(
+				'question' => 'Why do McDonald\'s prices vary by location?',
+				'answer'   => 'McDonald\'s prices vary by location because franchise operators, labor costs, rent, taxes, local competition, delivery fees, and store format all affect pricing. Prices at airport, mall, highway, and urban restaurants can look different from suburban drive-thru restaurants.',
+			),
+			array(
+				'question' => 'Why is my McDonald\'s checkout total different from the menu price?',
+				'answer'   => 'The menu price is only the starting point. Your final McDonald\'s total can change when taxes, size upgrades, sauces, meal swaps, extra toppings, delivery fees, service charges, and app discounts are applied, which is why the checkout screen is the final number to trust.',
+			),
+			array(
+				'question' => 'Are McDonald\'s app prices different from restaurant prices?',
+				'answer'   => 'Sometimes, yes. McDonald\'s app prices can differ from in-store, drive-thru, pickup, or delivery pricing because app-only promotions, rewards offers, bundled deals, and local restaurant settings may change the final amount you see before checkout.',
+			),
+			array(
+				'question' => 'Does McDonald\'s serve breakfast all day?',
+				'answer'   => 'No, most McDonald\'s restaurants in the USA do not serve a full all-day breakfast menu. Breakfast usually ends in the late morning, and once the menu switches, items like Egg McMuffins, hotcakes, biscuits, and McGriddles may no longer be available until the next day.',
+			),
+			array(
+				'question' => 'How much is a Big Mac meal at McDonald\'s?',
+				'answer'   => 'A Big Mac meal price varies by location, drink size, fries size, taxes, and local restaurant pricing. Use the burger and combo meal sections on this page to compare the current McDonald\'s menu prices around a Big Mac, standalone burger, and full meal option before you order.',
+			),
+			array(
+				'question' => 'Are McDonald\'s combo meals cheaper than ordering items separately?',
+				'answer'   => 'Often, yes. A McDonald\'s combo meal can offer better value than buying the sandwich, fries, and drink one by one, especially when a local meal bundle or app deal is active. The best choice depends on portion size, add-ons, and whether a current McValue or coupon offer beats the standard combo price.',
 			),
 		);
 	}
@@ -10355,6 +10936,9 @@ class McPrices_Integration {
 		$breadcrumbs = $this->get_breadcrumb_schema_items();
 		$search_url  = $url . '?s={search_term_string}';
 		$graph       = array();
+		$has_rank_math_schema = defined( 'RANK_MATH_VERSION' ) || class_exists( '\RankMath\Helper' );
+		$website_id  = $url . '#website';
+		$page_id     = $this->is_seo_homepage() ? $url . '#menu-prices-guide' : $url . '#webpage';
 		$topics      = array(
 			$this->get_homepage_primary_keyword(),
 			"McDonald's USA calories",
@@ -10396,14 +10980,15 @@ class McPrices_Integration {
 			)
 		);
 
-		$graph[] = array(
-			'@type'           => 'WebSite',
-			'@id'             => $url . '#website',
-			'url'             => $url,
-			'name'            => $this->get_schema_organization_name(),
-			'description'     => $this->get_schema_site_description(),
-			'inLanguage'      => 'en-US',
-			'publisher'       => array( '@id' => $url . '#organization' ),
+		if ( ! $has_rank_math_schema ) {
+			$graph[] = array(
+				'@type'           => 'WebSite',
+				'@id'             => $website_id,
+				'url'             => $url,
+				'name'            => $this->get_schema_organization_name(),
+				'description'     => $this->get_schema_site_description(),
+				'inLanguage'      => 'en-US',
+				'publisher'       => array( '@id' => $url . '#organization' ),
 				'potentialAction' => array(
 					'@type'       => 'SearchAction',
 					'target'      => array(
@@ -10412,7 +10997,8 @@ class McPrices_Integration {
 					),
 					'query-input' => 'required name=search_term_string',
 				),
-		);
+			);
+		}
 
 		if ( $this->is_seo_homepage() ) {
 			$significant_links = array();
@@ -10465,12 +11051,12 @@ class McPrices_Integration {
 
 			$graph[] = array(
 				'@type'        => 'CollectionPage',
-				'@id'          => $url . '#webpage',
+				'@id'          => $page_id,
 				'url'          => $url,
 				'name'         => $title,
 				'description'  => $description,
 				'inLanguage'   => 'en-US',
-				'isPartOf'     => array( '@id' => $url . '#website' ),
+				'isPartOf'     => array( '@id' => $website_id ),
 				'about'        => array_map(
 					static function ( $topic ) {
 						return array(
@@ -10500,7 +11086,7 @@ class McPrices_Integration {
 						'url'         => $category_item['url'],
 						'name'        => $category_item['name'],
 						'description' => $category_item['description'],
-						'isPartOf'    => array( '@id' => $url . '#webpage' ),
+						'isPartOf'    => array( '@id' => $page_id ),
 						'primaryImageOfPage' => $category_item['image'] ? array(
 							'@type' => 'ImageObject',
 							'url'   => $category_item['image'],
@@ -10513,7 +11099,7 @@ class McPrices_Integration {
 					'@id'      => $url . '#nav-' . sanitize_title( (string) $category_item['name'] ),
 					'name'     => $category_item['name'],
 					'url'      => $category_item['url'],
-					'isPartOf' => array( '@id' => $url . '#website' ),
+					'isPartOf' => array( '@id' => $website_id ),
 				);
 
 				$item_list[] = array(
@@ -10550,7 +11136,7 @@ class McPrices_Integration {
 						'url'         => $guide_item['url'],
 						'name'        => $guide_item['name'],
 						'description' => $guide_item['description'],
-						'isPartOf'    => array( '@id' => $url . '#webpage' ),
+						'isPartOf'    => array( '@id' => $page_id ),
 					)
 				);
 
@@ -10580,7 +11166,7 @@ class McPrices_Integration {
 				'@type'      => 'FAQPage',
 				'@id'        => $url . '#faq',
 				'url'        => $url,
-				'isPartOf'   => array( '@id' => $url . '#webpage' ),
+				'isPartOf'   => array( '@id' => $page_id ),
 				'mainEntity' => array_map(
 					static function ( $faq_item ) {
 						return array(
@@ -10601,47 +11187,49 @@ class McPrices_Integration {
 			$item_list = array();
 
 			foreach ( $products as $index => $product ) {
-				$product_id = $url . '#product-' . sanitize_title( $product['name'] );
+				$menu_item_id          = $url . '#menu-item-' . sanitize_title( $product['name'] );
+				$additional_properties = array();
 
-				$graph[] = array_filter(
-					array(
-						'@type'              => 'Product',
-						'@id'                => $product_id,
-						'name'               => $product['name'],
-						'image'              => $product['image'] ? array( $product['image'] ) : null,
-						'description'        => sprintf(
-							'%1$s is a popular McDonald\'s USA menu item in the %3$s update.%2$s',
-							$product['name'],
-							$product['category'] ? ' Category: ' . $product['category'] . '.' : '',
-							$this->get_current_site_date()
-						),
-						'brand'              => array(
-							'@type' => 'Brand',
-							'name'  => "McDonald's",
-						),
-						'additionalProperty' => $product['calories'] ? array(
-							array(
-								'@type' => 'PropertyValue',
-								'name'  => 'Calories',
-								'value' => $product['calories'] . ' kcal',
-							),
-						) : null,
-						'offers'             => $product['price'] ? array(
-							'@type'         => 'Offer',
-							'priceCurrency' => 'USD',
-							'price'         => $product['price'],
-							'availability'  => 'https://schema.org/InStock',
-							'url'           => $this->get_schema_section_url( 'full-menu' ),
-						) : null,
-					)
-				);
+				if ( ! empty( $product['price'] ) ) {
+					$additional_properties[] = array(
+						'@type' => 'PropertyValue',
+						'name'  => 'Sample menu price',
+						'value' => '$' . $product['price'],
+					);
+				}
+
+				if ( ! empty( $product['calories'] ) ) {
+					$additional_properties[] = array(
+						'@type' => 'PropertyValue',
+						'name'  => 'Calories',
+						'value' => $product['calories'] . ' kcal',
+					);
+				}
+
+				if ( ! empty( $product['category'] ) ) {
+					$additional_properties[] = array(
+						'@type' => 'PropertyValue',
+						'name'  => 'Menu category',
+						'value' => $product['category'],
+					);
+				}
 
 				$item_list[] = array(
 					'@type'    => 'ListItem',
 					'position' => $index + 1,
-					'item'     => array(
-						'@id' => $product_id,
-						'name' => $product['name'],
+					'item'     => array_filter(
+						array(
+							'@type'              => 'MenuItem',
+							'@id'                => $menu_item_id,
+							'name'               => $product['name'],
+							'image'              => $product['image'] ? array( $product['image'] ) : null,
+							'description'        => sprintf(
+								'%1$s is a popular McDonald\'s USA menu item shown in this independent price guide.%2$s',
+								$product['name'],
+								$product['category'] ? ' Category: ' . $product['category'] . '.' : ''
+							),
+							'additionalProperty' => $additional_properties,
+						)
 					),
 				);
 			}
@@ -10673,7 +11261,7 @@ class McPrices_Integration {
 			if ( ! empty( $breadcrumb_items ) ) {
 				$graph[] = array(
 					'@type'           => 'BreadcrumbList',
-					'@id'             => $current_url . '#breadcrumb',
+					'@id'             => ( $this->is_seo_homepage() ? $url : $current_url ) . '#breadcrumb',
 					'itemListElement' => $breadcrumb_items,
 				);
 			}
@@ -11515,6 +12103,24 @@ class McPrices_Integration {
 			return true;
 		}
 
+		$authority_canonical_map = $this->get_authority_guide_canonical_path_map();
+		$post_path               = $this->get_post_site_relative_permalink_path( $post );
+
+		if ( isset( $authority_canonical_map[ $post_path ] ) ) {
+			return true;
+		}
+
+		$canonical_url = trim( (string) get_post_meta( (int) $post->ID, 'rank_math_canonical_url', true ) );
+
+		if ( '' !== $canonical_url ) {
+			$canonical_url = untrailingslashit( $this->normalize_homepage_runtime_urls( $canonical_url ) );
+			$permalink     = untrailingslashit( (string) get_permalink( $post ) );
+
+			if ( '' !== $canonical_url && $canonical_url !== $permalink ) {
+				return true;
+			}
+		}
+
 		return false;
 	}
 
@@ -11747,7 +12353,7 @@ class McPrices_Integration {
 			return;
 		}
 
-		if ( is_singular( 'page' ) ) {
+		if ( $this->canonical_redirects_enabled() && is_singular( 'page' ) ) {
 			$post = get_queried_object();
 
 			if ( $post instanceof \WP_Post ) {

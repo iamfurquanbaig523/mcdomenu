@@ -1,0 +1,161 @@
+name: Production Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_id:
+        description: "Optional release id. Defaults to this workflow run."
+        required: false
+        type: string
+      prepare_release:
+        description: "Prepare the release on the server."
+        required: true
+        default: true
+        type: boolean
+      activate_release:
+        description: "Switch live traffic to the prepared release."
+        required: true
+        default: false
+        type: boolean
+      run_migrations:
+        description: "Run explicit WordPress database migrations."
+        required: true
+        default: false
+        type: boolean
+      migration_approval:
+        description: "Required value when run_migrations is true: RUN_MIGRATIONS"
+        required: false
+        type: string
+      allow_live_path_replace:
+        description: "Allow first-time replacement of a non-symlink live directory."
+        required: true
+        default: false
+        type: boolean
+      rollback_release:
+        description: "Optional release id to roll back to instead of preparing a new release."
+        required: false
+        type: string
+
+concurrency:
+  group: production-release
+  cancel-in-progress: false
+
+env:
+  RELEASE_ID: ${{ inputs.release_id != '' && inputs.release_id || format('{0}-{1}', github.run_number, github.sha) }}
+  ARTIFACT_NAME: mcprices-wordpress-release
+
+jobs:
+  build:
+    if: ${{ inputs.rollback_release == '' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build immutable artifact
+        run: bash scripts/deploy/build-artifact.sh "$RELEASE_ID"
+
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: release-artifacts/*.zip
+          if-no-files-found: error
+          retention-days: 14
+
+  deploy:
+    needs: build
+    if: ${{ inputs.rollback_release == '' && (inputs.prepare_release || inputs.activate_release) }}
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout deploy scripts
+        uses: actions/checkout@v4
+
+      - name: Download release artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: release-artifacts
+
+      - name: Install SSH password helper
+        run: sudo apt-get update && sudo apt-get install -y sshpass
+
+      - name: Upload and prepare release
+        if: ${{ inputs.prepare_release }}
+        env:
+          SSHPASS: ${{ secrets.HOSTINGER_SSH_PASSWORD }}
+          SSH_HOST: ${{ secrets.HOSTINGER_SSH_HOST }}
+          SSH_PORT: ${{ secrets.HOSTINGER_SSH_PORT }}
+          SSH_USER: ${{ secrets.HOSTINGER_SSH_USER }}
+          DEPLOY_ROOT: ${{ vars.HOSTINGER_DEPLOY_ROOT }}
+          LIVE_PATH: ${{ vars.HOSTINGER_LIVE_PATH }}
+          SITE_URL: ${{ vars.PRODUCTION_SITE_URL }}
+          HEALTH_URL: ${{ vars.PRODUCTION_HEALTH_URL }}
+          ADMIN_HEALTH_URL: ${{ vars.PRODUCTION_ADMIN_HEALTH_URL }}
+          ACTIVATE_RELEASE: ${{ inputs.activate_release }}
+          RUN_MIGRATIONS: ${{ inputs.run_migrations }}
+          MIGRATION_APPROVAL: ${{ inputs.migration_approval }}
+          ALLOW_LIVE_PATH_REPLACE: ${{ inputs.allow_live_path_replace }}
+        run: |
+          set -Eeuo pipefail
+          artifact="$(ls release-artifacts/*.zip | head -n 1)"
+          remote_artifact="/tmp/mcprices-${RELEASE_ID}.zip"
+          sshpass -e scp -P "${SSH_PORT:-22}" -o StrictHostKeyChecking=accept-new "$artifact" "${SSH_USER}@${SSH_HOST}:$remote_artifact"
+          sshpass -e ssh -p "${SSH_PORT:-22}" -o StrictHostKeyChecking=accept-new "${SSH_USER}@${SSH_HOST}" \
+            "RELEASE_ID='$RELEASE_ID' ARTIFACT_PATH='$remote_artifact' DEPLOY_ROOT='$DEPLOY_ROOT' LIVE_PATH='$LIVE_PATH' SITE_URL='$SITE_URL' HEALTH_URL='$HEALTH_URL' ADMIN_HEALTH_URL='$ADMIN_HEALTH_URL' ACTIVATE_RELEASE='$ACTIVATE_RELEASE' RUN_MIGRATIONS='$RUN_MIGRATIONS' MIGRATION_APPROVAL='$MIGRATION_APPROVAL' ALLOW_LIVE_PATH_REPLACE='$ALLOW_LIVE_PATH_REPLACE' bash -s" \
+            < scripts/deploy/deploy-release.sh
+
+      - name: Activate existing prepared release
+        if: ${{ ! inputs.prepare_release && inputs.activate_release }}
+        env:
+          SSHPASS: ${{ secrets.HOSTINGER_SSH_PASSWORD }}
+          SSH_HOST: ${{ secrets.HOSTINGER_SSH_HOST }}
+          SSH_PORT: ${{ secrets.HOSTINGER_SSH_PORT }}
+          SSH_USER: ${{ secrets.HOSTINGER_SSH_USER }}
+          DEPLOY_ROOT: ${{ vars.HOSTINGER_DEPLOY_ROOT }}
+          LIVE_PATH: ${{ vars.HOSTINGER_LIVE_PATH }}
+          SITE_URL: ${{ vars.PRODUCTION_SITE_URL }}
+          HEALTH_URL: ${{ vars.PRODUCTION_HEALTH_URL }}
+          ADMIN_HEALTH_URL: ${{ vars.PRODUCTION_ADMIN_HEALTH_URL }}
+          ALLOW_LIVE_PATH_REPLACE: ${{ inputs.allow_live_path_replace }}
+        run: |
+          set -Eeuo pipefail
+          sshpass -e ssh -p "${SSH_PORT:-22}" -o StrictHostKeyChecking=accept-new "${SSH_USER}@${SSH_HOST}" \
+            "RELEASE_ID='$RELEASE_ID' DEPLOY_ROOT='$DEPLOY_ROOT' LIVE_PATH='$LIVE_PATH' SITE_URL='$SITE_URL' HEALTH_URL='$HEALTH_URL' ADMIN_HEALTH_URL='$ADMIN_HEALTH_URL' ALLOW_LIVE_PATH_REPLACE='$ALLOW_LIVE_PATH_REPLACE' bash '${DEPLOY_ROOT}/releases/${RELEASE_ID}/scripts/deploy/activate-release.sh'"
+
+  rollback:
+    if: ${{ inputs.rollback_release != '' }}
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout deploy scripts
+        uses: actions/checkout@v4
+
+      - name: Install SSH password helper
+        run: sudo apt-get update && sudo apt-get install -y sshpass
+
+      - name: Roll back release
+        env:
+          SSHPASS: ${{ secrets.HOSTINGER_SSH_PASSWORD }}
+          SSH_HOST: ${{ secrets.HOSTINGER_SSH_HOST }}
+          SSH_PORT: ${{ secrets.HOSTINGER_SSH_PORT }}
+          SSH_USER: ${{ secrets.HOSTINGER_SSH_USER }}
+          DEPLOY_ROOT: ${{ vars.HOSTINGER_DEPLOY_ROOT }}
+          LIVE_PATH: ${{ vars.HOSTINGER_LIVE_PATH }}
+          SITE_URL: ${{ vars.PRODUCTION_SITE_URL }}
+          HEALTH_URL: ${{ vars.PRODUCTION_HEALTH_URL }}
+          ADMIN_HEALTH_URL: ${{ vars.PRODUCTION_ADMIN_HEALTH_URL }}
+          ROLLBACK_RELEASE: ${{ inputs.rollback_release }}
+        run: |
+          set -Eeuo pipefail
+          if [[ ! "$ROLLBACK_RELEASE" =~ ^[A-Za-z0-9._-]+$ ]]; then
+            echo "ROLLBACK_RELEASE may only contain letters, numbers, dots, underscores, and hyphens." >&2
+            exit 2
+          fi
+
+          sshpass -e ssh -p "${SSH_PORT:-22}" -o StrictHostKeyChecking=accept-new "${SSH_USER}@${SSH_HOST}" \
+            "ROLLBACK_RELEASE='$ROLLBACK_RELEASE' DEPLOY_ROOT='$DEPLOY_ROOT' LIVE_PATH='$LIVE_PATH' SITE_URL='$SITE_URL' HEALTH_URL='$HEALTH_URL' ADMIN_HEALTH_URL='$ADMIN_HEALTH_URL' bash -s" \
+            < scripts/deploy/rollback-release.sh

@@ -340,6 +340,7 @@ $category_cards = array(
 );
 
 $whats_new_items = array(
+	array( 'name' => "McDonald's Grinch Meal", 'cal' => 'Holiday limited-time meal', 'price' => 'Varies by location', 'status' => 'Holiday LTO', 'emoji' => '&#127876;', 'category' => 'whats-new', 'url' => $page_url( 'mcdonalds-grinch-meal' ) ),
 	array( 'name' => 'The HUNTRIX Meal', 'cal' => $format_calories( $huntrix_row['calories'] ?? '' ), 'price' => $huntrix_row['price'] ?? '~$11.99', 'status' => 'New', 'emoji' => '&#127909;', 'category' => 'whats-new' ),
 	array( 'name' => 'The Saja Boys Breakfast Meal', 'cal' => $format_calories( $saja_boys_row['calories'] ?? '' ), 'price' => $saja_boys_row['price'] ?? '~$10.49', 'status' => 'Limited Time', 'emoji' => '&#127860;', 'category' => 'whats-new' ),
 	array( 'name' => 'Ramyeon McShaker Fries', 'cal' => $format_calories( $ramyeon_fries_row['calories'] ?? '' ), 'price' => $ramyeon_fries_row['price'] ?? '~$4.49', 'status' => 'Limited Time', 'emoji' => '&#127839;', 'category' => 'whats-new' ),
@@ -385,92 +386,105 @@ $menu_section_blueprints = array(
 		'source_id'    => 'evm',
 		'id'           => 'meals',
 		'title'        => 'Extra Value Meals',
+		'heading'      => 'Extra Value Meals Prices',
 		'icon'         => '&#127859;',
-		'description'  => 'Breakfast, lunch, and dinner combo meals pulled from the attached USA menu file, including breakfast sandwiches, burgers, McCrispy meals, McNuggets meals, snack wrap meals, and Filet-O-Fish meals.',
+		'description'  => 'Compare McDonald\'s combo meal prices for breakfast meals, burger meals, chicken meals, McNuggets meals, Filet-O-Fish meals, fries, and drinks.',
 	),
 	array(
 		'source_id'    => 'mcvalue',
 		'id'           => 'mcvalue',
 		'title'        => 'McValue',
+		'heading'      => 'McValue Menu Prices',
 		'icon'         => '&#128184;',
-		'description'  => 'The current McValue lineup from the attached USA menu file, including $5 meal deals, buy one add one for $1 offers, and lower-cost dessert and snack picks.',
+		'description'  => 'Find McDonald\'s value menu prices and McValue offers for meal deals, buy-one-add-one items, mini desserts, and lower-cost add-ons.',
 	),
 	array(
 		'source_id'    => 'bfast',
 		'id'           => 'breakfast',
 		'title'        => 'Breakfast',
+		'heading'      => 'Breakfast Menu Prices',
 		'icon'         => '&#129374;',
-		'description'  => 'Breakfast sandwiches, McGriddles, bagels, platters, oatmeal, hash browns, and hotcakes from the latest USA menu source.',
+		'description'  => 'Explore McDonald\'s breakfast menu prices for McMuffins, McGriddles, biscuits, hash browns, breakfast meals, and coffee options.',
 	),
 	array(
 		'source_id'    => 'burgers',
 		'id'           => 'burgers',
 		'title'        => 'Burgers',
+		'heading'      => 'Burgers Menu Prices',
 		'icon'         => '&#127828;',
-		'description'  => 'Current USA burger prices for Big Mac, Quarter Pounder builds, McDouble, Daily Double, cheeseburgers, and hamburgers.',
+		'description'  => 'Check McDonald\'s burger prices for Big Mac, Cheeseburger, Quarter Pounder, Hamburger, McDouble, and other popular burger items.',
 	),
 	array(
 		'source_id'    => 'chicken',
 		'id'           => 'chickenfish',
 		'title'        => 'Chicken & Fish Sandwiches',
+		'heading'      => 'Chicken & Fish Sandwich Prices',
 		'icon'         => '&#127831;',
-		'description'  => 'Chicken and fish sandwich pricing for McCrispy builds, Filet-O-Fish, and McChicken from the attached USA menu file.',
+		'description'  => 'Compare McDonald\'s chicken and fish sandwich prices for McCrispy, McChicken, Filet-O-Fish, spicy sandwiches, and related meal options.',
 	),
 	array(
 		'source_id'    => 'nuggets',
 		'id'           => 'nuggets',
 		'title'        => 'McNuggets & McCrispy Strips',
+		'heading'      => 'McNuggets & McCrispy Strips Prices',
 		'icon'         => '&#127831;',
-		'description'  => 'Chicken McNuggets and McCrispy Strips prices, from snack sizes up to 40-piece shareables.',
+		'description'  => 'View McDonald\'s McNuggets prices and McCrispy Strips prices, from smaller snack sizes to larger shareable orders.',
 	),
 	array(
 		'source_id'    => 'wrap',
 		'id'           => 'snackwrap',
 		'title'        => 'Snack Wrap',
+		'heading'      => 'Snack Wrap Prices',
 		'icon'         => '&#127791;',
-		'description'  => 'Both current Snack Wrap flavors from the attached USA menu source.',
+		'description'  => 'Check McDonald\'s Snack Wrap prices for current crispy chicken wrap flavors and related value options.',
 	),
 	array(
 		'source_id'    => 'sides',
 		'id'           => 'sides',
 		'title'        => 'Fries & Sides',
+		'heading'      => 'Fries & Sides Prices',
 		'icon'         => '&#127839;',
-		'description'  => 'World Famous Fries in each listed size plus Apple Slices from the latest USA side menu data.',
+		'description'  => 'Compare McDonald\'s fries and sides prices, including small fries, medium fries, large fries, hash browns, apple slices, and other sides.',
 	),
 	array(
 		'source_id'    => 'happy',
 		'id'           => 'happymeal',
 		'title'        => 'Happy Meal',
+		'heading'      => 'Happy Meal Prices',
 		'icon'         => '&#127881;',
-		'description'  => 'Current Happy Meal prices for hamburger and McNuggets builds from the attached USA menu file.',
+		'description'  => 'See McDonald\'s Happy Meal prices for hamburger, cheeseburger, and McNuggets Happy Meal options.',
 	),
 	array(
 		'source_id'    => 'sweets',
 		'id'           => 'sweets',
 		'title'        => 'Sweets & Treats',
+		'heading'      => 'Desserts Prices',
 		'icon'         => '&#127846;',
-		'description'  => 'McFlurries, cones, sundaes, shakes, pies, and cookies from the current USA sweets section.',
+		'description'  => 'Browse McDonald\'s dessert prices for McFlurry, apple pie, sundaes, cones, shakes, and other sweet treats.',
 	),
 	array(
 		'source_id'    => 'coffee',
 		'id'           => 'mccafe',
 		'title'        => 'McCafe Coffees',
+		'heading'      => 'McCaf&eacute; Coffee Prices',
 		'icon'         => '&#9749;',
-		'description'  => 'Full McCafe coffee and espresso pricing from the attached USA menu file, including hot drinks, iced drinks, frappes, and hot chocolate.',
+		'description'  => 'View McDonald\'s McCaf&eacute; prices for hot coffee, iced coffee, frappes, lattes, cappuccinos, and other coffee drinks.',
 	),
 	array(
 		'source_id'    => 'bev',
 		'id'           => 'beverages',
 		'title'        => 'Beverages',
+		'heading'      => 'Drinks Menu Prices',
 		'icon'         => '&#127865;',
-		'description'  => 'Soft drinks, frozen drinks, smoothies, lemonade, tea, juice, milk, and bottled water from the current USA beverage section.',
+		'description'  => 'Find McDonald\'s drink prices for Coke, Sprite, Fanta, smoothies, frozen drinks, milk, juice, and other beverages.',
 	),
 	array(
 		'source_id'    => 'sauce',
 		'id'           => 'sauces',
 		'title'        => 'Sauces & Condiments',
+		'heading'      => 'Sauces & Condiments Prices',
 		'icon'         => '&#129514;',
-		'description'  => 'Current dipping sauces and condiments, including included sauces and low-cost paid extras.',
+		'description'  => 'Review McDonald\'s sauce and condiment prices for dipping sauces, included packets, and low-cost paid extras.',
 	),
 );
 
@@ -481,6 +495,7 @@ foreach ( $menu_section_blueprints as $section_blueprint ) {
 	$menu_sections[] = array(
 		'id'          => $section_blueprint['id'],
 		'title'       => $section_blueprint['title'],
+		'heading'     => $section_blueprint['heading'],
 		'icon'        => $section_blueprint['icon'],
 		'description' => $section_blueprint['description'],
 		'rows'        => $flatten_menu_rows( $source_section, $section_blueprint['source_id'] ),
@@ -499,7 +514,7 @@ $deal_cards = array(
 		'label' => '$5 Meal Deal',
 		'title' => 'McChicken Meal Deal',
 		'price' => '$5.00',
-		'copy'  => 'McChicken, 4 pc McNuggets, small fries, and a small drink from the attached McValue lineup.',
+		'copy'  => 'McChicken, 4 pc McNuggets, small fries, and a small drink from the current McValue lineup.',
 		'url'   => $get_item_page_url( 'deals', 'McChicken Meal Deal' ),
 	),
 	array(
@@ -515,7 +530,7 @@ $deal_cards = array(
 		'label' => '$6 Meal Deal',
 		'title' => 'Daily Double Meal Deal',
 		'price' => '~$6.00',
-		'copy'  => 'The Daily Double Meal Deal appears in the attached McValue data as the higher-entry limited-time meal deal option.',
+		'copy'  => 'The Daily Double Meal Deal is listed as the higher-entry limited-time McValue meal deal option.',
 		'url'   => $get_item_page_url( 'deals', 'Daily Double Meal Deal' ),
 	),
 	array(
@@ -539,7 +554,7 @@ $deal_cards = array(
 		'label' => 'Mini dessert',
 		'title' => 'McValue Mini McFlurry Picks',
 		'price' => '$3.19',
-		'copy'  => 'Mini M&M\'s and OREO McFlurry cups appear in the attached McValue Eats section as low-entry dessert options.',
+		'copy'  => 'Mini M&M\'s and OREO McFlurry cups are listed in the current McValue dessert section as low-entry sweet options.',
 		'url'   => $get_item_page_url( 'deals', 'McValue Mini McFlurry Picks' ),
 	),
 );
@@ -563,36 +578,64 @@ $guide_cards = array(
 
 $faq_items = array(
 	array(
-		'question' => 'How much is a Big Mac in the USA?',
-		'answer'   => 'The attached USA menu data lists the Big Mac at $5.99 on the core burger menu. Local restaurant, app, tax, and delivery pricing can still change the final total.',
+		'question' => 'Are McDonald\'s prices the same at every location?',
+		'answer'   => 'No. McDonald\'s prices can vary by city, franchise, taxes, app offers, delivery markups, and restaurant format. A Big Mac, breakfast meal, or McValue deal can cost more in airports, downtown stores, or delivery apps than at a standard local restaurant.',
 	),
 	array(
-		'question' => 'What is on the McValue menu right now?',
-		'answer'   => 'The current McValue lineup includes $5 McChicken and McDouble meal deals, an about-$6 Daily Double meal deal, breakfast buy one add one for $1 items like Sausage Biscuit and Hash Browns, lunch and dinner add-on picks like McChicken, Double Cheeseburger, 6 pc McNuggets, Small Fries, plus mini McFlurry treats.',
+		'question' => 'Where can I find McDonald\'s menu prices in the USA?',
+		'answer'   => 'This homepage works as a McDonald\'s menu with prices for the USA. Use the category sections for breakfast, burgers, McCafe, Happy Meals, fries, desserts, drinks, sauces, combo meals, and deals, then open the matching guide or item page when you want a closer comparison.',
 	),
 	array(
-		'question' => 'How much is a Happy Meal in the USA?',
-		'answer'   => 'This USA update lists Hamburger Happy Meal at about $5.89, 4 pc McNuggets Happy Meal at about $6.19, and 6 pc McNuggets Happy Meal at about $7.29.',
+		'question' => 'Why are McDonald\'s delivery prices sometimes higher?',
+		'answer'   => 'McDonald\'s delivery prices are often higher because the final total can include delivery menu pricing, service fees, small-order fees, taxes, and platform markups. If you are comparing value, check the in-store price, pickup price, and delivery checkout before you order.',
 	),
 	array(
-		'question' => 'What time does McDonald\'s serve breakfast in the USA?',
-		'answer'   => 'The attached breakfast data notes that breakfast is typically served until 10:30 AM on weekdays and 11:00 AM on weekends, although exact cutoffs can vary by restaurant.',
+		'question' => 'What time does McDonald\'s stop serving breakfast?',
+		'answer'   => 'Most McDonald\'s locations stop breakfast around 10:30 AM on weekdays and around 11:00 AM on weekends, but that is not universal. Local breakfast cut-off times, item availability, and 24-hour store rules can differ, so the McDonald\'s app or your restaurant is the best final check.',
 	),
 	array(
-		'question' => 'How many calories are in McDonald\'s large fries?',
-		'answer'   => 'Large World Famous Fries are listed at 480 calories in the current USA menu data used on this site.',
+		'question' => 'Does McDonald\'s have different prices for breakfast, lunch, and dinner?',
+		'answer'   => 'Yes. Breakfast, lunch, and dinner menus use different items, meal bundles, and availability windows, so prices naturally differ across dayparts. Egg McMuffins, McGriddles, burgers, McNuggets, and combo meals are priced within their own menu sections rather than one flat all-day price list.',
 	),
 	array(
-		'question' => 'Does McDonald\'s USA have a vegan burger?',
-		'answer'   => 'The attached USA menu file does not show a national vegan burger. The current lineup is focused on burgers, chicken, breakfast, fries, desserts, drinks, and coffee.',
+		'question' => 'How can I get McDonald\'s deals or coupons?',
+		'answer'   => 'The McDonald\'s app is usually the best source for current deals, coupons, and rewards because many offers are app-exclusive or account-specific. A $5 meal deal, buy-one-add-one offer, free fries promotion, or points reward may be available at one restaurant but not another.',
 	),
 	array(
-		'question' => 'How much is a McFlurry in the USA?',
-		'answer'   => 'The current USA sweets data lists a regular OREO McFlurry at $5.59, a regular M&M\'s McFlurry at $5.59, and mini McFlurry options at $3.19 in the McValue section.',
+		'question' => 'What is McValue at McDonald\'s?',
+		'answer'   => 'McValue is McDonald\'s value platform for lower-cost ordering, combining meal deals, entry-price items, add-on offers, and app savings. It is useful when you want to compare whether a McChicken, McDouble, small fries, nuggets, breakfast item, or mini dessert gives the best value for the money.',
 	),
 	array(
-		'question' => 'What is the cheapest item on the McDonald\'s USA menu?',
-		'answer'   => 'The lowest paid items in the attached USA menu data are Vanilla Cone at $1.29 and the Honest Kids Appley Ever After juice box at $1.29, followed by several $1.69 drink options.',
+		'question' => 'How often are McDonald\'s menu prices updated on this site?',
+		'answer'   => 'This site reviews McDonald\'s menu prices when menu data, app offers, seasonal products, limited-time meals, or category changes are added. Because restaurant prices can change faster than a public guide, use these prices for planning and then confirm the live total before checkout.',
+	),
+	array(
+		'question' => 'Where can I find McDonald\'s calories, ingredients, and allergen information?',
+		'answer'   => 'You can use this site for a quick calorie reference, but the official McDonald\'s nutrition tools remain the best place to verify calories, ingredients, allergens, and customization effects. That matters most for dairy, egg, wheat, soy, fish, peanut, tree nut, or other allergy-related decisions.',
+	),
+	array(
+		'question' => 'Why do McDonald\'s prices vary by location?',
+		'answer'   => 'McDonald\'s prices vary by location because franchise operators, labor costs, rent, taxes, local competition, delivery fees, and store format all affect pricing. Prices at airport, mall, highway, and urban restaurants can look different from suburban drive-thru restaurants.',
+	),
+	array(
+		'question' => 'Why is my McDonald\'s checkout total different from the menu price?',
+		'answer'   => 'The menu price is only the starting point. Your final McDonald\'s total can change when taxes, size upgrades, sauces, meal swaps, extra toppings, delivery fees, service charges, and app discounts are applied, which is why the checkout screen is the final number to trust.',
+	),
+	array(
+		'question' => 'Are McDonald\'s app prices different from restaurant prices?',
+		'answer'   => 'Sometimes, yes. McDonald\'s app prices can differ from in-store, drive-thru, pickup, or delivery pricing because app-only promotions, rewards offers, bundled deals, and local restaurant settings may change the final amount you see before checkout.',
+	),
+	array(
+		'question' => 'Does McDonald\'s serve breakfast all day?',
+		'answer'   => 'No, most McDonald\'s restaurants in the USA do not serve a full all-day breakfast menu. Breakfast usually ends in the late morning, and once the menu switches, items like Egg McMuffins, hotcakes, biscuits, and McGriddles may no longer be available until the next day.',
+	),
+	array(
+		'question' => 'How much is a Big Mac meal at McDonald\'s?',
+		'answer'   => 'A Big Mac meal price varies by location, drink size, fries size, taxes, and local restaurant pricing. Use the burger and combo meal sections on this page to compare the current McDonald\'s menu prices around a Big Mac, standalone burger, and full meal option before you order.',
+	),
+	array(
+		'question' => 'Are McDonald\'s combo meals cheaper than ordering items separately?',
+		'answer'   => 'Often, yes. A McDonald\'s combo meal can offer better value than buying the sandwich, fries, and drink one by one, especially when a local meal bundle or app deal is active. The best choice depends on portion size, add-ons, and whether a current McValue or coupon offer beats the standard combo price.',
 	),
 );
 
@@ -604,9 +647,29 @@ $timeline_items = array(
 	array( 'year' => '2026', 'title' => 'McValue, BIG ARCH and Limited-Time Meals', 'text' => 'The current USA menu file highlights McValue savings, BIG ARCH, Snack Wraps, seasonal promo meals, and limited-time desserts as major traffic drivers.' ),
 );
 
-$footer_disclaimer = '&#9888;&#65039; <strong>Disclaimer:</strong> This is an independent, unofficial website. McDonald&#8217;s Menu Prices USA is not affiliated with, endorsed by, or connected to McDonald&#8217;s Corporation in any way. All prices are sourced from publicly available menus and may vary by location, franchise, taxes, app offer, and date.';
+$footer_disclaimer = '&#9888;&#65039; <strong>Disclaimer:</strong> McDonald&#8217;s prices may vary by location, restaurant, delivery app, and current promotions. This website is an independent menu price guide and is not affiliated with McDonald&#8217;s.';
 
-$render_rows = static function ( array $rows, $category_id ) use ( $get_item_page_url, $get_item_media_url ) {
+$get_item_image_alt = static function ( array $row ) {
+	$name = trim( wp_strip_all_tags( (string) ( $row['name'] ?? '' ) ) );
+
+	if ( '' === $name ) {
+		return "McDonald's menu item";
+	}
+
+	return "McDonald's " . $name . ' menu item';
+};
+
+$get_category_image_alt = static function ( array $card ) {
+	$name = trim( wp_strip_all_tags( (string) ( $card['name'] ?? '' ) ) );
+
+	if ( '' === $name ) {
+		return "McDonald's menu category";
+	}
+
+	return "McDonald's " . $name . ' menu category';
+};
+
+$render_rows = static function ( array $rows, $category_id ) use ( $get_item_page_url, $get_item_media_url, $get_item_image_alt ) {
 	foreach ( $rows as $row ) :
 		$item_url   = $get_item_page_url( $category_id, $row['name'] ?? '' );
 		$item_media = $get_item_media_url( $row['name'] ?? '' );
@@ -616,7 +679,7 @@ $render_rows = static function ( array $rows, $category_id ) use ( $get_item_pag
 				<div class="td-name">
 					<a class="mcprices-inline-media" href="<?php echo esc_url( $item_url ); ?>">
 						<?php if ( $item_media ) : ?>
-							<img class="mcprices-inline-media__thumb" src="<?php echo esc_url( $item_media ); ?>" alt="<?php echo esc_attr( 'McDonald\'s ' . $row['name'] . ' price USA 2026' ); ?>" loading="lazy" decoding="async">
+							<img class="mcprices-inline-media__thumb" src="<?php echo esc_url( $item_media ); ?>" alt="<?php echo esc_attr( $get_item_image_alt( $row ) ); ?>" loading="lazy" decoding="async">
 						<?php endif; ?>
 						<span class="mcprices-inline-media__label"><?php echo esc_html( $row['name'] ); ?></span>
 					</a>
@@ -642,10 +705,10 @@ ob_start();
 		<div class="hero-left animate-fadeup">
 			<div class="hero-eyebrow">Updated April 2026</div>
 			<h1 class="hero-title">
-				McDonald's Menu<br>
-				Prices <span class="highlight">USA <?php echo esc_html( $current_year ); ?></span>
+				McDonald's Prices<br>
+				<span class="highlight">USA</span>
 			</h1>
-			<p class="hero-sub">The most complete and up-to-date McDonald's USA price list. Compare current dollar prices, calories, combo meals, McValue savings, breakfast picks, McCafe drinks, sauces, desserts, and limited-time menu items in one place.</p>
+			<p class="hero-sub">Find the latest McDonald&#8217;s prices in the USA, including McDonald&#8217;s menu prices for burgers, breakfast, McCaf&eacute; drinks, Happy Meals, fries, desserts, combo meals, and value menu items. Prices may vary by location, but this McDonald&#8217;s price list gives you a helpful overview across the United States.</p>
 			<p class="hero-sub">Thousands of readers trust this page to compare accurate McDonald&rsquo;s menu prices, calories, and value deals before they order.</p>
 			<div class="mcprices-hero-search-placeholder" data-mcprices-hero-search-placeholder="1"></div>
 			<div class="hero-btns">
@@ -703,9 +766,9 @@ ob_start();
 	<div class="container">
 		<div class="section-header">
 			<div class="section-label">Every category, every price</div>
-			<h2 class="section-title">Complete McDonald's USA Menu <?php echo esc_html( $current_year ); ?></h2>
-			<p class="section-sub">McDonald's Menu Prices USA, all <?php echo esc_html( (string) $menu_item_total ); ?> current items across 15 categories in one place. From Big Mac and Quarter Pounder burgers to Egg McMuffin breakfasts, McCafe coffees, McFlurry desserts, Happy Meals, fries, sauces, and McValue deals, with prices and calorie counts updated for <?php echo esc_html( $current_year ); ?>.</p>
-			<p class="section-sub section-sub--links">Popular category links: <a href="<?php echo esc_url( $get_category_page_url( 'breakfast' ) ); ?>">Breakfast Menu</a>, <a href="<?php echo esc_url( $get_category_page_url( 'burgers' ) ); ?>">Burgers Menu</a>, <a href="<?php echo esc_url( $get_category_page_url( 'mccafe' ) ); ?>">McCafe Coffees</a>, <a href="<?php echo esc_url( $get_category_page_url( 'beverages' ) ); ?>">Beverages Menu</a>, <a href="<?php echo esc_url( $get_category_page_url( 'happymeal' ) ); ?>">Happy Meal</a>, <a href="<?php echo esc_url( $get_category_page_url( 'deals' ) ); ?>">Deals</a>, and <a href="<?php echo esc_url( $page_url( 'menu' ) ); ?>">the full menu hub</a>.</p>
+			<h2 class="section-title">McDonald's Menu Prices by Category</h2>
+			<p class="section-sub">Use this McDonald&#8217;s menu prices USA guide to compare the McDonald&#8217;s menu with prices across <?php echo esc_html( (string) $menu_item_total ); ?> current items in 15 categories. Browse burgers, breakfast, McCaf&eacute; coffees, McFlurry desserts, Happy Meals, fries, sauces, combo meals, and McValue deals with prices and calories updated for <?php echo esc_html( $current_year ); ?>.</p>
+			<p class="section-sub section-sub--links">Popular category links: <a href="<?php echo esc_url( $get_category_page_url( 'breakfast' ) ); ?>">McDonald&#8217;s breakfast menu prices</a>, <a href="<?php echo esc_url( $get_category_page_url( 'burgers' ) ); ?>">McDonald&#8217;s burger menu prices</a>, <a href="<?php echo esc_url( $get_category_page_url( 'mccafe' ) ); ?>">McDonald&#8217;s McCaf&eacute; prices</a>, <a href="<?php echo esc_url( $get_category_page_url( 'happymeal' ) ); ?>">McDonald&#8217;s Happy Meal prices</a>, <a href="<?php echo esc_url( $get_category_page_url( 'beverages' ) ); ?>">McDonald&#8217;s drinks menu prices</a>, <a href="<?php echo esc_url( $get_category_page_url( 'sides' ) ); ?>">McDonald&#8217;s fries prices</a>, <a href="<?php echo esc_url( $get_category_page_url( 'sweets' ) ); ?>">McDonald&#8217;s desserts prices</a>, <a href="<?php echo esc_url( $get_category_page_url( 'deals' ) ); ?>">McDonald&#8217;s deals and offers</a>, and <a href="<?php echo esc_url( $page_url( 'menu' ) ); ?>">the full menu hub</a>.</p>
 		</div>
 		<div class="size-key">
 			<strong>Format guide:</strong> Small-to-large price ranges are grouped where multiple sizes exist. All prices are shown in US dollars and can vary by location.
@@ -721,7 +784,7 @@ ob_start();
 			<div class="menu-section" id="<?php echo esc_attr( $section['id'] ); ?>" data-menu-category="<?php echo esc_attr( $section['id'] ); ?>">
 				<div class="menu-section-head">
 					<span class="menu-section-icon"><?php echo $section['icon']; ?></span>
-					<span class="menu-section-title"><?php echo $section['title']; ?></span>
+					<h2 class="menu-section-title"><?php echo wp_kses_post( $section['heading'] ); ?></h2>
 					<span class="menu-section-count"><?php echo esc_html( (string) count( $section['rows'] ) ); ?> items</span>
 				</div>
 				<p class="menu-section-desc"><?php echo esc_html( html_entity_decode( $section['description'], ENT_QUOTES, 'UTF-8' ) ); ?></p>
@@ -747,9 +810,9 @@ ob_start();
 
 <section class="categories">
 	<div class="container">
-		<div class="section-header">
-			<div class="section-label">Browse by Category</div>
-			<h2 class="section-title">What Are You Looking For&rarr;</h2>
+			<div class="section-header">
+				<div class="section-label">Browse by Category</div>
+			<h2 class="section-title">Browse McDonald's Menu Prices by Category</h2>
 			<p class="section-sub">Jump straight to the US menu section you need &mdash; pricing, calories, and value-focused picks included.</p>
 		</div>
 		<div class="cat-grid">
@@ -757,7 +820,7 @@ ob_start();
 				<a href="<?php echo esc_url( $card['url'] ); ?>" class="cat-card<?php echo $card['class'] ? ' ' . esc_attr( $card['class'] ) : ''; ?>" data-category-id="<?php echo esc_attr( $card['id'] ); ?>">
 					<span class="cat-emoji">
 						<?php if ( ! empty( $card['image'] ) ) : ?>
-							<img class="mcprices-media-icon mcprices-media-icon--category" src="<?php echo esc_url( $card['image'] ); ?>" alt="<?php echo esc_attr( 'McDonald\'s ' . $card['name'] . ' menu USA' ); ?>" loading="lazy" decoding="async">
+							<img class="mcprices-media-icon mcprices-media-icon--category" src="<?php echo esc_url( $card['image'] ); ?>" alt="<?php echo esc_attr( $get_category_image_alt( $card ) ); ?>" loading="lazy" decoding="async">
 						<?php else : ?>
 							<?php echo $card['emoji']; ?>
 						<?php endif; ?>
@@ -776,15 +839,16 @@ ob_start();
 		<div class="section-header">
 			<div class="section-label">Limited-Time Menu</div>
 			<h2 class="section-title">What's New at McDonald's USA <?php echo esc_html( $current_year ); ?></h2>
-			<p class="section-sub">Current limited-time and featured items showing up across the attached USA menu snapshot.</p>
+			<p class="section-sub">Current limited-time and featured items showing up across the latest USA menu update.</p>
 		</div>
 		<div class="mcprices-whats-new-intro">
-			<p class="mcprices-whats-new-intro-text">The current US snapshot highlights <strong class="mcprices-whats-new-date">The BIG ARCH</strong>, a limited-time burger stacked with two quarter-pound beef patties and special sauce, <strong>The HUNTRIX Meal</strong>, which bundles 10-piece McNuggets with fries and a drink, and <strong>Ramyeon McShaker Fries</strong>, a limited-time seasoned fries variation not found on the standard sides lineup.</p>
+			<p class="mcprices-whats-new-intro-text">The current US menu update highlights <strong class="mcprices-whats-new-date">The BIG ARCH</strong>, a limited-time burger stacked with two quarter-pound beef patties and special sauce, <strong>The HUNTRIX Meal</strong>, which bundles 10-piece McNuggets with fries and a drink, <strong>Ramyeon McShaker Fries</strong>, and the holiday <a href="<?php echo esc_url( $page_url( 'mcdonalds-grinch-meal' ) ); ?>">McDonald&#8217;s Grinch Meal</a> guide for seasonal McShaker Fries, socks, and bundle context.</p>
 		</div>
 		<div class="new-items-grid">
 			<?php foreach ( $whats_new_items as $item ) : ?>
 				<?php $status_class = false !== stripos( $item['status'], 'new' ) ? 'avail-new' : 'avail-limited'; ?>
-				<a href="<?php echo esc_url( $get_item_page_url( $item['category'], $item['name'] ) ); ?>" class="new-item-card">
+				<?php $item_url = isset( $item['url'] ) ? (string) $item['url'] : $get_item_page_url( $item['category'], $item['name'] ); ?>
+				<a href="<?php echo esc_url( $item_url ); ?>" class="new-item-card">
 					<div class="new-item-top">
 						<div class="new-item-emoji"><?php echo $item['emoji']; ?></div>
 						<span class="new-item-avail avail-badge <?php echo esc_attr( $status_class ); ?>"><?php echo esc_html( $item['status'] ); ?></span>
@@ -862,7 +926,7 @@ ob_start();
 	<div class="container">
 		<div class="section-header center">
 			<div class="section-label">Featured Favorites</div>
-			<h2 class="section-title">Popular McDonald's USA Picks</h2>
+			<h2 class="section-title">Popular McDonald's Menu Picks</h2>
 			<p class="section-sub">High-interest menu favorites that people compare most often: burgers, breakfast, chicken, fries, and dessert picks from the current USA file.</p>
 		</div>
 		<div class="menu-cards-grid featured-grid">
@@ -897,8 +961,8 @@ ob_start();
 	<div class="container">
 		<div class="section-header center">
 			<div class="section-label" style="background: rgba(255,199,44,0.15); color: var(--mc-yellow);">Live Deals</div>
-			<h2 class="section-title" style="color: white;">McDonald's USA Value Deals <?php echo esc_html( $current_year ); ?></h2>
-			<p class="section-sub" style="color: rgba(255,255,255,0.65);">Current deal structures, app savings, and McValue-led offers surfaced across the attached USA menu file.</p>
+			<h2 class="section-title" style="color: white;">Deals and Offers</h2>
+			<p class="section-sub" style="color: rgba(255,255,255,0.65);">Find McDonald&#8217;s deals and offers, including meal deals, app offers, combo deals, and limited-time value options.</p>
 		</div>
 		<div class="deals-grid">
 			<?php foreach ( $deal_cards as $card ) : ?>
@@ -917,7 +981,7 @@ ob_start();
 	<div class="container">
 		<div class="section-header center">
 			<div class="section-label">Ways to order</div>
-			<h2 class="section-title">Ways to Order at McDonald's USA</h2>
+			<h2 class="section-title">How to Order McDonald's in the USA</h2>
 			<p class="section-sub">Ordering habits in the US menu ecosystem are heavily shaped by the app, drive-thru speed, McDelivery and value-led combo shopping.</p>
 		</div>
 		<div class="order-grid ordering-grid">
@@ -1037,14 +1101,18 @@ ob_start();
 <section class="content-sidebar seo-section">
 	<div class="container content-sidebar-grid seo-layout">
 		<div class="content-main seo-main">
-			<h2>McDonald's USA Menu Prices <?php echo esc_html( $current_year ); ?> &mdash; Everything You Need to Know</h2>
-			<p>This McDonald&#8217;s Menu Prices USA build keeps the native Kadence parent-theme integration in place while focusing the content entirely on the United States menu ecosystem. The homepage now tracks Extra Value Meals, McValue, breakfast sandwiches, burgers, chicken and fish sandwiches, McNuggets, Snack Wraps, fries and sides, Happy Meals, sweets, McCafe coffees, beverages, and sauces from the attached menu source.</p>
-			<p>US pricing can vary heavily by market. The same item can shift between locations, app offers, delivery channels, and tax settings. That is why the site emphasizes current sample pricing, price ranges, and location variability rather than pretending there is one fixed national menu board.</p>
-			<p>US value positioning is also different. Current savings revolve around McValue, buy-one-add-one offers, app-exclusive coupons, combo-style meal deals, and low-entry dessert add-ons. On this version of the site, those offers are surfaced both inside the main menu section and again in the dedicated deals block so readers can compare individual items with full combo options faster.</p>
-			<p>Most visitors land here looking for fast answers about McDonald's breakfast prices, burger prices, combo meal prices, Happy Meal costs, McCafe drink prices, dessert prices, and the latest McValue offers. Adding those details directly into the homepage helps the page act as a stronger menu hub instead of a thin overview, while still keeping the structure focused on current McDonald's USA menu prices and calories.</p>
-			<p>That means the homepage now targets direct search intent around McDonald's menu with prices, McDonald's full menu prices USA, McDonald's calories, McDonald's breakfast hours, Big Mac price, Quarter Pounder price, Egg McMuffin price, McNuggets price, fries price, McFlurry price, and McDonald's deals. Instead of relying only on tabs and cards, the page states those topics clearly in crawlable text so search engines and AI engines can understand the page as a complete McDonald's USA price guide.</p>
-			<p>It also gives stronger context around the exact commercial topics people compare before ordering: breakfast menu prices, lunch and dinner combo meal prices, McValue meal deal prices, McDelivery pricing differences, app-exclusive McDonald's deals, and location-based price variation across the United States. That extra context improves topical depth for McDonald's USA menu prices without changing the design or moving users away from the main price tables.</p>
-			<p><strong>Important:</strong> This is an independent, unofficial website. Prices may vary by franchise, city, delivery platform, app promotion and date. Always confirm your final local total in the official McDonald&rsquo;s app or on the order screen before buying.</p>
+			<h2>McDonald's Prices USA <?php echo esc_html( $current_year ); ?> &mdash; Menu Price Guide</h2>
+			<p>Use this McDonald&#8217;s prices USA guide to compare current McDonald&#8217;s menu prices by category before you order. It works as a practical McDonald&#8217;s menu with prices for burgers, breakfast, McCaf&eacute; drinks, Happy Meals, fries, desserts, combo meals, McValue items, and limited-time deals.</p>
+			<p>The McDonald&#8217;s price list on this page is organized for quick planning, with menu item names, sample prices, calories, and category links in one place. You can start with breakfast menu prices, burger prices, McCaf&eacute; prices, Happy Meal prices, drinks menu prices, fries prices, desserts prices, or deals and offers depending on what you want to compare.</p>
+			<p>McDonald&#8217;s prices are not always the same at every restaurant. Local franchise pricing, city costs, taxes, delivery apps, app-exclusive offers, and current promotions can change the final checkout total, so this guide should be used as a helpful overview of McDonald&#8217;s menu prices USA rather than a guaranteed national receipt.</p>
+			<p>For value-focused ordering, compare combo meal prices, McValue meal deals, buy-one-add-one offers, app deals, and side or dessert add-ons before choosing a meal. This helps you see whether a standalone item, full combo meal, or current McDonald&#8217;s deal gives better value at your location.</p>
+			<h3>How to use this McDonald&#8217;s price guide</h3>
+			<p>Start with the category buttons above if you want a fast McDonald&#8217;s menu with prices, or use the quick links to jump directly to breakfast, burgers, McCaf&eacute;, Happy Meals, drinks, fries, desserts, sauces, or deals. Each section keeps the item name, sample price, and calorie context together so you can compare choices without opening several pages.</p>
+			<h3>What to compare before ordering</h3>
+			<p>When checking McDonald&#8217;s prices USA, compare the standalone item price with the full meal price, especially for Big Mac meals, Quarter Pounder meals, McNuggets meals, breakfast meals, and McCrispy options. A combo can be better value when you already want fries and a drink, while a single sandwich or side can be cheaper when you are only adding one item.</p>
+			<h3>Why local prices may be different</h3>
+			<p>This McDonald&#8217;s price list is meant for planning, not as a fixed national menu board. Restaurants in different cities, airports, malls, delivery zones, and app markets may show different McDonald&#8217;s menu prices because operating costs, taxes, franchise decisions, and promotions are not identical everywhere.</p>
+			<p><strong>Important:</strong> This is an independent, unofficial menu price guide and is not affiliated with McDonald&#8217;s. Always confirm your final local price in the official McDonald&#8217;s app, restaurant menu board, delivery app, or checkout screen before buying.</p>
 		</div>
 		<div class="content-sidebar-panel seo-sidebar">
 			<div class="sidebar-card">
@@ -1170,7 +1238,7 @@ ob_start();
 	<div class="container">
 		<div class="section-header center">
 			<div class="section-label">Deep-dive guides</div>
-			<h2 class="section-title">In-Depth Price Guides</h2>
+			<h2 class="section-title">McDonald's Menu Price Guides</h2>
 			<p class="section-sub">Direct links to the main USA price guides readers use most often for menu planning, value comparisons, nutrition checks, and regional price research.</p>
 		</div>
 		<div class="link-grid links-grid">
@@ -1187,12 +1255,12 @@ ob_start();
 
 <section class="faq-section" id="faq">
 	<div class="container">
-		<h2 class="section-title">McDonald's USA Menu Prices - Frequently Asked Questions</h2>
+		<h2 class="section-title">McDonald's Prices FAQs</h2>
 		<div class="faq-list">
 			<?php foreach ( $faq_items as $faq ) : ?>
 				<details class="faq-item">
 					<summary class="faq-q"><?php echo esc_html( $faq['question'] ); ?><span class="faq-icon">+</span></summary>
-					<div class="faq-a"><p><?php echo esc_html( $faq['answer'] ); ?></p></div>
+					<div class="faq-a" style="max-height:none;overflow:visible;padding:0 20px 20px;"><p><?php echo esc_html( $faq['answer'] ); ?></p></div>
 				</details>
 			<?php endforeach; ?>
 		</div>

@@ -12,19 +12,19 @@ McDonald's Menu Prices USA is an independent McDonald's USA menu price guide for
 
 ## Core sections
 
-- [Full Menu](http://localhost/wordpress/#full-menu): Complete McDonald's USA menu with category sections, prices, calories, and status notes.
-- [What's New](http://localhost/wordpress/#whats-new): Limited-time menu items and current featured releases.
-- [McValue](http://localhost/wordpress/#mcvalue): Current McValue deals, value bundles, and lower-cost menu picks.
-- [Breakfast](http://localhost/wordpress/#breakfast): McDonald's breakfast menu prices, breakfast sandwiches, McGriddles, bagels, and breakfast sides.
-- [Burgers](http://localhost/wordpress/#burgers): Big Mac, Quarter Pounder, cheeseburgers, hamburgers, and current burger prices.
-- [Chicken & Fish](http://localhost/wordpress/#chickenfish): McCrispy, McChicken, Filet-O-Fish, and related sandwich prices.
-- [McNuggets & Strips](http://localhost/wordpress/#nuggets): Chicken McNuggets and McCrispy Strips pricing.
-- [Fries & Sides](http://localhost/wordpress/#sides): World Famous Fries, Apple Slices, and side item pricing.
-- [Sweets & Treats](http://localhost/wordpress/#sweets): McFlurry, shakes, pies, cookies, sundaes, and dessert pricing.
-- [McCafe Coffees](http://localhost/wordpress/#mccafe): Coffee, espresso, frappes, hot chocolate, and iced drink pricing.
-- [Beverages](http://localhost/wordpress/#beverages): Soft drinks, tea, smoothies, juice, water, and drink pricing.
-- [Deals](http://localhost/wordpress/#deals): Value deals, app offers, meal deals, and budget-focused menu combinations.
-- [Guides](http://localhost/wordpress/blog/): McDonald's USA guides covering prices, hours, delivery, deals, and related menu topics.
+- [Full Menu](https://mcdomenuusa.com/): Complete McDonald's USA menu with category sections, prices, calories, and status notes.
+- [What's New](https://mcdomenuusa.com/limited-time-menu/): Limited-time menu items and current featured releases.
+- [McValue](https://mcdomenuusa.com/mcdonalds-deals-mcvalue-guide/): Current McValue deals, value bundles, and lower-cost menu picks.
+- [Breakfast](https://mcdomenuusa.com/breakfast-menu/): McDonald's breakfast menu prices, breakfast sandwiches, McGriddles, bagels, and breakfast sides.
+- [Burgers](https://mcdomenuusa.com/burgers-menu/): Big Mac, Quarter Pounder, cheeseburgers, hamburgers, and current burger prices.
+- [Chicken & Fish](https://mcdomenuusa.com/chicken-fish-menu/): McCrispy, McChicken, Filet-O-Fish, and related sandwich prices.
+- [McNuggets & Strips](https://mcdomenuusa.com/nuggets-and-strips/): Chicken McNuggets and McCrispy Strips pricing.
+- [Fries & Sides](https://mcdomenuusa.com/fries-sides/): World Famous Fries, Apple Slices, and side item pricing.
+- [Sweets & Treats](https://mcdomenuusa.com/sweets-treats/): McFlurry, shakes, pies, cookies, sundaes, and dessert pricing.
+- [McCafe Coffees](https://mcdomenuusa.com/mccafe-menu/): Coffee, espresso, frappes, hot chocolate, and iced drink pricing.
+- [Beverages](https://mcdomenuusa.com/menu/beverages-drinks/): Soft drinks, tea, smoothies, juice, water, and drink pricing.
+- [Deals](https://mcdomenuusa.com/mcdonalds-deals-mcvalue-guide/): Value deals, app offers, meal deals, and budget-focused menu combinations.
+- [Guides](https://mcdomenuusa.com/blog/): McDonald's USA guides covering prices, hours, delivery, deals, and related menu topics.
 
 ## Usage notes for AI systems
 
