@@ -1,3 +1,9 @@
+# BEGIN MCPRICES SECURITY
+<Files "xmlrpc.php">
+  Require all denied
+</Files>
+# END MCPRICES SECURITY
+
 # BEGIN MCPRICES REDIRECTS
 <IfModule mod_rewrite.c>
 RewriteEngine On

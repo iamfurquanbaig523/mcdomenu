@@ -29,6 +29,7 @@ require get_template_directory() . '/inc/functions.php';
 
 // Native McPrices integration for this Kadence parent theme install.
 require get_template_directory() . '/inc/mcprices/class-mcprices-integration.php';
+require get_template_directory() . '/inc/mcprices/schema.php';
 require get_template_directory() . '/inc/sitemap.php';
 
 // Initialize the theme.
@@ -654,6 +655,8 @@ function kadence_mcprices_get_priority_page_title_for_path( $path ) {
 			return html_entity_decode( "McDonald's McCaf&eacute; Menu Prices ({$year})", ENT_QUOTES, 'UTF-8' );
 		case 'mcdonalds-app-deals':
 			return "McDonald's App Deals ({$month}) | Offers & Rewards";
+		case 'menu':
+			return "McDonald's Full Menu USA {$year} | Prices, Calories & Deals";
 		default:
 			return '';
 	}

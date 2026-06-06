@@ -705,7 +705,7 @@ ob_start();
 		<div class="hero-left animate-fadeup">
 			<div class="hero-eyebrow">Updated April 2026</div>
 			<h1 class="hero-title">
-				McDonald's Prices<br>
+				McDonald's Menu Prices<br>
 				<span class="highlight">USA</span>
 			</h1>
 			<p class="hero-sub">Find the latest McDonald&#8217;s prices in the USA, including McDonald&#8217;s menu prices for burgers, breakfast, McCaf&eacute; drinks, Happy Meals, fries, desserts, combo meals, and value menu items. Prices may vary by location, but this McDonald&#8217;s price list gives you a helpful overview across the United States.</p>
