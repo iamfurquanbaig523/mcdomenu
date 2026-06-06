@@ -441,7 +441,7 @@ function kadence_mcprices_get_authority_guide_canonical_path_map() {
 		'menu/fries-sides'       => 'fries-sides',
 		'menu/happy-meal'        => 'happy-meal-menu',
 		'menu/sweets-treats'     => 'sweets-treats',
-		'menu/mccafe-coffees'    => 'mccafe-menu',
+		'mccafe-menu'            => 'menu/mccafe-coffees',
 		'beverage-menu'          => 'menu/beverages-drinks',
 		'menu/sauces-condiments' => 'sauces-condiments',
 		'menu/deals-and-offers'  => 'mcdonalds-deals-mcvalue-guide',
@@ -565,3 +565,311 @@ add_action( 'after_setup_theme', 'kadence_mcprices_register_dynamic_meta_hooks',
 add_action( 'wp_head', 'kadence_mcprices_output_favicon_fallback', 1 );
 add_action( 'login_head', 'kadence_mcprices_output_favicon_fallback', 1 );
 add_action( 'admin_head', 'kadence_mcprices_output_favicon_fallback', 1 );
+
+/**
+ * Return a site-relative path for a post ID.
+ *
+ * @param int $post_id Post ID.
+ * @return string
+ */
+function kadence_mcprices_get_relative_page_path_for_post_id( $post_id ) {
+	$post_id = absint( $post_id );
+
+	if ( ! $post_id ) {
+		return '';
+	}
+
+	$permalink = get_permalink( $post_id );
+
+	if ( ! is_string( $permalink ) || '' === $permalink ) {
+		return '';
+	}
+
+	$path      = trim( (string) wp_parse_url( $permalink, PHP_URL_PATH ), '/' );
+	$home_path = trim( (string) wp_parse_url( home_url( '/' ), PHP_URL_PATH ), '/' );
+
+	if ( '' !== $home_path && 0 === strpos( $path, $home_path . '/' ) ) {
+		$path = substr( $path, strlen( $home_path ) + 1 );
+	} elseif ( $path === $home_path ) {
+		$path = '';
+	}
+
+	return trim( (string) $path, '/' );
+}
+
+/**
+ * Return the current priority SEO page path.
+ *
+ * @return string
+ */
+function kadence_mcprices_get_priority_request_path() {
+	if ( is_front_page() ) {
+		return '';
+	}
+
+	if ( is_singular( 'page' ) ) {
+		return kadence_mcprices_get_relative_page_path_for_post_id( get_queried_object_id() );
+	}
+
+	return '';
+}
+
+/**
+ * Return explicit priority-page SEO titles from the Search Console action plan.
+ *
+ * @param string $path Site-relative path.
+ * @return string
+ */
+function kadence_mcprices_get_priority_page_title_for_path( $path ) {
+	$path  = trim( (string) $path, '/' );
+	$year  = kadence_mcprices_get_current_site_year();
+	$month = kadence_mcprices_get_current_site_date( 'F Y' );
+
+	switch ( $path ) {
+		case '':
+			return "McDonald's Menu Prices USA {$year} | Prices, Calories & Deals";
+		case 'happy-meal-menu':
+			return "McDonald's Happy Meal Price ({$year})";
+		case 'menu/beverages-drinks/soft-drink-small':
+			return "How Much Is a Small Drink at McDonald's? ({$year})";
+		case 'menu/beverages-drinks':
+			return "McDonald's Beverages & Drinks Menu Prices USA {$year}";
+		case 'breakfast-menu':
+			return "McDonald's Breakfast Menu Prices USA {$year} | Calories & Hours";
+		case 'burgers-menu':
+			return "McDonald's Burgers Menu Prices in USA {$year}";
+		case 'menu/mccafe-coffees':
+			return html_entity_decode( "McDonald's McCaf&eacute; Menu Prices ({$year})", ENT_QUOTES, 'UTF-8' );
+		case 'mcdonalds-app-deals':
+			return "McDonald's App Deals ({$month}) | Offers & Rewards";
+		default:
+			return '';
+	}
+}
+
+/**
+ * Return explicit priority-page meta descriptions.
+ *
+ * @param string $path Site-relative path.
+ * @return string
+ */
+function kadence_mcprices_get_priority_page_description_for_path( $path ) {
+	$path  = trim( (string) $path, '/' );
+	$month = kadence_mcprices_get_current_site_date( 'F Y' );
+
+	switch ( $path ) {
+		case '':
+			return "Compare McDonald's menu prices in the USA, including breakfast, burgers, Happy Meal prices, small drink prices, McCafe, McValue deals, calories, and local price notes.";
+		case 'happy-meal-menu':
+			return "Review McDonald's Happy Meal prices, calories, kids meal choices, Hamburger Happy Meal, McNuggets Happy Meal, sides, drinks, and toys.";
+		case 'menu/beverages-drinks/soft-drink-small':
+			return "See the current tracked McDonald's small drink price, soft drink calories, fountain drink options, size comparison, and USA ordering notes.";
+		case 'menu/beverages-drinks':
+			return "Compare McDonald's drinks menu prices by size, including small drinks, medium drinks, large soft drinks, tea, lemonade, smoothies, juice, milk, and water.";
+		case 'menu/mccafe-coffees':
+			return "Compare McDonald's McCafe menu prices, coffee, iced coffee, lattes, frappes, hot chocolate, calories, sizes, and current USA item pages.";
+		case 'mcdonalds-app-deals':
+			return "Review current McDonald's app deals for {$month}, rewards, digital offers, McValue promos, delivery notes, and ways to compare savings against menu prices.";
+		default:
+			return '';
+	}
+}
+
+/**
+ * Force priority titles through SEO plugin and theme title paths.
+ *
+ * @param string $title Current title.
+ * @return string
+ */
+function kadence_mcprices_filter_priority_title( $title ) {
+	$priority_title = kadence_mcprices_get_priority_page_title_for_path( kadence_mcprices_get_priority_request_path() );
+
+	return '' !== $priority_title ? $priority_title : $title;
+}
+
+/**
+ * Force priority descriptions through SEO plugin paths.
+ *
+ * @param string $description Current description.
+ * @return string
+ */
+function kadence_mcprices_filter_priority_description( $description ) {
+	$priority_description = kadence_mcprices_get_priority_page_description_for_path( kadence_mcprices_get_priority_request_path() );
+
+	return '' !== $priority_description ? $priority_description : $description;
+}
+
+/**
+ * Keep visible page headings aligned with the Search Console action plan.
+ *
+ * @param string $title   Current post title.
+ * @param int    $post_id Post ID.
+ * @return string
+ */
+function kadence_mcprices_filter_priority_visible_title( $title, $post_id = 0 ) {
+	if ( is_admin() || ! ( is_singular( 'page' ) || is_front_page() ) ) {
+		return $title;
+	}
+
+	if ( absint( $post_id ) !== absint( get_queried_object_id() ) ) {
+		return $title;
+	}
+
+	$priority_title = kadence_mcprices_get_priority_page_title_for_path( kadence_mcprices_get_relative_page_path_for_post_id( $post_id ) );
+
+	return '' !== $priority_title ? $priority_title : $title;
+}
+
+/**
+ * Return whether the current page should be noindexed by runtime policy.
+ *
+ * @return bool
+ */
+function kadence_mcprices_current_page_is_priority_noindex() {
+	$path = kadence_mcprices_get_priority_request_path();
+
+	return in_array( $path, array( 'test', 'ad-disclosure' ), true );
+}
+
+/**
+ * Apply noindex/follow to thin or trust-support pages that should not rank.
+ *
+ * @param array $robots Robots directives.
+ * @return array
+ */
+function kadence_mcprices_filter_priority_wp_robots( $robots ) {
+	if ( ! kadence_mcprices_current_page_is_priority_noindex() ) {
+		return $robots;
+	}
+
+	unset( $robots['index'], $robots['nofollow'] );
+
+	$robots['noindex'] = true;
+	$robots['follow']  = true;
+
+	return $robots;
+}
+
+/**
+ * Apply noindex/follow inside Rank Math's robots output.
+ *
+ * @param mixed $robots Robots directives.
+ * @return array
+ */
+function kadence_mcprices_filter_priority_rank_math_robots( $robots ) {
+	if ( ! kadence_mcprices_current_page_is_priority_noindex() ) {
+		return $robots;
+	}
+
+	return array( 'noindex', 'follow' );
+}
+
+/**
+ * Build a compact priority SEO block for the homepage.
+ *
+ * @return string
+ */
+function kadence_mcprices_get_homepage_priority_block() {
+	return '<section class="mcprices-priority-seo-block" data-mcprices-priority-seo="homepage"><h2>McDonald&#8217;s Menu Prices USA Entity Statement</h2><p><strong>Entity statement:</strong> McDonald&#8217;s Menu Prices USA is a country-specific reference for U.S. McDonald&#8217;s menu prices, calories, deals, breakfast items, burgers, drinks, Happy Meals, and current ordering notes. Start with the <a href="' . esc_url( home_url( '/happy-meal-menu/' ) ) . '">Happy Meal price guide</a>, the <a href="' . esc_url( home_url( '/menu/beverages-drinks/soft-drink-small/' ) ) . '">small drink price page</a>, or the <a href="' . esc_url( home_url( '/breakfast-menu/' ) ) . '">breakfast menu prices</a> if you need the highest-priority answers first.</p></section>';
+}
+
+/**
+ * Build a compact Happy Meal direct answer block.
+ *
+ * @return string
+ */
+function kadence_mcprices_get_happy_meal_priority_block() {
+	return '<section class="mcprices-priority-seo-block" data-mcprices-priority-seo="happy-meal"><h2>McDonald&#8217;s Happy Meal Price (2026)</h2><p><strong>Direct answer:</strong> The tracked McDonald&#8217;s Happy Meal price range on this site is about $5.89 to $7.29 before local tax, delivery markup, or app-only changes. Hamburger Happy Meals are usually the lowest entry point, while 6-piece McNuggets Happy Meals usually sit at the higher end.</p></section>';
+}
+
+/**
+ * Build the breakfast quick-price table requested by the Search Console plan.
+ *
+ * @return string
+ */
+function kadence_mcprices_get_breakfast_priority_block() {
+	return '<section class="mcprices-priority-seo-block" data-mcprices-priority-seo="breakfast"><h2>McDonald&#8217;s Breakfast Prices: Quick Table</h2><p><strong>Direct breakfast price answer:</strong> The fastest breakfast checks are McMuffins, biscuits, McGriddles, hash browns, oatmeal, and breakfast meal upgrades. Use this quick table before the full guide.</p><div class="wp-block-table mcprices-seed-table"><table><thead><tr><th>Breakfast item</th><th>Tracked price</th><th>Why it matters</th></tr></thead><tbody><tr><td>Egg McMuffin</td><td>$4.79</td><td>Core breakfast sandwich benchmark</td></tr><tr><td>Sausage McMuffin</td><td>$2.49</td><td>Lowest-entry McMuffin-style sandwich</td></tr><tr><td>Bacon, Egg &amp; Cheese Biscuit</td><td>$5.59</td><td>Popular biscuit comparison item</td></tr><tr><td>Sausage McGriddles</td><td>$3.99</td><td>Sweet-savory value breakfast pick</td></tr><tr><td>Hash Browns</td><td>$2.69</td><td>Main breakfast side and combo anchor</td></tr><tr><td>Fruit &amp; Maple Oatmeal</td><td>$2.79</td><td>Lighter hot breakfast option</td></tr></tbody></table></div></section>';
+}
+
+/**
+ * Build the drinks size comparison table.
+ *
+ * @return string
+ */
+function kadence_mcprices_get_beverages_priority_block() {
+	return '<section class="mcprices-priority-seo-block" data-mcprices-priority-seo="beverages"><h2>McDonald&#8217;s drinks price comparison by size</h2><p><strong>Direct answer:</strong> A small McDonald&#8217;s soft drink is tracked at $1.69 in the current USA menu data. The table below compares small, medium, large, and any-size drink options before you choose a specific item page.</p><div class="wp-block-table mcprices-seed-table"><table><thead><tr><th>Drink type</th><th>Small</th><th>Medium</th><th>Large / any size</th><th>Notes</th></tr></thead><tbody><tr><td>Soft drinks</td><td>$1.69</td><td>$1.89</td><td>$2.29</td><td>Coke, Sprite, Dr Pepper, Fanta, Diet Coke, Hi-C</td></tr><tr><td>Frozen drinks</td><td>$2.49</td><td>$2.89</td><td>$3.39</td><td>Frozen Fanta and Frozen Coca-Cola style drinks</td></tr><tr><td>Smoothies</td><td>$3.99</td><td>$4.59</td><td>$5.29</td><td>Strawberry Banana and Mango Pineapple</td></tr><tr><td>Lemonade</td><td>$2.49</td><td>$2.99</td><td>$3.49</td><td>Size-led lemonade comparison</td></tr><tr><td>Sweet tea</td><td>$1.00</td><td>$1.29</td><td>$1.49</td><td>Lower-entry tea option</td></tr><tr><td>Unsweetened iced tea</td><td>$1.00</td><td>$1.00</td><td>$1.00</td><td>Any-size listing in tracked data</td></tr><tr><td>Kids drinks, milk, and water</td><td>$1.49</td><td>$1.59</td><td>$1.99</td><td>Packaged drinks rather than fountain sizes</td></tr></tbody></table></div><p>For the highest-priority exact answer, open the <a href="' . esc_url( home_url( '/menu/beverages-drinks/soft-drink-small/' ) ) . '">small drink price page</a>.</p></section>';
+}
+
+/**
+ * Build the McCafe category table.
+ *
+ * @return string
+ */
+function kadence_mcprices_get_mccafe_priority_block() {
+	return '<section class="mcprices-priority-seo-block" data-mcprices-priority-seo="mccafe"><h2>McDonald&#8217;s McCafe price table</h2><p>This complete McCafe price table covers the main tracked coffee, espresso, iced coffee, frappe, and hot chocolate items before you open a specific drink page.</p><div class="wp-block-table mcprices-seed-table"><table><thead><tr><th>McCafe item</th><th>Small</th><th>Medium</th><th>Large</th></tr></thead><tbody><tr><td>Premium Roast Coffee</td><td>$1.49</td><td>$1.79</td><td>$2.09</td></tr><tr><td>Americano</td><td>$2.49</td><td>$2.99</td><td>$3.49</td></tr><tr><td>Latte</td><td>$3.49</td><td>$3.99</td><td>$4.49</td></tr><tr><td>Caramel Latte</td><td>$3.69</td><td>$4.19</td><td>$4.69</td></tr><tr><td>French Vanilla Latte</td><td>$3.69</td><td>$4.19</td><td>$4.69</td></tr><tr><td>Cappuccino</td><td>$3.49</td><td>$3.99</td><td>$4.49</td></tr><tr><td>Hot Chocolate</td><td>$2.99</td><td>$3.49</td><td>$3.99</td></tr><tr><td>Iced Coffee</td><td>$3.19</td><td>$3.59</td><td>$4.19</td></tr><tr><td>Caramel Frappe</td><td>$3.79</td><td>$4.29</td><td>$4.99</td></tr><tr><td>Mocha Frappe</td><td>$3.79</td><td>$4.29</td><td>$4.99</td></tr></tbody></table></div></section>';
+}
+
+/**
+ * Build the current app deals block.
+ *
+ * @return string
+ */
+function kadence_mcprices_get_app_deals_priority_block() {
+	$month = kadence_mcprices_get_current_site_date( 'F Y' );
+
+	return '<section class="mcprices-priority-seo-block" data-mcprices-priority-seo="app-deals"><h2>Current McDonald&#8217;s app deals to check in ' . esc_html( $month ) . '</h2><p><strong>Direct answer:</strong> Current McDonald&#8217;s app deals to check in ' . esc_html( $month ) . ' include the $5 McChicken Meal Deal, $5 McDouble Meal Deal, Daily Double Meal Deal, Buy 1 Add 1 for $1 breakfast/lunch offers, and Mini McFlurry picks where available in the app.</p><ul><li><strong>$5 McChicken Meal Deal:</strong> A low-cost chicken meal path when available locally.</li><li><strong>$5 McDouble Meal Deal:</strong> A beef value meal path for app and McValue comparisons.</li><li><strong>Daily Double Meal Deal:</strong> A rotating value-style meal option to compare against burgers.</li><li><strong>Buy 1 Add 1 for $1:</strong> Often split between breakfast and lunch/dinner items.</li><li><strong>Mini McFlurry picks:</strong> Useful when dessert offers appear beside meal deals.</li></ul></section>';
+}
+
+/**
+ * Add priority SEO content blocks without changing the site's design system.
+ *
+ * @param string $content Current content.
+ * @return string
+ */
+function kadence_mcprices_filter_priority_content_blocks( $content ) {
+	if ( is_admin() || ! in_the_loop() || ! is_main_query() ) {
+		return $content;
+	}
+
+	if ( false !== strpos( (string) $content, 'data-mcprices-priority-seo=' ) ) {
+		return $content;
+	}
+
+	$path  = kadence_mcprices_get_priority_request_path();
+	$block = '';
+
+	switch ( $path ) {
+		case '':
+			$block = false === strpos( (string) $content, 'country-specific reference for U.S. McDonald' ) ? kadence_mcprices_get_homepage_priority_block() : '';
+			break;
+		case 'happy-meal-menu':
+			$block = false === strpos( (string) $content, "McDonald's Happy Meal Price (2026)" ) ? kadence_mcprices_get_happy_meal_priority_block() : '';
+			break;
+		case 'breakfast-menu':
+			$block = false === strpos( (string) $content, "McDonald's Breakfast Prices: Quick Table" ) ? kadence_mcprices_get_breakfast_priority_block() : '';
+			break;
+		case 'menu/beverages-drinks':
+			$block = false === strpos( (string) $content, 'drinks price comparison by size' ) ? kadence_mcprices_get_beverages_priority_block() : '';
+			break;
+		case 'menu/mccafe-coffees':
+			$block = false === strpos( (string) $content, 'McCafe price table' ) ? kadence_mcprices_get_mccafe_priority_block() : '';
+			break;
+		case 'mcdonalds-app-deals':
+			$block = false === strpos( (string) $content, '$5 McChicken Meal Deal' ) ? kadence_mcprices_get_app_deals_priority_block() : '';
+			break;
+		default:
+			break;
+	}
+
+	return '' !== $block ? $block . $content : $content;
+}
+
+add_filter( 'pre_get_document_title', 'kadence_mcprices_filter_priority_title', 9999 );
+add_filter( 'rank_math/frontend/title', 'kadence_mcprices_filter_priority_title', 9999 );
+add_filter( 'wpseo_title', 'kadence_mcprices_filter_priority_title', 9999 );
+add_filter( 'rank_math/frontend/description', 'kadence_mcprices_filter_priority_description', 9999 );
+add_filter( 'wpseo_metadesc', 'kadence_mcprices_filter_priority_description', 9999 );
+add_filter( 'the_title', 'kadence_mcprices_filter_priority_visible_title', 9999, 2 );
+add_filter( 'wp_robots', 'kadence_mcprices_filter_priority_wp_robots', 9999 );
+add_filter( 'rank_math/frontend/robots', 'kadence_mcprices_filter_priority_rank_math_robots', 9999 );
+add_filter( 'the_content', 'kadence_mcprices_filter_priority_content_blocks', 9999 );
