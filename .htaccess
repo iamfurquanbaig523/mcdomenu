@@ -1,3 +1,10 @@
+# BEGIN MCPRICES REDIRECTS
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^menu/breakfast-menu/?$ /breakfast-menu/ [R=301,L]
+</IfModule>
+# END MCPRICES REDIRECTS
+
 # BEGIN LSCACHE
 ## LITESPEED WP CACHE PLUGIN - Do not edit the contents of this block! ##
 <IfModule mod_rewrite.c>
