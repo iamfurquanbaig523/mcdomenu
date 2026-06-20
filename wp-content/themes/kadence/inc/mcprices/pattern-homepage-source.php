@@ -45,6 +45,32 @@ $get_item_media_url = static function ( $item_name ) use ( $mcprices_integration
 	return '';
 };
 
+$get_home_item_media_url = static function ( $item_name, $size = 'full' ) use ( $get_item_media_url ) {
+	$item_media_url = $get_item_media_url( $item_name );
+
+	if ( '' === $item_media_url ) {
+		return '';
+	}
+
+	if ( preg_match( '#/items/([^/]+)\.(?:png|jpe?g)$#i', $item_media_url, $matches ) ) {
+		if ( 'full' !== $size ) {
+			$homepage_relative_path = '/assets/images/mcprices/homepage/items/' . $matches[1] . '-' . preg_replace( '/[^0-9a-z_-]/i', '', (string) $size ) . '.jpg';
+
+			if ( file_exists( get_theme_file_path( $homepage_relative_path ) ) ) {
+				return get_theme_file_uri( $homepage_relative_path );
+			}
+		}
+
+		$jpg_relative_path = '/assets/images/mcprices/official/items/' . $matches[1] . '.jpg';
+
+		if ( file_exists( get_theme_file_path( $jpg_relative_path ) ) ) {
+			return get_theme_file_uri( $jpg_relative_path );
+		}
+	}
+
+	return $item_media_url;
+};
+
 $interactive_tools = array(
 	array(
 		'slug'        => 'budget-finder',
@@ -282,8 +308,40 @@ $saja_boys_row         = $find_menu_row( 'kpop', 'The Saja Boys Breakfast Meal' 
 $ramyeon_fries_row     = $find_menu_row( 'kpop', 'Ramyeon McShaker' );
 $big_arch_row          = $find_menu_row( 'bigarch', 'The BIG ARCHTM (' );
 $big_arch_meal_row     = $find_menu_row( 'bigarch', 'The BIG ARCHTM Meal' );
+$big_mac_meal_row      = $find_menu_row( 'evm', 'Big Mac Meal' );
+$nuggets_ten_meal_row  = $find_menu_row( 'evm', '10 pc Chicken McNuggets Meal' );
+$sausage_mcmuffin_meal_row = $find_menu_row( 'evm', 'Sausage McMuffin with Egg Meal' );
+$sausage_biscuit_meal_row  = $find_menu_row( 'evm', 'Sausage Biscuit with Egg Meal' );
+$world_cup_guide_url        = $page_url( 'mcdonalds-fifa-world-cup-meal' );
+$format_world_cup_price_range = static function ( array $row, $fallback_min, $fallback_max ) {
+	$minimum = isset( $row['price_min'] ) ? (float) $row['price_min'] : (float) $fallback_min;
+	$maximum = isset( $row['price_max'] ) ? (float) $row['price_max'] : (float) $fallback_max;
+
+	return '$' . number_format( $minimum, 2 ) . '-$' . number_format( $maximum, 2 ) . ' est.';
+};
+$world_cup_big_mac_range          = $format_world_cup_price_range( $big_mac_meal_row, 8.95, 11.45 );
+$world_cup_nuggets_range          = $format_world_cup_price_range( $nuggets_ten_meal_row, 8.85, 11.35 );
+$world_cup_sausage_mcmuffin_range = $format_world_cup_price_range( $sausage_mcmuffin_meal_row, 8.45, 10.95 );
+$world_cup_sausage_biscuit_range  = $format_world_cup_price_range( $sausage_biscuit_meal_row, 8.25, 10.75 );
+$nuggets_twenty_row    = $find_menu_row( 'nuggets', '20 pc Chicken McNuggets' );
+$nuggets_forty_row     = $find_menu_row( 'nuggets', '40 pc Chicken McNuggets' );
+$cookie_one_row        = $find_menu_row( 'sweets', 'Chocolate Chip Cookie (1)' );
+$chocolate_shake_medium_row = $find_menu_row( 'sweets', 'Chocolate Shake Medium' );
+$vanilla_shake_medium_row   = $find_menu_row( 'sweets', 'Vanilla Shake Medium' );
+$strawberry_shake_medium_row = $find_menu_row( 'sweets', 'Strawberry Shake Medium' );
+$strawberry_banana_smoothie_medium_row = $find_menu_row( 'bev', 'Strawberry Banana Smoothie Medium' );
+$mango_pineapple_smoothie_medium_row   = $find_menu_row( 'bev', 'Mango Pineapple Smoothie Medium' );
 
 $featured_items = array(
+	array(
+		'name'     => 'FIFA World Cup Meal',
+		'cal'      => 'Limited-time meal - FIFA 26',
+		'price'    => '$8.25-$11.45 est.',
+		'emoji'    => '&#127942;',
+		'category' => 'meals',
+		'url'      => $world_cup_guide_url,
+		'media'    => 'Big Mac Meal',
+	),
 	array(
 		'name'     => 'Big Mac',
 		'cal'      => $format_calories( $big_mac_row['calories'] ?? '' ) . ' - Burgers',
@@ -348,6 +406,84 @@ $whats_new_items = array(
 	array( 'name' => 'The BIG ARCH Meal', 'cal' => $format_calories( $big_arch_meal_row['calories'] ?? '' ), 'price' => $big_arch_meal_row['price'] ?? '~$13.49', 'status' => 'Limited Time', 'emoji' => '&#127828;', 'category' => 'whats-new' ),
 );
 
+$world_cup_meal_items = array(
+	array(
+		'name'   => 'FIFA World Cup Meal - Big Mac',
+		'media'  => 'Big Mac Meal',
+		'cal'    => '1,170 kcal',
+		'price'  => $world_cup_big_mac_range,
+		'price_min' => (float) ( $big_mac_meal_row['price_min'] ?? 8.95 ),
+		'price_max' => (float) ( $big_mac_meal_row['price_max'] ?? 11.45 ),
+		'url'    => $world_cup_guide_url,
+		'status' => 'Official LTO',
+	),
+	array(
+		'name'   => 'FIFA World Cup Meal - 10 pc McNuggets',
+		'media'  => '10 pc Chicken McNuggets Meal',
+		'cal'    => '1,000 kcal',
+		'price'  => $world_cup_nuggets_range,
+		'price_min' => (float) ( $nuggets_ten_meal_row['price_min'] ?? 8.85 ),
+		'price_max' => (float) ( $nuggets_ten_meal_row['price_max'] ?? 11.35 ),
+		'url'    => $world_cup_guide_url,
+		'status' => 'Official LTO',
+	),
+	array(
+		'name'   => 'FIFA World Cup Meal - Sausage McMuffin with Egg',
+		'media'  => 'Sausage McMuffin with Egg Meal',
+		'cal'    => '620 kcal',
+		'price'  => $world_cup_sausage_mcmuffin_range,
+		'price_min' => (float) ( $sausage_mcmuffin_meal_row['price_min'] ?? 8.45 ),
+		'price_max' => (float) ( $sausage_mcmuffin_meal_row['price_max'] ?? 10.95 ),
+		'url'    => $world_cup_guide_url,
+		'status' => 'Breakfast LTO',
+	),
+	array(
+		'name'   => 'FIFA World Cup Meal - Sausage Biscuit with Egg',
+		'media'  => 'Sausage Biscuit with Egg Meal',
+		'cal'    => '670 kcal',
+		'price'  => $world_cup_sausage_biscuit_range,
+		'price_min' => (float) ( $sausage_biscuit_meal_row['price_min'] ?? 8.25 ),
+		'price_max' => (float) ( $sausage_biscuit_meal_row['price_max'] ?? 10.75 ),
+		'url'    => $world_cup_guide_url,
+		'status' => 'Breakfast LTO',
+	),
+);
+
+$meal_shortcut_cards = array(
+	array(
+		'class' => 'deal-dark',
+		'label' => 'Breakfast combos',
+		'title' => 'Breakfast Meal Combos',
+		'price' => '~$9-$11+',
+		'copy'  => 'McMuffin, biscuit, McGriddles, bagel, hotcakes, and burrito meals are easiest to compare inside the Extra Value Meals category.',
+		'url'   => $get_category_page_url( 'meals' ),
+	),
+	array(
+		'class' => 'deal-red',
+		'label' => 'Lunch & dinner',
+		'title' => 'Lunch & Dinner Meals',
+		'price' => '~$9-$14+',
+		'copy'  => 'Use this path when you want a Big Mac Meal, McNuggets Meal, McCrispy Meal, Filet-O-Fish Meal, or Quarter Pounder Meal.',
+		'url'   => $page_url( 'extra-value-meals' ),
+	),
+	array(
+		'class' => 'deal-yellow',
+		'label' => 'Add one',
+		'title' => 'Buy One, Add One for $1',
+		'price' => 'App and location vary',
+		'copy'  => 'Compare the breakfast and lunch add-one lists before ordering because the best value changes by daypart and restaurant.',
+		'url'   => $get_category_page_url( 'mcvalue' ),
+	),
+	array(
+		'class' => 'deal-dark',
+		'label' => 'Cold drinks',
+		'title' => 'Shakes & Smoothies',
+		'price' => '$3.99-$4.49 med.',
+		'copy'  => 'Shakes sit under Sweets & Treats, while smoothies sit under Beverages, so this shortcut connects both parts of the menu.',
+		'url'   => $get_category_page_url( 'beverages' ),
+	),
+);
+
 $menu_cards = array(
 	array(
 		'badge'       => '&#128293; #1 bestseller',
@@ -379,6 +515,63 @@ $menu_cards = array(
 		'detail_two'  => $format_calories( $nuggets_six_row['calories'] ?? '' ),
 		'category'    => 'nuggets',
 	),
+);
+
+$iconic_cards = array(
+	array(
+		'title' => 'Big Mac',
+		'copy'  => 'The Big Mac is the classic burger benchmark for comparing sandwich price, meal price, and value against Quarter Pounder or McDouble options.',
+		'url'   => $get_item_page_url( 'burgers', 'Big Mac' ),
+	),
+	array(
+		'title' => 'Chicken McNuggets',
+		'copy'  => 'McNuggets are the easiest item to scale from snack size to shareable size, especially when sauces, fries, and app deals matter.',
+		'url'   => $get_item_page_url( 'nuggets', '10 pc Chicken McNuggets' ),
+	),
+	array(
+		'title' => 'Egg McMuffin',
+		'copy'  => 'The Egg McMuffin is the breakfast anchor most people use to compare McMuffins, biscuits, McGriddles, and breakfast meals.',
+		'url'   => $get_item_page_url( 'breakfast', 'Egg McMuffin' ),
+	),
+);
+
+$shareable_cards = array(
+	array(
+		'title' => '40 pc Chicken McNuggets',
+		'price' => $nuggets_forty_row['price'] ?? '$13.19',
+		'cal'   => $format_calories( $nuggets_forty_row['calories'] ?? '' ),
+		'copy'  => 'Best starting point when a group wants nuggets first and will add fries, drinks, or sauces separately.',
+		'url'   => $get_item_page_url( 'nuggets', '40 pc Chicken McNuggets' ),
+	),
+	array(
+		'title' => '20 pc Chicken McNuggets',
+		'price' => $nuggets_twenty_row['price'] ?? '$7.00',
+		'cal'   => $format_calories( $nuggets_twenty_row['calories'] ?? '' ),
+		'copy'  => 'Good middle-size order for two people or a family add-on when a full 40 pc box is too much.',
+		'url'   => $get_item_page_url( 'nuggets', '20 pc Chicken McNuggets' ),
+	),
+	array(
+		'title' => 'Large Fries Pairing',
+		'price' => $large_fries_row['price'] ?? '$4.99',
+		'cal'   => $format_calories( $large_fries_row['calories'] ?? '' ),
+		'copy'  => 'Fries often decide whether a shareable order is cheaper as a bundle or better built from separate items.',
+		'url'   => $get_item_page_url( 'sides', 'World Famous Fries Large' ),
+	),
+	array(
+		'title' => 'Cookies & Dessert Add-ons',
+		'price' => 'From ' . ( $cookie_one_row['price'] ?? '$1.79' ),
+		'cal'   => $format_calories( $cookie_one_row['calories'] ?? '' ),
+		'copy'  => 'Use dessert add-ons when the group order needs a sweet finish without turning every order into a full meal.',
+		'url'   => $get_category_page_url( 'sweets' ),
+	),
+);
+
+$shake_smoothie_cards = array(
+	array( 'name' => 'Chocolate Shake Medium', 'price' => $chocolate_shake_medium_row['price'] ?? '$3.99', 'cal' => $format_calories( $chocolate_shake_medium_row['calories'] ?? '' ), 'url' => $get_item_page_url( 'sweets', 'Chocolate Shake Medium' ) ),
+	array( 'name' => 'Vanilla Shake Medium', 'price' => $vanilla_shake_medium_row['price'] ?? '$3.99', 'cal' => $format_calories( $vanilla_shake_medium_row['calories'] ?? '' ), 'url' => $get_item_page_url( 'sweets', 'Vanilla Shake Medium' ) ),
+	array( 'name' => 'Strawberry Shake Medium', 'price' => $strawberry_shake_medium_row['price'] ?? '$3.99', 'cal' => $format_calories( $strawberry_shake_medium_row['calories'] ?? '' ), 'url' => $get_item_page_url( 'sweets', 'Strawberry Shake Medium' ) ),
+	array( 'name' => 'Strawberry Banana Smoothie Medium', 'price' => $strawberry_banana_smoothie_medium_row['price'] ?? '$4.49', 'cal' => $format_calories( $strawberry_banana_smoothie_medium_row['calories'] ?? '' ), 'url' => $get_item_page_url( 'beverages', 'Strawberry Banana Smoothie Medium' ) ),
+	array( 'name' => 'Mango Pineapple Smoothie Medium', 'price' => $mango_pineapple_smoothie_medium_row['price'] ?? '$4.49', 'cal' => $format_calories( $mango_pineapple_smoothie_medium_row['calories'] ?? '' ), 'url' => $get_item_page_url( 'beverages', 'Mango Pineapple Smoothie Medium' ) ),
 );
 
 $menu_section_blueprints = array(
@@ -572,6 +765,8 @@ $guide_cards = array(
 	array( 'href' => $page_url( 'beverage-menu' ), 'title' => 'Drinks Menu Prices USA', 'text' => 'Soft drinks, tea, lemonade, juice, smoothies, frozen drinks, and beverage pricing across the USA menu.' ),
 	array( 'href' => $page_url( 'sauces-condiments' ), 'title' => 'Sauces & Condiments Prices USA', 'text' => 'Included dips, paid sauces, packet condiments, and the add-on choices that change nuggets, fries, and shareable orders.' ),
 	array( 'href' => $page_url( 'mcdonalds-deals-mcvalue-guide' ), 'title' => 'Deals & McValue Guide USA', 'text' => 'The main value pillar for $5-style meals, McValue ordering, app-led savings, and low-entry menu strategies.' ),
+	array( 'href' => $page_url( 'mcdonalds-fifa-world-cup-meal' ), 'title' => 'FIFA World Cup Meal Guide', 'text' => 'Limited-time meal options, calories, official availability notes, and category links for the 2026 FIFA World Cup promotion.' ),
+	array( 'href' => $page_url( 'mcdonalds-secret-menu' ), 'title' => 'Secret Menu & Custom Orders', 'text' => 'A safe custom-order guide explaining unofficial combinations, app limitations, and the official items behind each idea.' ),
 	array( 'href' => $page_url( 'mcdonalds-nutrition-calories-allergens' ), 'title' => 'Nutrition, Calories & Allergens Guide', 'text' => 'A broader McDonald\'s USA guide for calories, ingredients, allergen checks, and lighter-versus-heavier menu decisions.' ),
 	array( 'href' => $page_url( 'mcdonalds-prices-by-state' ), 'title' => 'McDonald\'s Prices by State', 'text' => 'The regional pricing pillar for comparing state and city variation, local value differences, and market-level menu shifts.' ),
 );
@@ -659,6 +854,16 @@ $get_item_image_alt = static function ( array $row ) {
 	return "McDonald's " . $name . ' menu item';
 };
 
+$get_named_item_image_alt = static function ( $item_name ) {
+	$name = trim( wp_strip_all_tags( (string) $item_name ) );
+
+	if ( '' === $name ) {
+		return "McDonald's menu item";
+	}
+
+	return "McDonald's " . $name . ' menu item';
+};
+
 $get_category_image_alt = static function ( array $card ) {
 	$name = trim( wp_strip_all_tags( (string) ( $card['name'] ?? '' ) ) );
 
@@ -669,17 +874,17 @@ $get_category_image_alt = static function ( array $card ) {
 	return "McDonald's " . $name . ' menu category';
 };
 
-$render_rows = static function ( array $rows, $category_id ) use ( $get_item_page_url, $get_item_media_url, $get_item_image_alt ) {
+$render_rows = static function ( array $rows, $category_id ) use ( $get_item_page_url, $get_home_item_media_url, $get_item_image_alt ) {
 	foreach ( $rows as $row ) :
 		$item_url   = $get_item_page_url( $category_id, $row['name'] ?? '' );
-		$item_media = $get_item_media_url( $row['name'] ?? '' );
+		$item_media = $get_home_item_media_url( $row['name'] ?? '', '48' );
 		?>
 		<tr>
 			<td>
 				<div class="td-name">
 					<a class="mcprices-inline-media" href="<?php echo esc_url( $item_url ); ?>">
 						<?php if ( $item_media ) : ?>
-							<img class="mcprices-inline-media__thumb" src="<?php echo esc_url( $item_media ); ?>" alt="<?php echo esc_attr( $get_item_image_alt( $row ) ); ?>" loading="lazy" decoding="async">
+							<img class="mcprices-inline-media__thumb" src="<?php echo esc_url( $item_media ); ?>" alt="<?php echo esc_attr( $get_item_image_alt( $row ) ); ?>" width="48" height="48" loading="lazy" decoding="async">
 						<?php endif; ?>
 						<span class="mcprices-inline-media__label"><?php echo esc_html( $row['name'] ); ?></span>
 					</a>
@@ -696,7 +901,7 @@ $render_rows = static function ( array $rows, $category_id ) use ( $get_item_pag
 ob_start();
 ?>
 <!-- wp:group {"className":"mcprices-page mcprices-managed-homepage","layout":{"type":"default"}} -->
-<div class="wp-block-group mcprices-page mcprices-managed-homepage" data-mcprices-pattern-version="3.3.1">
+<div class="wp-block-group mcprices-page mcprices-managed-homepage" data-mcprices-pattern-version="3.3.8">
 <!-- wp:html -->
 <section class="hero">
 	<div class="hero-bg"></div>
@@ -737,11 +942,22 @@ ob_start();
 			</div>
 			<div class="hero-card-main">
 				<div class="hero-card-title">&#11088; Top Menu Items</div>
-				<?php foreach ( $featured_items as $item ) : ?>
+				<?php foreach ( $featured_items as $index => $item ) : ?>
+					<?php
+					$featured_item_media_name = $item['media'] ?? $item['name'];
+					$featured_item_media      = $get_home_item_media_url( $featured_item_media_name, '120' );
+					$featured_item_url        = $item['url'] ?? $get_item_page_url( $item['category'], $item['name'] );
+					?>
 					<div class="featured-item">
-						<div class="item-emoji"><?php echo $item['emoji']; ?></div>
+						<div class="item-emoji">
+							<?php if ( $featured_item_media ) : ?>
+								<img class="mcprices-media-icon mcprices-media-icon--item" src="<?php echo esc_url( $featured_item_media ); ?>" alt="<?php echo esc_attr( $get_named_item_image_alt( $item['name'] ) ); ?>" width="120" height="120" loading="<?php echo 0 === $index ? 'eager' : 'lazy'; ?>" decoding="async"<?php echo 0 === $index ? ' fetchpriority="high"' : ''; ?>>
+							<?php else : ?>
+								<?php echo $item['emoji']; ?>
+							<?php endif; ?>
+						</div>
 						<div class="item-info">
-							<div class="item-name"><a href="<?php echo esc_url( $get_item_page_url( $item['category'], $item['name'] ) ); ?>"><?php echo esc_html( $item['name'] ); ?></a></div>
+							<div class="item-name"><a href="<?php echo esc_url( $featured_item_url ); ?>"><?php echo esc_html( $item['name'] ); ?></a></div>
 							<div class="item-cal"><?php echo esc_html( $item['cal'] ); ?></div>
 						</div>
 						<div class="item-price"><?php echo esc_html( $item['price'] ); ?></div>
@@ -768,7 +984,6 @@ ob_start();
 			<div class="section-label">Every category, every price</div>
 			<h2 class="section-title">McDonald's Menu Prices by Category</h2>
 			<p class="section-sub">Use this McDonald&#8217;s menu prices USA guide to compare the McDonald&#8217;s menu with prices across <?php echo esc_html( (string) $menu_item_total ); ?> current items in 15 categories. Browse burgers, breakfast, McCaf&eacute; coffees, McFlurry desserts, Happy Meals, fries, sauces, combo meals, and McValue deals with prices and calories updated for <?php echo esc_html( $current_year ); ?>.</p>
-			<p class="section-sub section-sub--links">Popular category links: <a href="<?php echo esc_url( $get_category_page_url( 'breakfast' ) ); ?>">McDonald&#8217;s breakfast menu prices</a>, <a href="<?php echo esc_url( $get_category_page_url( 'burgers' ) ); ?>">McDonald&#8217;s burger menu prices</a>, <a href="<?php echo esc_url( $get_category_page_url( 'mccafe' ) ); ?>">McDonald&#8217;s McCaf&eacute; prices</a>, <a href="<?php echo esc_url( $get_category_page_url( 'happymeal' ) ); ?>">McDonald&#8217;s Happy Meal prices</a>, <a href="<?php echo esc_url( $get_category_page_url( 'beverages' ) ); ?>">McDonald&#8217;s drinks menu prices</a>, <a href="<?php echo esc_url( $get_category_page_url( 'sides' ) ); ?>">McDonald&#8217;s fries prices</a>, <a href="<?php echo esc_url( $get_category_page_url( 'sweets' ) ); ?>">McDonald&#8217;s desserts prices</a>, <a href="<?php echo esc_url( $get_category_page_url( 'deals' ) ); ?>">McDonald&#8217;s deals and offers</a>, and <a href="<?php echo esc_url( $page_url( 'menu' ) ); ?>">the full menu hub</a>.</p>
 		</div>
 		<div class="size-key">
 			<strong>Format guide:</strong> Small-to-large price ranges are grouped where multiple sizes exist. All prices are shown in US dollars and can vary by location.
@@ -776,14 +991,22 @@ ob_start();
 		<div class="menu-tabs">
 			<button class="menu-tab" type="button" data-menu-filter="all" aria-pressed="false">&#9776; All</button>
 			<button class="menu-tab" type="button" data-menu-filter="whats-new" aria-pressed="false">&#127381; What's New</button>
+			<a class="menu-tab menu-tab--anchor" href="#fifa-world-cup-meal" data-menu-filter="fifa-world-cup-meal" aria-pressed="false">&#127942; FIFA World Cup Meal</a>
 			<?php foreach ( $menu_sections as $section ) : ?>
 				<button class="menu-tab<?php echo 'breakfast' === $section['id'] ? ' active' : ''; ?>" type="button" data-menu-filter="<?php echo esc_attr( $section['id'] ); ?>" aria-pressed="<?php echo 'breakfast' === $section['id'] ? 'true' : 'false'; ?>"><?php echo $section['icon']; ?> <?php echo esc_html( wp_strip_all_tags( $section['title'] ) ); ?></button>
 			<?php endforeach; ?>
 		</div>
 		<?php foreach ( $menu_sections as $section ) : ?>
 			<div class="menu-section" id="<?php echo esc_attr( $section['id'] ); ?>" data-menu-category="<?php echo esc_attr( $section['id'] ); ?>">
+				<?php $section_media = $get_category_media_url( $section['id'] ); ?>
 				<div class="menu-section-head">
-					<span class="menu-section-icon"><?php echo $section['icon']; ?></span>
+					<span class="menu-section-icon">
+						<?php if ( $section_media ) : ?>
+							<img class="mcprices-media-icon mcprices-media-icon--section" src="<?php echo esc_url( $section_media ); ?>" alt="<?php echo esc_attr( wp_strip_all_tags( $section['title'] ) ); ?>" width="160" height="160" loading="lazy" decoding="async">
+						<?php else : ?>
+							<?php echo $section['icon']; ?>
+						<?php endif; ?>
+					</span>
 					<h2 class="menu-section-title"><?php echo wp_kses_post( $section['heading'] ); ?></h2>
 					<span class="menu-section-count"><?php echo esc_html( (string) count( $section['rows'] ) ); ?> items</span>
 				</div>
@@ -814,13 +1037,14 @@ ob_start();
 				<div class="section-label">Browse by Category</div>
 			<h2 class="section-title">Browse McDonald's Menu Prices by Category</h2>
 			<p class="section-sub">Jump straight to the US menu section you need &mdash; pricing, calories, and value-focused picks included.</p>
+			<p class="section-sub section-sub--links">Popular category links: <a href="<?php echo esc_url( $get_category_page_url( 'breakfast' ) ); ?>">McDonald&#8217;s breakfast menu prices</a>, <a href="<?php echo esc_url( $get_category_page_url( 'burgers' ) ); ?>">McDonald&#8217;s burger menu prices</a>, <a href="<?php echo esc_url( $get_category_page_url( 'mccafe' ) ); ?>">McDonald&#8217;s McCaf&eacute; prices</a>, <a href="<?php echo esc_url( $get_category_page_url( 'happymeal' ) ); ?>">McDonald&#8217;s Happy Meal prices</a>, <a href="<?php echo esc_url( $get_category_page_url( 'beverages' ) ); ?>">McDonald&#8217;s drinks menu prices</a>, <a href="<?php echo esc_url( $get_category_page_url( 'sides' ) ); ?>">McDonald&#8217;s fries prices</a>, <a href="<?php echo esc_url( $get_category_page_url( 'sweets' ) ); ?>">McDonald&#8217;s desserts prices</a>, <a href="<?php echo esc_url( $get_category_page_url( 'deals' ) ); ?>">McDonald&#8217;s deals and offers</a>, and <a href="<?php echo esc_url( $page_url( 'menu' ) ); ?>">the full menu hub</a>.</p>
 		</div>
 		<div class="cat-grid">
 			<?php foreach ( $category_cards as $card ) : ?>
 				<a href="<?php echo esc_url( $card['url'] ); ?>" class="cat-card<?php echo $card['class'] ? ' ' . esc_attr( $card['class'] ) : ''; ?>" data-category-id="<?php echo esc_attr( $card['id'] ); ?>">
 					<span class="cat-emoji">
 						<?php if ( ! empty( $card['image'] ) ) : ?>
-							<img class="mcprices-media-icon mcprices-media-icon--category" src="<?php echo esc_url( $card['image'] ); ?>" alt="<?php echo esc_attr( $get_category_image_alt( $card ) ); ?>" loading="lazy" decoding="async">
+							<img class="mcprices-media-icon mcprices-media-icon--category" src="<?php echo esc_url( $card['image'] ); ?>" alt="<?php echo esc_attr( $get_category_image_alt( $card ) ); ?>" width="160" height="160" loading="lazy" decoding="async">
 						<?php else : ?>
 							<?php echo $card['emoji']; ?>
 						<?php endif; ?>
@@ -848,9 +1072,16 @@ ob_start();
 			<?php foreach ( $whats_new_items as $item ) : ?>
 				<?php $status_class = false !== stripos( $item['status'], 'new' ) ? 'avail-new' : 'avail-limited'; ?>
 				<?php $item_url = isset( $item['url'] ) ? (string) $item['url'] : $get_item_page_url( $item['category'], $item['name'] ); ?>
+				<?php $new_item_media = $get_home_item_media_url( $item['name'], '120' ); ?>
 				<a href="<?php echo esc_url( $item_url ); ?>" class="new-item-card">
 					<div class="new-item-top">
-						<div class="new-item-emoji"><?php echo $item['emoji']; ?></div>
+						<div class="new-item-emoji">
+							<?php if ( $new_item_media ) : ?>
+								<img class="mcprices-media-icon mcprices-media-icon--new" src="<?php echo esc_url( $new_item_media ); ?>" alt="<?php echo esc_attr( $get_named_item_image_alt( $item['name'] ) ); ?>" width="120" height="120" loading="lazy" decoding="async">
+							<?php else : ?>
+								<?php echo $item['emoji']; ?>
+							<?php endif; ?>
+						</div>
 						<span class="new-item-avail avail-badge <?php echo esc_attr( $status_class ); ?>"><?php echo esc_html( $item['status'] ); ?></span>
 					</div>
 					<div class="new-item-body">
@@ -858,6 +1089,59 @@ ob_start();
 						<div class="new-item-cal"><?php echo esc_html( $item['cal'] ); ?></div>
 						<div class="new-item-price"><?php echo esc_html( $item['price'] ); ?></div>
 					</div>
+				</a>
+			<?php endforeach; ?>
+		</div>
+	</div>
+</section>
+
+<section class="whats-new" id="fifa-world-cup-meal">
+	<div class="container">
+		<div class="section-header">
+			<div class="section-label">FIFA World Cup Meal</div>
+			<h2 class="section-title">McDonald&#8217;s FIFA World Cup Meal <?php echo esc_html( $current_year ); ?></h2>
+			<p class="section-sub">The FIFA World Cup Meal is a limited-time McDonald&#8217;s promotion with Big Mac, 10 pc McNuggets, Sausage McMuffin with Egg, and Sausage Biscuit with Egg meal options at participating U.S. restaurants. The estimated ranges below use the tracked standard meal prices as a planning baseline; confirm the final local total in the app.</p>
+			<p class="section-sub section-sub--links">Planning match day too? Follow <a href="https://www.livesoccer24.com/" target="_blank" rel="noopener noreferrer">live FIFA World Cup scores and fixtures on LiveSoccer24</a> while you compare the meal options below.</p>
+		</div>
+		<div class="new-items-grid">
+			<?php foreach ( $world_cup_meal_items as $item ) : ?>
+				<?php $world_cup_media = $get_home_item_media_url( $item['media'], '120' ); ?>
+				<a href="<?php echo esc_url( $item['url'] ); ?>" class="new-item-card">
+					<div class="new-item-top">
+						<div class="new-item-emoji">
+							<?php if ( $world_cup_media ) : ?>
+								<img class="mcprices-media-icon mcprices-media-icon--new" src="<?php echo esc_url( $world_cup_media ); ?>" alt="<?php echo esc_attr( $get_named_item_image_alt( $item['name'] ) ); ?>" width="120" height="120" loading="lazy" decoding="async">
+							<?php else : ?>
+								&#9917;
+							<?php endif; ?>
+						</div>
+						<span class="new-item-avail avail-badge avail-limited"><?php echo esc_html( $item['status'] ); ?></span>
+					</div>
+					<div class="new-item-body">
+						<div class="new-item-name"><?php echo esc_html( $item['name'] ); ?></div>
+						<div class="new-item-cal"><?php echo esc_html( $item['cal'] ); ?></div>
+						<div class="new-item-price"><?php echo esc_html( $item['price'] ); ?></div>
+					</div>
+				</a>
+			<?php endforeach; ?>
+		</div>
+	</div>
+</section>
+
+<section class="featured-menu" id="meal-shortcuts">
+	<div class="container">
+		<div class="section-header center">
+			<div class="section-label">Meal shortcuts</div>
+			<h2 class="section-title">Breakfast, Lunch, Dinner and Value Meal Shortcuts</h2>
+			<p class="section-sub">Use these shortcuts when you already know the type of order you want. They connect the homepage to the right category or guide page without forcing you to scroll through every menu table.</p>
+		</div>
+		<div class="deals-grid">
+			<?php foreach ( $meal_shortcut_cards as $card ) : ?>
+				<a href="<?php echo esc_url( $card['url'] ); ?>" class="deal-card <?php echo esc_attr( $card['class'] ); ?>">
+					<div class="deal-badge-top"><?php echo esc_html( $card['label'] ); ?></div>
+					<div class="deal-title"><?php echo esc_html( $card['title'] ); ?></div>
+					<div class="deal-price"><?php echo esc_html( $card['price'] ); ?></div>
+					<div class="deal-sub"><?php echo esc_html( $card['copy'] ); ?></div>
 				</a>
 			<?php endforeach; ?>
 		</div>
@@ -931,9 +1215,14 @@ ob_start();
 		</div>
 		<div class="menu-cards-grid featured-grid">
 			<?php foreach ( $menu_cards as $card ) : ?>
+				<?php $card_media = $get_home_item_media_url( $card['title'], '240' ); ?>
 				<div class="menu-card">
 					<div class="card-badge-top"><?php echo wp_kses_post( $card['badge'] ); ?></div>
-					<div class="card-img"></div>
+					<div class="card-img">
+						<?php if ( $card_media ) : ?>
+							<img class="mcprices-card-media" src="<?php echo esc_url( $card_media ); ?>" alt="<?php echo esc_attr( $get_named_item_image_alt( $card['title'] ) ); ?>" width="240" height="240" loading="lazy" decoding="async">
+						<?php endif; ?>
+					</div>
 					<div class="card-body">
 						<div class="card-title-row">
 							<div>
@@ -957,6 +1246,25 @@ ob_start();
 	</div>
 </section>
 
+<section class="quality quality-section" id="iconic-items">
+	<div class="container">
+		<div class="section-header center">
+			<div class="section-label">Iconic items</div>
+			<h2 class="section-title">Top 3 Most Iconic McDonald&#8217;s Items</h2>
+			<p class="section-sub">If you are new to the menu, start with these three anchors. They are useful comparison points for burger prices, nugget sizes, and breakfast value.</p>
+		</div>
+		<div class="quality-grid">
+			<?php foreach ( $iconic_cards as $card ) : ?>
+				<a class="quality-card" href="<?php echo esc_url( $card['url'] ); ?>">
+					<div class="quality-card-icon">&#11088;</div>
+					<div class="quality-card-title"><?php echo esc_html( $card['title'] ); ?></div>
+					<div class="quality-card-text"><?php echo esc_html( $card['copy'] ); ?></div>
+				</a>
+			<?php endforeach; ?>
+		</div>
+	</div>
+</section>
+
 <section class="deals" id="deals">
 	<div class="container">
 		<div class="section-header center">
@@ -973,6 +1281,87 @@ ob_start();
 					<div class="deal-sub"><?php echo esc_html( $card['copy'] ); ?></div>
 				</a>
 			<?php endforeach; ?>
+		</div>
+	</div>
+</section>
+
+<section class="quality quality-section" id="shareables-bundles">
+	<div class="container">
+		<div class="section-header center">
+			<div class="section-label">Group orders</div>
+			<h2 class="section-title">Shareables &amp; Bundles</h2>
+			<p class="section-sub">Shareables are best when you are feeding more than one person. Compare nuggets, fries, drinks, and dessert add-ons together before deciding whether a bundle or separate items gives better value.</p>
+		</div>
+		<div class="quality-grid">
+			<?php foreach ( $shareable_cards as $card ) : ?>
+				<a class="quality-card" href="<?php echo esc_url( $card['url'] ); ?>">
+					<div class="quality-card-icon">&#127831;</div>
+					<div class="quality-card-title"><?php echo esc_html( $card['title'] ); ?></div>
+					<div class="quality-card-text"><strong><?php echo esc_html( $card['price'] ); ?></strong> &middot; <?php echo esc_html( $card['cal'] ); ?></div>
+					<div class="quality-card-text"><?php echo esc_html( $card['copy'] ); ?></div>
+				</a>
+			<?php endforeach; ?>
+		</div>
+		<p class="section-sub section-sub--links">For a fuller group-order explanation, open the <a href="<?php echo esc_url( $page_url( 'shareables-bundles' ) ); ?>">Shareables &amp; Bundles guide</a>, then compare <a href="<?php echo esc_url( $get_category_page_url( 'nuggets' ) ); ?>">McNuggets</a>, <a href="<?php echo esc_url( $get_category_page_url( 'sides' ) ); ?>">fries and sides</a>, and <a href="<?php echo esc_url( $get_category_page_url( 'sweets' ) ); ?>">desserts</a>.</p>
+	</div>
+</section>
+
+<section class="full-menu" id="shakes-smoothies">
+	<div class="container">
+		<div class="section-header">
+			<div class="section-label">Shakes &amp; Smoothies</div>
+			<h2 class="section-title">McDonald&#8217;s Shakes &amp; Smoothies Prices</h2>
+			<p class="section-sub">Shakes are tracked under Sweets &amp; Treats, while smoothies are tracked under Beverages. This quick table brings both together so readers can compare cold sweet drinks without leaving the homepage.</p>
+		</div>
+		<div class="menu-table-wrap">
+			<table class="menu-table">
+				<thead>
+					<tr>
+						<th>Item</th>
+						<th>Tracked price</th>
+						<th>Calories</th>
+						<th>Menu path</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ( $shake_smoothie_cards as $card ) : ?>
+						<tr>
+							<td><a href="<?php echo esc_url( $card['url'] ); ?>"><?php echo esc_html( $card['name'] ); ?></a></td>
+							<td class="td-price"><?php echo esc_html( $card['price'] ); ?></td>
+							<td class="td-cal"><?php echo esc_html( $card['cal'] ); ?></td>
+							<td><?php echo false !== stripos( $card['name'], 'Smoothie' ) ? 'Beverages' : 'Sweets & Treats'; ?></td>
+						</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+		</div>
+		<p class="section-sub section-sub--links">Open <a href="<?php echo esc_url( $get_category_page_url( 'sweets' ) ); ?>">Sweets &amp; Treats</a> for shakes and McFlurry options, or <a href="<?php echo esc_url( $get_category_page_url( 'beverages' ) ); ?>">Beverages</a> for smoothies, soft drinks, teas, and frozen drinks.</p>
+	</div>
+</section>
+
+<section class="quality quality-section" id="secret-menu">
+	<div class="container">
+		<div class="section-header center">
+			<div class="section-label">Custom order ideas</div>
+			<h2 class="section-title">McDonald&#8217;s Secret Menu Guide</h2>
+			<p class="section-sub">Secret menu items are custom combinations, not official McDonald&#8217;s menu items. Order by describing the ingredients or modifications clearly, and accept that some restaurants may not be able to make every custom build.</p>
+		</div>
+		<div class="quality-grid">
+			<a class="quality-card" href="<?php echo esc_url( $page_url( 'mcdonalds-secret-menu' ) ); ?>">
+				<div class="quality-card-icon">&#128161;</div>
+				<div class="quality-card-title">Poor Man&#8217;s Big Mac idea</div>
+				<div class="quality-card-text">A McDouble-style value build with Big Mac-inspired toppings can be cheaper than a full Big Mac when the restaurant allows customization.</div>
+			</a>
+			<a class="quality-card" href="<?php echo esc_url( $page_url( 'mcdonalds-secret-menu' ) ); ?>">
+				<div class="quality-card-icon">&#127828;</div>
+				<div class="quality-card-title">Land, Sea &amp; Air-style stack</div>
+				<div class="quality-card-text">A custom stack using burger, chicken, and Filet-O-Fish pieces is a novelty order, not a standard listed item.</div>
+			</a>
+			<a class="quality-card" href="<?php echo esc_url( $page_url( 'mcdonalds-secret-menu' ) ); ?>">
+				<div class="quality-card-icon">&#127846;</div>
+				<div class="quality-card-title">Apple Pie McFlurry idea</div>
+				<div class="quality-card-text">Dessert customizations are easier to understand when you compare the Apple Pie and McFlurry pages first.</div>
+			</a>
 		</div>
 	</div>
 </section>
@@ -1021,7 +1410,7 @@ ob_start();
 				<div class="delivery-card-icon">&#128666;</div>
 				<div class="delivery-card-content">
 					<div class="delivery-card-title">McDelivery</div>
-				<div class="delivery-card-text">McDelivery is one of the easiest ways to compare the “menu price” against the real delivered total. Delivery platform fees, bundled promotions and menu availability can all change the final value equation.</div>
+					<div class="delivery-card-text">McDelivery is one of the easiest ways to compare the listed menu price against the real delivered total. Delivery platform fees, bundled promotions and menu availability can all change the final value equation.</div>
 					<div class="delivery-card-chips">
 						<span class="platform-chip">Delivery pricing varies</span>
 						<span class="platform-chip">Partner fees apply</span>
@@ -1031,12 +1420,45 @@ ob_start();
 			<div class="delivery-card">
 				<div class="delivery-card-icon">&#127873;</div>
 				<div class="delivery-card-content">
-					<div class="delivery-card-title">MyMcDonald&rsquo;s Rewards &amp; App Offers</div>
-				<div class="delivery-card-text">App-led rewards and exclusive coupons are a major part of McDonald&rsquo;s USA value positioning right now. This is especially important for combo meals, fries promotions and limited-time promo tie-ins.</div>
+					<div class="delivery-card-title">MyMcDonald&rsquo;s Rewards</div>
+					<div class="delivery-card-text">Rewards points, free-item redemptions, and member-only offers can change which McDonald&rsquo;s order gives the best value at checkout.</div>
 					<div class="delivery-card-chips">
 						<span class="platform-chip">$5 meal deals</span>
 						<span class="platform-chip">App-exclusive offers</span>
 						<span class="platform-chip">Rewards points</span>
+					</div>
+				</div>
+			</div>
+			<div class="delivery-card">
+				<div class="delivery-card-icon">&#128241;</div>
+				<div class="delivery-card-content">
+					<div class="delivery-card-title">McDonald&rsquo;s App Deals</div>
+					<div class="delivery-card-text">The app is usually the fastest place to check rotating coupons, app-only discounts, local restaurant participation, and pickup versus delivery price differences.</div>
+					<div class="delivery-card-chips">
+						<a class="platform-chip" href="<?php echo esc_url( $page_url( 'mcdonalds-app-deals' ) ); ?>">App deals guide</a>
+						<span class="platform-chip">Location-aware</span>
+					</div>
+				</div>
+			</div>
+			<div class="delivery-card">
+				<div class="delivery-card-icon">&#127881;</div>
+				<div class="delivery-card-content">
+					<div class="delivery-card-title">Collector&rsquo;s &amp; Limited-Time Meals</div>
+					<div class="delivery-card-text">Promotional meals can be worth checking when packaging, collectibles, or seasonal items matter, but availability and price should always be verified locally.</div>
+					<div class="delivery-card-chips">
+						<a class="platform-chip" href="<?php echo esc_url( $page_url( 'limited-time-menu' ) ); ?>">Limited-time menu</a>
+						<a class="platform-chip" href="<?php echo esc_url( $page_url( 'mcdonalds-fifa-world-cup-meal' ) ); ?>">FIFA Meal guide</a>
+					</div>
+				</div>
+			</div>
+			<div class="delivery-card">
+				<div class="delivery-card-icon">&#128184;</div>
+				<div class="delivery-card-content">
+					<div class="delivery-card-title">McValue Deals</div>
+					<div class="delivery-card-text">McValue is the value hub for meal deals, buy-one-add-one offers, mini desserts, and lower-cost ordering paths across breakfast, lunch and dinner.</div>
+					<div class="delivery-card-chips">
+						<a class="platform-chip" href="<?php echo esc_url( $page_url( 'mcdonalds-deals-mcvalue-guide' ) ); ?>">McValue guide</a>
+						<a class="platform-chip" href="<?php echo esc_url( $get_category_page_url( 'mcvalue' ) ); ?>">McValue prices</a>
 					</div>
 				</div>
 			</div>
@@ -1103,7 +1525,7 @@ ob_start();
 		<div class="content-main seo-main">
 			<h2>McDonald's Prices USA <?php echo esc_html( $current_year ); ?> &mdash; Menu Price Guide</h2>
 			<p>Use this McDonald&#8217;s prices USA guide to compare current McDonald&#8217;s menu prices by category before you order. It works as a practical McDonald&#8217;s menu with prices for burgers, breakfast, McCaf&eacute; drinks, Happy Meals, fries, desserts, combo meals, McValue items, and limited-time deals.</p>
-			<p><strong>Entity statement:</strong> McDonald&#8217;s Menu Prices USA is an independent U.S. McDonald&#8217;s menu price guide, not affiliated with McDonald&#8217;s Corporation. If you want the highest-priority pages first, start with <a href="<?php echo esc_url( $page_url( 'happy-meal-menu' ) ); ?>">Happy Meal prices</a>, the <a href="<?php echo esc_url( $get_item_page_url( 'beverages', 'Soft Drink Small' ) ); ?>">small drink price page</a>, and <a href="<?php echo esc_url( $page_url( 'breakfast-menu' ) ); ?>">breakfast menu prices</a>.</p>
+			<p><strong>About this guide:</strong> McDonald&#8217;s Menu Prices USA is an independent U.S. McDonald&#8217;s menu price guide created by <strong>Sarah Jenkins</strong>, Lead Menu Analyst and Senior Editor based in the United States. Sarah tracks McDonald&#8217;s prices, deals, and menu changes to help US consumers compare costs before they order. This site is not affiliated with McDonald&#8217;s Corporation. For the highest-priority pages, start with <a href="<?php echo esc_url( $page_url( 'happy-meal-menu' ) ); ?>">Happy Meal prices</a>, the <a href="<?php echo esc_url( $get_item_page_url( 'beverages', 'Soft Drink Small' ) ); ?>">small drink price page</a>, and <a href="<?php echo esc_url( $page_url( 'breakfast-menu' ) ); ?>">breakfast menu prices</a>.</p>
 			<p>The McDonald&#8217;s price list on this page is organized for quick planning, with menu item names, sample prices, calories, and category links in one place. You can start with breakfast menu prices, burger prices, McCaf&eacute; prices, Happy Meal prices, drinks menu prices, fries prices, desserts prices, or deals and offers depending on what you want to compare.</p>
 			<p>McDonald&#8217;s prices are not always the same at every restaurant. Local franchise pricing, city costs, taxes, delivery apps, app-exclusive offers, and current promotions can change the final checkout total, so this guide should be used as a helpful overview of McDonald&#8217;s menu prices USA rather than a guaranteed national receipt.</p>
 			<p>For value-focused ordering, compare combo meal prices, McValue meal deals, buy-one-add-one offers, app deals, and side or dessert add-ons before choosing a meal. This helps you see whether a standalone item, full combo meal, or current McDonald&#8217;s deal gives better value at your location.</p>
@@ -1141,6 +1563,14 @@ ob_start();
 					<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="sidebar-link">&#8505; About Us</a>
 					<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>" class="sidebar-link">&#9993; Contact</a>
 					<a href="<?php echo esc_url( home_url( '/disclaimer/' ) ); ?>" class="sidebar-link">&#9888; Disclaimer</a>
+				</div>
+			</div>
+			<div class="sidebar-card">
+				<div class="sidebar-card-title">About the writer</div>
+				<p>Sarah Jenkins reviews McDonald&#8217;s USA menu prices, calories, value deals, and limited-time updates so readers can compare items before ordering.</p>
+				<div class="sidebar-links">
+					<a href="<?php echo esc_url( home_url( '/editorial-policy/' ) ); ?>" class="sidebar-link">&#128221; Editorial Policy</a>
+					<a href="<?php echo esc_url( home_url( '/pricing-methodology/' ) ); ?>" class="sidebar-link">&#128269; Source Methodology</a>
 				</div>
 			</div>
 		</div>

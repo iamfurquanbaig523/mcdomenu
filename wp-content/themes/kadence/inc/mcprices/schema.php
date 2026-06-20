@@ -29,6 +29,7 @@ function kadence_mcprices_output_json_ld_schema() {
 	if ( is_front_page() ) {
 		$blocks[] = kadence_mcprices_schema_website();
 		$blocks[] = kadence_mcprices_schema_organization();
+		$blocks[] = kadence_mcprices_schema_person();
 	}
 
 	// 2. BreadcrumbList on every non-homepage page.
@@ -103,9 +104,28 @@ function kadence_mcprices_schema_organization() {
 			'caption' => "McDonald's Menu Prices USA",
 		),
 		'description' => "McDonald's Menu Prices USA is an independent, country-specific reference for current U.S. McDonald's menu prices, calories, nutritional information, deals, and ordering guides. Not affiliated with McDonald's Corporation.",
+		'founder'     => array( '@id' => 'https://mcdomenuusa.com/#author' ),
 		'sameAs'      => array(
 			'https://mcdomenuusa.com/',
 		),
+	);
+}
+
+/* -----------------------------------------------------------------------
+ * PERSON SCHEMA — Editorial Team
+ * --------------------------------------------------------------------- */
+
+function kadence_mcprices_schema_person() {
+	return array(
+		'@context'    => 'https://schema.org',
+		'@type'       => 'Person',
+		'@id'         => 'https://mcdomenuusa.com/#author',
+		'name'        => 'Sarah Jenkins',
+		'url'         => 'https://mcdomenuusa.com/editorial-policy/',
+		'description' => 'Sarah Jenkins is the Lead Menu Analyst and Senior Editor for McDonald\'s Menu Prices USA. Leading a dedicated team of independent menu researchers, she oversees the tracking and verification of McDonald\'s prices, calories, and menu changes across the United States. With a focus on accuracy and transparency, Sarah ensures that McDoMenuUSA.com remains a reliable planning resource for US consumers.',
+		'jobTitle'    => 'Lead Menu Analyst & Senior Editor',
+		'knowsAbout'  => array( "McDonald's menu prices", 'fast food pricing USA', 'McDonald\'s deals', 'fast food nutrition', 'consumer price tracking' ),
+		'worksFor'    => array( '@id' => 'https://mcdomenuusa.com/#organization' ),
 	);
 }
 
