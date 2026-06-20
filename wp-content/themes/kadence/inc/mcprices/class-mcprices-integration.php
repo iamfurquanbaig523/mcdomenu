@@ -217,15 +217,7 @@ class McPrices_Integration {
 			return 'Sarah Jenkins';
 		});
 		
-		add_filter( 'the_content', function( $content ) {
-			if ( ( is_single() || is_page() ) && in_the_loop() && is_main_query() ) {
-				$byline = '<div class="mcprices-author-byline" style="margin-top: 5px; margin-bottom: 20px; font-size: 14px; font-weight: 500; color: #555;">';
-				$byline .= 'Written by <strong class="author-name">Sarah Jenkins</strong>, Lead Menu Analyst & Senior Editor';
-				$byline .= '</div>';
-				return $byline . $content;
-			}
-			return $content;
-		});
+
 
 		add_action( 'init', function() {
 			if ( isset( $_GET['force_purge_author'] ) ) {
