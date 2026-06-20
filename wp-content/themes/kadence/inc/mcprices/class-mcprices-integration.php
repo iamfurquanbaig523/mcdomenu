@@ -208,12 +208,29 @@ class McPrices_Integration {
 		add_action( 'template_redirect', array( $this, 'maybe_render_robots' ), -10 );
 		add_action( 'kadence_before_footer', array( $this, 'render_footer_disclaimer' ), 5 );
 		add_action( 'kadence_before_header', array( $this, 'render_top_independence_bar' ), 1 );
+		
+		// Force Author Display Name for Strong EEAT
+		add_filter( 'the_author', function( $display_name ) {
+			return 'Sarah Jenkins';
+		});
+		add_filter( 'get_the_author_display_name', function( $display_name ) {
+			return 'Sarah Jenkins';
+		});
+		
+		add_action( 'kadence_single_after_entry_title', function() {
+			if ( is_single() || is_page() ) {
+				echo '<div class="mcprices-author-byline" style="margin-top: 5px; margin-bottom: 20px; font-size: 14px; color: #555;">';
+				echo 'Written by <strong class="author-name">Sarah Jenkins</strong>, Lead Menu Analyst & Senior Editor';
+				echo '</div>';
+			}
+		});
+
 		add_action( 'kadence_render_mobile_header_column', array( $this, 'render_mobile_header_search_toggle' ), 20, 2 );
 		add_filter( 'rank_math/analytics/gtag', array( $this, 'defer_rank_math_gtag_script' ) );
 		add_action( 'init', array( $this, 'register_shortcodes' ), 15 );
-		add_action( 'init', array( $this, 'register_patterns' ), 20 );
 		add_action( 'wp_footer', array( $this, 'render_mobile_search_panel' ), 15 );
 		add_action( 'wp_footer', array( $this, 'render_mobile_quick_nav' ), 20 );
+		add_action( 'init', array( $this, 'register_patterns' ), 20 );
 		add_action( 'admin_menu', array( $this, 'register_page_categories_submenu' ), 20 );
 		add_action( 'restrict_manage_posts', array( $this, 'render_page_category_filter' ) );
 		add_action( 'pre_get_posts', array( $this, 'filter_page_admin_query_by_category' ) );
