@@ -227,6 +227,16 @@ class McPrices_Integration {
 			return $content;
 		});
 
+		add_action( 'init', function() {
+			if ( isset( $_GET['force_purge_author'] ) ) {
+				if ( has_action( 'litespeed_purge_all' ) ) {
+					do_action( 'litespeed_purge_all' );
+				} elseif ( function_exists( 'litespeed_purge_all' ) ) {
+					litespeed_purge_all();
+				}
+			}
+		});
+
 		add_action( 'kadence_render_mobile_header_column', array( $this, 'render_mobile_header_search_toggle' ), 20, 2 );
 		add_filter( 'rank_math/analytics/gtag', array( $this, 'defer_rank_math_gtag_script' ) );
 		add_action( 'init', array( $this, 'register_shortcodes' ), 15 );
