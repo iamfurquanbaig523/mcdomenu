@@ -217,12 +217,14 @@ class McPrices_Integration {
 			return 'Sarah Jenkins';
 		});
 		
-		add_action( 'kadence_single_after_entry_title', function() {
-			if ( is_single() || is_page() ) {
-				echo '<div class="mcprices-author-byline" style="margin-top: 5px; margin-bottom: 20px; font-size: 14px; color: #555;">';
-				echo 'Written by <strong class="author-name">Sarah Jenkins</strong>, Lead Menu Analyst & Senior Editor';
-				echo '</div>';
+		add_filter( 'the_content', function( $content ) {
+			if ( ( is_single() || is_page() ) && in_the_loop() && is_main_query() ) {
+				$byline = '<div class="mcprices-author-byline" style="margin-top: 5px; margin-bottom: 20px; font-size: 14px; font-weight: 500; color: #555;">';
+				$byline .= 'Written by <strong class="author-name">Sarah Jenkins</strong>, Lead Menu Analyst & Senior Editor';
+				$byline .= '</div>';
+				return $byline . $content;
 			}
+			return $content;
 		});
 
 		add_action( 'kadence_render_mobile_header_column', array( $this, 'render_mobile_header_search_toggle' ), 20, 2 );
