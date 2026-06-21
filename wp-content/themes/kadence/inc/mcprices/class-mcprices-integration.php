@@ -217,15 +217,11 @@ class McPrices_Integration {
 			return 'Sarah Jenkins';
 		});
 		
-
-
-		add_action( 'init', function() {
-			if ( isset( $_GET['force_purge_author'] ) ) {
-				if ( has_action( 'litespeed_purge_all' ) ) {
-					do_action( 'litespeed_purge_all' );
-				} elseif ( function_exists( 'litespeed_purge_all' ) ) {
-					litespeed_purge_all();
-				}
+		add_action( 'kadence_single_after_entry_title', function() {
+			if ( is_single() || is_page() ) {
+				echo '<div class="mcprices-author-byline" style="margin-top: 5px; margin-bottom: 20px; font-size: 14px; color: #555;">';
+				echo 'Written by <strong class="author-name">Sarah Jenkins</strong>, Lead Menu Analyst & Senior Editor';
+				echo '</div>';
 			}
 		});
 
