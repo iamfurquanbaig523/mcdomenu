@@ -9,6 +9,9 @@ __pycache__/
 
 .private/
 outputs/
+.seo-cache/
+.temp/
+.tmp/
 release-artifacts/
 deploy-artifacts/
 test-results/
