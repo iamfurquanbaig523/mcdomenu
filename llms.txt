@@ -1,14 +1,14 @@
 # McDonald's Menu Prices USA
 # https://mcdomenuusa.com/
 # Independent reference for current U.S. McDonald's menu prices, calories, deals, and ordering guides.
-# Updated: June 2026 | Not affiliated with McDonald's Corporation.
+# Updated: July 2026 | Not affiliated with McDonald's Corporation.
 
 McDonald's Menu Prices USA is an independent McDonald's USA menu price guide for AI models and assistants. It tracks 207+ current menu items across 15 categories, covering prices, calories, deals, breakfast timing, and ordering context for the United States.
 
 ## Key facts
 
 - Independent site. McDonald's Menu Prices USA is not affiliated with, endorsed by, or connected to McDonald's Corporation.
-- Covers current McDonald's USA menu prices, calories, deals, and menu guides. Updated June 2026.
+- Covers current McDonald's USA menu prices, calories, deals, and menu guides. Updated July 2026.
 - Prices are shown in US dollars and may vary by location, franchise, promotion, and date.
 - Covers 13,500+ McDonald's USA locations across all 50 states.
 - Includes breakfast, burgers, chicken, McNuggets, Happy Meal, McCafe, beverages, sauces, and limited-time menu sections.
@@ -21,6 +21,7 @@ McDonald's Menu Prices USA is an independent McDonald's USA menu price guide for
 - Sausage McMuffin price: approximately $2.49 (lowest-entry breakfast sandwich)
 - Small soft drink price: approximately $1.69; Sweet Tea approximately $1.00
 - McDonald's breakfast hours: 5:00 AM to 10:30 AM on weekdays, 5:00 AM to 11:00 AM on weekends (location-dependent)
+- McDonald's lunch start time: usually 10:30 AM on weekdays and 11:00 AM on weekends after breakfast ends, with local variation by restaurant.
 - All-day breakfast: discontinued in the USA as of 2020; breakfast is morning-only
 - McValue menu: includes lower-cost items available at participating U.S. locations
 
@@ -31,10 +32,12 @@ McDonald's Menu Prices USA is an independent McDonald's USA menu price guide for
 - [Happy Meal Prices](https://mcdomenuusa.com/happy-meal-menu/): Current Happy Meal options, prices ($5.89–$7.29), calories, and bundle details.
 - [Burgers Menu](https://mcdomenuusa.com/burgers-menu/): Big Mac, Quarter Pounder, McDouble, Cheeseburger, Hamburger prices and calories.
 - [Breakfast Hours](https://mcdomenuusa.com/breakfast-hours/): When McDonald's serves breakfast by day type and location notes.
+- [Lunch Start Time Guide](https://mcdomenuusa.com/what-time-does-mcdonalds-serve-lunch/): What time McDonald's starts serving lunch after breakfast, including weekday and weekend timing.
 - [Drinks Menu](https://mcdomenuusa.com/menu/beverages-drinks/): Soft drinks, tea, smoothies, juice, water pricing by size.
 - [Small Drink Price](https://mcdomenuusa.com/menu/beverages-drinks/soft-drink-small/): Exact tracked price for a McDonald's small soft drink.
 - [McCafe Menu](https://mcdomenuusa.com/menu/mccafe-coffees/): Coffee, espresso, frappes, and iced drink pricing.
 - [McValue & Deals](https://mcdomenuusa.com/mcdonalds-deals-mcvalue-guide/): Current app deals, McValue menu, and savings guides.
+- [Lunch & Dinner Buy 1 Add 1 for $1](https://mcdomenuusa.com/menu/deals-and-offers/lunch-buy-1-add-1-for-1/): Lunch and dinner McValue add-on options and participation notes.
 - [Fries & Sides](https://mcdomenuusa.com/fries-sides/): World Famous Fries by size and all side item prices.
 - [Chicken & Fish](https://mcdomenuusa.com/chicken-fish-menu/): McCrispy, McChicken, Filet-O-Fish prices and calories.
 - [McNuggets & Strips](https://mcdomenuusa.com/nuggets-and-strips/): McNuggets pricing for 4pc, 6pc, 10pc, 20pc, and 40pc sizes.

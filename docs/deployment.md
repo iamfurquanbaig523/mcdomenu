@@ -83,6 +83,31 @@ This lets you prepare a full release without touching live traffic.
 
 Release IDs may only contain letters, numbers, dots, underscores, and hyphens.
 
+## Local Windows Release Flow
+
+From this Windows PC, run this in PowerShell from the WordPress project folder:
+
+```powershell
+.\scripts\deploy\deploy-hostinger.ps1
+```
+
+That command builds the current local worktree, uploads a zip to Hostinger, prepares a release under `deploy/releases/<release_id>`, switches `public_html` through the release symlink, checks the public site and `wp-login.php`, and requests a LiteSpeed cache purge.
+
+Useful options:
+
+```powershell
+# Prepare a release without switching live traffic.
+.\scripts\deploy\deploy-hostinger.ps1 -PrepareOnly
+
+# First-time conversion only, when public_html is still a real folder.
+.\scripts\deploy\deploy-hostinger.ps1 -AllowLivePathReplace -SeedSharedFromLive
+
+# Deploy a named release id.
+.\scripts\deploy\deploy-hostinger.ps1 -ReleaseId 20260711-author-seo
+```
+
+The script reads the password from `HOSTINGER_SSH_PASSWORD` if it exists; otherwise it prompts for it. Do not put the password in the repository.
+
 ## Migration Flow
 
 Database migrations are gated by two controls:

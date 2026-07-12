@@ -864,6 +864,55 @@ $get_named_item_image_alt = static function ( $item_name ) {
 	return "McDonald's " . $name . ' menu item';
 };
 
+$get_extra_value_meals_image_url = static function () {
+	$filename      = 'mcdonalds-meal-prices-calories-usa.webp';
+	$fallback_url  = content_url( '/uploads/2026/07/' . $filename );
+	$attachment_id = 0;
+
+	if ( function_exists( 'attachment_url_to_postid' ) ) {
+		$attachment_id = absint( attachment_url_to_postid( $fallback_url ) );
+	}
+
+	if ( ! $attachment_id ) {
+		global $wpdb;
+
+		if ( $wpdb instanceof wpdb ) {
+			$like          = '%' . $wpdb->esc_like( $filename );
+			$attachment_id = absint(
+				$wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT p.ID
+						FROM {$wpdb->posts} p
+						LEFT JOIN {$wpdb->postmeta} pm ON pm.post_id = p.ID AND pm.meta_key = '_wp_attached_file'
+						WHERE p.post_type = 'attachment'
+							AND (p.guid LIKE %s OR pm.meta_value LIKE %s)
+						ORDER BY p.ID DESC
+						LIMIT 1",
+						$like,
+						$like
+					)
+				)
+			);
+		}
+	}
+
+	if ( $attachment_id ) {
+		$attachment_url = wp_get_attachment_image_url( $attachment_id, 'full' );
+
+		if ( ! $attachment_url ) {
+			$attachment_url = wp_get_attachment_url( $attachment_id );
+		}
+
+		if ( $attachment_url ) {
+			return $attachment_url;
+		}
+	}
+
+	return $fallback_url;
+};
+
+$extra_value_meals_image_url = $get_extra_value_meals_image_url();
+
 $get_category_image_alt = static function ( array $card ) {
 	$name = trim( wp_strip_all_tags( (string) ( $card['name'] ?? '' ) ) );
 
@@ -1010,6 +1059,11 @@ ob_start();
 					<h2 class="menu-section-title"><?php echo wp_kses_post( $section['heading'] ); ?></h2>
 					<span class="menu-section-count"><?php echo esc_html( (string) count( $section['rows'] ) ); ?> items</span>
 				</div>
+				<?php if ( 'meals' === $section['id'] && $extra_value_meals_image_url ) : ?>
+					<figure class="mcprices-meal-prices-image">
+						<img src="<?php echo esc_url( $extra_value_meals_image_url ); ?>" alt="<?php echo esc_attr__( 'McDonald\'s meal prices and calories USA chart', 'kadence' ); ?>" width="1792" height="1024" loading="lazy" decoding="async">
+					</figure>
+				<?php endif; ?>
 				<p class="menu-section-desc"><?php echo esc_html( html_entity_decode( $section['description'], ENT_QUOTES, 'UTF-8' ) ); ?></p>
 				<div class="menu-table-wrap">
 					<table class="menu-table">
@@ -1398,7 +1452,7 @@ ob_start();
 	</div>
 </section>
 
-<section class="delivery-rewards delivery-section">
+<section class="delivery-rewards delivery-section" id="delivery-rewards">
 	<div class="container">
 		<div class="section-header">
 			<div class="section-label">Delivery &amp; rewards</div>
@@ -1406,7 +1460,7 @@ ob_start();
 			<p class="section-sub">The McDonald&rsquo;s app remains the best place to confirm live availability, local pricing, and rotating rewards.</p>
 		</div>
 		<div class="delivery-grid">
-			<div class="delivery-card">
+			<div class="delivery-card" id="delivery">
 				<div class="delivery-card-icon">&#128666;</div>
 				<div class="delivery-card-content">
 					<div class="delivery-card-title">McDelivery</div>
@@ -1417,7 +1471,7 @@ ob_start();
 					</div>
 				</div>
 			</div>
-			<div class="delivery-card">
+			<div class="delivery-card" id="rewards">
 				<div class="delivery-card-icon">&#127873;</div>
 				<div class="delivery-card-content">
 					<div class="delivery-card-title">MyMcDonald&rsquo;s Rewards</div>
@@ -1696,6 +1750,13 @@ ob_start();
 		</div>
 	</div>
 </section>
+
+<div class="container">
+	<div class="mcprices-independence-bar mcprices-independence-bar--inline">
+		Independent consumer guide &mdash; not affiliated with or endorsed by McDonald&#8217;s Corporation. All trademarks belong to their respective owners.
+		<a href="<?php echo esc_url( home_url( '/editorial-policy/' ) ); ?>">Editorial policy</a>
+	</div>
+</div>
 
 <div class="container">
 	<p><?php echo wp_kses_post( $footer_disclaimer ); ?></p>

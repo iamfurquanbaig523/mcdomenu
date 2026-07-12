@@ -8,8 +8,13 @@ import sys
 
 
 EXCLUDED_DIRS = {
+    ".agents",
+    ".claude",
     ".git",
+    ".npm-cache",
     ".private",
+    ".seo-cache",
+    ".tmp",
     "deploy-artifacts",
     "outputs",
     "release-artifacts",

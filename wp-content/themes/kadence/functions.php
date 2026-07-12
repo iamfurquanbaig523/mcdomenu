@@ -87,6 +87,69 @@ function kadence_mcprices_replace_dynamic_dates( $text ) {
 }
 
 /**
+ * Clean a saved SEO text field without changing its meaning.
+ *
+ * @param string $text Raw SEO text.
+ * @return string
+ */
+function kadence_mcprices_clean_seo_text( $text ) {
+	return kadence_mcprices_replace_dynamic_dates( trim( preg_replace( '/\s+/u', ' ', wp_strip_all_tags( (string) $text ) ) ) );
+}
+
+/**
+ * Return a Rank Math homepage field, preferring the static front-page meta.
+ *
+ * @param string $post_meta_key Rank Math post meta key.
+ * @param string $option_key Rank Math homepage option key.
+ * @param string $fallback Known theme fallback for this field.
+ * @return string
+ */
+function kadence_mcprices_get_rank_math_homepage_field( $post_meta_key, $option_key, $fallback = '' ) {
+	$front_page_id = (int) get_option( 'page_on_front' );
+	$option_value  = '';
+
+	$rank_math_titles = get_option( 'rank-math-options-titles', array() );
+	if ( is_array( $rank_math_titles ) && ! empty( $rank_math_titles[ $option_key ] ) ) {
+		$option_value = kadence_mcprices_clean_seo_text( (string) $rank_math_titles[ $option_key ] );
+	}
+
+	if ( $front_page_id > 0 ) {
+		$post_value = kadence_mcprices_clean_seo_text( get_post_meta( $front_page_id, $post_meta_key, true ) );
+
+		if ( '' !== $post_value && ( '' === $fallback || $post_value !== $fallback || '' === $option_value ) ) {
+			return $post_value;
+		}
+	}
+
+	if ( '' !== $option_value ) {
+		return $option_value;
+	}
+
+	return '';
+}
+
+/**
+ * Return whether the current request has an explicitly saved Rank Math field.
+ *
+ * @param string $meta_key Rank Math meta key.
+ * @return bool
+ */
+function kadence_mcprices_request_has_saved_rank_math_field( $meta_key ) {
+	$meta_key       = (string) $meta_key;
+	$queried_object = get_queried_object();
+
+	if ( $queried_object instanceof \WP_Post ) {
+		return '' !== trim( (string) get_post_meta( (int) $queried_object->ID, $meta_key, true ) );
+	}
+
+	if ( $queried_object instanceof \WP_Term ) {
+		return '' !== trim( (string) get_term_meta( (int) $queried_object->term_id, $meta_key, true ) );
+	}
+
+	return false;
+}
+
+/**
  * Build the dynamic meta title for the current request.
  *
  * @return string
@@ -94,16 +157,23 @@ function kadence_mcprices_replace_dynamic_dates( $text ) {
 function kadence_mcprices_get_dynamic_meta_title() {
 	$current_year = kadence_mcprices_get_current_site_year();
 	$queried_object = get_queried_object();
+	$fallback_home_title = "McDonald's Menu Prices USA {$current_year} | Prices, Calories & Deals";
 
 	if ( is_front_page() && ! is_home() ) {
-		return "McDonald's Menu Prices USA {$current_year} | Prices, Calories & Deals";
+		$rank_math_home_title = kadence_mcprices_get_rank_math_homepage_field( 'rank_math_title', 'homepage_title', $fallback_home_title );
+
+		if ( '' !== $rank_math_home_title ) {
+			return $rank_math_home_title;
+		}
+
+		return $fallback_home_title;
 	}
 
 	if ( $queried_object instanceof \WP_Post ) {
 		$rank_math_title = trim( (string) get_post_meta( (int) $queried_object->ID, 'rank_math_title', true ) );
 
 		if ( '' !== $rank_math_title ) {
-			return kadence_mcprices_replace_dynamic_dates( trim( preg_replace( '/\s+/u', ' ', wp_strip_all_tags( $rank_math_title ) ) ) );
+			return kadence_mcprices_clean_seo_text( $rank_math_title );
 		}
 	}
 
@@ -111,7 +181,7 @@ function kadence_mcprices_get_dynamic_meta_title() {
 		$rank_math_title = trim( (string) get_term_meta( (int) $queried_object->term_id, 'rank_math_title', true ) );
 
 		if ( '' !== $rank_math_title ) {
-			return kadence_mcprices_replace_dynamic_dates( trim( preg_replace( '/\s+/u', ' ', wp_strip_all_tags( $rank_math_title ) ) ) );
+			return kadence_mcprices_clean_seo_text( $rank_math_title );
 		}
 	}
 
@@ -155,12 +225,13 @@ function kadence_mcprices_get_dynamic_meta_description() {
 	$current_date = kadence_mcprices_get_current_site_date();
 	$current_year = kadence_mcprices_get_current_site_year();
 	$queried_object = get_queried_object();
+	$fallback_home_description = "Compare McDonald's menu prices in the USA, including breakfast, burgers, Happy Meal prices, small drink prices, McCafe, McValue deals, calories, and local price notes.";
 
 	if ( $queried_object instanceof \WP_Post ) {
 		$rank_math_description = trim( (string) get_post_meta( (int) $queried_object->ID, 'rank_math_description', true ) );
 
 		if ( '' !== $rank_math_description ) {
-			return kadence_mcprices_replace_dynamic_dates( trim( preg_replace( '/\s+/u', ' ', wp_strip_all_tags( $rank_math_description ) ) ) );
+			return kadence_mcprices_clean_seo_text( $rank_math_description );
 		}
 	}
 
@@ -168,12 +239,18 @@ function kadence_mcprices_get_dynamic_meta_description() {
 		$rank_math_description = trim( (string) get_term_meta( (int) $queried_object->term_id, 'rank_math_description', true ) );
 
 		if ( '' !== $rank_math_description ) {
-			return kadence_mcprices_replace_dynamic_dates( trim( preg_replace( '/\s+/u', ' ', wp_strip_all_tags( $rank_math_description ) ) ) );
+			return kadence_mcprices_clean_seo_text( $rank_math_description );
 		}
 	}
 
 	if ( is_front_page() && ! is_home() ) {
-		return "Compare McDonald's menu prices in the USA, including breakfast, burgers, Happy Meal prices, small drink prices, McCafe, McValue deals, calories, and local price notes.";
+		$rank_math_home_description = kadence_mcprices_get_rank_math_homepage_field( 'rank_math_description', 'homepage_description', $fallback_home_description );
+
+		if ( '' !== $rank_math_home_description ) {
+			return $rank_math_home_description;
+		}
+
+		return $fallback_home_description;
 	}
 
 	if ( is_singular( 'post' ) ) {
@@ -640,7 +717,7 @@ function kadence_mcprices_get_priority_page_title_for_path( $path ) {
 		case '':
 		case 'home':
 		case 'homepage':
-			return "McDonald's Menu Prices USA {$year} | Prices, Calories & Deals";
+			return '';
 		case 'happy-meal-menu':
 			return "McDonald's Happy Meal Price ({$year})";
 		case 'menu/beverages-drinks/soft-drink-small':
@@ -676,7 +753,7 @@ function kadence_mcprices_get_priority_page_description_for_path( $path ) {
 		case '':
 		case 'home':
 		case 'homepage':
-			return "Compare McDonald's menu prices in the USA, including breakfast, burgers, Happy Meal prices, small drink prices, McCafe, McValue deals, calories, and local price notes.";
+			return '';
 		case 'happy-meal-menu':
 			return "Review McDonald's Happy Meal prices, calories, kids meal choices, Hamburger Happy Meal, McNuggets Happy Meal, sides, drinks, and toys.";
 		case 'menu/beverages-drinks/soft-drink-small':
@@ -699,6 +776,10 @@ function kadence_mcprices_get_priority_page_description_for_path( $path ) {
  * @return string
  */
 function kadence_mcprices_filter_priority_title( $title ) {
+	if ( kadence_mcprices_request_has_saved_rank_math_field( 'rank_math_title' ) ) {
+		return $title;
+	}
+
 	$priority_title = kadence_mcprices_get_priority_page_title_for_path( kadence_mcprices_get_priority_request_path() );
 
 	return '' !== $priority_title ? $priority_title : $title;
@@ -711,6 +792,10 @@ function kadence_mcprices_filter_priority_title( $title ) {
  * @return string
  */
 function kadence_mcprices_filter_priority_description( $description ) {
+	if ( kadence_mcprices_request_has_saved_rank_math_field( 'rank_math_description' ) ) {
+		return $description;
+	}
+
 	$priority_description = kadence_mcprices_get_priority_page_description_for_path( kadence_mcprices_get_priority_request_path() );
 
 	return '' !== $priority_description ? $priority_description : $description;
@@ -918,6 +1003,19 @@ function kadence_mcprices_filter_priority_content_blocks( $content ) {
 
 	$added_paths[ $path ] = true;
 
+	if ( in_array( $path, array( '', 'home', 'homepage' ), true ) ) {
+		$updated_content = preg_replace(
+			'/(<section class="faq-section" id="faq">[\s\S]*?<\/section>)/',
+			'$1' . $block,
+			(string) $content,
+			1
+		);
+
+		if ( is_string( $updated_content ) && $updated_content !== (string) $content ) {
+			return $updated_content;
+		}
+	}
+
 	return $block . $content;
 }
 
@@ -928,34 +1026,6 @@ function kadence_mcprices_filter_priority_content_blocks( $content ) {
  * @return void
  */
 function kadence_mcprices_sync_priority_runtime_meta() {
-	$home_title       = kadence_mcprices_get_priority_page_title_for_path( '' );
-	$home_description = kadence_mcprices_get_priority_page_description_for_path( '' );
-	$rank_math_titles = get_option( 'rank-math-options-titles', array() );
-
-	if ( is_array( $rank_math_titles ) ) {
-		$changed = false;
-
-		if ( $home_title && ( ! isset( $rank_math_titles['homepage_title'] ) || $home_title !== $rank_math_titles['homepage_title'] ) ) {
-			$rank_math_titles['homepage_title'] = $home_title;
-			$changed = true;
-		}
-
-		if ( $home_description && ( ! isset( $rank_math_titles['homepage_description'] ) || $home_description !== $rank_math_titles['homepage_description'] ) ) {
-			$rank_math_titles['homepage_description'] = $home_description;
-			$changed = true;
-		}
-
-		if ( $changed ) {
-			update_option( 'rank-math-options-titles', $rank_math_titles, false );
-		}
-	}
-
-	$front_page_id = (int) get_option( 'page_on_front' );
-	if ( $front_page_id > 0 ) {
-		update_post_meta( $front_page_id, 'rank_math_title', $home_title );
-		update_post_meta( $front_page_id, 'rank_math_description', $home_description );
-	}
-
 	foreach ( array( 'test', 'ad-disclosure' ) as $slug ) {
 		$page = get_page_by_path( $slug );
 

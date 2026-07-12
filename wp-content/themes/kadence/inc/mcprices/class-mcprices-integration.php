@@ -130,6 +130,16 @@ class McPrices_Integration {
 	const AUTHORITY_SEO_SEED_VERSION = '1.0.4';
 
 	/**
+	 * Option used to track one-time comment enablement for guide pages.
+	 */
+	const COMMENTS_SEED_VERSION_OPTION = 'mcprices_comments_seed_version';
+
+	/**
+	 * Current comment enablement seed version.
+	 */
+	const COMMENTS_SEED_VERSION = '1.0.2';
+
+	/**
 	 * Singleton instance.
 	 *
 	 * @var McPrices_Integration|null
@@ -170,6 +180,7 @@ class McPrices_Integration {
 		add_filter( 'kadence_theme_options_defaults', array( $this, 'filter_kadence_defaults' ) );
 		add_filter( 'kadence_global_palette_defaults', array( $this, 'filter_palette_defaults' ) );
 		add_filter( 'kadence_post_layout', array( $this, 'filter_front_page_layout' ) );
+		add_filter( 'kadence_post_layout', array( $this, 'filter_comments_layout' ), 30 );
 		add_filter( 'body_class', array( $this, 'filter_body_classes' ) );
 		add_filter( 'wp_resource_hints', array( $this, 'filter_resource_hints' ), 10, 2 );
 		add_filter( 'pre_get_document_title', array( $this, 'filter_document_title' ), 20 );
@@ -207,23 +218,11 @@ class McPrices_Integration {
 		add_action( 'template_redirect', array( $this, 'maybe_render_sitemap' ), -10 );
 		add_action( 'template_redirect', array( $this, 'maybe_render_robots' ), -10 );
 		add_action( 'kadence_before_footer', array( $this, 'render_footer_disclaimer' ), 5 );
-		add_action( 'kadence_before_header', array( $this, 'render_top_independence_bar' ), 1 );
-		
-		// Force Author Display Name for Strong EEAT
-		add_filter( 'the_author', function( $display_name ) {
-			return 'Sarah Jenkins';
-		});
-		add_filter( 'get_the_author_display_name', function( $display_name ) {
-			return 'Sarah Jenkins';
-		});
-		
-		add_action( 'kadence_single_after_entry_title', function() {
-			if ( is_single() || is_page() ) {
-				echo '<div class="mcprices-author-byline" style="margin-top: 5px; margin-bottom: 20px; font-size: 14px; color: #555;">';
-				echo 'Written by <strong class="author-name">Sarah Jenkins</strong>, Lead Menu Analyst & Senior Editor';
-				echo '</div>';
-			}
-		});
+		add_action( 'add_meta_boxes', array( $this, 'register_author_meta_box' ) );
+		add_action( 'save_post', array( $this, 'save_author_meta_box' ), 10, 2 );
+		add_action( 'init', array( $this, 'maybe_seed_page_comments' ), 58 );
+		add_filter( 'the_content', array( $this, 'append_author_box_to_content' ), 35 );
+		add_filter( 'rank_math/json_ld', array( $this, 'filter_rank_math_author_schema' ), 20, 2 );
 
 		add_action( 'kadence_render_mobile_header_column', array( $this, 'render_mobile_header_search_toggle' ), 20, 2 );
 		add_filter( 'rank_math/analytics/gtag', array( $this, 'defer_rank_math_gtag_script' ) );
@@ -242,6 +241,473 @@ class McPrices_Integration {
 		add_action( 'wp_head', array( $this, 'render_fifa_guide_table_styles' ), 99 );
 		add_action( 'wp_ajax_mcprices_tool_catalog', array( $this, 'serve_tool_catalog_json' ) );
 		add_action( 'wp_ajax_nopriv_mcprices_tool_catalog', array( $this, 'serve_tool_catalog_json' ) );
+	}
+
+	/**
+	 * Ensure WordPress pages can show the native comment form.
+	 *
+	 * @return void
+	 */
+	public function ensure_page_comments_support() {
+		if ( function_exists( 'add_post_type_support' ) ) {
+			add_post_type_support( 'page', 'comments' );
+		}
+	}
+
+	/**
+	 * Register the page/post author fields used by the end-of-content box.
+	 *
+	 * @return void
+	 */
+	public function register_author_meta_box() {
+		foreach ( array( 'page', 'post' ) as $screen ) {
+			add_meta_box(
+				'mcprices-author-eeat',
+				__( 'Author / E-E-A-T', 'kadence' ),
+				array( $this, 'render_author_meta_box' ),
+				$screen,
+				'normal',
+				'default'
+			);
+		}
+	}
+
+	/**
+	 * Render the author fields in the normal WordPress editor.
+	 *
+	 * @param \WP_Post $post Current post.
+	 * @return void
+	 */
+	public function render_author_meta_box( $post ) {
+		$name        = (string) get_post_meta( (int) $post->ID, '_mcprices_author_name', true );
+		$title       = (string) get_post_meta( (int) $post->ID, '_mcprices_author_title', true );
+		$bio         = (string) get_post_meta( (int) $post->ID, '_mcprices_author_bio', true );
+		$url         = (string) get_post_meta( (int) $post->ID, '_mcprices_author_url', true );
+		$hide_author = '1' === (string) get_post_meta( (int) $post->ID, '_mcprices_hide_author_box', true );
+		$fallback    = $this->get_public_author_profile( $post );
+
+		wp_nonce_field( 'mcprices_save_author_meta', 'mcprices_author_meta_nonce' );
+		?>
+		<p>
+			<label for="mcprices_author_name"><strong><?php esc_html_e( 'Author name', 'kadence' ); ?></strong></label><br>
+			<input type="text" class="widefat" id="mcprices_author_name" name="mcprices_author_name" value="<?php echo esc_attr( $name ); ?>" placeholder="<?php echo esc_attr( $fallback['name'] ); ?>">
+		</p>
+		<p>
+			<label for="mcprices_author_title"><strong><?php esc_html_e( 'Author title / role', 'kadence' ); ?></strong></label><br>
+			<input type="text" class="widefat" id="mcprices_author_title" name="mcprices_author_title" value="<?php echo esc_attr( $title ); ?>" placeholder="<?php echo esc_attr( $fallback['title'] ); ?>">
+		</p>
+		<p>
+			<label for="mcprices_author_bio"><strong><?php esc_html_e( 'Short author bio', 'kadence' ); ?></strong></label><br>
+			<textarea class="widefat" id="mcprices_author_bio" name="mcprices_author_bio" rows="4" placeholder="<?php echo esc_attr( $fallback['description'] ); ?>"><?php echo esc_textarea( $bio ); ?></textarea>
+		</p>
+		<p>
+			<label for="mcprices_author_url"><strong><?php esc_html_e( 'Author or editorial URL', 'kadence' ); ?></strong></label><br>
+			<input type="url" class="widefat" id="mcprices_author_url" name="mcprices_author_url" value="<?php echo esc_attr( $url ); ?>" placeholder="<?php echo esc_attr( $fallback['url'] ); ?>">
+		</p>
+		<p>
+			<label>
+				<input type="checkbox" name="mcprices_hide_author_box" value="1" <?php checked( $hide_author ); ?>>
+				<?php esc_html_e( 'Hide the visible author box on this page', 'kadence' ); ?>
+			</label>
+		</p>
+		<p class="description"><?php esc_html_e( 'Leave fields blank to use the normal WordPress page author. RankMath titles and descriptions stay editable in the RankMath panel.', 'kadence' ); ?></p>
+		<?php
+	}
+
+	/**
+	 * Save author fields from the normal WordPress editor.
+	 *
+	 * @param int      $post_id Post ID.
+	 * @param \WP_Post $post    Post object.
+	 * @return void
+	 */
+	public function save_author_meta_box( $post_id, $post ) {
+		if ( ! $post instanceof \WP_Post || ! in_array( $post->post_type, array( 'page', 'post' ), true ) ) {
+			return;
+		}
+
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+
+		if ( wp_is_post_revision( $post_id ) || wp_is_post_autosave( $post_id ) ) {
+			return;
+		}
+
+		if ( empty( $_POST['mcprices_author_meta_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['mcprices_author_meta_nonce'] ) ), 'mcprices_save_author_meta' ) ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+
+		$field_map = array(
+			'mcprices_author_name'  => array( '_mcprices_author_name', 'text' ),
+			'mcprices_author_title' => array( '_mcprices_author_title', 'text' ),
+			'mcprices_author_bio'   => array( '_mcprices_author_bio', 'textarea' ),
+			'mcprices_author_url'   => array( '_mcprices_author_url', 'url' ),
+		);
+
+		foreach ( $field_map as $field_name => $settings ) {
+			$meta_key = $settings[0];
+			$type     = $settings[1];
+			$value    = isset( $_POST[ $field_name ] ) ? wp_unslash( $_POST[ $field_name ] ) : '';
+
+			if ( 'textarea' === $type ) {
+				$value = sanitize_textarea_field( $value );
+			} elseif ( 'url' === $type ) {
+				$value = esc_url_raw( $value );
+			} else {
+				$value = sanitize_text_field( $value );
+			}
+
+			if ( '' === trim( (string) $value ) ) {
+				delete_post_meta( $post_id, $meta_key );
+			} else {
+				update_post_meta( $post_id, $meta_key, $value );
+			}
+		}
+
+		if ( ! empty( $_POST['mcprices_hide_author_box'] ) ) {
+			update_post_meta( $post_id, '_mcprices_hide_author_box', '1' );
+		} else {
+			delete_post_meta( $post_id, '_mcprices_hide_author_box' );
+		}
+	}
+
+	/**
+	 * Return the public author profile for a post, using editor fields first.
+	 *
+	 * @param \WP_Post|null $post Optional post object.
+	 * @return array<string, string>
+	 */
+	public function get_public_author_profile( $post = null ) {
+		if ( ! $post instanceof \WP_Post ) {
+			$post = get_queried_object();
+		}
+
+		if ( ! $post instanceof \WP_Post ) {
+			$front_id = (int) get_option( 'page_on_front' );
+			$post     = $front_id ? get_post( $front_id ) : null;
+		}
+
+		$user = ( $post instanceof \WP_Post && $post->post_author ) ? get_userdata( (int) $post->post_author ) : false;
+
+		$name = $post instanceof \WP_Post ? trim( (string) get_post_meta( (int) $post->ID, '_mcprices_author_name', true ) ) : '';
+		if ( '' === $name && $user ) {
+			$name = trim( (string) $user->display_name );
+		}
+		if ( '' === $name ) {
+			$name = (string) get_bloginfo( 'name' );
+		}
+
+		$title = $post instanceof \WP_Post ? trim( (string) get_post_meta( (int) $post->ID, '_mcprices_author_title', true ) ) : '';
+		if ( '' === $title && $user ) {
+			$title = trim( (string) get_user_meta( (int) $user->ID, 'mcprices_author_title', true ) );
+		}
+		if ( '' === $title ) {
+			$title = 'Editorial team';
+		}
+
+		$description = $post instanceof \WP_Post ? trim( (string) get_post_meta( (int) $post->ID, '_mcprices_author_bio', true ) ) : '';
+		if ( '' === $description && $user ) {
+			$description = trim( (string) get_user_meta( (int) $user->ID, 'description', true ) );
+		}
+		if ( '' === $description ) {
+			$description = "The McDonald's Menu Prices USA editorial team reviews menu prices, calories, availability notes, and official source links so readers can compare before ordering.";
+		}
+
+		$url = $post instanceof \WP_Post ? trim( (string) get_post_meta( (int) $post->ID, '_mcprices_author_url', true ) ) : '';
+		if ( '' === $url && $user && ! empty( $user->user_url ) ) {
+			$url = (string) $user->user_url;
+		}
+		if ( '' === $url ) {
+			$url = home_url( '/editorial-policy/' );
+		}
+
+		$image = '';
+		if ( $user && function_exists( 'get_avatar_url' ) ) {
+			$avatar = get_avatar_url( (int) $user->ID, array( 'size' => 192 ) );
+			$image  = is_string( $avatar ) ? $avatar : '';
+		}
+
+		return array(
+			'name'        => $name,
+			'title'       => $title,
+			'description' => $description,
+			'url'         => esc_url_raw( $url ),
+			'image'       => esc_url_raw( $image ),
+		);
+	}
+
+	/**
+	 * Build a Person schema node for the selected post author.
+	 *
+	 * @param \WP_Post $post        Post object.
+	 * @param string   $current_url Current canonical URL.
+	 * @return array<string, mixed>
+	 */
+	protected function get_author_schema_node( \WP_Post $post, $current_url ) {
+		$profile   = $this->get_public_author_profile( $post );
+		$author_id = untrailingslashit( esc_url_raw( $current_url ) ) . '#author';
+
+		return $this->filter_schema_empty_values(
+			array(
+				'@type'       => 'Person',
+				'@id'         => $author_id,
+				'name'        => $profile['name'],
+				'jobTitle'    => $profile['title'],
+				'description' => $profile['description'],
+				'url'         => $profile['url'],
+				'image'       => $profile['image'] ? array(
+					'@type' => 'ImageObject',
+					'url'   => $profile['image'],
+				) : null,
+				'worksFor'    => array( '@id' => esc_url_raw( home_url( '/' ) ) . '#organization' ),
+			)
+		);
+	}
+
+	/**
+	 * Return an author schema reference for the selected post.
+	 *
+	 * @param \WP_Post $post        Post object.
+	 * @param string   $current_url Current canonical URL.
+	 * @return array<string, string>
+	 */
+	protected function get_author_schema_reference( \WP_Post $post, $current_url ) {
+		return array( '@id' => untrailingslashit( esc_url_raw( $current_url ) ) . '#author' );
+	}
+
+	/**
+	 * Append the editable author box after page content.
+	 *
+	 * @param string $content Current content.
+	 * @return string
+	 */
+	public function append_author_box_to_content( $content ) {
+		if ( is_admin() || ! is_singular( array( 'page', 'post' ) ) || ! in_the_loop() || ! is_main_query() ) {
+			return $content;
+		}
+
+		$post = get_queried_object();
+		if ( ! $post instanceof \WP_Post ) {
+			return $content;
+		}
+
+		$content = $this->strip_legacy_author_byline( (string) $content );
+
+		if ( '1' === (string) get_post_meta( (int) $post->ID, '_mcprices_hide_author_box', true ) ) {
+			return $content;
+		}
+
+		if ( false !== strpos( (string) $content, 'mcprices-author-box' ) ) {
+			return $content;
+		}
+
+		$profile = $this->get_public_author_profile( $post );
+		$name    = $profile['name'];
+		$title   = $profile['title'];
+		$bio     = $profile['description'];
+		$url     = $profile['url'];
+
+		if ( '' === trim( $name ) ) {
+			return $content;
+		}
+
+		$name_html = $url ? '<a href="' . esc_url( $url ) . '">' . esc_html( $name ) . '</a>' : esc_html( $name );
+		$box       = '<section class="mcprices-author-box" aria-label="' . esc_attr__( 'Author information', 'kadence' ) . '">';
+		$box      .= '<h2 class="mcprices-author-box-title">' . esc_html__( 'About the author', 'kadence' ) . '</h2>';
+		$box      .= '<p class="mcprices-author-box-name">' . sprintf( wp_kses_post( __( 'Written by %s', 'kadence' ) ), '<strong>' . $name_html . '</strong>' ) . '</p>';
+
+		if ( '' !== trim( $title ) ) {
+			$box .= '<p class="mcprices-author-box-role">' . esc_html( $title ) . '</p>';
+		}
+
+		if ( '' !== trim( $bio ) ) {
+			$box .= '<p class="mcprices-author-box-bio">' . esc_html( $bio ) . '</p>';
+		}
+
+		$box .= '</section>';
+
+		return $content . $box;
+	}
+
+	/**
+	 * Remove the old hardcoded byline block from saved legacy content.
+	 *
+	 * @param string $content Current post content.
+	 * @return string
+	 */
+	protected function strip_legacy_author_byline( $content ) {
+		if ( false === strpos( (string) $content, 'mcprices-author-byline' ) ) {
+			return $content;
+		}
+
+		$updated = preg_replace(
+			'/<div\b[^>]*class=(["\'])(?=[^"\']*\bmcprices-author-byline\b)[^"\']*\1[^>]*>[\s\S]*?<\/div>/i',
+			'',
+			(string) $content
+		);
+
+		return is_string( $updated ) ? $updated : $content;
+	}
+
+	/**
+	 * Add editable author data to RankMath schema when RankMath owns the graph.
+	 *
+	 * @param mixed $data   RankMath JSON-LD graph data.
+	 * @param mixed $jsonld RankMath JSON-LD object.
+	 * @return mixed
+	 */
+	public function filter_rank_math_author_schema( $data, $jsonld = null ) {
+		if ( ! is_singular( array( 'page', 'post' ) ) || ! is_array( $data ) ) {
+			return $data;
+		}
+
+		$post = get_queried_object();
+		if ( ! $post instanceof \WP_Post ) {
+			return $data;
+		}
+
+		$current_url = get_permalink( $post );
+		if ( ! is_string( $current_url ) || '' === $current_url ) {
+			return $data;
+		}
+
+		$author_node = $this->get_author_schema_node( $post, $current_url );
+		$author_ref  = $this->get_author_schema_reference( $post, $current_url );
+
+		$data['mcprices_author_person'] = $author_node;
+
+		foreach ( $data as $key => $node ) {
+			if ( ! is_array( $node ) || 'mcprices_author_person' === $key ) {
+				continue;
+			}
+
+			if ( $this->schema_node_has_type( $node, array( 'Article', 'BlogPosting', 'NewsArticle' ) ) ) {
+				$node['author'] = $author_ref;
+				$data[ $key ]   = $node;
+			}
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Return whether a schema node contains any requested @type.
+	 *
+	 * @param array<string, mixed> $node  Schema node.
+	 * @param array<int, string>   $types Requested types.
+	 * @return bool
+	 */
+	protected function schema_node_has_type( array $node, array $types ) {
+		if ( empty( $node['@type'] ) ) {
+			return false;
+		}
+
+		$node_types = is_array( $node['@type'] ) ? $node['@type'] : array( $node['@type'] );
+
+		foreach ( $node_types as $node_type ) {
+			if ( in_array( (string) $node_type, $types, true ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Enable native comments once for homepage, managed menu pages, and guides.
+	 *
+	 * @return void
+	 */
+	public function maybe_seed_page_comments() {
+		$this->ensure_page_comments_support();
+
+		if ( self::COMMENTS_SEED_VERSION === (string) get_option( self::COMMENTS_SEED_VERSION_OPTION, '' ) ) {
+			return;
+		}
+
+		$pages = get_posts(
+			array(
+				'post_type'              => 'page',
+				'post_status'            => 'publish',
+				'posts_per_page'         => -1,
+				'orderby'                => 'ID',
+				'order'                  => 'ASC',
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => true,
+				'update_post_term_cache' => false,
+			)
+		);
+
+		foreach ( $pages as $page ) {
+			if ( ! $page instanceof \WP_Post || ! $this->should_enable_native_comments_for_page( $page ) ) {
+				continue;
+			}
+
+			if ( 'open' !== $page->comment_status ) {
+				wp_update_post(
+					array(
+						'ID'             => (int) $page->ID,
+						'comment_status' => 'open',
+						'ping_status'    => 'closed',
+					)
+				);
+			}
+		}
+
+		update_option( self::COMMENTS_SEED_VERSION_OPTION, self::COMMENTS_SEED_VERSION, false );
+	}
+
+	/**
+	 * Return whether a page should receive the native feedback/comment form.
+	 *
+	 * @param \WP_Post $post Page object.
+	 * @return bool
+	 */
+	protected function should_enable_native_comments_for_page( \WP_Post $post ) {
+		if ( 'page' !== $post->post_type ) {
+			return false;
+		}
+
+		if ( (int) get_option( 'page_on_front' ) === (int) $post->ID ) {
+			return true;
+		}
+
+		if ( '' !== (string) get_post_meta( (int) $post->ID, '_mcprices_managed_page', true ) ) {
+			return true;
+		}
+
+		if ( '' !== (string) get_post_meta( (int) $post->ID, '_mcprices_support_page', true ) ) {
+			return true;
+		}
+
+		$path = $this->get_post_site_relative_permalink_path( $post );
+
+		return in_array(
+			$path,
+			array(
+				'menu',
+				'breakfast-menu',
+				'breakfast-hours',
+				'what-time-does-mcdonalds-serve-lunch',
+				'burgers-menu',
+				'chicken-fish-menu',
+				'nuggets-and-strips',
+				'fries-sides',
+				'happy-meal-menu',
+				'sweets-treats',
+				'sauces-condiments',
+				'mcdonalds-deals-mcvalue-guide',
+				'mcdonalds-fifa-world-cup-meal',
+				'mcdonalds-nutrition-calories-allergens',
+				'mcdonalds-prices-by-state',
+			),
+			true
+		);
 	}
 
 	/**
@@ -9966,7 +10432,7 @@ class McPrices_Integration {
 	protected function merge_rank_math_option_array( $option_name, $seed_values ) {
 		$current_values = get_option( $option_name, array() );
 		$current_values = is_array( $current_values ) ? $current_values : array();
-		$merged_values  = array_replace_recursive( $current_values, $seed_values );
+		$merged_values  = array_replace_recursive( $seed_values, $current_values );
 
 		update_option( $option_name, $merged_values, false );
 	}
@@ -9985,8 +10451,6 @@ class McPrices_Integration {
 			&& '1' === (string) get_option( 'rank_math_registration_skip', '' )
 			&& '1' === (string) get_option( 'rank_math_wizard_completed', '' )
 			&& '1' === (string) get_option( 'blog_public', '' )
-			&& "McDonald's Menu Prices USA {$current_year} | Prices, Calories & Deals" === ( $titles['homepage_title'] ?? '' )
-			&& "Compare McDonald's menu prices in the USA, including breakfast, burgers, Happy Meal prices, small drink prices, McCafe, McValue deals, calories, and local price notes." === ( $titles['homepage_description'] ?? '' )
 			&& "%title% | McDonald's Menu Prices USA" === ( $titles['pt_post_title'] ?? '' )
 			&& "%term% Prices USA {$current_year} | McDonald's Menu Prices USA" === ( $titles['tax_category_title'] ?? '' )
 			&& "Page Not Found | McDonald's Menu Prices USA" === ( $titles['404_title'] ?? '' ) ) {
@@ -10101,15 +10565,15 @@ class McPrices_Integration {
 				$page_meta = $meta_seed[ $path ];
 
 				if ( ! empty( $page_meta['title'] ) ) {
-					update_post_meta( (int) $post->ID, 'rank_math_title', $this->limit_text_to_characters( (string) $page_meta['title'], 70 ) );
+					$this->update_post_meta_when_empty( (int) $post->ID, 'rank_math_title', $this->limit_text_to_characters( (string) $page_meta['title'], 70 ) );
 				}
 
 				if ( ! empty( $page_meta['description'] ) ) {
-					update_post_meta( (int) $post->ID, 'rank_math_description', $this->limit_text_to_characters( (string) $page_meta['description'], 155 ) );
+					$this->update_post_meta_when_empty( (int) $post->ID, 'rank_math_description', $this->limit_text_to_characters( (string) $page_meta['description'], 155 ) );
 				}
 
 				if ( ! empty( $page_meta['focus'] ) ) {
-					update_post_meta( (int) $post->ID, 'rank_math_focus_keyword', (string) $page_meta['focus'] );
+					$this->update_post_meta_when_empty( (int) $post->ID, 'rank_math_focus_keyword', (string) $page_meta['focus'] );
 				}
 			}
 
@@ -10535,9 +10999,9 @@ class McPrices_Integration {
 			$canonical_url   = $this->get_canonical_url_for_post( $post );
 			$should_noindex  = $this->should_noindex_post( $post );
 
-			update_post_meta( (int) $post->ID, 'rank_math_title', $seo_title );
-			update_post_meta( (int) $post->ID, 'rank_math_description', $seo_description );
-			update_post_meta( (int) $post->ID, 'rank_math_focus_keyword', $focus_keyword );
+			$this->update_post_meta_when_empty( (int) $post->ID, 'rank_math_title', $seo_title );
+			$this->update_post_meta_when_empty( (int) $post->ID, 'rank_math_description', $seo_description );
+			$this->update_post_meta_when_empty( (int) $post->ID, 'rank_math_focus_keyword', $focus_keyword );
 
 			if ( $should_noindex ) {
 				update_post_meta( (int) $post->ID, 'rank_math_robots', array( 'noindex', 'follow' ) );
@@ -10551,6 +11015,42 @@ class McPrices_Integration {
 				delete_post_meta( (int) $post->ID, 'rank_math_canonical_url' );
 			}
 		}
+	}
+
+	/**
+	 * Update post meta only when no meaningful value already exists.
+	 *
+	 * @param int    $post_id Post ID.
+	 * @param string $meta_key Meta key.
+	 * @param mixed  $value    Meta value.
+	 * @return void
+	 */
+	protected function update_post_meta_when_empty( $post_id, $meta_key, $value ) {
+		$current = get_post_meta( (int) $post_id, (string) $meta_key, true );
+
+		if ( is_array( $current ) ? ! empty( $current ) : '' !== trim( (string) $current ) ) {
+			return;
+		}
+
+		update_post_meta( (int) $post_id, (string) $meta_key, $value );
+	}
+
+	/**
+	 * Update term meta only when no meaningful value already exists.
+	 *
+	 * @param int    $term_id  Term ID.
+	 * @param string $meta_key Meta key.
+	 * @param mixed  $value    Meta value.
+	 * @return void
+	 */
+	protected function update_term_meta_when_empty( $term_id, $meta_key, $value ) {
+		$current = get_term_meta( (int) $term_id, (string) $meta_key, true );
+
+		if ( is_array( $current ) ? ! empty( $current ) : '' !== trim( (string) $current ) ) {
+			return;
+		}
+
+		update_term_meta( (int) $term_id, (string) $meta_key, $value );
 	}
 
 	/**
@@ -10850,9 +11350,9 @@ class McPrices_Integration {
 				75
 			);
 
-			update_term_meta( (int) $term->term_id, 'rank_math_title', $name . ' Prices USA ' . $current_year . ' | McDonald\'s Menu Prices USA' );
-			update_term_meta( (int) $term->term_id, 'rank_math_description', $description );
-			update_term_meta( (int) $term->term_id, 'rank_math_focus_keyword', strtolower( $name ) . ' prices USA' );
+			$this->update_term_meta_when_empty( (int) $term->term_id, 'rank_math_title', $name . ' Prices USA ' . $current_year . ' | McDonald\'s Menu Prices USA' );
+			$this->update_term_meta_when_empty( (int) $term->term_id, 'rank_math_description', $description );
+			$this->update_term_meta_when_empty( (int) $term->term_id, 'rank_math_focus_keyword', strtolower( $name ) . ' prices USA' );
 			update_term_meta( (int) $term->term_id, 'rank_math_robots', array( 'index' ) );
 		}
 	}
@@ -13349,33 +13849,74 @@ class McPrices_Integration {
 				'url'   => $this->get_home_path_url(),
 			),
 			array(
-				'title' => __( 'What\'s New', 'kadence' ),
-				'url'   => $this->get_section_url( 'whats-new' ),
-			),
-			array(
-				'title' => __( 'Menu', 'kadence' ),
-				'url'   => $this->get_section_url( 'full-menu' ),
-			),
-			array(
-				'title' => __( 'Interactive Tools', 'kadence' ),
-				'url'   => $this->get_section_url( 'interactive-tools' ),
-			),
-			array(
-				'title' => __( 'Deals', 'kadence' ),
-				'url'   => $this->get_section_url( 'deals' ),
+				'title'    => __( 'Menu', 'kadence' ),
+				'url'      => $this->get_section_url( 'full-menu' ),
+				'children' => $this->get_default_primary_menu_dropdown_items(),
 			),
 			array(
 				'title' => __( 'Breakfast', 'kadence' ),
-				'url'   => $this->get_section_url( 'breakfast' ),
+				'url'   => home_url( '/breakfast-menu/' ),
+			),
+			array(
+				'title' => __( 'Burgers', 'kadence' ),
+				'url'   => home_url( '/burgers-menu/' ),
+			),
+			array(
+				'title' => __( 'Happy Meal', 'kadence' ),
+				'url'   => home_url( '/happy-meal-menu/' ),
 			),
 			array(
 				'title' => __( 'Guides', 'kadence' ),
 				'url'   => $this->get_section_url( 'guides' ),
 			),
 			array(
+				'title' => __( 'Tools', 'kadence' ),
+				'url'   => $this->get_section_url( 'interactive-tools' ),
+			),
+			array(
 				'title' => __( 'Blogs', 'kadence' ),
 				'url'   => $this->get_blog_url(),
 			),
+		);
+	}
+
+	/**
+	 * Return homepage-only dropdown links for the primary Menu tab.
+	 *
+	 * @return array
+	 */
+	protected function get_default_primary_menu_dropdown_items() {
+		$items = array(
+			array( 'title' => 'Full Menu', 'section' => 'full-menu' ),
+			array( 'title' => '&#x1F195; What&#8217;s New', 'section' => 'whats-new' ),
+			array( 'title' => '&#x1F3C6; FIFA World Cup Meal', 'section' => 'fifa-world-cup-meal' ),
+			array( 'title' => '&#x1F373; Extra Value Meals', 'section' => 'meals' ),
+			array( 'title' => '&#x1F4B8; McValue', 'section' => 'mcvalue' ),
+			array( 'title' => '&#x1F95E; Breakfast', 'section' => 'breakfast' ),
+			array( 'title' => '&#x1F354; Burgers', 'section' => 'burgers' ),
+			array( 'title' => '&#x1F357; Chicken &amp; Fish Sandwiches', 'section' => 'chickenfish' ),
+			array( 'title' => '&#x1F357; McNuggets &amp; McCrispy Strips', 'section' => 'nuggets' ),
+			array( 'title' => '&#x1F32F; Snack Wrap', 'section' => 'snackwrap' ),
+			array( 'title' => '&#x1F35F; Fries &amp; Sides', 'section' => 'sides' ),
+			array( 'title' => '&#x1F389; Happy Meal', 'section' => 'happymeal' ),
+			array( 'title' => '&#x1F366; Sweets &amp; Treats', 'section' => 'sweets' ),
+			array( 'title' => '&#x2615; McCafe Coffees', 'section' => 'mccafe' ),
+			array( 'title' => '&#x1F379; Beverages', 'section' => 'beverages' ),
+			array( 'title' => '&#x1F9EA; Sauces &amp; Condiments', 'section' => 'sauces' ),
+			array( 'title' => '&#x1F4DA; Guides', 'section' => 'guides' ),
+			array( 'title' => '&#x2753; FAQs', 'section' => 'faq' ),
+			array( 'title' => '&#x1F69A; Delivery', 'section' => 'delivery' ),
+			array( 'title' => '&#x1F381; Rewards', 'section' => 'rewards' ),
+		);
+
+		return array_map(
+			function ( $item ) {
+				return array(
+					'title' => html_entity_decode( $item['title'], ENT_QUOTES, 'UTF-8' ),
+					'url'   => $this->get_section_url( $item['section'] ),
+				);
+			},
+			$items
 		);
 	}
 
@@ -14012,6 +14553,26 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Show native WordPress feedback/comments on the public guide and menu pages.
+	 *
+	 * @param array $layout Layout data.
+	 * @return array
+	 */
+	public function filter_comments_layout( $layout ) {
+		if ( ! $this->design_enabled() || ! is_singular( 'page' ) ) {
+			return $layout;
+		}
+
+		$post = get_queried_object();
+
+		if ( $post instanceof \WP_Post && $this->should_enable_native_comments_for_page( $post ) ) {
+			$layout['comments'] = 'show';
+		}
+
+		return $layout;
+	}
+
+	/**
 	 * Add a body class that scopes the site-wide header/footer layer.
 	 *
 	 * @param array $classes Existing body classes.
@@ -14087,12 +14648,52 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Return a saved Rank Math homepage field without letting old seeded values
+	 * block newer global Homepage settings.
+	 *
+	 * @param string $post_meta_key Rank Math post meta key.
+	 * @param string $option_key Rank Math homepage option key.
+	 * @param string $fallback Known theme fallback for this field.
+	 * @return string
+	 */
+	protected function get_rank_math_homepage_field( $post_meta_key, $option_key, $fallback = '' ) {
+		$clean_text = function ( $value ) {
+			return trim( preg_replace( '/\s+/u', ' ', wp_strip_all_tags( (string) $value ) ) );
+		};
+
+		$front_page_id = (int) get_option( 'page_on_front' );
+		$option_value  = '';
+		$rank_math_titles = get_option( 'rank-math-options-titles', array() );
+
+		if ( is_array( $rank_math_titles ) && ! empty( $rank_math_titles[ $option_key ] ) ) {
+			$option_value = $clean_text( $rank_math_titles[ $option_key ] );
+		}
+
+		if ( $front_page_id > 0 ) {
+			$post_value = $clean_text( get_post_meta( $front_page_id, $post_meta_key, true ) );
+
+			if ( '' !== $post_value && ( '' === $fallback || $post_value !== $fallback || '' === $option_value ) ) {
+				return $post_value;
+			}
+		}
+
+		if ( '' !== $option_value ) {
+			return $option_value;
+		}
+
+		return '';
+	}
+
+	/**
 	 * Return the homepage SEO title.
 	 *
 	 * @return string
 	 */
 	protected function get_homepage_meta_title() {
-		return "McDonald's Menu Prices USA " . $this->get_current_site_year() . ' | Prices, Calories & Deals';
+		$fallback = "McDonald's Menu Prices USA " . $this->get_current_site_year() . ' | Prices, Calories & Deals';
+		$rank_math_title = $this->get_rank_math_homepage_field( 'rank_math_title', 'homepage_title', $fallback );
+
+		return '' !== $rank_math_title ? $rank_math_title : $fallback;
 	}
 
 	/**
@@ -14101,7 +14702,10 @@ class McPrices_Integration {
 	 * @return string
 	 */
 	protected function get_homepage_meta_description() {
-		return "Compare McDonald's menu prices in the USA, including breakfast, burgers, Happy Meal prices, small drink prices, McCafe, McValue deals, calories, and local price notes.";
+		$fallback = "Compare McDonald's menu prices in the USA, including breakfast, burgers, Happy Meal prices, small drink prices, McCafe, McValue deals, calories, and local price notes.";
+		$rank_math_description = $this->get_rank_math_homepage_field( 'rank_math_description', 'homepage_description', $fallback );
+
+		return '' !== $rank_math_description ? $rank_math_description : $fallback;
 	}
 
 	/**
@@ -15029,6 +15633,8 @@ class McPrices_Integration {
 		$has_rank_math_schema = defined( 'RANK_MATH_VERSION' ) || class_exists( '\RankMath\Helper' );
 		$website_id  = $url . '#website';
 		$page_id     = $this->is_seo_homepage() ? $url . '#menu-prices-guide' : $url . '#webpage';
+		$front_post  = get_post( (int) get_option( 'page_on_front' ) );
+		$author_ref  = $front_post instanceof \WP_Post ? $this->get_author_schema_reference( $front_post, $url ) : null;
 		$topics      = array(
 			$this->get_homepage_primary_keyword(),
 			"McDonald's USA calories",
@@ -15051,6 +15657,10 @@ class McPrices_Integration {
 
 		$topics = array_values( array_unique( array_filter( array_map( 'strval', $topics ) ) ) );
 		$topics = array_slice( $topics, 0, 14 );
+
+		if ( $front_post instanceof \WP_Post ) {
+			$graph[] = $this->get_author_schema_node( $front_post, $url );
+		}
 
 		if ( ! $has_rank_math_schema ) {
 			$graph[] = array_filter(
@@ -15156,6 +15766,7 @@ class McPrices_Integration {
 				'description'  => $description,
 				'inLanguage'   => 'en-US',
 				'isPartOf'     => array( '@id' => $website_id ),
+				'author'       => $author_ref,
 				'about'        => array_map(
 					static function ( $topic ) {
 						return array(
@@ -15977,6 +16588,9 @@ class McPrices_Integration {
 			$current_url = $request_url;
 		}
 
+		$author_ref = $this->get_author_schema_reference( $post, $current_url );
+		$graph[]    = $this->get_author_schema_node( $post, $current_url );
+
 		if ( ! $has_rank_math_schema ) {
 			$graph[] = $this->filter_schema_empty_values(
 				array(
@@ -16011,6 +16625,7 @@ class McPrices_Integration {
 			'description'  => $description,
 			'inLanguage'   => 'en-US',
 			'isPartOf'     => array( '@id' => $site_url . '#website' ),
+			'author'       => $author_ref,
 			'datePublished' => $published_at,
 			'dateModified' => $modified_at,
 		);
@@ -16285,7 +16900,7 @@ class McPrices_Integration {
 						'inLanguage'       => 'en-US',
 						'datePublished'    => $published_at,
 						'dateModified'     => $modified_at,
-						'author'           => array( '@id' => $site_url . '#organization' ),
+						'author'           => $author_ref,
 						'publisher'        => array( '@id' => $site_url . '#organization' ),
 						'mainEntityOfPage' => array( '@id' => $current_url . '#webpage' ),
 						'about'            => $this->build_schema_thing_list(
@@ -17181,20 +17796,39 @@ class McPrices_Integration {
 			}
 		}
 
+		$this->create_seed_menu_items( $menu_id, $items );
+
+		return $menu_id;
+	}
+
+	/**
+	 * Create menu items recursively so seeded nav definitions can include dropdowns.
+	 *
+	 * @param int   $menu_id   Menu term ID.
+	 * @param array $items     Menu item definitions.
+	 * @param int   $parent_id Parent menu item ID.
+	 * @return void
+	 */
+	protected function create_seed_menu_items( $menu_id, $items, $parent_id = 0 ) {
 		foreach ( $items as $item ) {
-			wp_update_nav_menu_item(
+			$menu_item_id = wp_update_nav_menu_item(
 				$menu_id,
 				0,
 				array(
-					'menu-item-title'  => $item['title'],
-					'menu-item-url'    => $item['url'],
-					'menu-item-status' => 'publish',
-					'menu-item-type'   => 'custom',
+					'menu-item-title'     => $item['title'],
+					'menu-item-url'       => $item['url'],
+					'menu-item-status'    => 'publish',
+					'menu-item-type'      => 'custom',
+					'menu-item-parent-id' => (int) $parent_id,
 				)
 			);
-		}
 
-		return $menu_id;
+			if ( is_wp_error( $menu_item_id ) || empty( $item['children'] ) || ! is_array( $item['children'] ) ) {
+				continue;
+			}
+
+			$this->create_seed_menu_items( $menu_id, $item['children'], (int) $menu_item_id );
+		}
 	}
 
 	/**
@@ -17834,6 +18468,26 @@ JS;
 		<?php
 	}
 
+	/**
+	 * Render a slim top-bar independence notice on every page.
+	 *
+	 * @return void
+	 */
+	public function render_top_independence_bar() {
+		if ( ! $this->design_enabled() ) {
+			return;
+		}
+		?>
+		<div class="mcprices-independence-bar" style="background:#fef9e7;border-bottom:1px solid #f0e6c0;text-align:center;padding:6px 16px;font-size:12px;color:#6b5900;line-height:1.5;">
+			Independent consumer guide &mdash; not affiliated with or endorsed by McDonald&#8217;s Corporation. All trademarks belong to their respective owners.
+			<a href="<?php echo esc_url( home_url( '/editorial-policy/' ) ); ?>" style="color:#8b6914;text-decoration:underline;margin-left:4px;">Editorial policy</a>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Register custom block patterns.
+	 *
 	 * @return void
 	 */
 	public function register_patterns() {
