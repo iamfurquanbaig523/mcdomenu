@@ -923,18 +923,14 @@ $get_category_image_alt = static function ( array $card ) {
 	return "McDonald's " . $name . ' menu category';
 };
 
-$render_rows = static function ( array $rows, $category_id ) use ( $get_item_page_url, $get_home_item_media_url, $get_item_image_alt ) {
+$render_rows = static function ( array $rows, $category_id ) use ( $get_item_page_url ) {
 	foreach ( $rows as $row ) :
-		$item_url   = $get_item_page_url( $category_id, $row['name'] ?? '' );
-		$item_media = $get_home_item_media_url( $row['name'] ?? '', '48' );
+		$item_url = $get_item_page_url( $category_id, $row['name'] ?? '' );
 		?>
 		<tr>
 			<td>
 				<div class="td-name">
 					<a class="mcprices-inline-media" href="<?php echo esc_url( $item_url ); ?>">
-						<?php if ( $item_media ) : ?>
-							<img class="mcprices-inline-media__thumb" src="<?php echo esc_url( $item_media ); ?>" alt="<?php echo esc_attr( $get_item_image_alt( $row ) ); ?>" width="48" height="48" loading="lazy" decoding="async">
-						<?php endif; ?>
 						<span class="mcprices-inline-media__label"><?php echo esc_html( $row['name'] ); ?></span>
 					</a>
 				</div>
@@ -957,18 +953,19 @@ ob_start();
 	<div class="hero-pattern"></div>
 	<div class="hero-content">
 		<div class="hero-left animate-fadeup">
-			<div class="hero-eyebrow">Updated April 2026</div>
+			<div class="hero-eyebrow">Latest USA menu update</div>
 			<h1 class="hero-title">
-				McDonald's Menu Prices<br>
+				McDonald&#8217;s Menu<br>
+				With Prices<br>
 				<span class="highlight">USA</span>
 			</h1>
-			<p class="hero-sub">Find the latest McDonald&#8217;s prices in the USA, including McDonald&#8217;s menu prices for burgers, breakfast, McCaf&eacute; drinks, Happy Meals, fries, desserts, combo meals, and value menu items. Prices may vary by location, but this McDonald&#8217;s price list gives you a helpful overview across the United States.</p>
-			<p class="hero-sub">Thousands of readers trust this page to compare accurate McDonald&rsquo;s menu prices, calories, and value deals before they order.</p>
+			<p class="hero-sub">Check McDonald&#8217;s USA prices fast for breakfast, burgers, Happy Meals, drinks, and value deals in one place.</p>
+			<p class="hero-sub">Open the most searched guides below to compare prices, calories, and smarter order picks before you buy.</p>
 			<div class="mcprices-hero-search-placeholder" data-mcprices-hero-search-placeholder="1"></div>
 			<div class="hero-btns">
-				<a href="#full-menu" class="btn-primary">&#127828; View Full Menu</a>
-				<a href="#deals" class="btn-outline">&#127991;&#65039; Value Deals</a>
-				<a href="<?php echo esc_url( $page_url( 'budget-finder' ) ); ?>" class="btn-outline" data-home-tool-trigger="budget-finder" data-home-tool-scroll="1">&#128736;&#65039; Interactive Tools</a>
+				<a href="#full-menu" class="btn-primary">&#127828; Full Menu</a>
+				<a href="<?php echo esc_url( home_url( '/breakfast-menu/' ) ); ?>" class="btn-outline">&#129360; Breakfast Menu</a>
+				<a href="<?php echo esc_url( home_url( '/burgers/' ) ); ?>" class="btn-outline">&#127828; Burger Menu</a>
 			</div>
 			<div class="mcprices-hero-tool-strip" aria-label="Homepage interactive tools">
 				<?php foreach ( $interactive_tools as $index => $tool ) : ?>

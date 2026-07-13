@@ -4,6 +4,42 @@ body.mcprices-theme-active #masthead .header-navigation .header-menu-container >
   text-decoration: none;
 }
 
+body.mcprices-theme-active #masthead .mcprices-top-links,
+body.mcprices-theme-active #mobile-header .mcprices-top-links {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding: 0 12px;
+  line-height: 1.2;
+  text-align: center;
+}
+
+body.mcprices-theme-active #masthead .mcprices-top-links a,
+body.mcprices-theme-active #mobile-header .mcprices-top-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 2px 0;
+  color: inherit;
+  white-space: nowrap;
+}
+
+body.mcprices-theme-active #masthead .mcprices-top-links a:not(:last-child)::after,
+body.mcprices-theme-active #mobile-header .mcprices-top-links a:not(:last-child)::after {
+  content: "";
+  flex: 0 0 auto;
+  width: 3px;
+  height: 3px;
+  margin: 0 12px;
+  border-radius: 999px;
+  background: currentColor;
+  opacity: 0.58;
+}
+
 body.mcprices-theme-active #masthead .site-branding .brand,
 body.mcprices-theme-active #mobile-header .site-branding .brand {
   display: inline-flex;
@@ -3799,20 +3835,29 @@ body.mcprices-theme-active .entry-content .mcprices-calculator-summary .mcprices
   }
 
   body.mcprices-theme-active #mobile-header .mcprices-top-links {
-    justify-content: flex-start;
-    flex-wrap: nowrap;
+    justify-content: center;
+    flex-wrap: wrap;
     width: 100%;
     max-width: 100%;
     min-width: 0;
-    padding: 0 16px;
-    overflow-x: auto;
+    padding: 4px 8px;
+    gap: 2px 0;
+    overflow-x: visible;
     overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
   }
 
   body.mcprices-theme-active #mobile-header .mcprices-top-links a {
     flex: 0 0 auto;
+    min-height: 18px;
+    font-size: 12px;
+    line-height: 1.1;
     white-space: nowrap;
+  }
+
+  body.mcprices-theme-active #mobile-header .mcprices-top-links a:not(:last-child)::after {
+    width: 2px;
+    height: 2px;
+    margin: 0 8px;
   }
 
   .mcprices-page section[id],
