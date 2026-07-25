@@ -33,11 +33,25 @@ function mcprices_migration_replace_author( $value ) {
 		return str_replace(
 			array(
 				'Sarah Jenkins',
+				'Sarah Jankins',
+				'Sarah tracks',
+				'Sarah reviews',
+				'Sarah helps',
+				'Sarah focuses',
 				', Lead Menu Analyst & Senior Editor',
 				', Lead Menu Analyst &amp; Senior Editor',
+				', Lead Menu Analyst and Senior Editor based in the United States',
+				', Senior Editor',
 			),
 			array(
 				'David Livingstone',
+				'David Livingstone',
+				'David tracks',
+				'David reviews',
+				'David helps',
+				'David focuses',
+				'',
+				'',
 				'',
 				'',
 			),
@@ -180,13 +194,15 @@ $authorless_count  = (int) $wpdb->get_var(
 	)
 );
 $sarah_posts       = (int) $wpdb->get_var(
-	"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_status='publish' AND CONCAT(post_title,post_excerpt,post_content) LIKE '%Sarah Jenkins%'"
+	"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_status='publish' AND CONCAT(post_title,post_excerpt,post_content) LIKE '%Sarah%'"
 );
 $candidate_posts   = $wpdb->get_results(
 	"SELECT ID,post_author,post_title,post_excerpt,post_content,post_modified,post_modified_gmt
 	FROM {$wpdb->posts}
 	WHERE (post_type IN ('page','post') AND post_status='publish' AND post_author <> " . (int) $canonical_user_id . ")
-	OR post_content LIKE '%Sarah Jenkins%'
+	OR post_content LIKE '%Sarah%'
+	OR post_content LIKE '%Lead Menu Analyst%'
+	OR post_content LIKE '%Senior Editor%'
 	OR post_content LIKE '%Mcdonalds-Breakfast.webp%'
 	OR post_content LIKE '%mcdonalds-meal-prices-calories-usa.webp%'
 	OR post_content LIKE '%/assets/images/mcprices/%'",
@@ -307,7 +323,9 @@ try {
 
 	$posts_to_transform = $wpdb->get_results(
 		"SELECT ID,post_status,post_content FROM {$wpdb->posts}
-		WHERE post_content LIKE '%Sarah Jenkins%'
+		WHERE post_content LIKE '%Sarah%'
+		OR post_content LIKE '%Lead Menu Analyst%'
+		OR post_content LIKE '%Senior Editor%'
 		OR post_content LIKE '%Mcdonalds-Breakfast.webp%'
 		OR post_content LIKE '%mcdonalds-meal-prices-calories-usa.webp%'
 		OR post_content LIKE '%/assets/images/mcprices/%'",
@@ -322,8 +340,9 @@ try {
 			continue;
 		}
 
-		$meaningful = false !== strpos( $original, 'Sarah Jenkins' )
-			|| false !== strpos( $original, 'Lead Menu Analyst' );
+		$meaningful = false !== strpos( $original, 'Sarah' )
+			|| false !== strpos( $original, 'Lead Menu Analyst' )
+			|| false !== strpos( $original, 'Senior Editor' );
 
 		if ( $meaningful && 'publish' === (string) $row['post_status'] ) {
 			$result = wp_update_post(
@@ -385,7 +404,7 @@ try {
 	}
 
 	$meta_rows = $wpdb->get_results(
-		"SELECT meta_id,post_id,meta_key,meta_value FROM {$wpdb->postmeta} WHERE meta_value LIKE '%Sarah Jenkins%'",
+		"SELECT meta_id,post_id,meta_key,meta_value FROM {$wpdb->postmeta} WHERE meta_value LIKE '%Sarah%'",
 		ARRAY_A
 	);
 	foreach ( $meta_rows as $row ) {
@@ -398,7 +417,7 @@ try {
 	}
 
 	$option_rows = $wpdb->get_results(
-		"SELECT option_name,option_value FROM {$wpdb->options} WHERE option_value LIKE '%Sarah Jenkins%'",
+		"SELECT option_name,option_value FROM {$wpdb->options} WHERE option_value LIKE '%Sarah%'",
 		ARRAY_A
 	);
 	foreach ( $option_rows as $row ) {
@@ -411,7 +430,7 @@ try {
 	}
 
 	$usermeta_rows = $wpdb->get_results(
-		"SELECT umeta_id,user_id,meta_key,meta_value FROM {$wpdb->usermeta} WHERE meta_value LIKE '%Sarah Jenkins%'",
+		"SELECT umeta_id,user_id,meta_key,meta_value FROM {$wpdb->usermeta} WHERE meta_value LIKE '%Sarah%'",
 		ARRAY_A
 	);
 	foreach ( $usermeta_rows as $row ) {
@@ -454,11 +473,11 @@ try {
 	);
 	$remaining_sarah       = (int) $wpdb->get_var(
 		"SELECT
-		(SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_status='publish' AND CONCAT(post_title,post_excerpt,post_content) LIKE '%Sarah Jenkins%')
-		+ (SELECT COUNT(*) FROM {$wpdb->postmeta} WHERE meta_value LIKE '%Sarah Jenkins%')
-		+ (SELECT COUNT(*) FROM {$wpdb->options} WHERE option_value LIKE '%Sarah Jenkins%')
-		+ (SELECT COUNT(*) FROM {$wpdb->users} WHERE display_name LIKE '%Sarah Jenkins%')
-		+ (SELECT COUNT(*) FROM {$wpdb->usermeta} WHERE meta_value LIKE '%Sarah Jenkins%')"
+		(SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_status='publish' AND CONCAT(post_title,post_excerpt,post_content) LIKE '%Sarah%')
+		+ (SELECT COUNT(*) FROM {$wpdb->postmeta} WHERE meta_value LIKE '%Sarah%')
+		+ (SELECT COUNT(*) FROM {$wpdb->options} WHERE option_value LIKE '%Sarah%')
+		+ (SELECT COUNT(*) FROM {$wpdb->users} WHERE display_name LIKE '%Sarah%')
+		+ (SELECT COUNT(*) FROM {$wpdb->usermeta} WHERE meta_value LIKE '%Sarah%')"
 	);
 
 	if ( 0 !== $remaining_noncanonical || 0 !== $remaining_sarah ) {
