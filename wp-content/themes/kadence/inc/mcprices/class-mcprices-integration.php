@@ -35,6 +35,11 @@ class McPrices_Integration {
 	const DISCLAIMER_TEXT_SETTING = 'mcprices_footer_disclaimer_text';
 
 	/**
+	 * Theme mod used for the admin-editable prices verification date.
+	 */
+	const PRICES_VERIFIED_DATE_SETTING = 'mcprices_prices_verified_date';
+
+	/**
 	 * Theme mod used to store the seeded mobile quick-nav icon map.
 	 */
 	const MOBILE_QUICK_NAV_ICONS_SETTING = 'mcprices_mobile_quick_nav_icons';
@@ -147,6 +152,13 @@ class McPrices_Integration {
 	protected static $instance = null;
 
 	/**
+	 * Whether a deliberate managed-content bootstrap is currently running.
+	 *
+	 * @var bool
+	 */
+	protected $managed_bootstrap_running = false;
+
+	/**
 	 * Whether the homepage should suppress Rank Math's immediate analytics tag.
 	 *
 	 * @var bool
@@ -195,32 +207,19 @@ class McPrices_Integration {
 		add_filter( 'script_loader_tag', array( $this, 'filter_front_page_script_tag' ), 10, 3 );
 		add_filter( 'pre_option_rank_math_google_analytic_options', array( $this, 'filter_front_page_rank_math_analytics_options' ), 10, 3 );
 
-		add_action( 'after_setup_theme', array( $this, 'maybe_seed_native_design' ), 30 );
-		add_action( 'after_setup_theme', array( $this, 'maybe_seed_portable_database_settings' ), 34 );
-		add_action( 'after_setup_theme', array( $this, 'maybe_seed_rank_math_settings' ), 35 );
-		add_action( 'after_setup_theme', array( $this, 'maybe_sync_managed_site_content' ), 40 );
 		add_action( 'customize_register', array( $this, 'register_customizer' ), 100 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ), 30 );
 		add_action( 'init', array( $this, 'register_page_category_support' ), 12 );
-		add_action( 'init', array( $this, 'maybe_seed_page_categories' ), 26 );
-		add_action( 'init', array( $this, 'maybe_schedule_managed_bootstrap' ), 40 );
-		add_action( 'init', array( $this, 'maybe_seed_rank_math_entity_meta' ), 50 );
-		add_action( 'init', array( $this, 'maybe_seed_authority_seo_meta' ), 52 );
-		add_action( 'init', array( $this, 'maybe_seed_homepage_featured_image' ), 55 );
-		add_action( 'init', array( $this, 'maybe_flush_pending_rewrite_rules' ), 99 );
-		add_action( 'mcprices_run_managed_bootstrap', array( $this, 'run_managed_bootstrap' ) );
+		add_action( 'after_switch_theme', array( $this, 'run_managed_bootstrap' ) );
 		add_action( 'wp_head', array( $this, 'render_homepage_meta_tags' ), 2 );
 		add_action( 'wp_head', array( $this, 'render_homepage_schema' ), 30 );
 		add_action( 'wp_head', array( $this, 'render_managed_page_schema' ), 31 );
 		add_action( 'template_redirect', array( $this, 'maybe_prepare_front_page_analytics_defer' ), 1 );
 		add_action( 'template_redirect', array( $this, 'maybe_buffer_front_page_markup' ), 1000 );
 		add_action( 'template_redirect', array( $this, 'maybe_redirect_noncanonical_request' ), -20 );
-		add_action( 'template_redirect', array( $this, 'maybe_render_sitemap' ), -10 );
-		add_action( 'template_redirect', array( $this, 'maybe_render_robots' ), -10 );
 		add_action( 'kadence_before_footer', array( $this, 'render_footer_disclaimer' ), 5 );
 		add_action( 'add_meta_boxes', array( $this, 'register_author_meta_box' ) );
 		add_action( 'save_post', array( $this, 'save_author_meta_box' ), 10, 2 );
-		add_action( 'init', array( $this, 'maybe_seed_page_comments' ), 58 );
 		add_filter( 'the_content', array( $this, 'append_author_box_to_content' ), 35 );
 		add_filter( 'rank_math/json_ld', array( $this, 'filter_rank_math_author_schema' ), 20, 2 );
 
@@ -234,6 +233,10 @@ class McPrices_Integration {
 		add_action( 'restrict_manage_posts', array( $this, 'render_page_category_filter' ) );
 		add_action( 'pre_get_posts', array( $this, 'filter_page_admin_query_by_category' ) );
 		add_filter( 'manage_pages_columns', array( $this, 'filter_page_admin_columns' ) );
+
+		if ( defined( 'WP_CLI' ) && WP_CLI && class_exists( '\WP_CLI' ) ) {
+			\WP_CLI::add_command( 'mcprices managed-bootstrap', array( $this, 'run_managed_bootstrap_cli' ) );
+		}
 		add_action( 'manage_pages_custom_column', array( $this, 'render_page_admin_column' ), 10, 2 );
 		add_action( 'save_post_page', array( $this, 'maybe_mark_support_page_as_custom_content' ), 20, 3 );
 		add_action( 'wp_footer', array( $this, 'render_deferred_front_page_analytics' ), 5 );
@@ -779,6 +782,10 @@ class McPrices_Integration {
 	 * @return bool
 	 */
 	protected function can_run_managed_bootstrap() {
+		if ( $this->managed_bootstrap_running ) {
+			return true;
+		}
+
 		if ( defined( 'MCPRICES_ALLOW_MANAGED_BOOTSTRAP' ) && MCPRICES_ALLOW_MANAGED_BOOTSTRAP ) {
 			return true;
 		}
@@ -787,11 +794,7 @@ class McPrices_Integration {
 			return true;
 		}
 
-		if ( function_exists( 'wp_doing_cron' ) && wp_doing_cron() ) {
-			return true;
-		}
-
-		return $this->managed_bootstrap_needs_refresh();
+		return false;
 	}
 
 	/**
@@ -852,46 +855,54 @@ class McPrices_Integration {
 	}
 
 	/**
-	 * Schedule a lightweight WP-Cron seed after file upload, so public requests
-	 * stay fast while fresh databases still converge to the managed design.
-	 *
-	 * @return void
-	 */
-	public function maybe_schedule_managed_bootstrap() {
-		if ( ( function_exists( 'wp_doing_cron' ) && wp_doing_cron() ) || ! $this->design_enabled() ) {
-			return;
-		}
-
-		if ( ! $this->managed_bootstrap_needs_refresh() ) {
-			return;
-		}
-
-		if ( false !== get_transient( 'mcprices_managed_bootstrap_scheduled' ) ) {
-			return;
-		}
-
-		set_transient( 'mcprices_managed_bootstrap_scheduled', '1', 10 * MINUTE_IN_SECONDS );
-
-		if ( ! wp_next_scheduled( 'mcprices_run_managed_bootstrap' ) ) {
-			wp_schedule_single_event( time() + 5, 'mcprices_run_managed_bootstrap' );
-		}
-	}
-
-	/**
-	 * Run the managed DB seed from WP-Cron.
+	 * Run the managed DB seed from an explicit deployment, theme activation,
+	 * or WP-CLI action.
 	 *
 	 * @return void
 	 */
 	public function run_managed_bootstrap() {
-		$this->maybe_seed_native_design();
-		$this->maybe_seed_portable_database_settings();
-		$this->maybe_seed_rank_math_settings();
-		$this->maybe_sync_managed_site_content();
-		$this->maybe_seed_page_categories();
-		$this->maybe_seed_rank_math_entity_meta();
-		$this->maybe_flush_pending_rewrite_rules();
+		if ( $this->managed_bootstrap_running ) {
+			return;
+		}
 
-		delete_transient( 'mcprices_managed_bootstrap_scheduled' );
+		$completed                       = false;
+		$this->managed_bootstrap_running = true;
+
+		try {
+			$this->maybe_seed_native_design();
+			$this->maybe_seed_portable_database_settings();
+			$this->maybe_seed_rank_math_settings();
+			$this->maybe_sync_managed_site_content();
+			$this->maybe_seed_page_categories();
+			$this->maybe_seed_rank_math_entity_meta();
+			$this->maybe_seed_authority_seo_meta();
+			$this->maybe_seed_homepage_featured_image();
+			$this->maybe_seed_page_comments();
+			$this->maybe_flush_pending_rewrite_rules();
+
+			$completed = true;
+		} finally {
+			$this->managed_bootstrap_running = false;
+		}
+
+		if ( $completed ) {
+			wp_clear_scheduled_hook( 'mcprices_run_managed_bootstrap' );
+			delete_transient( 'mcprices_managed_bootstrap_scheduled' );
+		}
+	}
+
+	/**
+	 * Run the managed bootstrap deliberately through WP-CLI.
+	 *
+	 * @param array $args       Positional WP-CLI arguments.
+	 * @param array $assoc_args Named WP-CLI arguments.
+	 * @return void
+	 */
+	public function run_managed_bootstrap_cli( $args = array(), $assoc_args = array() ) {
+		unset( $args, $assoc_args );
+
+		$this->run_managed_bootstrap();
+		\WP_CLI::success( 'McPrices managed content synchronized.' );
 	}
 
 	/**
@@ -1703,7 +1714,7 @@ class McPrices_Integration {
 				),
 				'sitemap' => array(
 					'title'   => 'Sitemap',
-					'content' => '<!-- wp:paragraph --><p>Browse the main areas of McDonald&#8217;s Menu Prices USA below, or use the XML sitemap at <a href="' . esc_url( home_url( '/sitemap.xml' ) ) . '">' . esc_html( home_url( '/sitemap.xml' ) ) . '</a> for the crawler-friendly version.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>This HTML sitemap is meant to help both readers and crawlers understand the site hierarchy. The structure starts with the homepage and the main menu hub, then branches into category pages such as breakfast, burgers, chicken and fish, McCafe coffees, beverages, fries and sides, Happy Meal, deals, and sauces. From there, readers can move into exact item pages or sideways into broader support guides such as breakfast hours, calorie information, allergen guidance, delivery questions, and app-deal coverage.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>A clear sitemap matters because this site is intentionally built around semantic routing instead of one long unstructured article. Category pages act as pillar pages, item pages cover exact entity intent, and the long-form guides explain broader comparisons and FAQs. Keeping those layers visible in one place improves usability and helps search engines understand which URL should answer which type of query.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>If you are browsing manually, the sitemap can also act as a shortcut map for internal linking. It helps you jump from a broad menu cluster into the exact burger, breakfast, drink, dessert, fries, sauce, or deal page you actually need without guessing which route is shortest.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>Additional support routes are also listed here for topical completeness: <a href="' . esc_url( home_url( '/dollar-menu/' ) ) . '">Dollar Menu</a>, <a href="' . esc_url( home_url( '/vegan-options/' ) ) . '">Vegan Options</a>, <a href="' . esc_url( home_url( '/big-mac-price-usa/' ) ) . '">Big Mac Price USA</a>, <a href="' . esc_url( home_url( '/mcdonalds-fries-price/' ) ) . '">McDonald&#8217;s Fries Price</a>, <a href="' . esc_url( home_url( '/10-piece-mcnuggets-price/' ) ) . '">10 Piece McNuggets Price</a>, <a href="' . esc_url( home_url( '/vanilla-cone-price/' ) ) . '">Vanilla Cone Price</a>, and <a href="' . esc_url( home_url( '/mcdvoice/' ) ) . '">McDVoice Survey</a>. These smaller guides support exact-match consumer questions without changing the homepage design.</p><!-- /wp:paragraph --><!-- wp:shortcode -->[rank_math_html_sitemap]<!-- /wp:shortcode -->',
+					'content' => '<!-- wp:paragraph --><p>Browse the main areas of McDonald&#8217;s Menu Prices USA below, or use the Rank Math XML sitemap index at <a href="' . esc_url( home_url( '/sitemap_index.xml' ) ) . '">' . esc_html( home_url( '/sitemap_index.xml' ) ) . '</a> for the crawler-friendly version.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>This HTML sitemap is meant to help both readers and crawlers understand the site hierarchy. The structure starts with the homepage and the main menu hub, then branches into category pages such as breakfast, burgers, chicken and fish, McCafe coffees, beverages, fries and sides, Happy Meal, deals, and sauces. From there, readers can move into exact item pages or sideways into broader support guides such as breakfast hours, calorie information, allergen guidance, delivery questions, and app-deal coverage.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>A clear sitemap matters because this site is intentionally built around semantic routing instead of one long unstructured article. Category pages act as pillar pages, item pages cover exact entity intent, and the long-form guides explain broader comparisons and FAQs. Keeping those layers visible in one place improves usability and helps search engines understand which URL should answer which type of query.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>If you are browsing manually, the sitemap can also act as a shortcut map for internal linking. It helps you jump from a broad menu cluster into the exact burger, breakfast, drink, dessert, fries, sauce, or deal page you actually need without guessing which route is shortest.</p><!-- /wp:paragraph --><!-- wp:paragraph --><p>Additional support routes are also listed here for topical completeness: <a href="' . esc_url( home_url( '/dollar-menu/' ) ) . '">Dollar Menu</a>, <a href="' . esc_url( home_url( '/vegan-options/' ) ) . '">Vegan Options</a>, <a href="' . esc_url( home_url( '/big-mac-price-usa/' ) ) . '">Big Mac Price USA</a>, <a href="' . esc_url( home_url( '/mcdonalds-fries-price/' ) ) . '">McDonald&#8217;s Fries Price</a>, <a href="' . esc_url( home_url( '/10-piece-mcnuggets-price/' ) ) . '">10 Piece McNuggets Price</a>, <a href="' . esc_url( home_url( '/vanilla-cone-price/' ) ) . '">Vanilla Cone Price</a>, and <a href="' . esc_url( home_url( '/mcdvoice/' ) ) . '">McDVoice Survey</a>. These smaller guides support exact-match consumer questions without changing the homepage design.</p><!-- /wp:paragraph --><!-- wp:shortcode -->[rank_math_html_sitemap]<!-- /wp:shortcode -->',
 				),
 				'big-mac-price-usa' => array(
 					'title'   => 'Big Mac Price USA',
@@ -9897,20 +9908,25 @@ class McPrices_Integration {
 			if ( $page instanceof \WP_Post ) {
 				$canonical_ids[ $slug ] = (int) $page->ID;
 				$preserve_custom_content = $this->managed_page_uses_custom_content( $page );
-				$needs_update =
-					$page_data['title'] !== (string) $page->post_title ||
-					$slug !== (string) $page->post_name ||
-					'publish' !== (string) $page->post_status ||
-					(
-						! $preserve_custom_content &&
-						trim( (string) $page->post_content ) !== trim( (string) $page_data['content'] )
-					);
+				$existing_state = array(
+					'title'   => (string) $page->post_title,
+					'slug'    => (string) $page->post_name,
+					'status'  => (string) $page->post_status,
+					'content' => trim( (string) $page->post_content ),
+				);
+				$target_state   = array(
+					'title'   => $preserve_custom_content ? (string) $page->post_title : (string) $page_data['title'],
+					'slug'    => (string) $slug,
+					'status'  => 'publish',
+					'content' => $preserve_custom_content ? trim( (string) $page->post_content ) : trim( (string) $page_data['content'] ),
+				);
+				$needs_update   = $this->get_managed_post_state_signature( $existing_state ) !== $this->get_managed_post_state_signature( $target_state );
 
 				if ( $needs_update ) {
 					wp_update_post(
 						array(
 							'ID'           => (int) $page->ID,
-							'post_title'   => $page_data['title'],
+							'post_title'   => $preserve_custom_content ? $page->post_title : $page_data['title'],
 							'post_name'    => $slug,
 							'post_status'  => 'publish',
 							'post_content' => $preserve_custom_content ? $page->post_content : $page_data['content'],
@@ -10064,33 +10080,31 @@ class McPrices_Integration {
 			$existing_excerpt        = $preserve_custom_content
 				? $this->normalize_legacy_internal_content_urls( (string) $page->post_excerpt )
 				: (string) $page->post_excerpt;
-			$needs_update =
-				$page_args['title'] !== (string) $page->post_title ||
-				$page_args['slug'] !== (string) $page->post_name ||
-				'publish' !== (string) $page->post_status ||
-				(int) $page_args['post_parent'] !== (int) $page->post_parent ||
-				(int) $page_args['menu_order'] !== (int) $page->menu_order ||
-				(
-					$preserve_custom_content &&
-					(
-						$existing_content !== (string) $page->post_content ||
-						$existing_excerpt !== (string) $page->post_excerpt
-					)
-				) ||
-				(
-					! $preserve_custom_content &&
-					trim( (string) $page_args['content'] ) !== trim( (string) $page->post_content )
-				) ||
-				(
-					! $preserve_custom_content &&
-					trim( (string) $page_args['excerpt'] ) !== trim( (string) $page->post_excerpt )
-				);
+			$existing_state          = array(
+				'title'       => (string) $page->post_title,
+				'slug'        => (string) $page->post_name,
+				'status'      => (string) $page->post_status,
+				'post_parent' => (int) $page->post_parent,
+				'menu_order'  => (int) $page->menu_order,
+				'content'     => trim( (string) $page->post_content ),
+				'excerpt'     => trim( (string) $page->post_excerpt ),
+			);
+			$target_state            = array(
+				'title'       => $preserve_custom_content ? (string) $page->post_title : (string) $page_args['title'],
+				'slug'        => (string) $page_args['slug'],
+				'status'      => 'publish',
+				'post_parent' => (int) $page_args['post_parent'],
+				'menu_order'  => (int) $page_args['menu_order'],
+				'content'     => trim( $preserve_custom_content ? $existing_content : (string) $page_args['content'] ),
+				'excerpt'     => trim( $preserve_custom_content ? $existing_excerpt : (string) $page_args['excerpt'] ),
+			);
+			$needs_update            = $this->get_managed_post_state_signature( $existing_state ) !== $this->get_managed_post_state_signature( $target_state );
 
 			if ( $needs_update ) {
 				wp_update_post(
 					array(
 						'ID'           => (int) $page->ID,
-						'post_title'   => $page_args['title'],
+						'post_title'   => $preserve_custom_content ? $page->post_title : $page_args['title'],
 						'post_name'    => $page_args['slug'],
 						'post_status'  => 'publish',
 						'post_parent'  => (int) $page_args['post_parent'],
@@ -11600,9 +11614,9 @@ class McPrices_Integration {
 
 		$this->maybe_seed_front_page();
 		$this->maybe_seed_blog_page();
+		$this->maybe_sync_front_page_pattern_content();
 		$this->maybe_seed_menu_directory_pages();
 		McPrices_Menu_Root_Seed::maybe_seed();
-		$this->maybe_sync_front_page_pattern_content();
 		$this->maybe_seed_support_pages();
 		$this->maybe_sync_seed_menus();
 		$this->maybe_sync_footer_widget_blocks();
@@ -11971,6 +11985,32 @@ class McPrices_Integration {
 		}
 
 		return hash( 'sha256', wp_json_encode( $value ) );
+	}
+
+	/**
+	 * Return a stable signature for a WordPress post state.
+	 *
+	 * WordPress stores some post titles with HTML entities and may normalize
+	 * line endings. Canonicalizing those representations prevents a deployment
+	 * sync from treating equivalent content as a new editorial modification.
+	 *
+	 * @param array<string, mixed> $state Post fields used by a managed seeder.
+	 * @return string
+	 */
+	protected function get_managed_post_state_signature( array $state ) {
+		$normalized = $state;
+
+		if ( isset( $normalized['title'] ) ) {
+			$normalized['title'] = trim( wp_specialchars_decode( (string) $normalized['title'], ENT_QUOTES ) );
+		}
+
+		foreach ( array( 'content', 'excerpt' ) as $field ) {
+			if ( isset( $normalized[ $field ] ) ) {
+				$normalized[ $field ] = str_replace( array( "\r\n", "\r" ), "\n", trim( (string) $normalized[ $field ] ) );
+			}
+		}
+
+		return $this->get_seed_signature( $normalized );
 	}
 
 	/**
@@ -12800,6 +12840,32 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Prefer an AVIF sibling for an official theme image when one exists.
+	 *
+	 * @param string $relative Relative path inside the official image directory.
+	 * @return string
+	 */
+	protected function prefer_avif_official_media_path( $relative ) {
+		$relative = ltrim( (string) $relative, '/' );
+
+		if ( '' === $relative || preg_match( '/\.avif$/i', $relative ) ) {
+			return $relative;
+		}
+
+		$avif_relative = preg_replace( '/\.(?:png|jpe?g|webp)$/i', '.avif', $relative );
+
+		if ( is_string( $avif_relative ) && $avif_relative !== $relative ) {
+			$avif_path = get_theme_file_path( '/assets/images/mcprices/official/' . $avif_relative );
+
+			if ( file_exists( $avif_path ) ) {
+				return $avif_relative;
+			}
+		}
+
+		return $relative;
+	}
+
+	/**
 	 * Return the category artwork URL when available.
 	 *
 	 * @param string $category_id Category ID.
@@ -12813,6 +12879,8 @@ class McPrices_Integration {
 		if ( '' === $relative ) {
 			return '';
 		}
+
+		$relative = $this->prefer_avif_official_media_path( $relative );
 
 		return trailingslashit( get_theme_file_uri( '/assets/images/mcprices/official' ) ) . ltrim( $relative, '/' );
 	}
@@ -15430,6 +15498,8 @@ class McPrices_Integration {
 			return '';
 		}
 
+		$relative_path = $this->prefer_avif_official_media_path( $relative_path );
+
 		return trailingslashit( get_theme_file_uri( '/assets/images/mcprices/official' ) ) . ltrim( $relative_path, '/' );
 	}
 
@@ -15488,7 +15558,23 @@ class McPrices_Integration {
 	 * @return string
 	 */
 	protected function get_homepage_modified_date() {
-		return wp_date( 'c', null, wp_timezone() );
+		$front_page_id = (int) get_option( 'page_on_front' );
+
+		if ( $front_page_id ) {
+			$modified_at = get_post_modified_time( 'c', true, $front_page_id );
+
+			if ( is_string( $modified_at ) && '' !== $modified_at ) {
+				return $modified_at;
+			}
+		}
+
+		$last_modified = (string) get_lastpostmodified( 'GMT' );
+
+		if ( $last_modified ) {
+			return mysql2date( 'c', $last_modified, false );
+		}
+
+		return '';
 	}
 
 	/**
@@ -15589,7 +15675,7 @@ class McPrices_Integration {
 		$description = $this->get_homepage_meta_description();
 		$url         = home_url( '/' );
 		$image_url   = get_template_directory_uri() . '/assets/images/mcprices/official/items/big-mac.jpg';
-		$sitemap_url = home_url( '/sitemap.xml' );
+		$sitemap_url = home_url( '/sitemap_index.xml' );
 		?>
 		<meta name="description" content="<?php echo esc_attr( $description ); ?>">
 		<link rel="canonical" href="<?php echo esc_url( $url ); ?>">
@@ -16983,9 +17069,14 @@ class McPrices_Integration {
 	protected function is_sitemap_request() {
 		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
 		$request     = is_string( $request_uri ) ? (string) wp_parse_url( $request_uri, PHP_URL_PATH ) : '';
-		$target      = (string) wp_parse_url( home_url( '/sitemap.xml' ), PHP_URL_PATH );
+		$site_path   = trim( (string) wp_parse_url( home_url( '/' ), PHP_URL_PATH ), '/' );
+		$request     = trim( $request, '/' );
 
-		return '' !== $request && untrailingslashit( $request ) === untrailingslashit( $target );
+		if ( '' !== $site_path && 0 === strpos( $request, $site_path . '/' ) ) {
+			$request = substr( $request, strlen( $site_path ) + 1 );
+		}
+
+		return 1 === preg_match( '/^(?:sitemap_index|[^\/]+-sitemap(?:\d+)?)\.xml$/i', $request );
 	}
 
 	/**
@@ -16999,147 +17090,6 @@ class McPrices_Integration {
 		$target      = (string) wp_parse_url( home_url( '/robots.txt' ), PHP_URL_PATH );
 
 		return '' !== $request && untrailingslashit( $request ) === untrailingslashit( $target );
-	}
-
-	/**
-	 * Return whether a published post should be excluded from the custom sitemap.
-	 *
-	 * @param \WP_Post $post Post object.
-	 * @return bool
-	 */
-	protected function sitemap_post_is_excluded( \WP_Post $post ) {
-		if ( in_array( (string) $post->post_name, array( 'sample-page', 'test' ), true ) ) {
-			return true;
-		}
-
-		if ( $this->should_noindex_post( $post ) ) {
-			return true;
-		}
-
-		$authority_canonical_map = $this->get_authority_guide_canonical_path_map();
-		$post_path               = $this->get_post_site_relative_permalink_path( $post );
-
-		if ( isset( $authority_canonical_map[ $post_path ] ) ) {
-			return true;
-		}
-
-		$canonical_url = trim( (string) get_post_meta( (int) $post->ID, 'rank_math_canonical_url', true ) );
-
-		if ( '' !== $canonical_url ) {
-			$canonical_url = untrailingslashit( $this->normalize_homepage_runtime_urls( $canonical_url ) );
-			$permalink     = untrailingslashit( (string) get_permalink( $post ) );
-
-			if ( '' !== $canonical_url && $canonical_url !== $permalink ) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
-	 * Return the sitemap entries for public pages and posts.
-	 *
-	 * @return array
-	 */
-	protected function get_sitemap_entries() {
-		$entries       = array();
-		$seen_urls     = array();
-		$front_page_id = (int) get_option( 'page_on_front' );
-		$posts_page_id = (int) get_option( 'page_for_posts' );
-
-		if ( function_exists( 'kadence_mcprices_site_is_noindex' ) && kadence_mcprices_site_is_noindex() ) {
-			return $entries;
-		}
-
-		$post_is_noindex = static function ( $post ) {
-			return $post instanceof \WP_Post
-				&& function_exists( 'kadence_mcprices_post_is_noindex' )
-				&& kadence_mcprices_post_is_noindex( $post );
-		};
-
-		$append_entry = static function ( &$bucket, &$seen, $url, $lastmod, $changefreq, $priority ) {
-			if ( empty( $url ) ) {
-				return;
-			}
-
-			$normalized_url = trailingslashit( untrailingslashit( (string) $url ) );
-
-			if ( isset( $seen[ $normalized_url ] ) ) {
-				return;
-			}
-
-			$seen[ $normalized_url ] = true;
-
-			$bucket[] = array(
-				'loc'        => $normalized_url,
-				'lastmod'    => $lastmod ?: gmdate( 'c' ),
-				'changefreq' => $changefreq,
-				'priority'   => $priority,
-			);
-		};
-
-		if ( $front_page_id ) {
-			$front_page = get_post( $front_page_id );
-
-			if ( ! $post_is_noindex( $front_page ) ) {
-				$append_entry(
-					$entries,
-					$seen_urls,
-					get_permalink( $front_page_id ),
-					get_post_modified_time( 'c', true, $front_page_id ),
-					'weekly',
-					'1.0'
-				);
-			}
-		} else {
-			$append_entry( $entries, $seen_urls, home_url( '/' ), gmdate( 'c' ), 'weekly', '1.0' );
-		}
-
-		if ( $posts_page_id && $posts_page_id !== $front_page_id ) {
-			$posts_page = get_post( $posts_page_id );
-
-			if ( ! $post_is_noindex( $posts_page ) ) {
-				$append_entry(
-					$entries,
-					$seen_urls,
-					get_permalink( $posts_page_id ),
-					get_post_modified_time( 'c', true, $posts_page_id ),
-					'daily',
-					'0.8'
-				);
-			}
-		}
-
-		$content_posts = get_posts(
-			array(
-				'post_type'              => array( 'page', 'post' ),
-				'post_status'            => 'publish',
-				'posts_per_page'         => -1,
-				'post__not_in'           => array_filter( array( $front_page_id, $posts_page_id ) ),
-				'orderby'                => 'modified',
-				'order'                  => 'DESC',
-				'update_post_meta_cache' => false,
-				'update_post_term_cache' => false,
-			)
-		);
-
-		foreach ( $content_posts as $content_post ) {
-			if ( $post_is_noindex( $content_post ) || $this->sitemap_post_is_excluded( $content_post ) ) {
-				continue;
-			}
-
-			$append_entry(
-				$entries,
-				$seen_urls,
-				get_permalink( $content_post ),
-				get_post_modified_time( 'c', true, $content_post ),
-				'weekly',
-				'page' === $content_post->post_type ? '0.8' : '0.7'
-			);
-		}
-
-		return $entries;
 	}
 
 	/**
@@ -17255,11 +17205,16 @@ class McPrices_Integration {
 			return;
 		}
 
+		$request_path = $this->get_site_relative_request_path();
+
+		if ( 'sitemap.xml' === $request_path ) {
+			wp_safe_redirect( home_url( '/sitemap_index.xml' ), 301, 'McPrices' );
+			exit;
+		}
+
 		if ( $this->is_sitemap_request() || $this->is_robots_request() ) {
 			return;
 		}
-
-		$request_path = $this->get_site_relative_request_path();
 
 		$forced_exact_match_redirects = array(
 			'big-mac-price',
@@ -17309,80 +17264,35 @@ class McPrices_Integration {
 	}
 
 	/**
-	 * Return XML-safe text.
-	 *
-	 * @param string $value Raw text.
-	 * @return string
-	 */
-	protected function escape_xml( $value ) {
-		return htmlspecialchars( (string) $value, ENT_XML1 | ENT_COMPAT, 'UTF-8' );
-	}
-
-	/**
-	 * Render a dynamic sitemap.xml response.
-	 *
-	 * @return void
-	 */
-	public function maybe_render_sitemap() {
-		if ( ! $this->design_enabled() || is_admin() || ! $this->is_sitemap_request() ) {
-			return;
-		}
-
-		nocache_headers();
-		status_header( 200 );
-		header( 'Content-Type: application/xml; charset=UTF-8' );
-
-		echo '<?xml version="1.0" encoding="UTF-8"?>';
-		echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
-
-		foreach ( $this->get_sitemap_entries() as $entry ) {
-			echo '<url>';
-			echo '<loc>' . $this->escape_xml( $entry['loc'] ) . '</loc>';
-			echo '<lastmod>' . $this->escape_xml( $entry['lastmod'] ) . '</lastmod>';
-			echo '<changefreq>' . $this->escape_xml( $entry['changefreq'] ) . '</changefreq>';
-			echo '<priority>' . $this->escape_xml( $entry['priority'] ) . '</priority>';
-			echo '</url>';
-		}
-
-		echo '</urlset>';
-		exit;
-	}
-
-	/**
-	 * Render a dynamic robots.txt response.
-	 *
-	 * @return void
-	 */
-	public function maybe_render_robots() {
-		if ( ! $this->design_enabled() || is_admin() || ! $this->is_robots_request() ) {
-			return;
-		}
-
-		nocache_headers();
-		status_header( 200 );
-		header( 'Content-Type: text/plain; charset=UTF-8' );
-		echo $this->filter_robots_txt( '', (bool) get_option( 'blog_public', 1 ) );
-		exit;
-	}
-
-	/**
-	 * Output a sitewide robots.txt that points crawlers to the custom sitemap.
+	 * Keep one sitemap declaration in robots.txt and point it to Rank Math.
 	 *
 	 * @param string $output Current robots content.
 	 * @param bool   $public Whether the site is public.
 	 * @return string
 	 */
 	public function filter_robots_txt( $output, $public ) {
-		$lines = array(
-			'User-agent: *',
-			'Allow: /',
-			'Disallow: /wp-admin/',
-			'Allow: /wp-admin/admin-ajax.php',
-			'',
-			'Sitemap: ' . home_url( '/sitemap.xml' ),
+		$lines = preg_split( '/\R/', trim( (string) $output ) );
+		$lines = is_array( $lines ) ? $lines : array();
+		$lines = array_values(
+			array_filter(
+				$lines,
+				static function ( $line ) {
+					return 0 !== stripos( trim( (string) $line ), 'Sitemap:' );
+				}
+			)
 		);
 
-		return implode( "\n", $lines );
+		if ( empty( $lines ) ) {
+			$lines = array(
+				'User-agent: *',
+				$public ? 'Disallow:' : 'Disallow: /',
+			);
+		}
+
+		$lines[] = '';
+		$lines[] = 'Sitemap: ' . home_url( '/sitemap_index.xml' );
+
+		return trim( implode( "\n", $lines ) ) . "\n";
 	}
 
 	/**
@@ -17416,6 +17326,24 @@ class McPrices_Integration {
 				'section' => 'mcprices_native_design',
 				'label'   => __( 'Enable McPrices site-wide skin', 'kadence' ),
 				'type'    => 'checkbox',
+			)
+		);
+
+		$wp_customize->add_setting(
+			self::PRICES_VERIFIED_DATE_SETTING,
+			array(
+				'default'           => '',
+				'type'              => 'theme_mod',
+				'sanitize_callback' => array( $this, 'sanitize_verified_date' ),
+			)
+		);
+		$wp_customize->add_control(
+			self::PRICES_VERIFIED_DATE_SETTING,
+			array(
+				'section'     => 'mcprices_native_design',
+				'label'       => __( 'Prices verified date', 'kadence' ),
+				'type'        => 'date',
+				'description' => __( 'Update this only after a real price review. When empty, the homepage modified date is used.', 'kadence' ),
 			)
 		);
 
@@ -17642,7 +17570,7 @@ class McPrices_Integration {
 		$content_without_block_comments = preg_replace( '/<!--[\s\S]*?-->/', '', $content );
 		$plain_content                  = trim( wp_strip_all_tags( (string) $content_without_block_comments ) );
 		$is_empty                       = '' === $plain_content;
-		$content_matches_pattern        = trim( $content ) === trim( $homepage_pattern );
+		$content_matches_pattern        = $this->get_seed_signature( trim( $content ) ) === $this->get_seed_signature( trim( $homepage_pattern ) );
 
 		if ( $is_empty ) {
 			$this->maybe_seed_front_page_content( true );
@@ -18525,6 +18453,24 @@ JS;
 	 */
 	public function sanitize_checkbox( $value ) {
 		return (bool) $value;
+	}
+
+	/**
+	 * Sanitize the admin-editable prices verification date.
+	 *
+	 * @param string $value Raw date value.
+	 * @return string
+	 */
+	public function sanitize_verified_date( $value ) {
+		$value = trim( (string) $value );
+
+		if ( '' === $value ) {
+			return '';
+		}
+
+		$date = \DateTimeImmutable::createFromFormat( '!Y-m-d', $value, wp_timezone() );
+
+		return $date instanceof \DateTimeImmutable && $date->format( 'Y-m-d' ) === $value ? $value : '';
 	}
 
 	/**

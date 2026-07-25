@@ -30,7 +30,7 @@ require get_template_directory() . '/inc/functions.php';
 // Native McPrices integration for this Kadence parent theme install.
 require get_template_directory() . '/inc/mcprices/class-mcprices-integration.php';
 require get_template_directory() . '/inc/mcprices/schema.php';
-require get_template_directory() . '/inc/sitemap.php';
+require get_template_directory() . '/inc/mcprices/indexing.php';
 
 // Initialize the theme.
 call_user_func( 'Kadence\kadence' );
@@ -48,13 +48,46 @@ function kadence_mcprices_has_active_seo_plugin() {
 }
 
 /**
- * Return the current site-local date string for McPrices.
+ * Return the stable, site-local prices verification date.
+ *
+ * The owner can set an explicit date in the Customizer. When that field is
+ * empty, use the real front-page modification time instead of the request
+ * time so normal traffic cannot manufacture freshness signals.
  *
  * @param string $format PHP date format.
  * @return string
  */
 function kadence_mcprices_get_current_site_date( $format = 'd-m-Y' ) {
-	return wp_date( $format, null, wp_timezone() );
+	$timezone      = wp_timezone();
+	$verified_date = trim( (string) get_theme_mod( 'mcprices_prices_verified_date', '' ) );
+	$timestamp     = 0;
+
+	if ( preg_match( '/^\d{4}-\d{2}-\d{2}$/', $verified_date ) ) {
+		$date = \DateTimeImmutable::createFromFormat( '!Y-m-d', $verified_date, $timezone );
+
+		if ( $date instanceof \DateTimeImmutable && $date->format( 'Y-m-d' ) === $verified_date ) {
+			$timestamp = $date->getTimestamp();
+		}
+	}
+
+	if ( ! $timestamp ) {
+		$front_page_id = (int) get_option( 'page_on_front' );
+
+		if ( $front_page_id ) {
+			$timestamp = (int) get_post_modified_time( 'U', true, $front_page_id );
+		}
+	}
+
+	if ( ! $timestamp ) {
+		$last_modified = (string) get_lastpostmodified( 'GMT' );
+		$timestamp     = $last_modified ? (int) strtotime( $last_modified . ' UTC' ) : 0;
+	}
+
+	if ( ! $timestamp ) {
+		$timestamp = (int) current_time( 'timestamp', true );
+	}
+
+	return wp_date( $format, $timestamp, $timezone );
 }
 
 /**
@@ -637,7 +670,6 @@ function kadence_mcprices_register_dynamic_meta_hooks() {
 	add_filter( 'rank_math/frontend/canonical', 'kadence_mcprices_filter_rank_math_canonical', 20 );
 	add_filter( 'rank_math/opengraph/facebook/image', 'kadence_mcprices_filter_rank_math_facebook_image' );
 	add_filter( 'rank_math/sitemap/exlude_posts_with_canonical_urls', '__return_true' );
-	add_filter( 'rank_math/sitemap/enable_caching', '__return_false' );
 }
 add_action( 'after_setup_theme', 'kadence_mcprices_register_dynamic_meta_hooks', 60 );
 add_action( 'wp_head', 'kadence_mcprices_output_favicon_fallback', 1 );

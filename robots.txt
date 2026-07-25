@@ -13,4 +13,4 @@ Disallow: /xmlrpc.php
 Disallow: /*?s=
 Allow: /wp-admin/admin-ajax.php
 
-Sitemap: https://mcdomenuusa.com/sitemap.xml
+Sitemap: https://mcdomenuusa.com/sitemap_index.xml

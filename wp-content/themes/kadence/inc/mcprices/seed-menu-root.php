@@ -53,9 +53,12 @@ class McPrices_Menu_Root_Seed {
 	 * @return string
 	 */
 	protected static function get_root_content() {
-		$now                = new \DateTimeImmutable( 'now', wp_timezone() );
-		$current_year       = $now->format( 'Y' );
-		$updated_date       = $now->format( 'F j, Y' );
+		$verified_date      = function_exists( 'kadence_mcprices_get_current_site_date' )
+			? \kadence_mcprices_get_current_site_date( 'Y-m-d' )
+			: wp_date( 'Y-m-d' );
+		$verified_timestamp = strtotime( (string) $verified_date );
+		$current_year       = $verified_timestamp ? wp_date( 'Y', $verified_timestamp ) : wp_date( 'Y' );
+		$updated_date       = $verified_timestamp ? wp_date( 'F j, Y', $verified_timestamp ) : wp_date( 'F j, Y' );
 		$links              = array(
 			array( 'label' => 'Breakfast Menu Prices USA', 'url' => self::build_site_url( 'breakfast-menu/' ), 'description' => 'Use the breakfast pillar for McMuffins, biscuits, McGriddles, Hash Browns, and breakfast combo decisions.' ),
 			array( 'label' => 'Burgers Menu Prices USA', 'url' => self::build_site_url( 'burgers-menu/' ), 'description' => 'Compare Big Mac, Quarter Pounder, McDouble, Hamburger, meal pricing, and premium-versus-value burger choices.' ),
@@ -842,7 +845,6 @@ class McPrices_Menu_Root_Seed {
 	 * @return int
 	 */
 	protected static function ensure_root_page() {
-		$root_content = self::get_root_content();
 		$pages = get_posts(
 			array(
 				'post_type'      => 'page',
@@ -871,6 +873,7 @@ class McPrices_Menu_Root_Seed {
 		$root_page = self::pick_canonical_page( $candidates );
 
 		if ( ! $root_page instanceof \WP_Post ) {
+			$root_content = self::get_root_content();
 			$root_page_id = wp_insert_post(
 				array(
 					'post_title'   => self::ROOT_TITLE,
@@ -896,23 +899,68 @@ class McPrices_Menu_Root_Seed {
 			return 0;
 		}
 
-		wp_update_post(
-			array(
-				'ID'           => (int) $root_page->ID,
-				'post_title'   => self::ROOT_TITLE,
-				'post_name'    => self::ROOT_PATH,
-				'post_status'  => 'publish',
-				'post_parent'  => 0,
-				'menu_order'   => 0,
-				'post_excerpt' => self::ROOT_EXCERPT,
-				'post_content' => $root_content,
-			)
+		$preserve_editor_content = '1' === (string) get_post_meta( (int) $root_page->ID, '_mcprices_allow_custom_content', true );
+		$target_state            = array(
+			'post_title'   => $preserve_editor_content ? (string) $root_page->post_title : self::ROOT_TITLE,
+			'post_name'    => self::ROOT_PATH,
+			'post_status'  => 'publish',
+			'post_parent'  => 0,
+			'menu_order'   => 0,
+			'post_excerpt' => $preserve_editor_content ? (string) $root_page->post_excerpt : self::ROOT_EXCERPT,
+			'post_content' => $preserve_editor_content ? (string) $root_page->post_content : self::get_root_content(),
 		);
+
+		if ( ! self::post_state_matches( $root_page, $target_state ) ) {
+			wp_update_post(
+				array_merge(
+					array( 'ID' => (int) $root_page->ID ),
+					$target_state
+				)
+			);
+		}
 
 		update_post_meta( (int) $root_page->ID, '_mcprices_managed_page', 'menu-root' );
 		update_post_meta( (int) $root_page->ID, '_mcprices_managed_key', 'menu' );
 
 		return (int) $root_page->ID;
+	}
+
+	/**
+	 * Return whether a stored post already matches its intended managed state.
+	 *
+	 * @param \WP_Post            $page   Stored page.
+	 * @param array<string,mixed> $target Intended post fields.
+	 * @return bool
+	 */
+	protected static function post_state_matches( \WP_Post $page, array $target ) {
+		$existing = array();
+
+		foreach ( $target as $field => $value ) {
+			$existing[ $field ] = isset( $page->{$field} ) ? $page->{$field} : null;
+		}
+
+		foreach ( array( 'post_title' ) as $field ) {
+			if ( array_key_exists( $field, $target ) ) {
+				$existing[ $field ] = trim( wp_specialchars_decode( (string) $existing[ $field ], ENT_QUOTES ) );
+				$target[ $field ]   = trim( wp_specialchars_decode( (string) $target[ $field ], ENT_QUOTES ) );
+			}
+		}
+
+		foreach ( array( 'post_content', 'post_excerpt' ) as $field ) {
+			if ( array_key_exists( $field, $target ) ) {
+				$existing[ $field ] = str_replace( array( "\r\n", "\r" ), "\n", trim( (string) $existing[ $field ] ) );
+				$target[ $field ]   = str_replace( array( "\r\n", "\r" ), "\n", trim( (string) $target[ $field ] ) );
+			}
+		}
+
+		foreach ( array( 'post_parent', 'menu_order' ) as $field ) {
+			if ( array_key_exists( $field, $target ) ) {
+				$existing[ $field ] = (int) $existing[ $field ];
+				$target[ $field ]   = (int) $target[ $field ];
+			}
+		}
+
+		return hash( 'sha256', wp_json_encode( $existing ) ) === hash( 'sha256', wp_json_encode( $target ) );
 	}
 
 	/**
@@ -1217,19 +1265,19 @@ class McPrices_Menu_Root_Seed {
 			return;
 		}
 
-		$post_data = array(
-			'ID' => (int) $page->ID,
-		);
+		$post_data = array( 'ID' => (int) $page->ID );
 
-		if ( array_key_exists( 'post_parent', $updates ) ) {
+		if ( array_key_exists( 'post_parent', $updates ) && (int) $page->post_parent !== (int) $updates['post_parent'] ) {
 			$post_data['post_parent'] = (int) $updates['post_parent'];
 		}
 
-		if ( ! empty( $updates['post_name'] ) ) {
+		if ( ! empty( $updates['post_name'] ) && (string) $page->post_name !== sanitize_title( (string) $updates['post_name'] ) ) {
 			$post_data['post_name'] = (string) $updates['post_name'];
 		}
 
-		wp_update_post( $post_data );
+		if ( count( $post_data ) > 1 ) {
+			wp_update_post( $post_data );
+		}
 	}
 
 	/**

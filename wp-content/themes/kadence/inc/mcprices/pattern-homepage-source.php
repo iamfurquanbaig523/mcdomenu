@@ -12,6 +12,8 @@ $page_url = static function ( $path ) {
 };
 
 $mcprices_integration = class_exists( '\Kadence\McPrices_Integration' ) ? \Kadence\McPrices_Integration::get_instance() : null;
+$author_profile       = $mcprices_integration ? $mcprices_integration->get_public_author_profile() : array();
+$author_name          = ! empty( $author_profile['name'] ) ? (string) $author_profile['name'] : (string) get_bloginfo( 'name' );
 
 $get_category_page_url = static function ( $category_id ) use ( $mcprices_integration ) {
 	if ( $mcprices_integration ) {
@@ -52,9 +54,15 @@ $get_home_item_media_url = static function ( $item_name, $size = 'full' ) use ( 
 		return '';
 	}
 
-	if ( preg_match( '#/items/([^/]+)\.(?:png|jpe?g)$#i', $item_media_url, $matches ) ) {
+	if ( preg_match( '#/items/([^/]+)\.(?:avif|webp|png|jpe?g)$#i', $item_media_url, $matches ) ) {
 		if ( 'full' !== $size ) {
-			$homepage_relative_path = '/assets/images/mcprices/homepage/items/' . $matches[1] . '-' . preg_replace( '/[^0-9a-z_-]/i', '', (string) $size ) . '.jpg';
+			$homepage_relative_base = '/assets/images/mcprices/homepage/items/' . $matches[1] . '-' . preg_replace( '/[^0-9a-z_-]/i', '', (string) $size );
+			$homepage_avif_path     = $homepage_relative_base . '.avif';
+			$homepage_relative_path = $homepage_relative_base . '.jpg';
+
+			if ( file_exists( get_theme_file_path( $homepage_avif_path ) ) ) {
+				return get_theme_file_uri( $homepage_avif_path );
+			}
 
 			if ( file_exists( get_theme_file_path( $homepage_relative_path ) ) ) {
 				return get_theme_file_uri( $homepage_relative_path );
@@ -865,7 +873,7 @@ $get_named_item_image_alt = static function ( $item_name ) {
 };
 
 $get_extra_value_meals_image_url = static function () {
-	$filename      = 'mcdonalds-meal-prices-calories-usa.webp';
+	$filename      = 'mcdonalds-meal-prices-calories-usa.avif';
 	$fallback_url  = content_url( '/uploads/2026/07/' . $filename );
 	$attachment_id = 0;
 
@@ -1576,7 +1584,7 @@ ob_start();
 		<div class="content-main seo-main">
 			<h2>McDonald's Prices USA <?php echo esc_html( $current_year ); ?> &mdash; Menu Price Guide</h2>
 			<p>Use this McDonald&#8217;s prices USA guide to compare current McDonald&#8217;s menu prices by category before you order. It works as a practical McDonald&#8217;s menu with prices for burgers, breakfast, McCaf&eacute; drinks, Happy Meals, fries, desserts, combo meals, McValue items, and limited-time deals.</p>
-			<p><strong>About this guide:</strong> McDonald&#8217;s Menu Prices USA is an independent U.S. McDonald&#8217;s menu price guide created by <strong>Sarah Jenkins</strong>, Lead Menu Analyst and Senior Editor based in the United States. Sarah tracks McDonald&#8217;s prices, deals, and menu changes to help US consumers compare costs before they order. This site is not affiliated with McDonald&#8217;s Corporation. For the highest-priority pages, start with <a href="<?php echo esc_url( $page_url( 'happy-meal-menu' ) ); ?>">Happy Meal prices</a>, the <a href="<?php echo esc_url( $get_item_page_url( 'beverages', 'Soft Drink Small' ) ); ?>">small drink price page</a>, and <a href="<?php echo esc_url( $page_url( 'breakfast-menu' ) ); ?>">breakfast menu prices</a>.</p>
+			<p><strong>About this guide:</strong> McDonald&#8217;s Menu Prices USA is an independent U.S. McDonald&#8217;s menu price guide maintained by <strong><?php echo esc_html( $author_name ); ?></strong>. <?php echo esc_html( $author_name ); ?> reviews McDonald&#8217;s prices, deals, and menu changes to help US consumers compare costs before they order. This site is not affiliated with McDonald&#8217;s Corporation. For the highest-priority pages, start with <a href="<?php echo esc_url( $page_url( 'happy-meal-menu' ) ); ?>">Happy Meal prices</a>, the <a href="<?php echo esc_url( $get_item_page_url( 'beverages', 'Soft Drink Small' ) ); ?>">small drink price page</a>, and <a href="<?php echo esc_url( $page_url( 'breakfast-menu' ) ); ?>">breakfast menu prices</a>.</p>
 			<p>The McDonald&#8217;s price list on this page is organized for quick planning, with menu item names, sample prices, calories, and category links in one place. You can start with breakfast menu prices, burger prices, McCaf&eacute; prices, Happy Meal prices, drinks menu prices, fries prices, desserts prices, or deals and offers depending on what you want to compare.</p>
 			<p>McDonald&#8217;s prices are not always the same at every restaurant. Local franchise pricing, city costs, taxes, delivery apps, app-exclusive offers, and current promotions can change the final checkout total, so this guide should be used as a helpful overview of McDonald&#8217;s menu prices USA rather than a guaranteed national receipt.</p>
 			<p>For value-focused ordering, compare combo meal prices, McValue meal deals, buy-one-add-one offers, app deals, and side or dessert add-ons before choosing a meal. This helps you see whether a standalone item, full combo meal, or current McDonald&#8217;s deal gives better value at your location.</p>
@@ -1618,7 +1626,7 @@ ob_start();
 			</div>
 			<div class="sidebar-card">
 				<div class="sidebar-card-title">About the writer</div>
-				<p>Sarah Jenkins reviews McDonald&#8217;s USA menu prices, calories, value deals, and limited-time updates so readers can compare items before ordering.</p>
+				<p><?php echo esc_html( $author_name ); ?> reviews McDonald&#8217;s USA menu prices, calories, value deals, and limited-time updates so readers can compare items before ordering.</p>
 				<div class="sidebar-links">
 					<a href="<?php echo esc_url( home_url( '/editorial-policy/' ) ); ?>" class="sidebar-link">&#128221; Editorial Policy</a>
 					<a href="<?php echo esc_url( home_url( '/pricing-methodology/' ) ); ?>" class="sidebar-link">&#128269; Source Methodology</a>
