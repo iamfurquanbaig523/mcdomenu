@@ -87,6 +87,17 @@ function mcprices_migration_convert_content_images( $content ) {
 		'$1$2.avif',
 		$content
 	);
+	$content = str_replace(
+		array(
+			'mcdonalds-burgers-menu-prices-usa.avif',
+			'mcdonalds-mcvalue-menu-prices-deals.avif',
+		),
+		array(
+			'mcdonalds-burgers-menu-prices-usa-v2.avif',
+			'mcdonalds-mcvalue-menu-prices-deals-v2.avif',
+		),
+		$content
+	);
 
 	$content = preg_replace_callback(
 		'#((?:https?:)?//[^/"\'\s]+)?((?:/wordpress)?/wp-content/themes/kadence/assets/images/mcprices/(?:homepage/items|official/categories)/[^"\'\s?]+)\.(?:jpe?g|png|webp)(\?[^"\'\s]*)?#i',
@@ -118,23 +129,24 @@ function mcprices_migration_convert_content_images( $content ) {
 /**
  * Return an attachment metadata payload that matches deployed AVIF files.
  *
- * @param int    $attachment_id Attachment ID.
- * @param string $stem          Filename without extension.
+ * @param int                 $attachment_id Attachment ID.
+ * @param array<string,mixed> $definition    Attachment migration definition.
  * @return array<string,mixed>
  */
-function mcprices_migration_attachment_metadata( $attachment_id, $stem ) {
+function mcprices_migration_attachment_metadata( $attachment_id, $definition ) {
 	$upload   = wp_get_upload_dir();
 	$base_dir = trailingslashit( $upload['basedir'] ) . '2026/07/';
 	$existing = get_post_meta( $attachment_id, '_wp_attachment_metadata', true );
 	$metadata = is_array( $existing ) ? $existing : array();
+	$stem     = (string) $definition['stem'];
 	$main     = $base_dir . $stem . '.avif';
 
 	if ( ! is_file( $main ) ) {
 		throw new RuntimeException( 'Required AVIF is missing: ' . $main );
 	}
 
-	$metadata['width']    = 1672;
-	$metadata['height']   = 941;
+	$metadata['width']    = (int) ( $definition['width'] ?? 1672 );
+	$metadata['height']   = (int) ( $definition['height'] ?? 941 );
 	$metadata['file']     = '2026/07/' . $stem . '.avif';
 	$metadata['filesize'] = filesize( $main );
 	$metadata['sizes']    = array();
@@ -205,6 +217,8 @@ $candidate_posts   = $wpdb->get_results(
 	OR post_content LIKE '%Senior Editor%'
 	OR post_content LIKE '%Mcdonalds-Breakfast.webp%'
 	OR post_content LIKE '%mcdonalds-meal-prices-calories-usa.webp%'
+	OR post_content LIKE '%mcdonalds-burgers-menu-prices-usa.avif%'
+	OR post_content LIKE '%mcdonalds-mcvalue-menu-prices-deals.avif%'
 	OR post_content LIKE '%/assets/images/mcprices/%'",
 	ARRAY_A
 );
@@ -214,11 +228,29 @@ $attachment_definitions = array(
 		'old'  => '2026/07/Mcdonalds-Breakfast.webp',
 		'new'  => '2026/07/Mcdonalds-Breakfast.avif',
 		'stem' => 'Mcdonalds-Breakfast',
+		'width' => 1672,
+		'height' => 941,
 	),
 	array(
 		'old'  => '2026/07/mcdonalds-meal-prices-calories-usa.webp',
 		'new'  => '2026/07/mcdonalds-meal-prices-calories-usa.avif',
 		'stem' => 'mcdonalds-meal-prices-calories-usa',
+		'width' => 1672,
+		'height' => 941,
+	),
+	array(
+		'old'    => '2026/07/mcdonalds-burgers-menu-prices-usa.avif',
+		'new'    => '2026/07/mcdonalds-burgers-menu-prices-usa-v2.avif',
+		'stem'   => 'mcdonalds-burgers-menu-prices-usa-v2',
+		'width'  => 1672,
+		'height' => 941,
+	),
+	array(
+		'old'    => '2026/07/mcdonalds-mcvalue-menu-prices-deals.avif',
+		'new'    => '2026/07/mcdonalds-mcvalue-menu-prices-deals-v2.avif',
+		'stem'   => 'mcdonalds-mcvalue-menu-prices-deals-v2',
+		'width'  => 1648,
+		'height' => 927,
 	),
 );
 $attachments = array();
@@ -328,6 +360,8 @@ try {
 		OR post_content LIKE '%Senior Editor%'
 		OR post_content LIKE '%Mcdonalds-Breakfast.webp%'
 		OR post_content LIKE '%mcdonalds-meal-prices-calories-usa.webp%'
+		OR post_content LIKE '%mcdonalds-burgers-menu-prices-usa.avif%'
+		OR post_content LIKE '%mcdonalds-mcvalue-menu-prices-deals.avif%'
 		OR post_content LIKE '%/assets/images/mcprices/%'",
 		ARRAY_A
 	);
@@ -376,7 +410,7 @@ try {
 		$attachment_id = (int) $attachment['post']['ID'];
 		$upload        = wp_get_upload_dir();
 		$guid          = trailingslashit( $upload['baseurl'] ) . $definition['new'];
-		$metadata      = mcprices_migration_attachment_metadata( $attachment_id, $definition['stem'] );
+		$metadata      = mcprices_migration_attachment_metadata( $attachment_id, $definition );
 		$post          = is_array( $attachment['post'] ) ? $attachment['post'] : array();
 		$needs_update  = 'image/avif' !== (string) ( $post['post_mime_type'] ?? '' )
 			|| $guid !== (string) ( $post['guid'] ?? '' )
@@ -485,9 +519,17 @@ try {
 		+ (SELECT COUNT(*) FROM {$wpdb->users} WHERE display_name LIKE '%Sarah%')
 		+ (SELECT COUNT(*) FROM {$wpdb->usermeta} WHERE meta_value LIKE '%Sarah%')"
 	);
+	$remaining_old_media   = (int) $wpdb->get_var(
+		"SELECT COUNT(*) FROM {$wpdb->posts}
+		WHERE post_status='publish'
+		AND (
+			post_content LIKE '%mcdonalds-burgers-menu-prices-usa.avif%'
+			OR post_content LIKE '%mcdonalds-mcvalue-menu-prices-deals.avif%'
+		)"
+	);
 
-	if ( 0 !== $remaining_noncanonical || 0 !== $remaining_sarah ) {
-		throw new RuntimeException( 'Post-migration author verification failed.' );
+	if ( 0 !== $remaining_noncanonical || 0 !== $remaining_sarah || 0 !== $remaining_old_media ) {
+		throw new RuntimeException( 'Post-migration verification failed.' );
 	}
 
 	$wpdb->query( 'COMMIT' );
