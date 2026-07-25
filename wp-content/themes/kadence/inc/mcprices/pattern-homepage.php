@@ -1043,11 +1043,11 @@ ob_start();
 			<strong>Format guide:</strong> Small-to-large price ranges are grouped where multiple sizes exist. All prices are shown in US dollars and can vary by location.
 		</div>
 		<div class="menu-tabs">
-			<button class="menu-tab" type="button" data-menu-filter="all" aria-pressed="false">&#9776; All</button>
+			<button class="menu-tab active" type="button" data-menu-filter="all" aria-pressed="true">&#9776; All</button>
 			<button class="menu-tab" type="button" data-menu-filter="whats-new" aria-pressed="false">&#127381; What's New</button>
 			<a class="menu-tab menu-tab--anchor" href="#fifa-world-cup-meal" data-menu-filter="fifa-world-cup-meal" aria-pressed="false">&#127942; FIFA World Cup Meal</a>
 			<?php foreach ( $menu_sections as $section ) : ?>
-				<button class="menu-tab<?php echo 'breakfast' === $section['id'] ? ' active' : ''; ?>" type="button" data-menu-filter="<?php echo esc_attr( $section['id'] ); ?>" aria-pressed="<?php echo 'breakfast' === $section['id'] ? 'true' : 'false'; ?>"><?php echo $section['icon']; ?> <?php echo esc_html( wp_strip_all_tags( $section['title'] ) ); ?></button>
+				<button class="menu-tab" type="button" data-menu-filter="<?php echo esc_attr( $section['id'] ); ?>" aria-pressed="false"><?php echo $section['icon']; ?> <?php echo esc_html( wp_strip_all_tags( $section['title'] ) ); ?></button>
 			<?php endforeach; ?>
 		</div>
 		<?php foreach ( $menu_sections as $section ) : ?>

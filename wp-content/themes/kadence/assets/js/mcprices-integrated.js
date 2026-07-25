@@ -1344,7 +1344,7 @@
       var hash = window.location.hash.replace(/^#/, "");
 
       if (!hash) {
-        activateFilter("breakfast", { scroll: false });
+        activateFilter("all", { scroll: false });
         return;
       }
 
