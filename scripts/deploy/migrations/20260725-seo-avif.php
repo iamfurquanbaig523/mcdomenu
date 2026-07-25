@@ -417,7 +417,10 @@ try {
 	}
 
 	$option_rows = $wpdb->get_results(
-		"SELECT option_name,option_value FROM {$wpdb->options} WHERE option_value LIKE '%Sarah%'",
+		"SELECT option_name,option_value FROM {$wpdb->options}
+		WHERE option_value LIKE '%Sarah%'
+		AND option_name NOT LIKE '\\_transient\\_%'
+		AND option_name NOT LIKE '\\_site\\_transient\\_%'",
 		ARRAY_A
 	);
 	foreach ( $option_rows as $row ) {
@@ -475,7 +478,10 @@ try {
 		"SELECT
 		(SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_status='publish' AND CONCAT(post_title,post_excerpt,post_content) LIKE '%Sarah%')
 		+ (SELECT COUNT(*) FROM {$wpdb->postmeta} WHERE meta_value LIKE '%Sarah%')
-		+ (SELECT COUNT(*) FROM {$wpdb->options} WHERE option_value LIKE '%Sarah%')
+		+ (SELECT COUNT(*) FROM {$wpdb->options}
+			WHERE option_value LIKE '%Sarah%'
+			AND option_name NOT LIKE '\\_transient\\_%'
+			AND option_name NOT LIKE '\\_site\\_transient\\_%')
 		+ (SELECT COUNT(*) FROM {$wpdb->users} WHERE display_name LIKE '%Sarah%')
 		+ (SELECT COUNT(*) FROM {$wpdb->usermeta} WHERE meta_value LIKE '%Sarah%')"
 	);
