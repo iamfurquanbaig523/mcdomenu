@@ -85,15 +85,15 @@ function mcprices_migration_convert_content_images( $content ) {
 			}
 
 			$relative_path = ltrim( substr( $url_path, $wp_content_pos ), '/' );
-			$avif_relative = preg_replace( '/\.(?:jpe?g|png|webp)$/i', '.avif', $relative_path );
+			$avif_relative = $relative_path . '.avif';
 
-			if ( ! is_string( $avif_relative ) || ! is_file( ABSPATH . $avif_relative ) ) {
+			if ( ! is_file( ABSPATH . $avif_relative ) ) {
 				return $matches[0];
 			}
 
-			$avif_url_path = preg_replace( '/\.(?:jpe?g|png|webp)$/i', '.avif', $url_path );
+			$avif_url_path = $url_path . '.avif';
 
-			return (string) $matches[1] . (string) $avif_url_path . ( isset( $matches[3] ) ? (string) $matches[3] : '' );
+			return (string) $matches[1] . $avif_url_path . ( isset( $matches[3] ) ? (string) $matches[3] : '' );
 		},
 		$content
 	);
