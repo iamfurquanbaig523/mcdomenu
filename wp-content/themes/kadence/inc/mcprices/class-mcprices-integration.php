@@ -216,9 +216,9 @@ class McPrices_Integration {
 		add_filter( 'style_loader_tag', array( $this, 'filter_front_page_font_stylesheet_tag' ), 10, 4 );
 		add_filter( 'script_loader_tag', array( $this, 'filter_front_page_script_tag' ), 10, 3 );
 		add_filter( 'pre_option_rank_math_google_analytic_options', array( $this, 'filter_front_page_rank_math_analytics_options' ), 10, 3 );
-		add_filter( 'litespeed_optimize_js_excludes', array( $this, 'filter_litespeed_adsense_exclusions' ), 99 );
-		add_filter( 'litespeed_optm_js_defer_exc', array( $this, 'filter_litespeed_adsense_exclusions' ), 99 );
-		add_filter( 'litespeed_optm_gm_js_exc', array( $this, 'filter_litespeed_adsense_exclusions' ), 99 );
+		add_filter( 'litespeed_optimize_js_excludes', array( $this, 'filter_litespeed_adsense_delay_exclusions' ), 999 );
+		add_filter( 'litespeed_optm_js_defer_exc', array( $this, 'filter_litespeed_adsense_delay_exclusions' ), 999 );
+		add_filter( 'litespeed_optm_gm_js_exc', array( $this, 'filter_litespeed_adsense_delay_exclusions' ), 999 );
 
 		add_action( 'customize_register', array( $this, 'register_customizer' ), 100 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ), 30 );
@@ -15694,19 +15694,27 @@ class McPrices_Integration {
 	}
 
 	/**
-	 * Keep LiteSpeed from replacing Google's required async AdSense loader.
+	 * Permit the site owner's AdSense loader to use LiteSpeed delayed execution.
+	 *
+	 * LiteSpeed ships built-in AdSense exclusions in addition to the admin tuning
+	 * fields, so those defaults must be removed after they are merged.
 	 *
 	 * @param array $exclusions Existing LiteSpeed JavaScript exclusions.
 	 * @return array
 	 */
-	public function filter_litespeed_adsense_exclusions( $exclusions ) {
+	public function filter_litespeed_adsense_delay_exclusions( $exclusions ) {
 		if ( ! is_array( $exclusions ) ) {
-			$exclusions = array();
+			return array();
 		}
 
-		$exclusions[] = 'pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
-
-		return array_values( array_unique( $exclusions ) );
+		return array_values(
+			array_filter(
+				$exclusions,
+				static function ( $exclusion ) {
+					return ! preg_match( '/adsbygoogle|googlesyndication|pagead2/i', (string) $exclusion );
+				}
+			)
+		);
 	}
 
 	/**
@@ -18115,11 +18123,7 @@ class McPrices_Integration {
 				$html      = preg_replace( '/\shref=(["\']).*?\1/i', ' href="' . esc_url( $versioned ) . '"', $html, 1 );
 			}
 
-			if ( false !== strpos( $html, 'data-no-optimize=' ) ) {
-				return $html;
-			}
-
-			return str_replace( '<link ', '<link data-no-optimize="1" ', $html );
+			return $html;
 		}
 
 		if ( 'kadence-mcprices-fonts' !== $handle ) {
@@ -18140,8 +18144,8 @@ class McPrices_Integration {
 	}
 
 	/**
-	 * Keep the homepage interaction bundle out of LiteSpeed JS optimization so the
-	 * current source file ships directly after performance updates.
+	 * Keep the homepage interaction bundle versioned while allowing LiteSpeed to
+	 * optimize its delivery.
 	 *
 	 * @param string $tag    Script tag HTML.
 	 * @param string $handle Script handle.
@@ -18164,11 +18168,7 @@ class McPrices_Integration {
 			$tag       = preg_replace( '/\ssrc=(["\']).*?\1/i', ' src="' . esc_url( $versioned ) . '"', $tag, 1 );
 		}
 
-		if ( false !== strpos( $tag, 'data-no-optimize=' ) ) {
-			return $tag;
-		}
-
-		return str_replace( '<script ', '<script data-no-optimize="1" ', $tag );
+		return $tag;
 	}
 
 	/**
