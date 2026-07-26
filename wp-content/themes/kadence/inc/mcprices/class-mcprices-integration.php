@@ -40,6 +40,16 @@ class McPrices_Integration {
 	const PRICES_VERIFIED_DATE_SETTING = 'mcprices_prices_verified_date';
 
 	/**
+	 * Theme mod used for the admin-editable Google AdSense publisher ID.
+	 */
+	const ADSENSE_CLIENT_ID_SETTING = 'mcprices_adsense_client_id';
+
+	/**
+	 * Google AdSense publisher ID supplied by the site owner.
+	 */
+	const DEFAULT_ADSENSE_CLIENT_ID = 'ca-pub-9435237050391519';
+
+	/**
 	 * Theme mod used to store the seeded mobile quick-nav icon map.
 	 */
 	const MOBILE_QUICK_NAV_ICONS_SETTING = 'mcprices_mobile_quick_nav_icons';
@@ -211,6 +221,7 @@ class McPrices_Integration {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ), 30 );
 		add_action( 'init', array( $this, 'register_page_category_support' ), 12 );
 		add_action( 'after_switch_theme', array( $this, 'run_managed_bootstrap' ) );
+		add_action( 'wp_head', array( $this, 'render_adsense_script' ), 1 );
 		add_action( 'wp_head', array( $this, 'render_homepage_meta_tags' ), 2 );
 		add_action( 'wp_head', array( $this, 'render_homepage_schema' ), 30 );
 		add_action( 'wp_head', array( $this, 'render_managed_page_schema' ), 31 );
@@ -15662,6 +15673,24 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Output the site-wide Google AdSense loader in the document head.
+	 *
+	 * @return void
+	 */
+	public function render_adsense_script() {
+		$client_id = $this->sanitize_adsense_client_id(
+			get_theme_mod( self::ADSENSE_CLIENT_ID_SETTING, self::DEFAULT_ADSENSE_CLIENT_ID )
+		);
+
+		if ( '' === $client_id ) {
+			return;
+		}
+		?>
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=<?php echo esc_attr( $client_id ); ?>" crossorigin="anonymous"></script>
+		<?php
+	}
+
+	/**
 	 * Output the homepage SEO meta tags without changing the visible design.
 	 *
 	 * @return void
@@ -17348,6 +17377,24 @@ class McPrices_Integration {
 		);
 
 		$wp_customize->add_setting(
+			self::ADSENSE_CLIENT_ID_SETTING,
+			array(
+				'default'           => self::DEFAULT_ADSENSE_CLIENT_ID,
+				'type'              => 'theme_mod',
+				'sanitize_callback' => array( $this, 'sanitize_adsense_client_id' ),
+			)
+		);
+		$wp_customize->add_control(
+			self::ADSENSE_CLIENT_ID_SETTING,
+			array(
+				'section'     => 'mcprices_native_design',
+				'label'       => __( 'Google AdSense publisher ID', 'kadence' ),
+				'type'        => 'text',
+				'description' => __( 'Enter a value such as ca-pub-1234567890123456. Clear this field to stop loading AdSense.', 'kadence' ),
+			)
+		);
+
+		$wp_customize->add_setting(
 			self::DISCLAIMER_ENABLE_SETTING,
 			array(
 				'default'           => true,
@@ -18471,6 +18518,18 @@ JS;
 		$date = \DateTimeImmutable::createFromFormat( '!Y-m-d', $value, wp_timezone() );
 
 		return $date instanceof \DateTimeImmutable && $date->format( 'Y-m-d' ) === $value ? $value : '';
+	}
+
+	/**
+	 * Sanitize a Google AdSense publisher ID.
+	 *
+	 * @param string $value Raw publisher ID.
+	 * @return string
+	 */
+	public function sanitize_adsense_client_id( $value ) {
+		$value = strtolower( trim( sanitize_text_field( (string) $value ) ) );
+
+		return preg_match( '/^ca-pub-\d{16}$/', $value ) ? $value : '';
 	}
 
 	/**
