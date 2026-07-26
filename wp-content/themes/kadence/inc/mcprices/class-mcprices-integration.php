@@ -216,6 +216,9 @@ class McPrices_Integration {
 		add_filter( 'style_loader_tag', array( $this, 'filter_front_page_font_stylesheet_tag' ), 10, 4 );
 		add_filter( 'script_loader_tag', array( $this, 'filter_front_page_script_tag' ), 10, 3 );
 		add_filter( 'pre_option_rank_math_google_analytic_options', array( $this, 'filter_front_page_rank_math_analytics_options' ), 10, 3 );
+		add_filter( 'litespeed_optimize_js_excludes', array( $this, 'filter_litespeed_adsense_exclusions' ), 99 );
+		add_filter( 'litespeed_optm_js_defer_exc', array( $this, 'filter_litespeed_adsense_exclusions' ), 99 );
+		add_filter( 'litespeed_optm_gm_js_exc', array( $this, 'filter_litespeed_adsense_exclusions' ), 99 );
 
 		add_action( 'customize_register', array( $this, 'register_customizer' ), 100 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ), 30 );
@@ -15688,6 +15691,22 @@ class McPrices_Integration {
 		?>
 		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=<?php echo esc_attr( $client_id ); ?>" crossorigin="anonymous"></script>
 		<?php
+	}
+
+	/**
+	 * Keep LiteSpeed from replacing Google's required async AdSense loader.
+	 *
+	 * @param array $exclusions Existing LiteSpeed JavaScript exclusions.
+	 * @return array
+	 */
+	public function filter_litespeed_adsense_exclusions( $exclusions ) {
+		if ( ! is_array( $exclusions ) ) {
+			$exclusions = array();
+		}
+
+		$exclusions[] = 'pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';
+
+		return array_values( array_unique( $exclusions ) );
 	}
 
 	/**
