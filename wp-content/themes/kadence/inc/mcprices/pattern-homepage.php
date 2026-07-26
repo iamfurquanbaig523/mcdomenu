@@ -921,6 +921,70 @@ $get_extra_value_meals_image_url = static function () {
 
 $extra_value_meals_image_url = $get_extra_value_meals_image_url();
 
+$get_mccafe_prices_image_html = static function () {
+	$filename      = 'mccafe-coffee-prices.avif';
+	$default_alt   = 'McCafé coffee prices and calories for hot coffee, iced coffee, frappes, and hot chocolate';
+	$attachment_id = 0;
+	$attachments   = get_posts(
+		array(
+			'post_type'      => 'attachment',
+			'post_status'    => 'inherit',
+			'posts_per_page' => 1,
+			'fields'         => 'ids',
+			'meta_key'       => '_mcprices_mccafe_prices_image',
+			'meta_value'     => '1',
+			'orderby'        => 'ID',
+			'order'          => 'DESC',
+		)
+	);
+
+	if ( ! empty( $attachments[0] ) ) {
+		$attachment_id = absint( $attachments[0] );
+	}
+
+	if ( ! $attachment_id ) {
+		global $wpdb;
+
+		if ( $wpdb instanceof wpdb ) {
+			$like          = '%' . $wpdb->esc_like( $filename );
+			$attachment_id = absint(
+				$wpdb->get_var(
+					$wpdb->prepare(
+						"SELECT post_id
+						FROM {$wpdb->postmeta}
+						WHERE meta_key = '_wp_attached_file'
+							AND meta_value LIKE %s
+						ORDER BY post_id DESC
+						LIMIT 1",
+						$like
+					)
+				)
+			);
+		}
+	}
+
+	if ( ! $attachment_id ) {
+		return '';
+	}
+
+	$stored_alt = trim( (string) get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ) );
+
+	return (string) wp_get_attachment_image(
+		$attachment_id,
+		'full',
+		false,
+		array(
+			'class'    => 'mcprices-mccafe-prices-image__media',
+			'alt'      => '' !== $stored_alt ? $stored_alt : $default_alt,
+			'loading'  => 'lazy',
+			'decoding' => 'async',
+			'sizes'    => '(max-width: 782px) calc(100vw - 32px), (max-width: 1200px) calc(100vw - 48px), 1170px',
+		)
+	);
+};
+
+$mccafe_prices_image_html = $get_mccafe_prices_image_html();
+
 $get_category_image_alt = static function ( array $card ) {
 	$name = trim( wp_strip_all_tags( (string) ( $card['name'] ?? '' ) ) );
 
@@ -1067,6 +1131,11 @@ ob_start();
 				<?php if ( 'meals' === $section['id'] && $extra_value_meals_image_url ) : ?>
 					<figure class="mcprices-meal-prices-image">
 						<img src="<?php echo esc_url( $extra_value_meals_image_url ); ?>" alt="<?php echo esc_attr__( 'McDonald\'s meal prices and calories USA chart', 'kadence' ); ?>" width="1792" height="1024" loading="lazy" decoding="async">
+					</figure>
+				<?php endif; ?>
+				<?php if ( 'mccafe' === $section['id'] && $mccafe_prices_image_html ) : ?>
+					<figure class="mcprices-meal-prices-image mcprices-mccafe-prices-image">
+						<?php echo wp_kses_post( $mccafe_prices_image_html ); ?>
 					</figure>
 				<?php endif; ?>
 				<p class="menu-section-desc"><?php echo esc_html( html_entity_decode( $section['description'], ENT_QUOTES, 'UTF-8' ) ); ?></p>
