@@ -58,22 +58,43 @@ body.mcprices-theme-active #mobile-header .site-top-header-wrap .header-mobile-s
   width: 30px;
   height: 30px;
   padding: 0;
-  border: 1px solid rgba(255, 255, 255, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.86);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.14);
+  background: var(--mc-social-brand, #333);
+  box-shadow: 0 2px 7px rgba(56, 0, 10, 0.24);
   color: #fff;
   line-height: 1;
   text-decoration: none;
-  transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+  transition: border-color 160ms ease, filter 160ms ease, transform 160ms ease;
+}
+
+body.mcprices-theme-active .site-top-header-wrap .social-link-facebook {
+  --mc-social-brand: #1877f2;
+}
+
+body.mcprices-theme-active .site-top-header-wrap .social-link-twitter {
+  --mc-social-brand: #111;
+}
+
+body.mcprices-theme-active .site-top-header-wrap .social-link-pinterest {
+  --mc-social-brand: #e60023;
+}
+
+body.mcprices-theme-active .site-top-header-wrap .social-link-reddit {
+  --mc-social-brand: #ff4500;
+}
+
+body.mcprices-theme-active .site-top-header-wrap .social-link-instagram {
+  --mc-social-brand: linear-gradient(135deg, #833ab4 0%, #e1306c 48%, #f77737 100%);
 }
 
 body.mcprices-theme-active #masthead .site-top-header-wrap .header-social-inner-wrap .social-button:hover,
 body.mcprices-theme-active #masthead .site-top-header-wrap .header-social-inner-wrap .social-button:focus-visible,
 body.mcprices-theme-active #mobile-header .site-top-header-wrap .header-mobile-social-inner-wrap .social-button:hover,
 body.mcprices-theme-active #mobile-header .site-top-header-wrap .header-mobile-social-inner-wrap .social-button:focus-visible {
-  border-color: var(--mc-yellow);
-  background: var(--mc-yellow);
-  color: var(--mc-red-dark);
+  border-color: #fff;
+  color: #fff;
+  filter: brightness(1.14);
   outline: 2px solid transparent;
   transform: translateY(-1px);
 }
