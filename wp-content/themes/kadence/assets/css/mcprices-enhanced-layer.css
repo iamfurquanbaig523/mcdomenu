@@ -40,6 +40,44 @@ body.mcprices-theme-active #mobile-header .mcprices-top-links a:not(:last-child)
   opacity: 0.58;
 }
 
+body.mcprices-theme-active #masthead .site-top-header-wrap .header-social-inner-wrap,
+body.mcprices-theme-active #mobile-header .site-top-header-wrap .header-mobile-social-inner-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  gap: 8px;
+}
+
+body.mcprices-theme-active #masthead .site-top-header-wrap .header-social-inner-wrap .social-button,
+body.mcprices-theme-active #mobile-header .site-top-header-wrap .header-mobile-social-inner-wrap .social-button {
+  display: inline-flex;
+  flex: 0 0 30px;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  line-height: 1;
+  text-decoration: none;
+  transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+body.mcprices-theme-active #masthead .site-top-header-wrap .header-social-inner-wrap .social-button:hover,
+body.mcprices-theme-active #masthead .site-top-header-wrap .header-social-inner-wrap .social-button:focus-visible,
+body.mcprices-theme-active #mobile-header .site-top-header-wrap .header-mobile-social-inner-wrap .social-button:hover,
+body.mcprices-theme-active #mobile-header .site-top-header-wrap .header-mobile-social-inner-wrap .social-button:focus-visible {
+  border-color: var(--mc-yellow);
+  background: var(--mc-yellow);
+  color: var(--mc-red-dark);
+  outline: 2px solid transparent;
+  transform: translateY(-1px);
+}
+
 body.mcprices-theme-active #masthead .site-branding .brand,
 body.mcprices-theme-active #mobile-header .site-branding .brand {
   display: inline-flex;
@@ -3823,6 +3861,13 @@ body.mcprices-theme-active .entry-content .mcprices-calculator-summary .mcprices
 }
 
 @media (max-width: 640px) {
+  body.mcprices-theme-active #mobile-header .site-header-top-section-center,
+  body.mcprices-theme-active #mobile-header .header-mobile-social-wrap,
+  body.mcprices-theme-active #mobile-header .header-mobile-social-inner-wrap {
+    justify-content: center !important;
+    width: 100%;
+  }
+
   body.mcprices-theme-active #mobile-header .site-header-top-section-center,
   body.mcprices-theme-active #mobile-header .site-header-top-section-center .site-header-item,
   body.mcprices-theme-active #mobile-header .mobile-html,

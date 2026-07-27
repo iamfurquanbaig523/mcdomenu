@@ -13861,6 +13861,69 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Return the default social networks shown in the native Kadence header.
+	 *
+	 * The destination URLs remain editable in Customizer > General > Social
+	 * Links, while the enabled networks remain editable in Header Builder.
+	 *
+	 * @return array
+	 */
+	protected function get_default_header_social_items() {
+		return array(
+			array(
+				'id'      => 'facebook',
+				'enabled' => true,
+				'source'  => 'icon',
+				'url'     => '',
+				'imageid' => '',
+				'width'   => 24,
+				'icon'    => 'facebook',
+				'label'   => __( 'Facebook', 'kadence' ),
+			),
+			array(
+				'id'      => 'twitter',
+				'enabled' => true,
+				'source'  => 'icon',
+				'url'     => '',
+				'imageid' => '',
+				'width'   => 24,
+				'icon'    => 'twitterAlt2',
+				'label'   => __( 'X', 'kadence' ),
+			),
+			array(
+				'id'      => 'pinterest',
+				'enabled' => true,
+				'source'  => 'icon',
+				'url'     => '',
+				'imageid' => '',
+				'width'   => 24,
+				'icon'    => 'pinterest',
+				'label'   => __( 'Pinterest', 'kadence' ),
+			),
+			array(
+				'id'      => 'reddit',
+				'enabled' => true,
+				'source'  => 'icon',
+				'url'     => '',
+				'imageid' => '',
+				'width'   => 24,
+				'icon'    => 'reddit',
+				'label'   => __( 'Reddit', 'kadence' ),
+			),
+			array(
+				'id'      => 'instagram',
+				'enabled' => true,
+				'source'  => 'icon',
+				'url'     => '',
+				'imageid' => '',
+				'width'   => 24,
+				'icon'    => 'instagramAlt',
+				'label'   => __( 'Instagram', 'kadence' ),
+			),
+		);
+	}
+
+	/**
 	 * Return the default footer widget block markup.
 	 *
 	 * @return array
@@ -14232,6 +14295,36 @@ class McPrices_Integration {
 			'header_html_wpautop',
 			'mobile_html_content',
 			'mobile_html_wpautop',
+			'header_social_items',
+			'header_social_style',
+			'header_social_show_label',
+			'header_social_item_spacing',
+			'header_social_icon_size',
+			'header_social_brand',
+			'header_social_color',
+			'header_social_background',
+			'header_social_border_colors',
+			'header_social_border',
+			'header_social_border_radius',
+			'header_social_margin',
+			'header_mobile_social_items',
+			'header_mobile_social_style',
+			'header_mobile_social_show_label',
+			'header_mobile_social_item_spacing',
+			'header_mobile_social_icon_size',
+			'header_mobile_social_brand',
+			'header_mobile_social_color',
+			'header_mobile_social_background',
+			'header_mobile_social_border_colors',
+			'header_mobile_social_border',
+			'header_mobile_social_border_radius',
+			'header_mobile_social_margin',
+			'social_links_open_new_tab',
+			'facebook_link',
+			'twitter_link',
+			'pinterest_link',
+			'reddit_link',
+			'instagram_link',
 			'header_button_label',
 			'header_button_link',
 			'header_button_style',
@@ -14362,7 +14455,7 @@ class McPrices_Integration {
 				'top_left_center'  => array(),
 				'top_center'       => array( 'html' ),
 				'top_right_center' => array(),
-				'top_right'        => array(),
+				'top_right'        => array( 'social' ),
 			),
 			'main'   => array(
 				'main_left'         => array( 'logo' ),
@@ -14385,7 +14478,7 @@ class McPrices_Integration {
 			),
 			'top'    => array(
 				'top_left'   => array(),
-				'top_center' => array( 'mobile-html' ),
+				'top_center' => array( 'mobile-social' ),
 				'top_right'  => array(),
 			),
 			'main'   => array(
@@ -14429,6 +14522,58 @@ class McPrices_Integration {
 		$defaults['header_html_wpautop'] = false;
 		$defaults['mobile_html_content'] = $this->get_seeded_update_bar_html();
 		$defaults['mobile_html_wpautop'] = false;
+
+		$defaults['header_social_items']               = array( 'items' => $this->get_default_header_social_items() );
+		$defaults['header_mobile_social_items']        = array( 'items' => $this->get_default_header_social_items() );
+		$defaults['header_social_style']               = 'filled';
+		$defaults['header_mobile_social_style']        = 'filled';
+		$defaults['header_social_show_label']          = false;
+		$defaults['header_mobile_social_show_label']   = false;
+		$defaults['header_social_item_spacing']        = array( 'size' => 8, 'unit' => 'px' );
+		$defaults['header_mobile_social_item_spacing'] = array( 'size' => 8, 'unit' => 'px' );
+		$defaults['header_social_icon_size']           = array( 'size' => 15, 'unit' => 'px' );
+		$defaults['header_mobile_social_icon_size']    = array( 'size' => 15, 'unit' => 'px' );
+		$defaults['header_social_brand']               = '';
+		$defaults['header_mobile_social_brand']        = '';
+		$defaults['header_social_color']               = array(
+			'color' => '#ffffff',
+			'hover' => '#a50d24',
+		);
+		$defaults['header_mobile_social_color']        = $defaults['header_social_color'];
+		$defaults['header_social_background']          = array(
+			'color' => 'rgba(255,255,255,0.14)',
+			'hover' => '#FFC72C',
+		);
+		$defaults['header_mobile_social_background']   = $defaults['header_social_background'];
+		$defaults['header_social_border_colors']       = array(
+			'color' => 'rgba(255,255,255,0.42)',
+			'hover' => '#FFC72C',
+		);
+		$defaults['header_mobile_social_border_colors'] = $defaults['header_social_border_colors'];
+		$defaults['header_social_border']               = array(
+			'width' => 1,
+			'unit'  => 'px',
+			'style' => 'solid',
+		);
+		$defaults['header_mobile_social_border']        = $defaults['header_social_border'];
+		$defaults['header_social_border_radius']        = array( 'size' => 999, 'unit' => 'px' );
+		$defaults['header_mobile_social_border_radius'] = $defaults['header_social_border_radius'];
+		$defaults['header_social_margin']               = array(
+			'size'   => array( 0, 0, 0, 12 ),
+			'unit'   => 'px',
+			'locked' => false,
+		);
+		$defaults['header_mobile_social_margin']        = array(
+			'size'   => array( 0, 0, 0, 0 ),
+			'unit'   => 'px',
+			'locked' => true,
+		);
+		$defaults['social_links_open_new_tab']          = true;
+		$defaults['facebook_link']                      = 'https://www.facebook.com/';
+		$defaults['twitter_link']                       = 'https://x.com/';
+		$defaults['pinterest_link']                     = 'https://www.pinterest.com/';
+		$defaults['reddit_link']                        = 'https://www.reddit.com/';
+		$defaults['instagram_link']                     = 'https://www.instagram.com/';
 
 		$defaults['header_button_label']    = __( 'View Prices', 'kadence' );
 		$defaults['header_button_link']     = $this->get_section_url( 'full-menu' );
