@@ -1529,3 +1529,55 @@
     initMcPricesInteractions();
   }
 })();
+
+
+/* Live Homepage Menu Search Handler */
+document.addEventListener("DOMContentLoaded", function() {
+  var searchInput = document.getElementById("mcprices-live-menu-search");
+  var searchForm = document.querySelector(".mcprices-hero-search-form");
+
+  if (!searchInput) return;
+
+  function performFilter() {
+    var query = searchInput.value.trim().toLowerCase();
+    var tables = document.querySelectorAll(".menu-table");
+    var totalMatches = 0;
+
+    tables.forEach(function(table) {
+      var rows = table.querySelectorAll("tbody tr");
+      var sectionMatchCount = 0;
+
+      rows.forEach(function(row) {
+        var text = row.textContent.toLowerCase();
+        if (!query || text.indexOf(query) !== -1) {
+          row.style.display = "";
+          sectionMatchCount++;
+          totalMatches++;
+        } else {
+          row.style.display = "none";
+        }
+      });
+
+      var wrap = table.closest(".menu-section") || table.closest(".wp-block-group");
+      if (wrap) {
+        if (query && sectionMatchCount === 0) {
+          wrap.style.display = "none";
+        } else {
+          wrap.style.display = "";
+        }
+      }
+    });
+  }
+
+  searchInput.addEventListener("input", performFilter);
+  if (searchForm) {
+    searchForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      performFilter();
+      var fullMenu = document.getElementById("full-menu");
+      if (fullMenu) {
+        fullMenu.scrollIntoView({ behavior: "smooth" });
+      }
+    });
+  }
+});

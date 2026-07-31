@@ -132,62 +132,6 @@ body.mcprices-theme-active #mobile-header .site-branding .logo-m {
 }
 
 body.mcprices-theme-active #masthead .site-branding .site-title,
-body.mcprices-theme-active #mobile-header .site-branding .site-title {
-  margin: 0;
-  font-weight: 800;
-  line-height: 1.1;
-}
-
-body.mcprices-theme-active.transparent-header:not(.home) #masthead .site-main-header-wrap .site-header-row-container-inner {
-  background: rgba(255, 255, 255, 0.97) !important;
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
-  backdrop-filter: blur(16px);
-}
-
-body.mcprices-theme-active.transparent-header:not(.home) #masthead .site-main-header-wrap .site-title,
-body.mcprices-theme-active.transparent-header:not(.home) #masthead .site-main-header-wrap .site-title-wrap,
-body.mcprices-theme-active.transparent-header:not(.home) #masthead .site-main-header-wrap .site-title a,
-body.mcprices-theme-active.transparent-header:not(.home) #masthead .site-main-header-wrap .brand,
-body.mcprices-theme-active.transparent-header:not(.home) #masthead .site-main-header-wrap .header-navigation a,
-body.mcprices-theme-active.transparent-header:not(.home) #masthead .site-main-header-wrap .dropdown-nav-special-toggle {
-  color: var(--mc-grey-700) !important;
-}
-
-body.mcprices-theme-active #masthead .header-navigation .header-menu-container > ul > li > a,
-body.mcprices-theme-active #masthead .header-navigation .header-menu-container > ul > li.current-menu-item > a,
-body.mcprices-theme-active #masthead .header-navigation .header-menu-container > ul > li.current_page_item > a {
-  background: transparent !important;
-  box-shadow: none !important;
-  border-radius: 0 !important;
-}
-
-body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-main-header-wrap .site-header-row-container-inner {
-  background: rgba(255, 255, 255, 0.97) !important;
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
-  backdrop-filter: blur(16px);
-}
-
-body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-main-header-wrap .site-title,
-body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-main-header-wrap .site-title-wrap,
-body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-main-header-wrap .site-title a,
-body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-main-header-wrap .brand,
-body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-main-header-wrap .header-navigation a,
-body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-main-header-wrap .dropdown-nav-special-toggle {
-  color: var(--mc-grey-700) !important;
-}
-
-body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-top-header-wrap .header-html,
-body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-top-header-wrap .header-html a {
-  color: var(--mc-grey-700) !important;
-}
-
-body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-top-header-wrap .header-html a:hover {
-  color: var(--mc-red);
-}
-
-body.mcprices-theme-active #mobile-header .site-header-main-section-right {
-  display: flex;
-  align-items: center;
   gap: 10px;
 }
 
@@ -4440,3 +4384,513 @@ body.mcprices-theme-active.page-id-22782 .mcprices-footer-disclaimer-inner {
   }
 }
 
+
+
+/* --- GOAL FIXES: Header, Legal Bar, Search Bar --- */
+body.mcprices-theme-active #masthead .site-top-header-wrap,
+body.mcprices-theme-active #masthead .site-top-header-wrap .site-header-row-container-inner {
+  min-height: 32px !important;
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
+
+body.mcprices-theme-active #masthead .mcprices-top-links a {
+  min-height: 22px !important;
+  padding: 1px 0 !important;
+  font-size: 13px !important;
+}
+
+body.mcprices-theme-active #masthead .header-navigation,
+body.mcprices-theme-active #masthead .header-navigation .header-menu-container,
+body.mcprices-theme-active #masthead .header-navigation .header-menu-container > ul,
+body.mcprices-theme-active #masthead .main-navigation,
+body.mcprices-theme-active #masthead .primary-menu-container {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body.mcprices-theme-active #masthead .header-navigation .header-menu-container > ul > li > a,
+body.mcprices-theme-active #masthead .header-navigation .header-menu-container > ul > li.current-menu-item > a,
+body.mcprices-theme-active #masthead .header-navigation .header-menu-container > ul > li.current_page_item > a {
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-main-header-wrap .site-header-row-container-inner {
+  background: rgba(255, 255, 255, 0.97) !important;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(16px);
+}
+
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .header-navigation,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .header-navigation .header-menu-container,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .header-navigation .header-menu-container > ul,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .header-navigation .header-menu-container > ul > li,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .header-navigation .header-menu-container > ul > li > a {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-main-header-wrap .site-title,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-main-header-wrap .site-title-wrap,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-main-header-wrap .site-title a,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-main-header-wrap .brand,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-main-header-wrap .header-navigation a,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-main-header-wrap .dropdown-nav-special-toggle {
+  color: #1f1f1f !important;
+}
+
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-main-header-wrap .header-navigation a:hover,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-main-header-wrap .header-navigation a:focus {
+  color: #C8102E !important;
+}
+
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-top-header-wrap .header-html,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-top-header-wrap .header-html a {
+  color: #1f1f1f !important;
+}
+
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-top-header-wrap .header-html a:hover {
+  color: #C8102E !important;
+}
+
+/* Interactive Hero Search Form Styles */
+.mcprices-hero-search-form {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  padding: 4px 6px 4px 16px !important;
+  background: #ffffff !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.07) !important;
+  border: 1px solid #dddddd !important;
+}
+.mcprices-hero-search-icon {
+  font-size: 18px !important;
+  color: #777777 !important;
+  margin-right: 10px !important;
+  flex: 0 0 auto !important;
+}
+.mcprices-hero-search-input {
+  flex: 1 1 auto !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  font-size: 15px !important;
+  font-family: inherit !important;
+  color: #222222 !important;
+  background: transparent !important;
+  padding: 10px 0 !important;
+}
+.mcprices-hero-search-input::placeholder {
+  color: #777777 !important;
+}
+.mcprices-hero-search-btn {
+  flex: 0 0 auto !important;
+  background: #DA291C !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 15px !important;
+  padding: 12px 24px !important;
+  border: none !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  transition: background 150ms ease !important;
+}
+.mcprices-hero-search-btn:hover {
+  background: #b91f16 !important;
+}
+
+
+/* ==========================================================================
+   PERFECT GOAL FIXES: Scrolled Header, Legal Bar, Search Bar
+   ========================================================================== */
+
+/* 1. Legal Bar Height & Spacing Compact Fix */
+body.mcprices-theme-active #masthead .site-top-header-wrap,
+body.mcprices-theme-active #masthead .site-top-header-wrap .site-header-row-container-inner,
+body.mcprices-theme-active #masthead .site-top-header-wrap .site-header-row-container,
+body.mcprices-theme-active #masthead .site-header-row-top {
+  min-height: 30px !important;
+  max-height: 34px !important;
+  height: 32px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  line-height: 32px !important;
+}
+
+body.mcprices-theme-active #masthead .mcprices-top-links a {
+  min-height: 22px !important;
+  padding: 1px 0 !important;
+  font-size: 13px !important;
+}
+
+/* 2. Scrolled Header Navigation Colors & Background Fix */
+body.mcprices-theme-active #masthead .header-navigation,
+body.mcprices-theme-active #masthead .header-navigation .header-menu-container,
+body.mcprices-theme-active #masthead .header-navigation .header-menu-container > ul,
+body.mcprices-theme-active #masthead .main-navigation,
+body.mcprices-theme-active #masthead .primary-menu-container {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-main-header-wrap {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 99999 !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+  backdrop-filter: blur(16px) !important;
+}
+
+body.mcprices-theme-active.mcprices-header-scrolled #masthead,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-main-header-wrap .site-header-row-container-inner,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-header-row-container-inner,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-header-row,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-header-row-main {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .header-navigation,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .header-navigation .header-menu-container,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .header-navigation .header-menu-container > ul,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .header-navigation .header-menu-container > ul > li,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .header-navigation .header-menu-container > ul > li > a {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-branding .site-title,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-branding .site-title-wrap,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-branding .site-title a,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .site-branding .brand,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .header-navigation a,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .header-navigation .header-menu-container > ul > li > a,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .dropdown-nav-special-toggle {
+  color: #111111 !important;
+}
+
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .header-navigation a:hover,
+body.mcprices-theme-active.mcprices-header-scrolled #masthead .header-navigation .header-menu-container > ul > li > a:hover {
+  color: #DA291C !important;
+}
+
+/* 3. Hero Interactive Search Form */
+.mcprices-hero-search-form {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  padding: 4px 6px 4px 16px !important;
+  background: #ffffff !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.07) !important;
+  border: 1px solid #dddddd !important;
+}
+.mcprices-hero-search-icon {
+  font-size: 18px !important;
+  color: #777777 !important;
+  margin-right: 10px !important;
+  flex: 0 0 auto !important;
+}
+.mcprices-hero-search-input {
+  flex: 1 1 auto !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  font-size: 15px !important;
+  font-family: inherit !important;
+  color: #222222 !important;
+  background: transparent !important;
+  padding: 10px 0 !important;
+}
+.mcprices-hero-search-input::placeholder {
+  color: #777777 !important;
+}
+.mcprices-hero-search-btn {
+  flex: 0 0 auto !important;
+  background: #DA291C !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  font-size: 15px !important;
+  padding: 12px 24px !important;
+  border: none !important;
+  border-radius: 6px !important;
+  cursor: pointer !important;
+  transition: background 150ms ease !important;
+}
+.mcprices-hero-search-btn:hover {
+  background: #b91f16 !important;
+}
+
+
+/* --- Legal Bar Height Adjustment (38px - 40px) --- */
+body.mcprices-theme-active #masthead .site-top-header-wrap,
+body.mcprices-theme-active #masthead .site-top-header-wrap .site-header-row-container-inner,
+body.mcprices-theme-active #masthead .site-top-header-wrap .site-header-row-container,
+body.mcprices-theme-active #masthead .site-header-row-top {
+  min-height: 38px !important;
+  max-height: 42px !important;
+  height: 40px !important;
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+  line-height: 36px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+body.mcprices-theme-active #masthead .mcprices-top-links a {
+  min-height: 26px !important;
+  padding: 2px 0 !important;
+  font-size: 13px !important;
+  line-height: 24px !important;
+}
+
+body.mcprices-theme-active #masthead .site-top-header-wrap .header-social-inner-wrap .social-button {
+  width: 28px !important;
+  height: 28px !important;
+  flex: 0 0 28px !important;
+}
+
+
+/* --- Legal Bar Social Links Right Alignment Fix --- */
+body.mcprices-theme-active #masthead .site-top-header-wrap .site-header-row-container-inner {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  min-height: 38px !important;
+  max-height: 42px !important;
+  height: 40px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+body.mcprices-theme-active #masthead .site-header-top-section-center,
+body.mcprices-theme-active #masthead .site-header-top-section-left {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 1 1 auto !important;
+}
+
+body.mcprices-theme-active #masthead .site-header-top-section-right {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  flex: 0 0 auto !important;
+  margin-left: auto !important;
+}
+
+body.mcprices-theme-active #masthead .mcprices-top-links {
+  width: auto !important;
+  display: inline-flex !important;
+  justify-content: center !important;
+}
+
+body.mcprices-theme-active #masthead .site-top-header-wrap .header-social-inner-wrap {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 8px !important;
+}
+
+
+/* --- Force Social Links to Far Right Side --- */
+body.mcprices-theme-active #masthead .site-top-header-wrap .site-header-row-container-inner {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  width: 100% !important;
+}
+
+body.mcprices-theme-active #masthead .site-header-top-section-left {
+  display: flex !important;
+  align-items: center !important;
+}
+
+body.mcprices-theme-active #masthead .site-header-top-section-center {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 auto !important;
+}
+
+body.mcprices-theme-active #masthead .site-header-top-section-right {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+  float: right !important;
+}
+
+body.mcprices-theme-active #masthead .site-top-header-wrap .header-social-wrap,
+body.mcprices-theme-active #masthead .site-top-header-wrap .header-social-inner-wrap {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  margin-left: auto !important;
+  gap: 8px !important;
+}
+
+
+/* ==========================================================================
+   RESPONSIVE MOBILE-FRIENDLY TABLE STYLES (Item, Price, Calories 100% Visible)
+   ========================================================================== */
+@media (max-width: 768px) {
+  body.mcprices-theme-active .menu-table-wrap,
+  body.mcprices-theme-active .wp-block-table {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 0 !important;
+  }
+
+  body.mcprices-theme-active table.menu-table,
+  body.mcprices-theme-active .wp-block-table table {
+    width: 100% !important;
+    max-width: 100% !important;
+    table-layout: fixed !important;
+    border-collapse: collapse !important;
+    font-size: 13px !important;
+  }
+
+  /* Column 1: Item Name (50% width) */
+  body.mcprices-theme-active table.menu-table th:nth-child(1),
+  body.mcprices-theme-active table.menu-table td:nth-child(1),
+  body.mcprices-theme-active .wp-block-table table th:nth-child(1),
+  body.mcprices-theme-active .wp-block-table table td:nth-child(1) {
+    width: 50% !important;
+    padding: 8px 6px 8px 8px !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+    text-align: left !important;
+  }
+
+  /* Column 2: Price (25% width) */
+  body.mcprices-theme-active table.menu-table th:nth-child(2),
+  body.mcprices-theme-active table.menu-table td:nth-child(2),
+  body.mcprices-theme-active .wp-block-table table th:nth-child(2),
+  body.mcprices-theme-active .wp-block-table table td:nth-child(2) {
+    width: 25% !important;
+    padding: 8px 4px !important;
+    white-space: nowrap !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+  }
+
+  /* Column 3: Calories (25% width) */
+  body.mcprices-theme-active table.menu-table th:nth-child(3),
+  body.mcprices-theme-active table.menu-table td:nth-child(3),
+  body.mcprices-theme-active .wp-block-table table th:nth-child(3),
+  body.mcprices-theme-active .wp-block-table table td:nth-child(3) {
+    width: 25% !important;
+    padding: 8px 6px 8px 4px !important;
+    white-space: nowrap !important;
+    font-size: 12px !important;
+    text-align: center !important;
+  }
+
+  /* Column 4: Hide non-essential status/category column on mobile to keep Item, Price, Calories pristine */
+  body.mcprices-theme-active table.menu-table th:nth-child(4),
+  body.mcprices-theme-active table.menu-table td:nth-child(4),
+  body.mcprices-theme-active .wp-block-table table th:nth-child(4),
+  body.mcprices-theme-active .wp-block-table table td:nth-child(4) {
+    display: none !important;
+  }
+}
+
+
+/* --- GLOBAL MOBILE-FRIENDLY TABLE FIX FOR ALL HOMEPAGE CATEGORY TABLES --- */
+@media (max-width: 768px) {
+  .mcprices-page .menu-table-wrap,
+  .mcprices-page .wp-block-table,
+  .menu-table-wrap,
+  .wp-block-table {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .mcprices-page .menu-table,
+  .mcprices-page .wp-block-table table,
+  table.menu-table,
+  .wp-block-table table {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    table-layout: fixed !important;
+    border-collapse: collapse !important;
+    font-size: 13px !important;
+  }
+
+  /* Column 1: Item Name */
+  .mcprices-page .menu-table th:nth-child(1),
+  .mcprices-page .menu-table td:nth-child(1),
+  .mcprices-page .wp-block-table table th:nth-child(1),
+  .mcprices-page .wp-block-table table td:nth-child(1),
+  table.menu-table th:nth-child(1),
+  table.menu-table td:nth-child(1) {
+    width: 52% !important;
+    padding: 8px 4px 8px 6px !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    font-size: 13px !important;
+    line-height: 1.35 !important;
+    text-align: left !important;
+  }
+
+  /* Column 2: Price */
+  .mcprices-page .menu-table th:nth-child(2),
+  .mcprices-page .menu-table td:nth-child(2),
+  .mcprices-page .wp-block-table table th:nth-child(2),
+  .mcprices-page .wp-block-table table td:nth-child(2),
+  table.menu-table th:nth-child(2),
+  table.menu-table td:nth-child(2) {
+    width: 22% !important;
+    padding: 8px 2px !important;
+    white-space: nowrap !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+  }
+
+  /* Column 3: Calories */
+  .mcprices-page .menu-table th:nth-child(3),
+  .mcprices-page .menu-table td:nth-child(3),
+  .mcprices-page .wp-block-table table th:nth-child(3),
+  .mcprices-page .wp-block-table table td:nth-child(3),
+  table.menu-table th:nth-child(3),
+  table.menu-table td:nth-child(3) {
+    width: 26% !important;
+    padding: 8px 4px 8px 2px !important;
+    white-space: nowrap !important;
+    font-size: 12px !important;
+    text-align: center !important;
+  }
+
+  /* Column 4: Hide non-essential status/category column on mobile */
+  .mcprices-page .menu-table th:nth-child(4),
+  .mcprices-page .menu-table td:nth-child(4),
+  .mcprices-page .wp-block-table table th:nth-child(4),
+  .mcprices-page .wp-block-table table td:nth-child(4),
+  table.menu-table th:nth-child(4),
+  table.menu-table td:nth-child(4) {
+    display: none !important;
+  }
+}

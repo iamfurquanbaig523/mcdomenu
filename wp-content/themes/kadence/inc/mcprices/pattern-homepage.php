@@ -1018,73 +1018,63 @@ $render_rows = static function ( array $rows, $category_id ) use ( $get_item_pag
 ob_start();
 ?>
 <!-- wp:group {"className":"mcprices-page mcprices-managed-homepage","layout":{"type":"default"}} -->
-<div class="wp-block-group mcprices-page mcprices-managed-homepage" data-mcprices-pattern-version="3.3.8">
+<div class="wp-block-group mcprices-page mcprices-managed-homepage" data-mcprices-pattern-version="3.8.0">
 <!-- wp:html -->
-<section class="hero">
-	<div class="hero-bg"></div>
-	<div class="hero-pattern"></div>
-	<div class="hero-content">
-		<div class="hero-left animate-fadeup">
-			<div class="hero-eyebrow">Latest USA menu update</div>
-			<h1 class="hero-title">
-				McDonald&#8217;s Menu<br>
-				With Prices<br>
-				<span class="highlight">USA</span>
-			</h1>
-			<p class="hero-sub">Check McDonald&#8217;s USA prices fast for breakfast, burgers, Happy Meals, drinks, and value deals in one place.</p>
-			<p class="hero-sub">Open the most searched guides below to compare prices, calories, and smarter order picks before you buy.</p>
-			<div class="mcprices-hero-search-placeholder" data-mcprices-hero-search-placeholder="1"></div>
-			<div class="hero-btns">
-				<a href="#full-menu" class="btn-primary">&#127828; Full Menu</a>
-				<a href="<?php echo esc_url( home_url( '/breakfast-menu/' ) ); ?>" class="btn-outline">&#129360; Breakfast Menu</a>
-				<a href="<?php echo esc_url( home_url( '/burgers/' ) ); ?>" class="btn-outline">&#127828; Burger Menu</a>
-			</div>
-			<div class="mcprices-hero-tool-strip" aria-label="Homepage interactive tools">
-				<?php foreach ( $interactive_tools as $index => $tool ) : ?>
-					<a
-						class="mcprices-hero-tool-strip__link<?php echo 0 === $index ? ' is-active' : ''; ?>"
-						href="<?php echo esc_url( $tool['url'] ); ?>"
-						data-home-tool-trigger="<?php echo esc_attr( $tool['slug'] ); ?>"
-						data-home-tool-tab="<?php echo esc_attr( $tool['slug'] ); ?>"
-						data-home-tool-scroll="1"
-					>
-						<span class="mcprices-hero-tool-strip__icon" aria-hidden="true"><?php echo $tool['icon']; ?></span>
-						<span><?php echo esc_html( $tool['short_title'] ); ?></span>
-					</a>
-				<?php endforeach; ?>
-			</div>
-		</div>
-		<div class="hero-right animate-fadeup delay-2">
-			<div class="hero-badge-float">
-				&#128293; Most<br><span>Popular</span>
-			</div>
-			<div class="hero-card-main">
-				<div class="hero-card-title">&#11088; Top Menu Items</div>
-				<?php foreach ( $featured_items as $index => $item ) : ?>
-					<?php
-					$featured_item_media_name = $item['media'] ?? $item['name'];
-					$featured_item_media      = $get_home_item_media_url( $featured_item_media_name, '120' );
-					$featured_item_url        = $item['url'] ?? $get_item_page_url( $item['category'], $item['name'] );
-					?>
-					<div class="featured-item">
-						<div class="item-emoji">
-							<?php if ( $featured_item_media ) : ?>
-								<img class="mcprices-media-icon mcprices-media-icon--item" src="<?php echo esc_url( $featured_item_media ); ?>" alt="<?php echo esc_attr( $get_named_item_image_alt( $item['name'] ) ); ?>" width="120" height="120" loading="<?php echo 0 === $index ? 'eager' : 'lazy'; ?>" decoding="async"<?php echo 0 === $index ? ' fetchpriority="high"' : ''; ?>>
-							<?php else : ?>
-								<?php echo $item['emoji']; ?>
-							<?php endif; ?>
-						</div>
-						<div class="item-info">
-							<div class="item-name"><a href="<?php echo esc_url( $featured_item_url ); ?>"><?php echo esc_html( $item['name'] ); ?></a></div>
-							<div class="item-cal"><?php echo esc_html( $item['cal'] ); ?></div>
-						</div>
-						<div class="item-price"><?php echo esc_html( $item['price'] ); ?></div>
-					</div>
-				<?php endforeach; ?>
-			</div>
-		</div>
-	</div>
-</section>
+<!-- wp:kadence/rowlayout {"uniqueID":"mcphero_20260731","columns":2,"colLayout":"equal","mobileLayout":"row","tabletLayout":"row","htmlTag":"section","anchor":"homepage-hero","bgColor":"#f6f3ef","maxWidth":1920,"topPadding":154,"bottomPadding":18,"leftPadding":78,"rightPadding":0,"topPaddingT":154,"bottomPaddingT":20,"leftPaddingT":38,"rightPaddingT":24,"topPaddingM":154,"bottomPaddingM":28,"leftPaddingM":22,"rightPaddingM":22,"collapseGutter":"none","columnGutter":"custom","customGutter":[34,24,0],"gutterType":"px","verticalAlignment":"middle","kbVersion":2,"className":"mcprices-kadence-hero mcprices-hero-reference"} -->
+<!-- wp:kadence/column {"id":1,"uniqueID":"mcphero_left_20260731","verticalAlignment":"middle","textAlign":["left","left","left"],"kbVersion":2,"className":"inner-column-1 mcprices-hero-copy"} -->
+<div class="wp-block-kadence-column kadence-columnmcphero_left_20260731 inner-column-1 mcprices-hero-copy"><div class="kt-inside-inner-col"><!-- wp:kadence/advancedheading {"uniqueID":"mcphero_badge_20260731","color":"#DA291C","fontWeight":"800","textTransform":"uppercase","letterSpacing":0.04,"letterType":"em","htmlTag":"p","fontSize":[15,14,13],"fontHeight":[1.1,1.1,1.1],"fontHeightType":"em","margin":[0,"",12,""],"markBorder":"","markBorderStyles":[{"top":[null,"",""],"right":[null,"",""],"bottom":[null,"",""],"left":[null,"",""],"unit":"px"}],"kbVersion":2} -->
+<p class="kt-adv-headingmcphero_badge_20260731 wp-block-kadence-advancedheading" data-kb-block="kb-adv-headingmcphero_badge_20260731">&#10003; Updated Weekly</p>
+<!-- /wp:kadence/advancedheading -->
+
+<!-- wp:kadence/advancedheading {"uniqueID":"mcphero_title_20260731","level":1,"color":"#111111","fontWeight":"900","htmlTag":"heading","fontSize":[64,54,40],"fontHeight":[0.98,1,1.04],"fontHeightType":"em","margin":[0,"",14,""],"markBorder":"","markBorderStyles":[{"top":[null,"",""],"right":[null,"",""],"bottom":[null,"",""],"left":[null,"",""],"unit":"px"}],"kbVersion":2} -->
+<h1 class="kt-adv-headingmcphero_title_20260731 wp-block-kadence-advancedheading" data-kb-block="kb-adv-headingmcphero_title_20260731">McDonald&#8217;s Menu <br><strong>With Prices</strong></h1>
+<!-- /wp:kadence/advancedheading -->
+
+<!-- wp:kadence/advancedheading {"uniqueID":"mcphero_sub_20260731","align":"left","tabletAlign":"left","mobileAlign":"left","color":"#111111","htmlTag":"p","fontSize":[19,17,16],"fontHeight":[1.45,1.45,1.45],"fontHeightType":"em","margin":[0,"",26,""],"maxWidth":[640,"",""],"markBorder":"","markBorderStyles":[{"top":[null,"",""],"right":[null,"",""],"bottom":[null,"",""],"left":[null,"",""],"unit":"px"}],"kbVersion":2} -->
+<p class="kt-adv-headingmcphero_sub_20260731 wp-block-kadence-advancedheading" data-kb-block="kb-adv-headingmcphero_sub_20260731">Browse the complete McDonald&#8217;s menu with the latest prices, calories, and deals across the USA.</p>
+<!-- /wp:kadence/advancedheading -->
+
+<!-- wp:kadence/rowlayout {"uniqueID":"mcphero_trust_20260731","columns":3,"colLayout":"equal","mobileLayout":"row","tabletLayout":"row","collapseGutter":"none","columnGutter":"custom","customGutter":[22,16,12],"gutterType":"px","topPadding":0,"bottomPadding":24,"leftPadding":0,"rightPadding":0,"kbVersion":2,"className":"mcprices-hero-trust"} -->
+<!-- wp:kadence/column {"id":1,"uniqueID":"mcphero_trust1_20260731","kbVersion":2,"className":"inner-column-1"} -->
+<div class="wp-block-kadence-column kadence-columnmcphero_trust1_20260731 inner-column-1"><div class="kt-inside-inner-col"><!-- wp:kadence/advancedheading {"uniqueID":"mcphero_trust1_text_20260731","color":"#111111","fontWeight":"700","htmlTag":"p","fontSize":[15,14,14],"fontHeight":[1.2,1.2,1.2],"fontHeightType":"em","margin":[0,"",0,""],"markBorder":"","markBorderStyles":[{"top":[null,"",""],"right":[null,"",""],"bottom":[null,"",""],"left":[null,"",""],"unit":"px"}],"kbVersion":2} -->
+<p class="kt-adv-headingmcphero_trust1_text_20260731 wp-block-kadence-advancedheading" data-kb-block="kb-adv-headingmcphero_trust1_text_20260731">&#10003; Updated Weekly</p>
+<!-- /wp:kadence/advancedheading --></div></div>
+<!-- /wp:kadence/column -->
+<!-- wp:kadence/column {"id":2,"uniqueID":"mcphero_trust2_20260731","kbVersion":2,"className":"inner-column-2"} -->
+<div class="wp-block-kadence-column kadence-columnmcphero_trust2_20260731 inner-column-2"><div class="kt-inside-inner-col"><!-- wp:kadence/advancedheading {"uniqueID":"mcphero_trust2_text_20260731","color":"#111111","fontWeight":"700","htmlTag":"p","fontSize":[15,14,14],"fontHeight":[1.2,1.2,1.2],"fontHeightType":"em","margin":[0,"",0,""],"markBorder":"","markBorderStyles":[{"top":[null,"",""],"right":[null,"",""],"bottom":[null,"",""],"left":[null,"",""],"unit":"px"}],"kbVersion":2} -->
+<p class="kt-adv-headingmcphero_trust2_text_20260731 wp-block-kadence-advancedheading" data-kb-block="kb-adv-headingmcphero_trust2_text_20260731">&#10003; 600+ Items</p>
+<!-- /wp:kadence/advancedheading --></div></div>
+<!-- /wp:kadence/column -->
+<!-- wp:kadence/column {"id":3,"uniqueID":"mcphero_trust3_20260731","kbVersion":2,"className":"inner-column-3"} -->
+<div class="wp-block-kadence-column kadence-columnmcphero_trust3_20260731 inner-column-3"><div class="kt-inside-inner-col"><!-- wp:kadence/advancedheading {"uniqueID":"mcphero_trust3_text_20260731","color":"#111111","fontWeight":"700","htmlTag":"p","fontSize":[15,14,14],"fontHeight":[1.2,1.2,1.2],"fontHeightType":"em","margin":[0,"",0,""],"markBorder":"","markBorderStyles":[{"top":[null,"",""],"right":[null,"",""],"bottom":[null,"",""],"left":[null,"",""],"unit":"px"}],"kbVersion":2} -->
+<p class="kt-adv-headingmcphero_trust3_text_20260731 wp-block-kadence-advancedheading" data-kb-block="kb-adv-headingmcphero_trust3_text_20260731">&#10003; Calories Included</p>
+<!-- /wp:kadence/advancedheading --></div></div>
+<!-- /wp:kadence/column -->
+<!-- /wp:kadence/rowlayout -->
+
+<!-- wp:kadence/rowlayout {"uniqueID":"mcphero_search_20260731","columns":1,"colLayout":"equal","mobileLayout":"row","tabletLayout":"inherit","collapseGutter":"none","columnGutter":"none","bgColor":"#ffffff","topPadding":0,"bottomPadding":0,"leftPadding":0,"rightPadding":0,"borderRadius":[8,8,8,8],"displayShadow":true,"kbVersion":2,"className":"mcprices-hero-search-row"} -->
+<!-- wp:kadence/column {"id":1,"uniqueID":"mcphero_search_left_20260731","verticalAlignment":"middle","kbVersion":2,"className":"inner-column-1"} -->
+<div class="wp-block-kadence-column kadence-columnmcphero_search_left_20260731 inner-column-1"><div class="kt-inside-inner-col">
+<form class="mcprices-hero-search-form" action="#full-menu" method="get" onsubmit="return false;">
+  <span class="mcprices-hero-search-icon" aria-hidden="true">&#128269;</span>
+  <input type="search" id="mcprices-live-menu-search" class="mcprices-hero-search-input" placeholder="Search for Big Mac, McChicken, McFlurry..." aria-label="Search McDonald's menu items" autocomplete="off" />
+  <button type="submit" id="mcprices-live-search-submit" class="mcprices-hero-search-btn">Search Menu</button>
+</form>
+</div></div>
+<!-- /wp:kadence/column -->
+<!-- /wp:kadence/rowlayout -->
+
+<!-- wp:kadence/advancedbtn {"uniqueID":"mcphero_ctas_20260731","btns":[],"gap":[12,"",""],"gapUnit":"px","kbVersion":2,"className":"mcprices-hero-ctas"} -->
+<div class="wp-block-kadence-advancedbtn kb-buttons-wrap kb-btnsmcphero_ctas_20260731 mcprices-hero-ctas"><!-- wp:kadence/singlebtn {"uniqueID":"mcphero_cta_primary_20260731","text":"Browse Full Menu","link":"#full-menu","sizePreset":"large","color":"#ffffff","background":"#DA291C","colorHover":"#ffffff","backgroundHover":"#b91f16","borderRadius":[7,7,7,7],"padding":[14,24,14,24],"fontWeight":"800","kbVersion":2} /-->
+<!-- wp:kadence/singlebtn {"uniqueID":"mcphero_cta_secondary_20260731","text":"Popular Items","link":"#popular-items","sizePreset":"large","color":"#111111","background":"#ffffff","colorHover":"#DA291C","backgroundHover":"#ffffff","borderStyle":[{"top":["#d7d7d7","",1],"right":["#d7d7d7","",1],"bottom":["#d7d7d7","",1],"left":["#d7d7d7","",1],"unit":"px"}],"borderRadius":[7,7,7,7],"padding":[14,24,14,24],"fontWeight":"700","kbVersion":2} /--></div>
+<!-- /wp:kadence/advancedbtn --></div></div>
+<!-- /wp:kadence/column -->
+<!-- wp:kadence/column {"id":2,"uniqueID":"mcphero_right_20260731","verticalAlignment":"bottom","kbVersion":2,"className":"inner-column-2 mcprices-hero-media"} -->
+<div class="wp-block-kadence-column kadence-columnmcphero_right_20260731 inner-column-2 mcprices-hero-media"><div class="kt-inside-inner-col"><!-- wp:kadence/image {"uniqueID":"mcphero_img_20260731","id":30169,"sizeSlug":"full","linkDestination":"none","url":"http://localhost/wordpress/wp-content/uploads/2026/07/mcdonalds-menu-with-prices-hero-food.jpg","alt":"McDonaldu0026#039;s menu with prices burger fries drink and chicken nuggets","kbVersion":2,"className":"mcprices-hero-food-image"} -->
+<figure class="wp-block-kadence-image kb-image-mcphero_img_20260731 size-full mcprices-hero-food-image"><img src="http://localhost/wordpress/wp-content/uploads/2026/07/mcdonalds-menu-with-prices-hero-food.jpg" alt="McDonald&#039;s menu with prices burger fries drink and chicken nuggets" class="kb-img wp-image-30169" /></figure>
+<!-- /wp:kadence/image --></div></div>
+<!-- /wp:kadence/column -->
+<!-- /wp:kadence/rowlayout -->
 
 <div class="breadcrumbs">
 	<div class="container">
@@ -1840,4 +1830,4 @@ ob_start();
 <!-- /wp:group -->
 <?php
 
-return trim( ob_get_clean() );
+return kadence_mcprices_convert_html_to_gutenberg_blocks( trim( ob_get_clean() ) );

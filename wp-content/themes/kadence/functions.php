@@ -32,11 +32,85 @@ require get_template_directory() . '/inc/mcprices/class-mcprices-integration.php
 require get_template_directory() . '/inc/mcprices/schema.php';
 require get_template_directory() . '/inc/mcprices/indexing.php';
 
+
 // Initialize the theme.
 call_user_func( 'Kadence\kadence' );
 
 // Bootstrap the native McPrices layer after the theme is loaded.
 \Kadence\McPrices_Integration::get_instance();
+
+/**
+ * Convert raw HTML layout strings into visual WordPress Gutenberg block comments.
+ *
+ * @param string $html Raw HTML content.
+ * @return string
+ */
+function kadence_mcprices_convert_html_to_gutenberg_blocks( $html ) {
+	if ( ! is_string( $html ) || '' === trim( $html ) ) {
+		return '';
+	}
+
+	// 1. Remove any existing wp:html wrappers
+	$html = str_replace( "<!-- wp:html -->\n", '', $html );
+	$html = str_replace( "<!-- wp:html -->", '', $html );
+	$html = str_replace( "<!-- /wp:html -->\n", '', $html );
+	$html = str_replace( "<!-- /wp:html -->", '', $html );
+
+	// 3. Wrap <h1 ...> ... </h1>, <h2 ...> ... </h2>, <h3 ...> ... 3> in wp:heading
+	for ( $level = 1; $level <= 3; $level++ ) {
+		$pattern = '/<h' . $level . '\s*(class="([^"]*)")?\s*([^>]*)>(.*?)<\/h' . $level . '>/is';
+		$html    = preg_replace_callback( $pattern, function( $m ) use ( $level ) {
+			$class   = ! empty( $m[2] ) ? trim( $m[2] ) : '';
+			$extra   = $m[3];
+			$content = $m[4];
+
+			$args = array( 'level' => $level );
+			if ( $class ) {
+				$args['className'] = $class;
+			}
+			$json    = json_encode( $args, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+			$cls_str = $class ? ' ' . esc_attr( $class ) : '';
+
+			return '<!-- wp:heading ' . $json . ' -->' . "\n" . '<h' . $level . ' class="wp-block-heading' . $cls_str . '"' . $extra . '>' . $content . '</h' . $level . '>' . "\n" . '<!-- /wp:heading -->';
+		}, $html );
+	}
+
+	// 4. Wrap <p ...> ... </p> in wp:paragraph
+	$html = preg_replace_callback( '/<p\s*(class="([^"]*)")?\s*([^>]*)>(.*?)<\/p>/is', function( $m ) {
+		$class   = ! empty( $m[2] ) ? trim( $m[2] ) : '';
+		$extra   = $m[3];
+		$content = $m[4];
+
+		$args = array();
+		if ( $class ) {
+			$args['className'] = $class;
+		}
+		$json    = ! empty( $args ) ? json_encode( $args, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ) : '';
+		$cls_str = $class ? ' class="' . esc_attr( $class ) . '"' : '';
+
+		return '<!-- wp:paragraph ' . $json . ' -->' . "\n" . '<p' . $cls_str . $extra . '>' . $content . '</p>' . "\n" . '<!-- /wp:paragraph -->';
+	}, $html );
+
+	// 5. Wrap <table class="..."> ... </table> in wp:table
+	$html = preg_replace_callback( '/<div class="(menu-table-wrap|hours-table-wrap)">\s*<table class="([^"]*)">(.*?)<\/table>\s*<\/div>/is', function( $m ) {
+		$table_class = $m[2];
+		$table_inner = $m[3];
+		$args        = array( 'className' => $table_class );
+		$json        = json_encode( $args, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+
+		return '<!-- wp:table ' . $json . ' -->' . "\n" . '<figure class="wp-block-table ' . esc_attr( $table_class ) . '"><table class="' . esc_attr( $table_class ) . '">' . $table_inner . '</table></figure>' . "\n" . '<!-- /wp:table -->';
+	}, $html );
+
+	// 6. Wrap <details class="faq-item"> ... </details> in wp:details
+	$html = preg_replace_callback( '/<details class="faq-item">(.*?)<\/details>/is', function( $m ) {
+		$content = $m[1];
+		$json    = json_encode( array( 'className' => 'faq-item' ), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+
+		return '<!-- wp:details ' . $json . ' -->' . "\n" . '<details class="wp-block-details faq-item">' . $content . '</details>' . "\n" . '<!-- /wp:details -->';
+	}, $html );
+
+	return $html;
+}
 
 /**
  * Return whether a dedicated SEO plugin should own meta tags.
@@ -1078,3 +1152,97 @@ add_filter( 'rank_math/frontend/robots', 'kadence_mcprices_filter_priority_rank_
 add_filter( 'the_content', 'kadence_mcprices_filter_priority_content_blocks', 9999 );
 add_action( 'init', 'kadence_mcprices_sync_priority_runtime_meta', 99 );
 add_action( 'wp_head', 'kadence_mcprices_output_priority_noindex_fallback', 0 );
+
+add_action( "wp_footer", function() {
+?>
+<script id="mcprices-live-search-script">
+(function() {
+  function initLiveSearch() {
+    var searchInput = document.getElementById("mcprices-live-menu-search");
+    var searchForm = document.querySelector(".mcprices-hero-search-form");
+    if (!searchInput) return;
+
+    function performFilter() {
+      var query = searchInput.value.trim().toLowerCase();
+      var tables = document.querySelectorAll("table");
+
+      tables.forEach(function(table) {
+        var rows = table.querySelectorAll("tbody tr");
+        if (!rows.length) return;
+
+        var sectionMatchCount = 0;
+
+        rows.forEach(function(row) {
+          var text = row.textContent.toLowerCase();
+          if (!query || text.indexOf(query) !== -1) {
+            row.style.display = "";
+            sectionMatchCount++;
+          } else {
+            row.style.display = "none";
+          }
+        });
+
+        var tableWrap = table.closest(".menu-table-wrap") || table.closest(".wp-block-table");
+        if (tableWrap && !tableWrap.classList.contains("mcprices-managed-homepage") && !tableWrap.classList.contains("mcprices-page")) {
+          if (query && sectionMatchCount === 0) {
+            tableWrap.style.display = "none";
+          } else {
+            tableWrap.style.display = "";
+          }
+        }
+      });
+
+      var pageContainer = document.querySelector(".mcprices-managed-homepage");
+      if (pageContainer) {
+        pageContainer.style.display = "";
+      }
+    }
+
+    function scrollToResults() {
+      // Find the first visible matching row or visible table
+      var allRows = Array.from(document.querySelectorAll("table tbody tr"));
+      var firstMatch = allRows.find(function(r) {
+        return r.style.display !== "none" && window.getComputedStyle(r).display !== "none";
+      });
+
+      if (firstMatch) {
+        firstMatch.scrollIntoView({ behavior: "smooth", block: "center" });
+      } else {
+        var fullMenu = document.getElementById("full-menu") || document.querySelector(".menu-table-wrap") || document.querySelector("table");
+        if (fullMenu) {
+          fullMenu.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+    }
+
+    searchInput.addEventListener("input", performFilter);
+    searchInput.addEventListener("keyup", performFilter);
+    searchInput.addEventListener("change", performFilter);
+
+    if (searchForm) {
+      searchForm.addEventListener("submit", function(e) {
+        e.preventDefault();
+        performFilter();
+        scrollToResults();
+      });
+    }
+
+    var searchBtn = document.getElementById("mcprices-live-search-submit");
+    if (searchBtn) {
+      searchBtn.addEventListener("click", function(e) {
+        e.preventDefault();
+        performFilter();
+        scrollToResults();
+      });
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initLiveSearch);
+  } else {
+    initLiveSearch();
+  }
+})();
+</script>
+<?php
+}, 999 );
