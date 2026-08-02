@@ -1423,7 +1423,14 @@
 
     tabs.forEach(function (tab) {
       tab.addEventListener("click", function () {
-        activateFilter(tab.getAttribute("data-menu-filter"));
+        var filterTarget = tab.getAttribute("data-menu-filter");
+        if (window.requestAnimationFrame) {
+          window.requestAnimationFrame(function () {
+            activateFilter(filterTarget);
+          });
+        } else {
+          activateFilter(filterTarget);
+        }
       });
     });
 
@@ -1432,15 +1439,37 @@
 
       form.addEventListener("submit", function (event) {
         event.preventDefault();
-        runSearch(input ? input.value : "");
+        var query = input ? input.value : "";
+        if (window.requestAnimationFrame) {
+          window.requestAnimationFrame(function () {
+            runSearch(query);
+          });
+        } else {
+          runSearch(query);
+        }
       });
     });
 
+    var searchInputDebounceTimer = null;
     searchInputs.forEach(function (input) {
       input.addEventListener("input", function () {
-        syncSearchInputs(input.value, input);
-        clearHighlights();
-        setFeedback("", false);
+        var val = input.value;
+        if (searchInputDebounceTimer) {
+          clearTimeout(searchInputDebounceTimer);
+        }
+        searchInputDebounceTimer = setTimeout(function () {
+          if (window.requestAnimationFrame) {
+            window.requestAnimationFrame(function () {
+              syncSearchInputs(val, input);
+              clearHighlights();
+              setFeedback("", false);
+            });
+          } else {
+            syncSearchInputs(val, input);
+            clearHighlights();
+            setFeedback("", false);
+          }
+        }, 40);
       });
 
       input.addEventListener("keydown", function (event) {
