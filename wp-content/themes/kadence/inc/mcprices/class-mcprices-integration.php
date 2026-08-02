@@ -394,7 +394,76 @@ class McPrices_Integration {
 	}
 
 	/**
+	 * Return the public author profile for a post, using editor fields first.
+	 *
+	 * @param \WP_Post|null $post Optional post object.
+	 * @return array<string, string>
+	 */
+	public function get_public_author_profile( $post = null ) {
+		if ( ! $post instanceof \WP_Post ) {
+			$post = get_queried_object();
+		}
+
+		if ( ! $post instanceof \WP_Post ) {
+			$front_id = (int) get_option( 'page_on_front' );
+			$post     = $front_id ? get_post( $front_id ) : null;
+		}
+
+		$user = ( $post instanceof \WP_Post && $post->post_author ) ? get_userdata( (int) $post->post_author ) : false;
+
+		$name = $post instanceof \WP_Post ? trim( (string) get_post_meta( (int) $post->ID, '_mcprices_author_name', true ) ) : '';
+		if ( '' === $name && $user ) {
+			$name = trim( (string) $user->display_name );
+		}
+		if ( '' === $name || 'iamfurquanbaig523' === $name || 'admin' === $name ) {
+			$name = 'David Livingstone';
+		}
+
+		$title = $post instanceof \WP_Post ? trim( (string) get_post_meta( (int) $post->ID, '_mcprices_author_title', true ) ) : '';
+		if ( '' === $title && $user ) {
+			$title = trim( (string) get_user_meta( (int) $user->ID, 'mcprices_author_title', true ) );
+		}
+		if ( '' === $title || 'Editorial team' === $title ) {
+			$title = 'Food Pricing Analyst & Fast Food Industry Researcher';
+		}
+
+		$description = $post instanceof \WP_Post ? trim( (string) get_post_meta( (int) $post->ID, '_mcprices_author_bio', true ) ) : '';
+		if ( '' === $description && $user ) {
+			$description = trim( (string) get_user_meta( (int) $user->ID, 'description', true ) );
+		}
+		if ( '' === $description || 0 === strpos( $description, "The McDonald's Menu Prices USA editorial team" ) ) {
+			$description = 'David Livingstone is a food pricing analyst and fast food industry researcher specializing in U.S. QSR menu economics, regional price variances, and calorie comparisons.';
+		}
+
+		$url = $post instanceof \WP_Post ? trim( (string) get_post_meta( (int) $post->ID, '_mcprices_author_url', true ) ) : '';
+		if ( '' === $url && $user && ! empty( $user->user_url ) ) {
+			$url = (string) $user->user_url;
+		}
+		if ( '' === $url ) {
+			$url = home_url( '/editorial-policy/' );
+		}
+
+		$image = '';
+		if ( $user && function_exists( 'get_avatar_url' ) ) {
+			$avatar = get_avatar_url( (int) $user->ID, array( 'size' => 192 ) );
+			$image  = is_string( $avatar ) ? $avatar : '';
+		}
+
+		return array(
+			'name'        => $name,
+			'title'       => $title,
 			'description' => $description,
+			'url'         => esc_url_raw( $url ),
+			'image'       => esc_url_raw( $image ),
+		);
+	}
+
+	/**
+	 * Build a Person schema node for the selected post author.
+	 *
+	 * @param \WP_Post $post        Post object.
+	 * @param string   $current_url Current canonical URL.
+	 * @return array<string, mixed>
 	 */
 	protected function get_author_schema_node( \WP_Post $post, $current_url ) {
 		$profile   = $this->get_public_author_profile( $post );
@@ -14848,7 +14917,7 @@ class McPrices_Integration {
 	 * @return string
 	 */
 	protected function get_homepage_meta_title() {
-		$fallback = "McDonald's Menu Prices (Updated Aug 2026) - Full USA Price List";
+		$fallback = "McDonald's Menu Prices USA " . $this->get_current_site_year() . ' | Prices, Calories & Deals';
 		$rank_math_title = $this->get_rank_math_homepage_field( 'rank_math_title', 'homepage_title', $fallback );
 
 		return '' !== $rank_math_title ? $rank_math_title : $fallback;
@@ -14860,7 +14929,7 @@ class McPrices_Integration {
 	 * @return string
 	 */
 	protected function get_homepage_meta_description() {
-		$fallback = "Compare current 2026 McDonald's prices for breakfast, Big Macs, McNuggets, Happy Meals & McCafe. Verified USA pricing guide & calorie calculator.";
+		$fallback = "Compare McDonald's menu prices in the USA, including breakfast, burgers, Happy Meal prices, small drink prices, McCafe, McValue deals, calories, and local price notes.";
 		$rank_math_description = $this->get_rank_math_homepage_field( 'rank_math_description', 'homepage_description', $fallback );
 
 		return '' !== $rank_math_description ? $rank_math_description : $fallback;
