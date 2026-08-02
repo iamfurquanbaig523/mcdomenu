@@ -15877,7 +15877,16 @@ class McPrices_Integration {
 		$url         = home_url( '/' );
 		$image_url   = get_template_directory_uri() . '/assets/images/mcprices/official/items/big-mac.jpg';
 		$sitemap_url = home_url( '/sitemap_index.xml' );
+		$hero_img = home_url( '/wp-content/uploads/2026/07/mcdonalds-menu-with-prices-hero-food.jpg' );
 		?>
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link rel="preload" as="image" href="<?php echo esc_url( $hero_img ); ?>" type="image/jpeg" fetchpriority="high">
+		<style id="mcprices-critical-hero">
+		.mcprices-kadence-hero{background-color:#f6f3ef;contain:content;min-height:280px}
+		.mcprices-hero-copy h1{font-family:'Poppins',sans-serif;font-weight:900;line-height:1}
+		.mcprices-hero-media img{aspect-ratio:1752/1024;width:100%;height:auto;display:block}
+		</style>
 		<meta name="description" content="<?php echo esc_attr( $description ); ?>">
 		<link rel="canonical" href="<?php echo esc_url( $url ); ?>">
 		<link rel="sitemap" type="application/xml" title="<?php esc_attr_e( 'Sitemap', 'kadence' ); ?>" href="<?php echo esc_url( $sitemap_url ); ?>">
