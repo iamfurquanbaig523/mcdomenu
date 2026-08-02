@@ -1,0 +1,17 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "McDonald's Menu Prices USA",
+  "name_for_model": "mcdonalds_menu_prices_usa",
+  "description_for_human": "Get current McDonald's USA menu prices, calories, breakfast hours, and deals.",
+  "description_for_model": "Independent reference for U.S. McDonald's menu prices, calorie counts, breakfast schedules, Happy Meal options, and value deals across 207+ items.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://mcdomenuusa.com/llms.txt"
+  },
+  "logo_url": "https://mcdomenuusa.com/wp-content/uploads/2026/07/mcdonalds-menu-with-prices-hero-food.jpg",
+  "contact_email": "info@mcdomenuusa.com",
+  "legal_info_url": "https://mcdomenuusa.com/terms-of-use/"
+}

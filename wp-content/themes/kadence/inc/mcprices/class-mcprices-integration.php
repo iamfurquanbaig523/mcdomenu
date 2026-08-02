@@ -17472,28 +17472,42 @@ class McPrices_Integration {
 	 * @return string
 	 */
 	public function filter_robots_txt( $output, $public ) {
-		$lines = preg_split( '/\R/', trim( (string) $output ) );
-		$lines = is_array( $lines ) ? $lines : array();
-		$lines = array_values(
-			array_filter(
-				$lines,
-				static function ( $line ) {
-					return 0 !== stripos( trim( (string) $line ), 'Sitemap:' );
-				}
-			)
-		);
+		$robots  = "User-agent: *\n";
+		$robots .= "Allow: /\n";
+		$robots .= "Disallow: /wp-admin/\n";
+		$robots .= "Disallow: /xmlrpc.php\n";
+		$robots .= "Disallow: /*?s=\n";
+		$robots .= "Allow: /wp-admin/admin-ajax.php\n";
+		$robots .= "Allow: /wp-includes/js/\n";
+		$robots .= "Allow: /wp-includes/css/\n\n";
 
-		if ( empty( $lines ) ) {
-			$lines = array(
-				'User-agent: *',
-				$public ? 'Disallow:' : 'Disallow: /',
-			);
+		$robots .= "# AI Crawlers & LLM Bots (Explicitly Allowed for AEO & GEO)\n";
+		$ai_bots = array(
+			'GPTBot',
+			'ChatGPT-User',
+			'OAI-SearchBot',
+			'ClaudeBot',
+			'Claude-Web',
+			'PerplexityBot',
+			'Google-Extended',
+			'GoogleOther',
+			'Applebot-Extended',
+			'Amazonbot',
+			'Meta-ExternalAgent',
+			'Bytespider',
+			'cohere-ai',
+			'Diffbot',
+			'Omgilibot',
+			'YouBot',
+		);
+		foreach ( $ai_bots as $bot ) {
+			$robots .= "User-agent: {$bot}\nAllow: /\n\n";
 		}
 
-		$lines[] = '';
-		$lines[] = 'Sitemap: ' . home_url( '/sitemap_index.xml' );
+		$robots .= "Sitemap: " . home_url( '/sitemap_index.xml' ) . "\n";
+		$robots .= "LLMs-txt: " . home_url( '/llms.txt' ) . "\n";
 
-		return trim( implode( "\n", $lines ) ) . "\n";
+		return $robots;
 	}
 
 	/**
