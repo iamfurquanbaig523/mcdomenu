@@ -93,6 +93,7 @@ def lint_php(repo_root: Path, php_bin: str | None) -> None:
         "wp-content/themes/kadence/functions.php",
         "wp-content/themes/kadence/inc/mcprices/class-mcprices-integration.php",
         "wp-content/themes/kadence/inc/mcprices/schema.php",
+        "wp-content/mu-plugins/mcprices-update-safety.php",
     ):
         target = repo_root / relative
         if target.is_file():

@@ -113,6 +113,14 @@ This file records the implemented native Kadence parent-theme changes for the en
   - headless Edge browser interaction checks
 - Updated `status.md` with feature scores, reviewer approval state, and overall completion.
 
+### F11. WordPress Update Resilience
+- Added `wp-content/mu-plugins/mcprices-update-safety.php` as a narrow must-use safety layer that WordPress core updates do not replace.
+- Moved critical stylesheet cache exclusions out of the Kadence integration class and into the must-use layer.
+- Kept the native Kadence and McPrices style handles as direct asset URLs so stale HTML cannot depend on a deleted LiteSpeed-generated bundle.
+- Preserved the existing theme-managed Google Fonts preload and asset versioning behavior.
+- Added the must-use plugin to local and production release lint checks.
+- Confirmed locally that protected style handles receive `data-no-optimize="1"`, unrelated styles remain unchanged, and the direct header/design assets both return HTTP 200.
+
 ## Verification Evidence
 - PHP lint passed for:
   - `class-mcprices-integration.php`

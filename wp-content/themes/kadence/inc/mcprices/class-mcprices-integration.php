@@ -18269,9 +18269,9 @@ class McPrices_Integration {
 	}
 
 	/**
-	 * Keep native theme styles available after a LiteSpeed generated-CSS cache
-	 * refresh, and replace the Google Fonts stylesheet with a non-blocking
-	 * preload tag on the homepage.
+	 * Replace the Google Fonts stylesheet with a non-blocking preload tag on
+	 * the homepage, while the update-safe must-use plugin protects critical
+	 * layout styles from generated cache bundles.
 	 *
 	 * @param string $html   Original stylesheet tag.
 	 * @param string $handle Enqueued handle.
@@ -18280,22 +18280,6 @@ class McPrices_Integration {
 	 * @return string
 	 */
 	public function filter_critical_stylesheet_tag( $html, $handle, $href, $media ) {
-		$critical_handles = array(
-			'kadence-global',
-			'kadence-header',
-			'kadence-content',
-			'kadence-comments',
-			'kadence-footer',
-			'kadence-mcprices-design',
-			'kadence-mcprices-enhanced-layer',
-			'kadence-rankmath',
-			'rank-math-toc-block',
-		);
-
-		if ( in_array( $handle, $critical_handles, true ) && false === strpos( $html, 'data-no-optimize=' ) ) {
-			$html = preg_replace( '/<link\b/i', '<link data-no-optimize="1"', $html, 1 );
-		}
-
 		if ( ! $this->is_seo_homepage() ) {
 			return $html;
 		}

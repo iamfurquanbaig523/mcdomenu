@@ -180,4 +180,10 @@ public_html
 
 These paths connect a release to the real database, real uploads, live cache, and live traffic. Treat changes here as production operations. LiteSpeed's generated assets must remain shared so cached HTML never points at CSS or JavaScript that disappeared with an earlier immutable release.
 
+## WordPress Update Resilience
+
+`wp-content/mu-plugins/mcprices-update-safety.php` is a must-use safety layer. It keeps the Kadence and McPrices layout styles as direct theme asset URLs instead of LiteSpeed-generated combined files. Because must-use plugins are loaded before the active theme and are not replaced by WordPress core updates, a core update or LiteSpeed cache rebuild cannot leave cached pages with a missing header stylesheet.
+
+After a WordPress, theme, or plugin update, clear Hostinger's Cache Manager and CDN cache once so previously cached HTML is replaced. This only clears stale copies already created before the safety layer; future cache rebuilds retain valid direct URLs for the critical styles.
+
 For a first-time conversion from an existing `public_html` install, run release preparation with `SEED_SHARED_FROM_LIVE=true` so existing `wp-content/uploads`, `wp-content/cache`, and `wp-content/litespeed` are copied into `deploy/shared/` before activation.

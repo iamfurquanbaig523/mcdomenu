@@ -75,6 +75,12 @@ Upgrade the existing McPrices integration inside the Kadence parent theme so the
 - Maintain an overall completion percentage.
 - Record missing items and rework notes in `status.md`.
 
+### F11. WordPress Update Resilience
+- Keep critical Kadence and McPrices layout styles available across WordPress core updates and cache rebuilds.
+- The safeguard must load independently of the active theme without introducing a child theme or changing admin-managed content.
+- Critical styles must use stable asset URLs instead of disposable generated CSS bundles.
+- Release builds must lint and include the update-safety layer.
+
 ## Acceptance Criteria
 - Live front-end visually matches the enhanced reference closely across hero, categories, menu tabs, deals, informational sections, guides, and footer.
 - Header/footer/body remain native Kadence/WordPress-managed pieces.
