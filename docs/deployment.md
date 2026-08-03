@@ -16,6 +16,7 @@ Recommended Hostinger layout:
       .env
       uploads/
       cache/
+      litespeed/
     current -> releases/20260607-def456
     previous -> releases/20260606-abc123
     active-release
@@ -172,10 +173,11 @@ Production connected:
 deploy/shared/.env
 deploy/shared/uploads/
 deploy/shared/cache/
+deploy/shared/litespeed/
 deploy/current
 public_html
 ```
 
-These paths connect a release to the real database, real uploads, live cache, and live traffic. Treat changes here as production operations.
+These paths connect a release to the real database, real uploads, live cache, and live traffic. Treat changes here as production operations. LiteSpeed's generated assets must remain shared so cached HTML never points at CSS or JavaScript that disappeared with an earlier immutable release.
 
-For a first-time conversion from an existing `public_html` install, run release preparation with `SEED_SHARED_FROM_LIVE=true` so existing `wp-content/uploads` and `wp-content/cache` are copied into `deploy/shared/` before activation.
+For a first-time conversion from an existing `public_html` install, run release preparation with `SEED_SHARED_FROM_LIVE=true` so existing `wp-content/uploads`, `wp-content/cache`, and `wp-content/litespeed` are copied into `deploy/shared/` before activation.

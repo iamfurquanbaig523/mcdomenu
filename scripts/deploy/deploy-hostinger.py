@@ -227,7 +227,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--site-url", default=os.getenv("PRODUCTION_SITE_URL", DEFAULT_SITE_URL))
     parser.add_argument("--prepare-only", action="store_true", help="Upload and prepare the release without switching traffic.")
     parser.add_argument("--allow-live-path-replace", action="store_true", help="Allow first-time conversion of public_html into a release symlink.")
-    parser.add_argument("--seed-shared-from-live", action="store_true", help="Copy uploads/cache from the old live tree during first-time conversion.")
+    parser.add_argument("--seed-shared-from-live", action="store_true", help="Copy uploads, cache, and LiteSpeed assets from the old live tree during first-time conversion.")
     parser.add_argument("--skip-shared-env-sync", action="store_true", help="Do not copy live .env into deploy/shared/.env when missing.")
     parser.add_argument("--skip-cache-purge", action="store_true", help="Do not request a LiteSpeed cache purge after activation.")
     parser.add_argument("--php-bin", default=os.getenv("LOCAL_PHP_BIN", r"C:\xampp\php\php.exe"))

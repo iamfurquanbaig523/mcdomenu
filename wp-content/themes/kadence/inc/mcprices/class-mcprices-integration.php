@@ -213,7 +213,7 @@ class McPrices_Integration {
 		add_filter( 'theme_mod_logo_layout', array( $this, 'filter_logo_layout' ) );
 		add_filter( 'wp_robots', array( $this, 'filter_homepage_robots' ), 20 );
 		add_filter( 'robots_txt', array( $this, 'filter_robots_txt' ), 20, 2 );
-		add_filter( 'style_loader_tag', array( $this, 'filter_front_page_font_stylesheet_tag' ), 10, 4 );
+		add_filter( 'style_loader_tag', array( $this, 'filter_critical_stylesheet_tag' ), 10, 4 );
 		add_filter( 'script_loader_tag', array( $this, 'filter_front_page_script_tag' ), 10, 3 );
 		add_filter( 'pre_option_rank_math_google_analytic_options', array( $this, 'filter_front_page_rank_math_analytics_options' ), 10, 3 );
 		add_filter( 'litespeed_optimize_js_excludes', array( $this, 'filter_litespeed_adsense_delay_exclusions' ), 999 );
@@ -18269,7 +18269,9 @@ class McPrices_Integration {
 	}
 
 	/**
-	 * Replace the Google Fonts stylesheet with a non-blocking preload tag on the homepage.
+	 * Keep native theme styles available after a LiteSpeed generated-CSS cache
+	 * refresh, and replace the Google Fonts stylesheet with a non-blocking
+	 * preload tag on the homepage.
 	 *
 	 * @param string $html   Original stylesheet tag.
 	 * @param string $handle Enqueued handle.
@@ -18277,7 +18279,23 @@ class McPrices_Integration {
 	 * @param string $media  Media attribute.
 	 * @return string
 	 */
-	public function filter_front_page_font_stylesheet_tag( $html, $handle, $href, $media ) {
+	public function filter_critical_stylesheet_tag( $html, $handle, $href, $media ) {
+		$critical_handles = array(
+			'kadence-global',
+			'kadence-header',
+			'kadence-content',
+			'kadence-comments',
+			'kadence-footer',
+			'kadence-mcprices-design',
+			'kadence-mcprices-enhanced-layer',
+			'kadence-rankmath',
+			'rank-math-toc-block',
+		);
+
+		if ( in_array( $handle, $critical_handles, true ) && false === strpos( $html, 'data-no-optimize=' ) ) {
+			$html = preg_replace( '/<link\b/i', '<link data-no-optimize="1"', $html, 1 );
+		}
+
 		if ( ! $this->is_seo_homepage() ) {
 			return $html;
 		}

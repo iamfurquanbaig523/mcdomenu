@@ -64,9 +64,10 @@ if [[ ! -f "$ARTIFACT_PATH" ]]; then
   exit 1
 fi
 
-mkdir -p "$shared_path" "$shared_path/uploads" "$shared_path/cache" "$releases_path"
+mkdir -p "$shared_path" "$shared_path/uploads" "$shared_path/cache" "$shared_path/litespeed" "$releases_path"
 seed_shared_dir_from_live uploads
 seed_shared_dir_from_live cache
+seed_shared_dir_from_live litespeed
 
 if [[ -e "$release_path" ]]; then
   if truthy "${OVERWRITE_PREPARED_RELEASE:-false}"; then
@@ -80,9 +81,10 @@ fi
 mkdir -p "$release_path"
 unzip -q "$ARTIFACT_PATH" -d "$release_path"
 
-rm -rf "$release_path/wp-content/uploads" "$release_path/wp-content/cache"
+rm -rf "$release_path/wp-content/uploads" "$release_path/wp-content/cache" "$release_path/wp-content/litespeed"
 ln -s "$shared_path/uploads" "$release_path/wp-content/uploads"
 ln -s "$shared_path/cache" "$release_path/wp-content/cache"
+ln -s "$shared_path/litespeed" "$release_path/wp-content/litespeed"
 
 if [[ -f "$shared_path/.env" ]]; then
   ln -sfn "$shared_path/.env" "$release_path/.env"
