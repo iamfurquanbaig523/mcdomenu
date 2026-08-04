@@ -79,6 +79,8 @@ Upgrade the existing McPrices integration inside the Kadence parent theme so the
 - Keep critical Kadence and McPrices layout styles available across WordPress core updates and cache rebuilds.
 - The safeguard must load independently of the active theme without introducing a child theme or changing admin-managed content.
 - Critical styles must use stable asset URLs instead of disposable generated CSS bundles.
+- Site-specific Kadence integration code and media must live outside the replaceable parent-theme directory while continuing to use Kadence builders, hooks, settings, and markup.
+- An official Kadence update must be able to replace the entire parent-theme directory without removing the McPrices design, navigation behavior, content integration, SEO hooks, or media.
 - Release builds must lint and include the update-safety layer.
 
 ## Acceptance Criteria

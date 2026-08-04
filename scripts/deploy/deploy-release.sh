@@ -97,11 +97,15 @@ printf '{"release_id":"%s","prepared_at":"%s"}\n' "$RELEASE_ID" "$(date -u +%Y-%
 
 "$php_bin" -l "$release_path/wp-config.php" >/dev/null
 "$php_bin" -l "$release_path/wp-content/themes/kadence/functions.php" >/dev/null
-"$php_bin" -l "$release_path/wp-content/themes/kadence/inc/mcprices/indexing.php" >/dev/null
-"$php_bin" -l "$release_path/wp-content/themes/kadence/inc/mcprices/class-mcprices-integration.php" >/dev/null
 if [[ -f "$release_path/wp-content/mu-plugins/mcprices-update-safety.php" ]]; then
   "$php_bin" -l "$release_path/wp-content/mu-plugins/mcprices-update-safety.php" >/dev/null
 fi
+"$php_bin" -l "$release_path/wp-content/mu-plugins/mcprices-site.php" >/dev/null
+"$php_bin" -l "$release_path/wp-content/mu-plugins/mcprices-site/bootstrap.php" >/dev/null
+"$php_bin" -l "$release_path/wp-content/mu-plugins/mcprices-site/inc/mcprices/asset-paths.php" >/dev/null
+"$php_bin" -l "$release_path/wp-content/mu-plugins/mcprices-site/inc/mcprices/indexing.php" >/dev/null
+"$php_bin" -l "$release_path/wp-content/mu-plugins/mcprices-site/inc/mcprices/schema.php" >/dev/null
+"$php_bin" -l "$release_path/wp-content/mu-plugins/mcprices-site/inc/mcprices/class-mcprices-integration.php" >/dev/null
 
 if truthy "${CHECK_WORDPRESS_BOOTSTRAP:-false}"; then
   (

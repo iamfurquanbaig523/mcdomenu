@@ -20,7 +20,7 @@
 | F08 | Enhanced Homepage Body | Approved | 100% | The enhanced body replaced the older limited body while remaining editable as native WordPress page content. |
 | F09 | Footer/Data Widgets | Approved | 100% | Footer content remains Kadence-native and editable through footer widget/builder areas with the enhanced category/information/guide groupings seeded. |
 | F10 | Review and Status Tracking | Approved | 100% | Reviewer workflow was completed, implementation details were documented, and final status scoring was recorded here. |
-| F11 | WordPress Update Resilience | Approved | 100% | Critical layout styles are protected by a must-use layer, remain direct assets after updates/cache rebuilds, and are linted as part of every release. |
+| F11 | WordPress Update Resilience | Approved | 100% | The full native McPrices integration and asset library now load from an update-safe must-use package, critical styles remain direct assets, and a clean Kadence 1.5.2 replacement was verified locally. |
 
 ## Overall Completion
 - Overall score: `100%`
@@ -30,6 +30,9 @@
 - PHP lint passed for the update-safety must-use plugin and modified integration class.
 - Local runtime verification confirmed the must-use filter loads at priority 1, protects critical handles, and leaves unrelated styles unchanged.
 - Local HTTP verification confirmed the protected Kadence header and McPrices design assets both return `200`.
+- A clean official Kadence 1.5.2 parent-theme replacement was performed locally after removing all project files from the theme directory; the homepage and tested inner pages remained fully styled through the must-use package.
+- Release-artifact verification confirmed `kadence-mcprices-design-css` uses `/wp-content/mu-plugins/mcprices-site/assets/css/mcprices-integrated.css`, carries `data-no-optimize="1"`, and returns HTTP `200`.
+- Legacy theme-based McPrices media references are rewritten at render time; all 28 sampled homepage package assets returned HTTP `200` and no old theme asset URLs remained in rendered HTML.
 - Live homepage HTML confirmed:
   - native Kadence desktop navigation is rendering
   - `Blogs` menu is present
@@ -50,4 +53,5 @@
 
 ## Residual Risk Notes
 - The implementation was validated against the active local WordPress/Kadence stack.
+- Future Kadence parent-theme updates may change native markup APIs; the release health check now blocks activation when the update-safe design handle does not load, making that compatibility failure visible before delivery.
 - A broad third-party plugin regression matrix was not executed, but the implementation path intentionally stays inside native Kadence/WordPress systems to minimize plugin compatibility risk.

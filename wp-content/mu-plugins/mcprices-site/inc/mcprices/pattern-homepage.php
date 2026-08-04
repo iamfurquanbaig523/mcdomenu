@@ -60,19 +60,19 @@ $get_home_item_media_url = static function ( $item_name, $size = 'full' ) use ( 
 			$homepage_avif_path     = $homepage_relative_base . '.avif';
 			$homepage_relative_path = $homepage_relative_base . '.jpg';
 
-			if ( file_exists( get_theme_file_path( $homepage_avif_path ) ) ) {
-				return get_theme_file_uri( $homepage_avif_path );
+			if ( file_exists( mcprices_site_path( $homepage_avif_path ) ) ) {
+				return mcprices_site_url( $homepage_avif_path );
 			}
 
-			if ( file_exists( get_theme_file_path( $homepage_relative_path ) ) ) {
-				return get_theme_file_uri( $homepage_relative_path );
+			if ( file_exists( mcprices_site_path( $homepage_relative_path ) ) ) {
+				return mcprices_site_url( $homepage_relative_path );
 			}
 		}
 
 		$jpg_relative_path = '/assets/images/mcprices/official/items/' . $matches[1] . '.jpg';
 
-		if ( file_exists( get_theme_file_path( $jpg_relative_path ) ) ) {
-			return get_theme_file_uri( $jpg_relative_path );
+		if ( file_exists( mcprices_site_path( $jpg_relative_path ) ) ) {
+			return mcprices_site_url( $jpg_relative_path );
 		}
 	}
 
@@ -109,7 +109,7 @@ $interactive_tools = array(
 	),
 );
 
-$menu_source_path = get_theme_file_path( 'assets/data/mcprices-usa-menu.json' );
+$menu_source_path = mcprices_site_path( 'assets/data/mcprices-usa-menu.json' );
 $menu_source_json = file_exists( $menu_source_path ) ? file_get_contents( $menu_source_path ) : false;
 $menu_source      = is_string( $menu_source_json ) ? json_decode( $menu_source_json, true ) : array();
 $menu_source      = is_array( $menu_source ) ? $menu_source : array();

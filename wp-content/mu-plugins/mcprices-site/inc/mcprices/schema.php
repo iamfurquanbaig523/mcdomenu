@@ -87,7 +87,7 @@ function kadence_mcprices_schema_website() {
  * --------------------------------------------------------------------- */
 
 function kadence_mcprices_schema_organization() {
-	$logo_url = get_template_directory_uri() . '/assets/images/mcprices/mcprices-logo-schema.svg';
+	$logo_url = mcprices_site_url( 'assets/images/mcprices/mcprices-logo-schema.svg' );
 
 	return array(
 		'@context'    => 'https://schema.org',

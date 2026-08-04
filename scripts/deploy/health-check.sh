@@ -34,6 +34,44 @@ check_url() {
 
 check_url "$health_url" "site"
 
+check_site_design() {
+  local separator="?"
+  local verification_url
+  local html
+  local asset_url
+  local asset_code
+
+  if [[ "$health_url" == *\?* ]]; then
+    separator="&"
+  fi
+
+  verification_url="${health_url}${separator}mcprices_health=$(date +%s)"
+  html="$(curl -k -L -sS -H 'Cache-Control: no-cache' "$verification_url" || true)"
+
+  if ! grep -Eq "id=['\"]kadence-mcprices-design-css['\"]" <<<"$html"; then
+    echo "site design health check failed: McPrices design stylesheet is not enqueued" >&2
+    return 1
+  fi
+
+  asset_url="$(grep -Eo "https?://[^'\"]+/wp-content/mu-plugins/mcprices-site/assets/css/mcprices-integrated\.css[^'\"]*" <<<"$html" | head -n 1)"
+
+  if [[ -z "$asset_url" ]]; then
+    echo "site design health check failed: update-safe stylesheet URL is missing" >&2
+    return 1
+  fi
+
+  asset_code="$(curl -k -L -sS -o /dev/null -w '%{http_code}' "$asset_url" || true)"
+
+  if [[ ! "$asset_code" =~ ^[23][0-9][0-9]$ ]]; then
+    echo "site design health check failed: stylesheet returned HTTP ${asset_code:-000}" >&2
+    return 1
+  fi
+
+  echo "site design health check passed with update-safe assets"
+}
+
+check_site_design
+
 if [[ -n "$admin_health_url" ]]; then
   check_url "$admin_health_url" "admin"
 elif [[ -n "${SITE_URL:-}" ]]; then

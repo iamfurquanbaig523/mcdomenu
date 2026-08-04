@@ -120,6 +120,13 @@ This file records the implemented native Kadence parent-theme changes for the en
 - Preserved the existing theme-managed Google Fonts preload and asset versioning behavior.
 - Added the must-use plugin to local and production release lint checks.
 - Confirmed locally that protected style handles receive `data-no-optimize="1"`, unrelated styles remain unchanged, and the direct header/design assets both return HTTP 200.
+- Reproduced the post-update failure and confirmed Kadence 1.5.2 correctly retained the database design setting while replacing every custom file previously stored inside the parent theme.
+- Relocated the complete McPrices integration package to `wp-content/mu-plugins/mcprices-site/`, including PHP integration files, CSS, JavaScript, menu data, the media manifest, and all project images.
+- Added `wp-content/mu-plugins/mcprices-site.php` to bootstrap the native integration after Kadence loads, so the header/footer builders and WordPress-editable content remain native while the custom implementation survives parent-theme replacement.
+- Added render-time compatibility rewriting for legacy database content that still contains the former Kadence asset base; saved WordPress content remains editable and is not hard-coded or replaced.
+- Updated the parent theme on localhost to official Kadence 1.5.2 and verified the must-use integration against the same clean version that removed the old theme files on production.
+- Extended release health checks to fail if the McPrices design handle is absent, points outside the update-safe package, or returns a non-success HTTP status.
+- Verified the immutable release artifact, homepage, burgers, breakfast, and What’s New pages with direct protected CSS and working package assets.
 
 ## Verification Evidence
 - PHP lint passed for:

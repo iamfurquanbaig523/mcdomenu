@@ -182,7 +182,11 @@ These paths connect a release to the real database, real uploads, live cache, an
 
 ## WordPress Update Resilience
 
-`wp-content/mu-plugins/mcprices-update-safety.php` is a must-use safety layer. It keeps the Kadence and McPrices layout styles as direct theme asset URLs instead of LiteSpeed-generated combined files. Because must-use plugins are loaded before the active theme and are not replaced by WordPress core updates, a core update or LiteSpeed cache rebuild cannot leave cached pages with a missing header stylesheet.
+`wp-content/mu-plugins/mcprices-update-safety.php` is a must-use safety layer. It keeps the Kadence and McPrices layout styles as direct stable asset URLs instead of LiteSpeed-generated combined files. Because must-use plugins load before the active theme and are not replaced by WordPress core or theme updates, a cache rebuild cannot leave cached pages with a missing header stylesheet.
+
+`wp-content/mu-plugins/mcprices-site.php` loads the native McPrices integration from `wp-content/mu-plugins/mcprices-site/` after Kadence initializes. The package owns the site-specific PHP, CSS, JavaScript, data, and media that used to be stored in the Kadence parent directory. Kadence updates can therefore replace the parent theme without deleting the site design, while the header/footer builders, Customizer settings, menus, widgets, and page content remain WordPress/Kadence-managed.
+
+The production health check requires the McPrices design handle to point to the must-use package and verifies that its stylesheet returns a successful response. A release cannot activate successfully with only the unstyled Kadence shell.
 
 After a WordPress, theme, or plugin update, clear Hostinger's Cache Manager and CDN cache once so previously cached HTML is replaced. This only clears stale copies already created before the safety layer; future cache rebuilds retain valid direct URLs for the critical styles.
 

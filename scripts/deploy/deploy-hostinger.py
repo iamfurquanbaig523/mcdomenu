@@ -6,10 +6,12 @@ from __future__ import annotations
 import argparse
 import os
 import re
+import secrets
 import shutil
 import subprocess
 import sys
 import time
+import urllib.request
 from pathlib import Path
 
 import paramiko
@@ -91,9 +93,13 @@ def lint_php(repo_root: Path, php_bin: str | None) -> None:
     for relative in (
         "wp-config.php",
         "wp-content/themes/kadence/functions.php",
-        "wp-content/themes/kadence/inc/mcprices/class-mcprices-integration.php",
-        "wp-content/themes/kadence/inc/mcprices/schema.php",
         "wp-content/mu-plugins/mcprices-update-safety.php",
+        "wp-content/mu-plugins/mcprices-site.php",
+        "wp-content/mu-plugins/mcprices-site/bootstrap.php",
+        "wp-content/mu-plugins/mcprices-site/inc/mcprices/asset-paths.php",
+        "wp-content/mu-plugins/mcprices-site/inc/mcprices/class-mcprices-integration.php",
+        "wp-content/mu-plugins/mcprices-site/inc/mcprices/indexing.php",
+        "wp-content/mu-plugins/mcprices-site/inc/mcprices/schema.php",
     ):
         target = repo_root / relative
         if target.is_file():
@@ -204,16 +210,39 @@ def run_remote_deploy(
     ssh_exec(client, command, deploy_script)
 
 
-def purge_litespeed_cache(client: paramiko.SSHClient, deploy_root: str) -> None:
+def purge_litespeed_cache(client: paramiko.SSHClient, deploy_root: str, site_url: str) -> None:
     current = deploy_root.rstrip("/") + "/current"
-    php = "php"
-    code = "require 'wp-load.php'; do_action('litespeed_purge_all'); echo 'LiteSpeed purge requested\\n';"
-    command = f"cd {shell_quote(current)} && {php} -r {shell_quote(code)}"
+    endpoint_name = f"mcprices-litespeed-purge-{secrets.token_hex(8)}.php"
+    endpoint_path = current + "/" + endpoint_name
+    endpoint_url = site_url.rstrip("/") + "/" + endpoint_name + "?v=" + secrets.token_hex(8)
+    endpoint_content = (
+        b"<?php\n"
+        b"header('Cache-Control: no-store, no-cache, must-revalidate');\n"
+        b"header('X-LiteSpeed-Purge: *');\n"
+        b"header('Content-Type: text/plain');\n"
+        b"echo 'purge-sent';\n"
+    )
+    sftp = client.open_sftp()
 
     try:
-        ssh_exec(client, command)
+        with sftp.file(endpoint_path, "wb") as endpoint:
+            endpoint.write(endpoint_content)
+
+        request = urllib.request.Request(endpoint_url, headers={"Cache-Control": "no-cache"})
+        with urllib.request.urlopen(request, timeout=30) as response:  # noqa: S310 - production URL is configured.
+            body = response.read().decode("utf-8", "replace").strip()
+            if response.status != 200 or body != "purge-sent":
+                raise RuntimeError(f"purge endpoint returned HTTP {response.status}: {body}")
+
+        print("LiteSpeed purge header delivered successfully.")
     except Exception as exc:  # noqa: BLE001 - cache purge failure should not roll back a healthy release.
         print(f"Cache purge skipped or failed: {exc}")
+    finally:
+        try:
+            sftp.remove(endpoint_path)
+        except OSError:
+            pass
+        sftp.close()
 
 
 def parse_args() -> argparse.Namespace:
@@ -284,7 +313,7 @@ def main() -> int:
         )
 
         if not args.prepare_only and not args.skip_cache_purge:
-            purge_litespeed_cache(client, args.deploy_root)
+            purge_litespeed_cache(client, args.deploy_root, args.site_url)
     finally:
         client.close()
 

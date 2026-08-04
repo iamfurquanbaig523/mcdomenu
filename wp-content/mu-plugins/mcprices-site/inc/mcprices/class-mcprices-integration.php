@@ -15875,7 +15875,7 @@ class McPrices_Integration {
 		$title       = $this->get_homepage_meta_title();
 		$description = $this->get_homepage_meta_description();
 		$url         = home_url( '/' );
-		$image_url   = get_template_directory_uri() . '/assets/images/mcprices/official/items/big-mac.jpg';
+		$image_url   = \mcprices_site_url( 'assets/images/mcprices/official/items/big-mac.jpg' );
 		$sitemap_url = home_url( '/sitemap_index.xml' );
 		$hero_img = home_url( '/wp-content/uploads/2026/07/mcdonalds-menu-with-prices-hero-food.jpg' );
 		?>

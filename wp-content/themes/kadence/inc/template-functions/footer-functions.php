@@ -173,10 +173,10 @@ function footer_social() {
 function scroll_up() {
 	if ( kadence()->option( 'scroll_up' ) ) {
 		echo '<a id="kt-scroll-up" tabindex="-1" aria-hidden="true" aria-label="' . esc_attr__( 'Scroll to top', 'kadence' ) . '" href="#wrapper" class="kadence-scroll-to-top scroll-up-wrap scroll-ignore scroll-up-side-' . esc_attr( kadence()->option( 'scroll_up_side' ) ) . ' scroll-up-style-' . esc_attr( kadence()->option( 'scroll_up_style' ) ) . ' vs-lg-' . ( kadence()->sub_option( 'scroll_up_visiblity', 'desktop' ) ? 'true' : 'false' ) . ' vs-md-' . ( kadence()->sub_option( 'scroll_up_visiblity', 'tablet' ) ? 'true' : 'false' ) . ' vs-sm-' . ( kadence()->sub_option( 'scroll_up_visiblity', 'mobile' ) ? 'true' : 'false' ) . '">';
-		kadence()->print_icon( kadence()->option( 'scroll_up_icon' ), '', false );
+		kadence()->print_icon( kadence()->option( 'scroll_up_icon' ), esc_attr__( 'Scroll to top', 'kadence' ), false );
 		echo '</a>';
 		echo '<button id="kt-scroll-up-reader" href="#wrapper" aria-label="' . esc_attr__( 'Scroll to top', 'kadence' ) . '" class="kadence-scroll-to-top scroll-up-wrap scroll-ignore scroll-up-side-' . esc_attr( kadence()->option( 'scroll_up_side' ) ) . ' scroll-up-style-' . esc_attr( kadence()->option( 'scroll_up_style' ) ) . ' vs-lg-' . ( kadence()->sub_option( 'scroll_up_visiblity', 'desktop' ) ? 'true' : 'false' ) . ' vs-md-' . ( kadence()->sub_option( 'scroll_up_visiblity', 'tablet' ) ? 'true' : 'false' ) . ' vs-sm-' . ( kadence()->sub_option( 'scroll_up_visiblity', 'mobile' ) ? 'true' : 'false' ) . '">';
-		kadence()->print_icon( kadence()->option( 'scroll_up_icon' ), '', false );
+		kadence()->print_icon( kadence()->option( 'scroll_up_icon' ), esc_attr__( 'Scroll to top', 'kadence' ), false );
 		echo '</button>';
 	}
 }
