@@ -13523,16 +13523,6 @@ class McPrices_Integration {
 			return $content;
 		}
 
-		if ( ( is_front_page() || ( is_page() && (int) get_option( 'page_on_front' ) === get_the_ID() ) ) && in_the_loop() && is_main_query() ) {
-			$pattern_file = KADENCE_MCPRICES_PATH . 'inc/mcprices/pattern-homepage.php';
-			if ( file_exists( $pattern_file ) ) {
-				$eval_content = require $pattern_file;
-				if ( ! empty( $eval_content ) ) {
-					$content = $eval_content;
-				}
-			}
-		}
-
 		$content = $this->replace_dynamic_date_strings( $content );
 		$content = $this->normalize_homepage_runtime_urls( $content );
 
