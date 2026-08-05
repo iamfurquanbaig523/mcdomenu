@@ -14844,7 +14844,17 @@ class McPrices_Integration {
 	 * @return bool
 	 */
 	protected function is_seo_homepage() {
-		return $this->design_enabled() && is_front_page() && ! is_home();
+		if ( ! $this->design_enabled() ) {
+			return false;
+		}
+
+		if ( is_front_page() ) {
+			return true;
+		}
+
+		$front_id = (int) get_option( 'page_on_front' );
+
+		return ( $front_id > 0 && is_page( $front_id ) );
 	}
 
 	/**
