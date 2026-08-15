@@ -25,11 +25,12 @@ function kadence_mcprices_output_json_ld_schema() {
 
 	$blocks = array();
 
-	// 1. WebSite + Organization on homepage only.
+	// 1. WebSite + Organization + Person + Master Menu on homepage only.
 	if ( is_front_page() ) {
 		$blocks[] = kadence_mcprices_schema_website();
 		$blocks[] = kadence_mcprices_schema_organization();
 		$blocks[] = kadence_mcprices_schema_person();
+		$blocks[] = kadence_mcprices_schema_master_menu();
 	}
 
 	// 2. BreadcrumbList on every non-homepage page.
@@ -40,7 +41,13 @@ function kadence_mcprices_output_json_ld_schema() {
 		}
 	}
 
-	// 3. FAQPage on known priority pages.
+	// 3. Category Menu Schema (e.g. Breakfast Menu items, prices, calories).
+	$cat_menu = kadence_mcprices_schema_category_menu();
+	if ( $cat_menu ) {
+		$blocks[] = $cat_menu;
+	}
+
+	// 4. FAQPage on known priority pages.
 	$faq = kadence_mcprices_schema_faqpage();
 	if ( $faq ) {
 		$blocks[] = $faq;
@@ -503,4 +510,229 @@ function kadence_mcprices_get_faqs_for_path( $path ) {
 		default:
 			return array();
 	}
+}
+
+/* -----------------------------------------------------------------------
+ * MASTER MENU SCHEMA — Homepage
+ * --------------------------------------------------------------------- */
+
+function kadence_mcprices_schema_master_menu() {
+	return array(
+		'@context'         => 'https://schema.org',
+		'@type'            => 'Menu',
+		'@id'              => 'https://mcdomenuusa.com/#main-menu',
+		'name'             => "McDonald's USA Full Menu",
+		'description'      => "Complete 2026 U.S. McDonald's menu price list covering breakfast, burgers, chicken, Happy Meals, McCafé, drinks, and desserts.",
+		'mainEntityOfPage' => 'https://mcdomenuusa.com/',
+		'inLanguage'       => 'en-US',
+		'hasMenuSection'   => array(
+			array(
+				'@type' => 'MenuSection',
+				'name'  => 'Breakfast Menu',
+				'url'   => 'https://mcdomenuusa.com/breakfast-menu/',
+			),
+			array(
+				'@type' => 'MenuSection',
+				'name'  => 'Burgers Menu',
+				'url'   => 'https://mcdomenuusa.com/burgers-menu/',
+			),
+			array(
+				'@type' => 'MenuSection',
+				'name'  => 'Chicken & Fish',
+				'url'   => 'https://mcdomenuusa.com/chicken-fish-menu/',
+			),
+			array(
+				'@type' => 'MenuSection',
+				'name'  => 'Happy Meal Menu',
+				'url'   => 'https://mcdomenuusa.com/happy-meal-menu/',
+			),
+			array(
+				'@type' => 'MenuSection',
+				'name'  => 'McCafé Coffees',
+				'url'   => 'https://mcdomenuusa.com/mccafe-menu/',
+			),
+			array(
+				'@type' => 'MenuSection',
+				'name'  => 'Beverages & Drinks',
+				'url'   => 'https://mcdomenuusa.com/beverages-drinks/',
+			),
+		),
+	);
+}
+
+/* -----------------------------------------------------------------------
+ * CATEGORY MENU SCHEMA — Breakfast Page & Category Pages
+ * --------------------------------------------------------------------- */
+
+function kadence_mcprices_schema_category_menu() {
+	$path = kadence_mcprices_get_priority_request_path();
+	if ( '' === $path && is_singular( 'page' ) ) {
+		$post = get_queried_object();
+		if ( $post instanceof WP_Post ) {
+			$path = $post->post_name;
+		}
+	}
+	$path = trim( (string) $path, '/' );
+
+	if ( 'breakfast-menu' === $path || 'breakfast' === $path || 'menu/breakfast-menu' === $path ) {
+		return array(
+			'@context'       => 'https://schema.org',
+			'@type'          => 'Menu',
+			'@id'            => 'https://mcdomenuusa.com/breakfast-menu/#menu',
+			'name'           => "McDonald's Breakfast Menu & Prices",
+			'description'    => "Complete USA McDonald's breakfast menu price list, calorie counts, and ordering guide.",
+			'inLanguage'     => 'en-US',
+			'hasMenuSection' => array(
+				array(
+					'@type'       => 'MenuSection',
+					'name'        => 'McMuffins & Breakfast Sandwiches',
+					'hasMenuItem' => array(
+						array(
+							'@type'       => 'MenuItem',
+							'name'        => 'Egg McMuffin',
+							'description' => 'Freshly cracked Grade A egg, Canadian bacon, and melted American cheese on a toasted English muffin.',
+							'offers'      => array(
+								'@type'         => 'Offer',
+								'price'         => '4.79',
+								'priceCurrency' => 'USD',
+								'availability'  => 'https://schema.org/InStock',
+							),
+							'nutrition'   => array(
+								'@type'    => 'NutritionInformation',
+								'calories' => '310 calories',
+							),
+						),
+						array(
+							'@type'       => 'MenuItem',
+							'name'        => 'Sausage McMuffin',
+							'description' => 'Savory hot sausage patty and a slice of melted American cheese on a toasted English muffin.',
+							'offers'      => array(
+								'@type'         => 'Offer',
+								'price'         => '2.49',
+								'priceCurrency' => 'USD',
+								'availability'  => 'https://schema.org/InStock',
+							),
+							'nutrition'   => array(
+								'@type'    => 'NutritionInformation',
+								'calories' => '400 calories',
+							),
+						),
+						array(
+							'@type'       => 'MenuItem',
+							'name'        => 'Sausage McMuffin with Egg',
+							'description' => 'Sausage patty, freshly cracked egg, and melted American cheese on a toasted English muffin.',
+							'offers'      => array(
+								'@type'         => 'Offer',
+								'price'         => '5.29',
+								'priceCurrency' => 'USD',
+								'availability'  => 'https://schema.org/InStock',
+							),
+							'nutrition'   => array(
+								'@type'    => 'NutritionInformation',
+								'calories' => '480 calories',
+							),
+						),
+						array(
+							'@type'       => 'MenuItem',
+							'name'        => 'Bacon, Egg & Cheese Biscuit',
+							'description' => 'Thick-cut applewood smoked bacon, fluffy folded egg, and melted American cheese on a warm buttermilk biscuit.',
+							'offers'      => array(
+								'@type'         => 'Offer',
+								'price'         => '5.19',
+								'priceCurrency' => 'USD',
+								'availability'  => 'https://schema.org/InStock',
+							),
+							'nutrition'   => array(
+								'@type'    => 'NutritionInformation',
+								'calories' => '460 calories',
+							),
+						),
+						array(
+							'@type'       => 'MenuItem',
+							'name'        => 'Sausage Biscuit with Egg',
+							'description' => 'Hot sausage patty and fluffy folded egg served inside a warm buttermilk biscuit.',
+							'offers'      => array(
+								'@type'         => 'Offer',
+								'price'         => '4.89',
+								'priceCurrency' => 'USD',
+								'availability'  => 'https://schema.org/InStock',
+							),
+							'nutrition'   => array(
+								'@type'    => 'NutritionInformation',
+								'calories' => '530 calories',
+							),
+						),
+					),
+				),
+				array(
+					'@type'       => 'MenuSection',
+					'name'        => 'McGriddles, Sweets & Platters',
+					'hasMenuItem' => array(
+						array(
+							'@type'       => 'MenuItem',
+							'name'        => 'Sausage, Egg & Cheese McGriddles',
+							'description' => 'Sausage patty, folded egg, and American cheese sandwiched between sweet maple-flavored griddle cakes.',
+							'offers'      => array(
+								'@type'         => 'Offer',
+								'price'         => '5.39',
+								'priceCurrency' => 'USD',
+								'availability'  => 'https://schema.org/InStock',
+							),
+							'nutrition'   => array(
+								'@type'    => 'NutritionInformation',
+								'calories' => '560 calories',
+							),
+						),
+						array(
+							'@type'       => 'MenuItem',
+							'name'        => 'Hotcakes and Sausage',
+							'description' => 'Three golden warm hotcakes served with real butter, sweet hotcake syrup, and a savory sausage patty.',
+							'offers'      => array(
+								'@type'         => 'Offer',
+								'price'         => '5.69',
+								'priceCurrency' => 'USD',
+								'availability'  => 'https://schema.org/InStock',
+							),
+							'nutrition'   => array(
+								'@type'    => 'NutritionInformation',
+								'calories' => '770 calories',
+							),
+						),
+						array(
+							'@type'       => 'MenuItem',
+							'name'        => 'Big Breakfast with Hotcakes',
+							'description' => 'Scrambled eggs, sausage patty, hash browns, warm biscuit, and three golden hotcakes with syrup and butter.',
+							'offers'      => array(
+								'@type'         => 'Offer',
+								'price'         => '7.89',
+								'priceCurrency' => 'USD',
+								'availability'  => 'https://schema.org/InStock',
+							),
+							'nutrition'   => array(
+								'@type'    => 'NutritionInformation',
+								'calories' => '1340 calories',
+							),
+						),
+						array(
+							'@type'       => 'MenuItem',
+							'name'        => 'Hash Browns',
+							'description' => 'Crispy golden shredded potato hash brown patty.',
+							'offers'      => array(
+								'@type'         => 'Offer',
+								'price'         => '2.69',
+								'priceCurrency' => 'USD',
+								'availability'  => 'https://schema.org/InStock',
+							),
+							'nutrition'   => array(
+								'@type'    => 'NutritionInformation',
+								'calories' => '150 calories',
+							),
+						),
+					),
+				),
+			),
+		);
+	}
+
+	return null;
 }
