@@ -587,6 +587,7 @@ function kadence_mcprices_schema_category_menu() {
 	}
 	$path = trim( (string) $path, '/' );
 
+	// Breakfast Menu
 	if ( 'breakfast-menu' === $path || 'breakfast' === $path || 'menu/breakfast-menu' === $path ) {
 		return array(
 			'@context'       => 'https://schema.org',
@@ -604,76 +605,36 @@ function kadence_mcprices_schema_category_menu() {
 							'@type'       => 'MenuItem',
 							'name'        => 'Egg McMuffin',
 							'description' => 'Freshly cracked Grade A egg, Canadian bacon, and melted American cheese on a toasted English muffin.',
-							'offers'      => array(
-								'@type'         => 'Offer',
-								'price'         => '4.79',
-								'priceCurrency' => 'USD',
-								'availability'  => 'https://schema.org/InStock',
-							),
-							'nutrition'   => array(
-								'@type'    => 'NutritionInformation',
-								'calories' => '310 calories',
-							),
+							'offers'      => array( '@type' => 'Offer', 'price' => '4.79', 'priceCurrency' => 'USD', 'availability' => 'https://schema.org/InStock' ),
+							'nutrition'   => array( '@type' => 'NutritionInformation', 'calories' => '310 calories' ),
 						),
 						array(
 							'@type'       => 'MenuItem',
 							'name'        => 'Sausage McMuffin',
 							'description' => 'Savory hot sausage patty and a slice of melted American cheese on a toasted English muffin.',
-							'offers'      => array(
-								'@type'         => 'Offer',
-								'price'         => '2.49',
-								'priceCurrency' => 'USD',
-								'availability'  => 'https://schema.org/InStock',
-							),
-							'nutrition'   => array(
-								'@type'    => 'NutritionInformation',
-								'calories' => '400 calories',
-							),
+							'offers'      => array( '@type' => 'Offer', 'price' => '2.49', 'priceCurrency' => 'USD', 'availability' => 'https://schema.org/InStock' ),
+							'nutrition'   => array( '@type' => 'NutritionInformation', 'calories' => '400 calories' ),
 						),
 						array(
 							'@type'       => 'MenuItem',
 							'name'        => 'Sausage McMuffin with Egg',
 							'description' => 'Sausage patty, freshly cracked egg, and melted American cheese on a toasted English muffin.',
-							'offers'      => array(
-								'@type'         => 'Offer',
-								'price'         => '5.29',
-								'priceCurrency' => 'USD',
-								'availability'  => 'https://schema.org/InStock',
-							),
-							'nutrition'   => array(
-								'@type'    => 'NutritionInformation',
-								'calories' => '480 calories',
-							),
+							'offers'      => array( '@type' => 'Offer', 'price' => '5.29', 'priceCurrency' => 'USD', 'availability' => 'https://schema.org/InStock' ),
+							'nutrition'   => array( '@type' => 'NutritionInformation', 'calories' => '480 calories' ),
 						),
 						array(
 							'@type'       => 'MenuItem',
 							'name'        => 'Bacon, Egg & Cheese Biscuit',
 							'description' => 'Thick-cut applewood smoked bacon, fluffy folded egg, and melted American cheese on a warm buttermilk biscuit.',
-							'offers'      => array(
-								'@type'         => 'Offer',
-								'price'         => '5.19',
-								'priceCurrency' => 'USD',
-								'availability'  => 'https://schema.org/InStock',
-							),
-							'nutrition'   => array(
-								'@type'    => 'NutritionInformation',
-								'calories' => '460 calories',
-							),
+							'offers'      => array( '@type' => 'Offer', 'price' => '5.19', 'priceCurrency' => 'USD', 'availability' => 'https://schema.org/InStock' ),
+							'nutrition'   => array( '@type' => 'NutritionInformation', 'calories' => '460 calories' ),
 						),
 						array(
 							'@type'       => 'MenuItem',
 							'name'        => 'Sausage Biscuit with Egg',
 							'description' => 'Hot sausage patty and fluffy folded egg served inside a warm buttermilk biscuit.',
-							'offers'      => array(
-								'@type'         => 'Offer',
-								'price'         => '4.89',
-								'priceCurrency' => 'USD',
-								'availability'  => 'https://schema.org/InStock',
-							),
-							'nutrition'   => array(
-								'@type'    => 'NutritionInformation',
-								'calories' => '530 calories',
-							),
+							'offers'      => array( '@type' => 'Offer', 'price' => '4.89', 'priceCurrency' => 'USD', 'availability' => 'https://schema.org/InStock' ),
+							'nutrition'   => array( '@type' => 'NutritionInformation', 'calories' => '530 calories' ),
 						),
 					),
 				),
@@ -685,61 +646,234 @@ function kadence_mcprices_schema_category_menu() {
 							'@type'       => 'MenuItem',
 							'name'        => 'Sausage, Egg & Cheese McGriddles',
 							'description' => 'Sausage patty, folded egg, and American cheese sandwiched between sweet maple-flavored griddle cakes.',
-							'offers'      => array(
-								'@type'         => 'Offer',
-								'price'         => '5.39',
-								'priceCurrency' => 'USD',
-								'availability'  => 'https://schema.org/InStock',
-							),
-							'nutrition'   => array(
-								'@type'    => 'NutritionInformation',
-								'calories' => '560 calories',
-							),
+							'offers'      => array( '@type' => 'Offer', 'price' => '5.39', 'priceCurrency' => 'USD', 'availability' => 'https://schema.org/InStock' ),
+							'nutrition'   => array( '@type' => 'NutritionInformation', 'calories' => '560 calories' ),
 						),
 						array(
 							'@type'       => 'MenuItem',
 							'name'        => 'Hotcakes and Sausage',
 							'description' => 'Three golden warm hotcakes served with real butter, sweet hotcake syrup, and a savory sausage patty.',
-							'offers'      => array(
-								'@type'         => 'Offer',
-								'price'         => '5.69',
-								'priceCurrency' => 'USD',
-								'availability'  => 'https://schema.org/InStock',
-							),
-							'nutrition'   => array(
-								'@type'    => 'NutritionInformation',
-								'calories' => '770 calories',
-							),
+							'offers'      => array( '@type' => 'Offer', 'price' => '5.69', 'priceCurrency' => 'USD', 'availability' => 'https://schema.org/InStock' ),
+							'nutrition'   => array( '@type' => 'NutritionInformation', 'calories' => '770 calories' ),
 						),
 						array(
 							'@type'       => 'MenuItem',
 							'name'        => 'Big Breakfast with Hotcakes',
 							'description' => 'Scrambled eggs, sausage patty, hash browns, warm biscuit, and three golden hotcakes with syrup and butter.',
-							'offers'      => array(
-								'@type'         => 'Offer',
-								'price'         => '7.89',
-								'priceCurrency' => 'USD',
-								'availability'  => 'https://schema.org/InStock',
-							),
-							'nutrition'   => array(
-								'@type'    => 'NutritionInformation',
-								'calories' => '1340 calories',
-							),
+							'offers'      => array( '@type' => 'Offer', 'price' => '7.89', 'priceCurrency' => 'USD', 'availability' => 'https://schema.org/InStock' ),
+							'nutrition'   => array( '@type' => 'NutritionInformation', 'calories' => '1340 calories' ),
 						),
 						array(
 							'@type'       => 'MenuItem',
 							'name'        => 'Hash Browns',
 							'description' => 'Crispy golden shredded potato hash brown patty.',
-							'offers'      => array(
-								'@type'         => 'Offer',
-								'price'         => '2.69',
-								'priceCurrency' => 'USD',
-								'availability'  => 'https://schema.org/InStock',
-							),
-							'nutrition'   => array(
-								'@type'    => 'NutritionInformation',
-								'calories' => '150 calories',
-							),
+							'offers'      => array( '@type' => 'Offer', 'price' => '2.69', 'priceCurrency' => 'USD', 'availability' => 'https://schema.org/InStock' ),
+							'nutrition'   => array( '@type' => 'NutritionInformation', 'calories' => '150 calories' ),
+						),
+					),
+				),
+			),
+		);
+	}
+
+	// Burgers Menu
+	if ( 'burgers-menu' === $path || 'burgers' === $path || 'menu/burgers-menu' === $path ) {
+		return array(
+			'@context'       => 'https://schema.org',
+			'@type'          => 'Menu',
+			'@id'            => 'https://mcdomenuusa.com/burgers-menu/#menu',
+			'name'           => "McDonald's Burgers Menu & Prices",
+			'description'    => "Complete USA McDonald's burger price list, calorie counts, and value meal prices.",
+			'inLanguage'     => 'en-US',
+			'hasMenuSection' => array(
+				array(
+					'@type'       => 'MenuSection',
+					'name'        => 'Core Burgers & Quarter Pounders',
+					'hasMenuItem' => array(
+						array(
+							'@type'       => 'MenuItem',
+							'name'        => 'Big Mac',
+							'description' => 'Two 100% pure beef patties, special sauce, crisp lettuce, melted American cheese, pickles, and onions on a sesame seed bun.',
+							'offers'      => array( '@type' => 'Offer', 'price' => '5.29', 'priceCurrency' => 'USD', 'availability' => 'https://schema.org/InStock' ),
+							'nutrition'   => array( '@type' => 'NutritionInformation', 'calories' => '590 calories' ),
+						),
+						array(
+							'@type'       => 'MenuItem',
+							'name'        => 'Quarter Pounder with Cheese',
+							'description' => 'Quarter pound of 100% fresh beef cooked when you order, seasoned with salt & pepper, slice of melted American cheese, onions, and pickles.',
+							'offers'      => array( '@type' => 'Offer', 'price' => '5.79', 'priceCurrency' => 'USD', 'availability' => 'https://schema.org/InStock' ),
+							'nutrition'   => array( '@type' => 'NutritionInformation', 'calories' => '520 calories' ),
+						),
+						array(
+							'@type'       => 'MenuItem',
+							'name'        => 'Double Quarter Pounder with Cheese',
+							'description' => 'Two quarter-pound 100% fresh beef patties with two slices of melted American cheese, pickles, and slivered onions.',
+							'offers'      => array( '@type' => 'Offer', 'price' => '7.89', 'priceCurrency' => 'USD', 'availability' => 'https://schema.org/InStock' ),
+							'nutrition'   => array( '@type' => 'NutritionInformation', 'calories' => '740 calories' ),
+						),
+						array(
+							'@type'       => 'MenuItem',
+							'name'        => 'McDouble',
+							'description' => 'Two 100% pure beef patties with a slice of melted American cheese, pickles, onions, ketchup, and mustard.',
+							'offers'      => array( '@type' => 'Offer', 'price' => '3.19', 'priceCurrency' => 'USD', 'availability' => 'https://schema.org/InStock' ),
+							'nutrition'   => array( '@type' => 'NutritionInformation', 'calories' => '400 calories' ),
+						),
+						array(
+							'@type'       => 'MenuItem',
+							'name'        => 'Double Cheeseburger',
+							'description' => 'Two 100% pure beef patties with two slices of melted American cheese, pickles, onions, ketchup, and mustard.',
+							'offers'      => array( '@type' => 'Offer', 'price' => '3.69', 'priceCurrency' => 'USD', 'availability' => 'https://schema.org/InStock' ),
+							'nutrition'   => array( '@type' => 'NutritionInformation', 'calories' => '450 calories' ),
+						),
+					),
+				),
+			),
+		);
+	}
+
+	// Chicken & Fish Menu
+	if ( 'chicken-fish-menu' === $path || 'chicken' === $path || 'menu/chicken-fish-menu' === $path ) {
+		return array(
+			'@context'       => 'https://schema.org',
+			'@type'          => 'Menu',
+			'@id'            => 'https://mcdomenuusa.com/chicken-fish-menu/#menu',
+			'name'           => "McDonald's Chicken & Fish Menu & Prices",
+			'description'    => "Complete USA McDonald's chicken sandwich, McNuggets, and Filet-O-Fish price list and calorie counts.",
+			'inLanguage'     => 'en-US',
+			'hasMenuSection' => array(
+				array(
+					'@type'       => 'MenuSection',
+					'name'        => 'Chicken Sandwiches & McNuggets',
+					'hasMenuItem' => array(
+						array(
+							'@type'       => 'MenuItem',
+							'name'        => 'McCrispy',
+							'description' => 'Crispy juicy tender chicken fillet topped with crinkle-cut pickles on a toasted potato roll.',
+							'offers'      => array( '@type' => 'Offer', 'price' => '4.99', 'priceCurrency' => 'USD', 'availability' => 'https://schema.org/InStock' ),
+							'nutrition'   => array( '@type' => 'NutritionInformation', 'calories' => '470 calories' ),
+						),
+						array(
+							'@type'       => 'MenuItem',
+							'name'        => '10 Piece Chicken McNuggets',
+							'description' => '10 pieces of tender white meat chicken nuggets crispy on the outside and juicy on the inside.',
+							'offers'      => array( '@type' => 'Offer', 'price' => '5.69', 'priceCurrency' => 'USD', 'availability' => 'https://schema.org/InStock' ),
+							'nutrition'   => array( '@type' => 'NutritionInformation', 'calories' => '410 calories' ),
+						),
+						array(
+							'@type'       => 'MenuItem',
+							'name'        => 'Filet-O-Fish',
+							'description' => 'Wild-caught fish fillet patty, tartar sauce, and melted American cheese on a warm steamed bun.',
+							'offers'      => array( '@type' => 'Offer', 'price' => '4.89', 'priceCurrency' => 'USD', 'availability' => 'https://schema.org/InStock' ),
+							'nutrition'   => array( '@type' => 'NutritionInformation', 'calories' => '390 calories' ),
+						),
+					),
+				),
+			),
+		);
+	}
+
+	// Happy Meal Menu
+	if ( 'happy-meal-menu' === $path || 'happymeal' === $path || 'menu/happy-meal-menu' === $path ) {
+		return array(
+			'@context'       => 'https://schema.org',
+			'@type'          => 'Menu',
+			'@id'            => 'https://mcdomenuusa.com/happy-meal-menu/#menu',
+			'name'           => "McDonald's Happy Meal Menu & Prices",
+			'description'    => "Complete USA McDonald's Happy Meal options, prices, calories, sides, drinks, and toy details.",
+			'inLanguage'     => 'en-US',
+			'hasMenuSection' => array(
+				array(
+					'@type'       => 'MenuSection',
+					'name'        => 'Happy Meals',
+					'hasMenuItem' => array(
+						array(
+							'@type'       => 'MenuItem',
+							'name'        => 'Hamburger Happy Meal',
+							'description' => 'Kid-sized 100% beef hamburger, side of Apple Slices or kids fries, choice of beverage, and a Happy Meal toy.',
+							'offers'      => array( '@type' => 'Offer', 'price' => '5.89', 'priceCurrency' => 'USD', 'availability' => 'https://schema.org/InStock' ),
+							'nutrition'   => array( '@type' => 'NutritionInformation', 'calories' => '475 calories' ),
+						),
+						array(
+							'@type'       => 'MenuItem',
+							'name'        => '4 Piece Chicken McNuggets Happy Meal',
+							'description' => '4 pieces of white meat chicken McNuggets, Apple Slices or kids fries, choice of drink, and a Happy Meal toy.',
+							'offers'      => array( '@type' => 'Offer', 'price' => '6.19', 'priceCurrency' => 'USD', 'availability' => 'https://schema.org/InStock' ),
+							'nutrition'   => array( '@type' => 'NutritionInformation', 'calories' => '420 calories' ),
+						),
+						array(
+							'@type'       => 'MenuItem',
+							'name'        => '6 Piece Chicken McNuggets Happy Meal',
+							'description' => '6 pieces of white meat chicken McNuggets, Apple Slices or kids fries, choice of drink, and a Happy Meal toy.',
+							'offers'      => array( '@type' => 'Offer', 'price' => '7.29', 'priceCurrency' => 'USD', 'availability' => 'https://schema.org/InStock' ),
+							'nutrition'   => array( '@type' => 'NutritionInformation', 'calories' => '510 calories' ),
+						),
+					),
+				),
+			),
+		);
+	}
+
+	// McCafé & Beverages Menu
+	if ( 'mccafe-menu' === $path || 'menu/mccafe-coffees' === $path || 'beverages-drinks' === $path || 'menu/beverages-drinks' === $path ) {
+		return array(
+			'@context'       => 'https://schema.org',
+			'@type'          => 'Menu',
+			'@id'            => 'https://mcdomenuusa.com/mccafe-menu/#menu',
+			'name'           => "McDonald's McCafé & Beverages Menu & Prices",
+			'description'    => "Complete USA McDonald's McCafé coffee, espresso, frappes, and fountain drink prices and calories.",
+			'inLanguage'     => 'en-US',
+			'hasMenuSection' => array(
+				array(
+					'@type'       => 'MenuSection',
+					'name'        => 'McCafé Coffees & Frappés',
+					'hasMenuItem' => array(
+						array(
+							'@type'       => 'MenuItem',
+							'name'        => 'Caramel Frappé',
+							'description' => 'Rich caramel flavor blended with ice and coffee, topped with whipped cream and caramel drizzle.',
+							'offers'      => array( '@type' => 'Offer', 'price' => '4.29', 'priceCurrency' => 'USD', 'availability' => 'https://schema.org/InStock' ),
+							'nutrition'   => array( '@type' => 'NutritionInformation', 'calories' => '430 calories' ),
+						),
+						array(
+							'@type'       => 'MenuItem',
+							'name'        => 'Iced Caramel Coffee',
+							'description' => 'Freshly brewed McCafé iced coffee blended with sweet caramel syrup and cream over ice.',
+							'offers'      => array( '@type' => 'Offer', 'price' => '2.99', 'priceCurrency' => 'USD', 'availability' => 'https://schema.org/InStock' ),
+							'nutrition'   => array( '@type' => 'NutritionInformation', 'calories' => '190 calories' ),
+						),
+					),
+				),
+			),
+		);
+	}
+
+	// McValue & Deals Guide
+	if ( 'mcvalue-menu' === $path || 'mcdonalds-deals-mcvalue-guide' === $path || 'menu/mcvalue-menu' === $path ) {
+		return array(
+			'@context'       => 'https://schema.org',
+			'@type'          => 'Menu',
+			'@id'            => 'https://mcdomenuusa.com/mcvalue-menu/#menu',
+			'name'           => "McDonald's McValue & Deals Menu Prices",
+			'description'    => "Complete USA McDonald's McValue, $1 $2 $3 Dollar Menu items, and meal deal pricing guide.",
+			'inLanguage'     => 'en-US',
+			'hasMenuSection' => array(
+				array(
+					'@type'       => 'MenuSection',
+					'name'        => 'McValue Items',
+					'hasMenuItem' => array(
+						array(
+							'@type'       => 'MenuItem',
+							'name'        => 'Sausage McMuffin',
+							'description' => 'Savory sausage patty and melted American cheese on a toasted English muffin.',
+							'offers'      => array( '@type' => 'Offer', 'price' => '2.49', 'priceCurrency' => 'USD', 'availability' => 'https://schema.org/InStock' ),
+							'nutrition'   => array( '@type' => 'NutritionInformation', 'calories' => '400 calories' ),
+						),
+						array(
+							'@type'       => 'MenuItem',
+							'name'        => '4 Piece Chicken McNuggets',
+							'description' => '4 tender white-meat chicken McNuggets with choice of dipping sauce.',
+							'offers'      => array( '@type' => 'Offer', 'price' => '2.79', 'priceCurrency' => 'USD', 'availability' => 'https://schema.org/InStock' ),
+							'nutrition'   => array( '@type' => 'NutritionInformation', 'calories' => '170 calories' ),
 						),
 					),
 				),
