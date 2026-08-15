@@ -25,12 +25,13 @@ function kadence_mcprices_output_json_ld_schema() {
 
 	$blocks = array();
 
-	// 1. WebSite + Organization + Person + Master Menu on homepage only.
+	// 1. WebSite + Organization + Person + Master Menu + FastFoodRestaurant entity on homepage only.
 	if ( is_front_page() ) {
 		$blocks[] = kadence_mcprices_schema_website();
 		$blocks[] = kadence_mcprices_schema_organization();
 		$blocks[] = kadence_mcprices_schema_person();
 		$blocks[] = kadence_mcprices_schema_master_menu();
+		$blocks[] = kadence_mcprices_schema_fast_food_restaurant();
 	}
 
 	// 2. BreadcrumbList on every non-homepage page.
@@ -47,7 +48,19 @@ function kadence_mcprices_output_json_ld_schema() {
 		$blocks[] = $cat_menu;
 	}
 
-	// 4. FAQPage on known priority pages.
+	// 4. Dataset Schema (GEO & AI Search indexing for all pages).
+	$dataset = kadence_mcprices_schema_dataset();
+	if ( $dataset ) {
+		$blocks[] = $dataset;
+	}
+
+	// 5. WebPage E-E-A-T Review Signals Schema for all pages.
+	$webpage_review = kadence_mcprices_schema_webpage_review();
+	if ( $webpage_review ) {
+		$blocks[] = $webpage_review;
+	}
+
+	// 6. FAQPage on known priority pages.
 	$faq = kadence_mcprices_schema_faqpage();
 	if ( $faq ) {
 		$blocks[] = $faq;
@@ -736,3 +749,70 @@ function kadence_mcprices_schema_category_menu() {
 
 	return null;
 }
+
+/* -----------------------------------------------------------------------
+ * DATASET SCHEMA — GEO & AI Search Indexing
+ * --------------------------------------------------------------------- */
+
+function kadence_mcprices_schema_dataset() {
+	$current_url = is_front_page() ? 'https://mcdomenuusa.com/' : get_permalink();
+	$page_title  = is_front_page() ? "McDonald's USA Menu Price & Calorie Index 2026" : get_the_title() . " Dataset";
+
+	return array(
+		'@context'            => 'https://schema.org',
+		'@type'               => 'Dataset',
+		'@id'                 => esc_url( rtrim( (string) $current_url, '/' ) ) . '/#dataset',
+		'name'                => html_entity_decode( (string) $page_title, ENT_QUOTES, 'UTF-8' ),
+		'description'         => "Verified 2026 U.S. McDonald's menu prices, calorie counts, item sizes, and regional availability dataset.",
+		'url'                 => esc_url( (string) $current_url ),
+		'creator'             => array( '@id' => 'https://mcdomenuusa.com/#organization' ),
+		'isAccessibleForFree' => true,
+		'keywords'            => array( "McDonald's prices", 'fast food prices USA', 'menu calories', "McDonald's menu dataset" ),
+		'variableMeasured'    => array( 'Item Name', 'Price (USD)', 'Calories (kcal)', 'Category' ),
+	);
+}
+
+/* -----------------------------------------------------------------------
+ * FAST FOOD RESTAURANT ENTITY SCHEMA
+ * --------------------------------------------------------------------- */
+
+function kadence_mcprices_schema_fast_food_restaurant() {
+	return array(
+		'@context'      => 'https://schema.org',
+		'@type'         => 'FastFoodRestaurant',
+		'@id'           => 'https://mcdomenuusa.com/#restaurant-entity',
+		'name'          => "McDonald's USA",
+		'description'   => "McDonald's is the world's leading global fast-food restaurant chain, serving burgers, fries, breakfast, and McCafé items.",
+		'servesCuisine' => array( 'Fast Food', 'American', 'Burgers', 'Breakfast', 'Coffee' ),
+		'priceRange'    => '$ - $$',
+		'hasMenu'       => array( '@id' => 'https://mcdomenuusa.com/#main-menu' ),
+		'sameAs'        => array(
+			'https://www.mcdonalds.com/',
+			'https://en.wikipedia.org/wiki/McDonald%27s',
+		),
+	);
+}
+
+/* -----------------------------------------------------------------------
+ * WEBPAGE E-E-A-T REVIEW SIGNALS SCHEMA
+ * --------------------------------------------------------------------- */
+
+function kadence_mcprices_schema_webpage_review() {
+	$current_url = is_front_page() ? 'https://mcdomenuusa.com/' : get_permalink();
+	$page_title  = is_front_page() ? "McDonald's Menu Prices USA 2026" : get_the_title();
+
+	return array(
+		'@context'             => 'https://schema.org',
+		'@type'                => 'WebPage',
+		'@id'                  => esc_url( rtrim( (string) $current_url, '/' ) ) . '/#webpage',
+		'url'                  => esc_url( (string) $current_url ),
+		'name'                 => html_entity_decode( (string) $page_title, ENT_QUOTES, 'UTF-8' ),
+		'isPartOf'             => array( '@id' => 'https://mcdomenuusa.com/#website' ),
+		'author'               => array( '@id' => 'https://mcdomenuusa.com/#author' ),
+		'reviewedBy'           => array( '@id' => 'https://mcdomenuusa.com/#author' ),
+		'dateModified'         => get_the_modified_date( 'c' ) ?: '2026-08-15T12:00:00+00:00',
+		'publishingPrinciples' => 'https://mcdomenuusa.com/editorial-policy/',
+		'inLanguage'           => 'en-US',
+	);
+}
+
